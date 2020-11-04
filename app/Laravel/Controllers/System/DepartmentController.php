@@ -31,7 +31,7 @@ class DepartmentController extends Controller
 	}
 
 	public function  index(PageRequest $request){
-		$this->data['page_title'] = "Bureau/Office";
+		$this->data['page_title'] = "Department";
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 
 		$this->data['departments'] = Department::where(function($query){
@@ -55,7 +55,7 @@ class DepartmentController extends Controller
 			$new_department->save();
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "New Bureau/Office has been added.");
+			session()->flash('notification-msg', "New Department has been added.");
 			return redirect()->route('system.department.index');
 		}catch(\Exception $e){
 			DB::rollback();
@@ -82,7 +82,7 @@ class DepartmentController extends Controller
 
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Bureau/Office had been modified.");
+			session()->flash('notification-msg', "Department had been modified.");
 			return redirect()->route('system.department.index');
 		}catch(\Exception $e){
 			DB::rollback();
@@ -99,7 +99,7 @@ class DepartmentController extends Controller
 			$department->delete();
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Bureau/Office removed successfully.");
+			session()->flash('notification-msg', "Department removed successfully.");
 			return redirect()->route('system.department.index');
 		}catch(\Exception $e){
 			DB::rollback();

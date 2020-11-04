@@ -10,7 +10,7 @@
 				<td>Transaction Date</td>
 				<td>Submitted By</td>
 				<td>Company Name</td>
-				<td>Bureau/Office</td>
+				<td>Department</td>
 				<td>Processing Fee</td>
 				<td>Processing Fee Status</td>
 				<td>Application Amount</td>

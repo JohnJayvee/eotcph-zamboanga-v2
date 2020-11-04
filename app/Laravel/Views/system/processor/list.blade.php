@@ -19,7 +19,7 @@
     <form>
       <div class="row">
         <div class="col-md-3">
-          <label>Bureau/Office</label>
+          <label>Department</label>
           @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin")
             {!!Form::select("department_id", $department, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
           @elseif(Auth::user()->type == "office_head")
@@ -49,7 +49,7 @@
           <tr>
             <th class="text-title p-3" width="35%">Name</th>
             <th class="text-title p-3" width="35%"># of Application Processed</th>
-            <th class="text-title p-3" width="35%">Bureau/Office</th>
+            <th class="text-title p-3" width="35%">Department</th>
             <th class="text-title p-3" width="30%">Action</th>
           </tr>
         </thead>

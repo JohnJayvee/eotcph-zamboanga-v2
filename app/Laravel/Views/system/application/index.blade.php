@@ -19,7 +19,7 @@
     <form>
       <div class="row">
         <div class="col-md-3">
-          <label>Bureau/Office</label>
+          <label>Department</label>
           @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin")
             {!!Form::select("department_id", $department, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
           @elseif(Auth::user()->type == "office_head")

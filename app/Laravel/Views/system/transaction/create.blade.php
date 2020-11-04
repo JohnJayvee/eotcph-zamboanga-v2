@@ -95,7 +95,7 @@
           </div> -->
           <div class="col-md-6">
             <div class="form-group">
-              <label for="input_title">Bureau/Office</label>
+              <label for="input_title">Department</label>
               <input type="text" class="form-control br-left-white br-right-white {{ $errors->first('department_name') ? 'is-invalid': NULL  }}" placeholder="Payment Amount" name="department_name" id="input_department_name" value="{{Auth::user()->department->name}}" readonly>
               @if($errors->first('department_name'))
               <p class="mt-1 text-danger">{!!$errors->first('department_name')!!}</p>

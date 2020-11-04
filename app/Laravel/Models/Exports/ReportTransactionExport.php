@@ -30,7 +30,7 @@ class  ReportTransactionExport implements FromCollection,WithMapping,WithHeading
                 'Submitted By',
                 'Application Code',
                 "Application Type",
-                "Bureau/Office",
+                "Department",
                 "Processing Fee",
                 "Processing Fee Status",
                 "Application Fee",

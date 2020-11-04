@@ -76,7 +76,7 @@
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.department.index','system.department.create','system.department.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.department.index')}}">
             <i class="fa fa-globe menu-icon"></i>
-            <span class="menu-title">Bureau/Office</span>
+            <span class="menu-title">Department</span>
           </a>
         </li>
        

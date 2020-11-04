@@ -30,17 +30,17 @@ class ProcessorController extends Controller
 	public function __construct(){
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
-		$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::pluck('name', 'id')->toArray();
+		$this->data['department'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();
 		if (Auth::user()->type == "admin" || Auth::user()->type == "office_head") {
-			$this->data['user_type'] = ['' => "Choose Type",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
+			$this->data['user_type'] = ['' => "Choose Type",'office_head' => "Department Head",'processor' => "Processor"];
 		}else {
-			$this->data['user_type'] = ['' => "Choose Type",'admin' => "Admin",'office_head' => "Bureau/Office Head",'processor' => "Processor"];
+			$this->data['user_type'] = ['' => "Choose Type",'admin' => "Admin",'office_head' => "Department Head",'processor' => "Processor"];
 		}
 
 		if (Auth::user()->type == "super_user" || Auth::user()->type == "admin") {
-			$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::pluck('name', 'id')->toArray();
+			$this->data['department'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();
 		}elseif (Auth::user()->type == "office_head" || Auth::user()->type == "processor") {
-			$this->data['department'] = ['' => "Choose Bureau/Office"] + Department::where('id',Auth::user()->department_id)->pluck('name', 'id')->toArray();
+			$this->data['department'] = ['' => "Choose Department"] + Department::where('id',Auth::user()->department_id)->pluck('name', 'id')->toArray();
 		}
 
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];

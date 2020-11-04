@@ -65,7 +65,7 @@
           <tr class="text-center ">
             <th class="text-title p-3" width="15%">Transaction Date</th>
             <th class="text-title p-3" width="15%">Submitted By/<br>Company Name</th>
-            <th class="text-title p-3" width="15%">Bureau/Office</th>
+            <th class="text-title p-3" width="15%">Department</th>
             <th class="text-title p-3" width="30%">Application Type</th>
             <th class="text-title p-3" width="10%">Processing Fee</th>
             <th class="text-title p-3" width="10%">Amount</th>

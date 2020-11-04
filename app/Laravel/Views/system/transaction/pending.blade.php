@@ -19,7 +19,7 @@
     <form>
       <div class="row pb-2">
         <div class="col-md-3">
-          <label>Bureau/Office</label>
+          <label>Department</label>
           @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin")
           {!!Form::select("department_id", $department, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
           @elseif(Auth::user()->type == "office_head" || Auth::user()->type == "processor")
@@ -68,7 +68,7 @@
           <tr class="text-center ">
             <th class="text-title p-3" width="15%">Transaction Date</th>
             <th class="text-title p-3" width="15%">Submitted By/<br>Company Name</th>
-            <th class="text-title p-3" width="15%">Bureau/Office</th>
+            <th class="text-title p-3" width="15%">Department</th>
             <th class="text-title p-3" width="30%">Application Type</th>
             <th class="text-title p-3" width="10%">Processing Fee</th>
             <th class="text-title p-3" width="10%">Amount</th>

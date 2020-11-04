@@ -62,7 +62,7 @@
           @endif
         </div>
         <div class="form-group">
-          <label for="input_title">Bureau/Office</label>
+          <label for="input_title">Department</label>
           <input type="text" class="form-control {{$errors->first('department_id') ? 'is-invalid' : NULL}}" id="input_department_id" name="department_id" placeholder="First Name" value="{{Auth::user()->department->name}}" readonly>
           @if($errors->first('department_id'))
           <p class="mt-1 text-danger">{!!$errors->first('department_id')!!}</p>

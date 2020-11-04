@@ -50,7 +50,7 @@
             <li>Username: <strong>{{$account->username}}</strong></li>
             <li>Personal Email Address: <strong><u>{{$account->email?:"n/a"}}</u></strong></li>
             @if($account->type == "processor" || $account->type == "office_head")
-            <li>Bureau/Office : <strong>{{$account->department->name}}</strong></li>
+            <li>Department : <strong>{{$account->department->name}}</strong></li>
             <li>Application : 
               <ul>
               @forelse($application_list as $index)
