@@ -72,7 +72,6 @@ class OtherTransactionController extends Controller
 					}else{
 						$new_other_transaction->amount = 600;
 					}
-					
 					$new_other_transaction->processor_user_id = Auth::user()->id;
 					$new_other_transaction->save();
 
