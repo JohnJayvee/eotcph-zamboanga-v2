@@ -101,7 +101,10 @@ class MainController extends Controller{
 				$transaction = Transaction::whereRaw("LOWER(transaction_code)  LIKE  '%{$code}%'")->first();
 				$current_transaction_code = Str::lower($transaction->transaction_code);
 				break;
-			
+			case 'OT':
+				$transaction = OtherTransaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
+				$current_transaction_code = Str::lower($transaction->processing_fee_code);
+				break;
 			default:
 				$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
 				$current_transaction_code = Str::lower($transaction->processing_fee_code);

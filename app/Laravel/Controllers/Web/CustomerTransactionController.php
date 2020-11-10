@@ -283,6 +283,9 @@ class CustomerTransactionController extends Controller
 			case 'APP':
 				$transaction = Transaction::whereRaw("LOWER(transaction_code)  =  '{$code}'")->first();
 				break;
+			case 'OT':
+				$transaction = OtherTransaction::whereRaw("LOWER(processing_fee_code)  =  '{$code}'")->first();
+				break;
 			default:
 				$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  =  '{$code}'")->first();
 				break;
@@ -302,7 +305,7 @@ class CustomerTransactionController extends Controller
 			return redirect()->back();
 		}
 
-		if($prefix == "PF" AND $transaction->transaction_status != "PENDING") {
+		if($prefix == "PF" AND $transaction->transaction_status != "PENDING" || $prefix == "OT" AND $transaction->transaction_status != "PENDING") {
 			session()->flash('notification-status',"warning");
 			session()->flash('notification-msg', "Transaction can not be modified anymore. No more action needed.");
 			return redirect()->back();
@@ -374,7 +377,7 @@ class CustomerTransactionController extends Controller
 			return redirect()->back();
 		}
 
-		if($prefix == "PF" AND $transaction->transaction_status != "PENDING") {
+		if($prefix == "PF" AND $transaction->transaction_status != "PENDING" || $prefix == "OT" AND $transaction->transaction_status != "PENDING") {
 			session()->flash('notification-status',"warning");
 			session()->flash('notification-msg', "Transaction can not be modified anymore. No more action needed.");
 			return redirect()->back();
