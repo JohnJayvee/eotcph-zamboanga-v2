@@ -82,6 +82,27 @@ class Helper{
 
 	}
 
+	public static function tax($type = NULL){
+		switch ($type) {
+			case 'basic':
+				 return "Basic Community Tax";
+				break;
+			case 'salary':
+				 return "Income From Salary";
+				break;
+			case 'business':
+				 return "Sales From Business";
+				break;
+			case 'property':
+				 return "Income From Real Property Taxes";
+				break;
+			default:
+				 return "";
+				break;
+		}
+
+	}
+
 	public static function format_num($n) {
 	    $s = array("K", "M", "B", "T");
 	    $out = "";
