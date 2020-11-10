@@ -8,7 +8,7 @@ namespace App\Laravel\Controllers\Web;
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Requests\Web\TransactionRequest;
 use App\Laravel\Requests\Web\UploadRequest;
-
+use App\Laravel\Requests\Web\CTCRequest;
 /*
  * Models
  */
