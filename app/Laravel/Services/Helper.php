@@ -2,6 +2,8 @@
 
 namespace App\Laravel\Services;
 use App\Laravel\Models\Transaction;
+use App\Laravel\Models\TaxCertificate;
+use App\Laravel\Models\Violators;
 use Route,Str,Carbon,Input,DB,DateTime,DateInterval,DatePeriod;
 
 class Helper{
