@@ -163,8 +163,8 @@ class OtherTransactionController extends Controller
 		                'amount' => $new_other_transaction->amount,
                 		'full_name' => $new_other_transaction->customer->full_name
 		            ];	
-					$notification_data = new SendViolationReference($insert);
-				    Event::dispatch('send-sms-violation', $notification_data);
+					$notification_data = new SendTaxReference($insert);
+				    Event::dispatch('send-sms-tax', $notification_data);
 					
 					session()->flash('notification-status', "success");
 					session()->flash('notification-msg', "Transaction has been added.");
