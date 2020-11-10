@@ -25,7 +25,7 @@ class SendViolationReference extends Event {
 
 	public function job(){	
 		
-		
+		dd("dasd");
 		foreach($this->data as $index =>$value){
 			$phone = $value['contact_number'];
 			$ref_num = $value['ref_num'];

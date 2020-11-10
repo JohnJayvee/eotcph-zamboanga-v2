@@ -55,6 +55,12 @@ class EventServiceProvider extends ServiceProvider
          'send-email-certificate' => [
             'App\Laravel\Listeners\SendCertificateListener'
         ],
+        'send-sms-violation' => [
+            'App\Laravel\Listeners\SendViolationListener'
+        ],
+        'send-sms-tax' => [
+            'App\Laravel\Listeners\SendTaxListener'
+        ],
 
     ];
 

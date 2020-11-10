@@ -96,6 +96,7 @@ class OtherTransactionController extends Controller
 					$new_violators->violation = $request->get('violation');
 					$new_violators->violation_name = $request->get('violation_name');
 					$new_violators->save();
+
 					$insert[] = [
 		                'contact_number' => $new_other_transaction->contact_number,
 		                'ref_num' => $new_other_transaction->processing_fee_code,
@@ -156,6 +157,15 @@ class OtherTransactionController extends Controller
 						break;
 					}
 					$new_tax_certificate->save();
+
+					$insert[] = [
+		                'contact_number' => $new_other_transaction->contact_number,
+		                'ref_num' => $new_other_transaction->processing_fee_code,
+		                'amount' => $new_other_transaction->amount,
+                		'full_name' => $new_other_transaction->customer->full_name
+		            ];	
+					$notification_data = new SendViolationReference($insert);
+				    Event::dispatch('send-sms-violation', $notification_data);
 					
 					session()->flash('notification-status', "success");
 					session()->flash('notification-msg', "Transaction has been added.");
