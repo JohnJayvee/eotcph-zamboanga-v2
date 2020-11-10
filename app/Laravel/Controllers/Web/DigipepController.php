@@ -31,7 +31,8 @@ class DigipepController extends Controller
 				case 'APP':
 					$transaction = Transaction::whereRaw("LOWER(transaction_code)  LIKE  '%{$code}%'")->first();
 					break;
-				
+				case 'OT':
+					$transaction = OtherTransaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
 				default:
 					$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
 					break;
@@ -109,6 +110,31 @@ class DigipepController extends Controller
 					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
 				}
 			}
+			if(isset($response->payment) AND Str::upper($response->payment->status) == "PAID" AND $transaction->transaction_status != "COMPLETED" AND $prefix == "OT"){
+
+				DB::beginTransaction();
+				try{
+					$transaction->payment_reference = $response->transactionCode;
+					$transaction->payment_method  = $response->payment->paymentMethod;
+					$transaction->payment_type  = $response->payment->paymentType;
+
+					$transaction->payment_option  = "DIGIPEP";
+
+					$transaction->payment_date = Carbon::now();
+					$transaction->payment_status  = "PAID";
+					$transaction->transaction_status  = "COMPLETED";
+
+					$convenience_fee = $response->payment->convenienceFee;
+					$transaction->convenience_fee = $convenience_fee; 
+					$transaction->total_amount = $transaction->amount + $convenience_fee;
+					$transaction->save();
+					DB::commit();
+
+				}catch(\Exception $e){
+					DB::rollBack();
+					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
+				}
+			}
 			
 		}
 
@@ -126,7 +152,9 @@ class DigipepController extends Controller
 				case 'APP':
 					$transaction = Transaction::whereRaw("LOWER(transaction_code)  LIKE  '%{$code}%'")->first();
 					break;
-				
+				case 'OT':
+					$transaction = OtherTransaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
+					break;
 				default:
 					$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
 					break;
@@ -192,6 +220,31 @@ class DigipepController extends Controller
 					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
 				}
 			}
+			if(isset($response->payment) AND Str::upper($response->payment->status) == "FAILED" AND $transaction->status != "COMPLETED" AND $prefix == "OT"){
+			
+				DB::beginTransaction();
+				try{
+					$transaction->payment_reference = $response->transactionCode;
+					$transaction->payment_method  = $response->payment->paymentMethod;
+					$transaction->payment_type  = $response->payment->paymentType;
+
+					$transaction->payment_option  = "DIGIPEP";
+
+					$transaction->payment_date = Carbon::now();
+					$transaction->transaction_status  = "FAILED";
+					$transaction->payment_status  = "UNPAID";
+
+					$convenience_fee = $response->payment->convenienceFee;
+					$transaction->convenience_fee = $convenience_fee; 
+					$transaction->total_amount = $transaction->amount + $convenience_fee;
+					$transaction->save();
+					DB::commit();
+
+				}catch(\Exception $e){
+					DB::rollBack();
+					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
+				}
+			}
 		}
 
 		end:
@@ -208,7 +261,9 @@ class DigipepController extends Controller
 			case 'APP':
 				$transaction = Transaction::whereRaw("LOWER(transaction_code)  LIKE  '%{$code}%'")->first();
 				break;
-			
+			case 'OT':
+				$transaction = OtherTransaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
+				break;
 			default:
 				$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
 				break;
@@ -226,7 +281,11 @@ class DigipepController extends Controller
 			$transaction->application_transaction_status  = "CANCELLED";
 			$transaction->save();
 		}
-
+		if($transaction->status != "COMPLETED" AND $prefix == "OT") {
+			$transaction->payment_date = Carbon::now();
+			$transaction->transaction_status  = "CANCELLED";
+			$transaction->save();
+		}
 		if($transaction->status != "COMPLETED" AND $prefix == "PF") {
 			$transaction->payment_date = Carbon::now();
 			$transaction->transaction_status  = "CANCELLED";
