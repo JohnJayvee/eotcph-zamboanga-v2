@@ -3,7 +3,7 @@
 namespace App\Laravel\Middlewares\System;
 
 use Closure, Helper,Str;
-use App\Laravel\Models\{Department,ApplicationType,Application,User,Transaction,RegionalOffice,ApplicationRequirements};
+use App\Laravel\Models\{Department,ApplicationType,Application,User,Transaction,RegionalOffice,ApplicationRequirements,OtherCustomer,OtherTransaction};
 
 use App\Laravel\Models\{AccountCode};
 
@@ -85,6 +85,24 @@ class ExistRecord
                     $module = "application-requirements.index";
                 }
             break;
+            case 'other_customer':
+                if(! $this->__exist_other_customer($request)) {
+                    $found_record = false;
+                    session()->flash('notification-status', "failed");
+                    session()->flash('notification-msg', "No record found or resource already removed.");
+
+                    $module = "other-customer.index";
+                }
+            break;
+            case 'other_transaction':
+                if(! $this->__exist_other_transaction($request)) {
+                    $found_record = false;
+                    session()->flash('notification-status', "failed");
+                    session()->flash('notification-msg', "No record found or resource already removed.");
+
+                    $module = "other-customer.index";
+                }
+            break;
             
         }
 
@@ -152,6 +170,29 @@ class ExistRecord
 
         if($requirements){
             $request->merge(['requirement_data' => $requirements]);
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+    private function __exist_other_customer($request){
+        $other_customer= OtherCustomer::find($this->reference_id);
+
+        if($other_customer){
+            $request->merge(['other_customer_data' => $other_customer]);
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+
+    private function __exist_other_transaction($request){
+        $other_transaction= OtherTransaction::find($this->reference_id);
+
+        if($other_transaction){
+            $request->merge(['other_transaction_data' => $other_transaction]);
             return TRUE;
         }
 
