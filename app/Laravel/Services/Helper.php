@@ -102,6 +102,25 @@ class Helper{
 		}
 
 	}
+	public static function tax_amount($id = NULL){
+		$value = TaxCertificate::where('transaction_id',$id)->first();
+		switch ($value->tax_type) {
+
+			case 'salary':
+				 return $value->income_salary;
+				break;
+			case 'business':
+				 return $value->business_sale;
+				break;
+			case 'property':
+				 return $value->income_real_state;
+				break;
+			default:
+				 return "0.00";
+				break;
+		}
+
+	}
 
 	public static function format_num($n) {
 	    $s = array("K", "M", "B", "T");
