@@ -110,8 +110,8 @@
       <div class="card-body">
         <h4 class="card-title">List of Transaction</h4>
         <span class="float-right mb-2">
-          <a href="{{route('system.other_transaction.create',[$other_customer->customer_id])}}?type=violation" class="btn btn-sm btn-primary">Add Violation</a>
-          <a href="{{route('system.other_transaction.create',[$other_customer->customer_id])}}?type=ctc" class="btn btn-sm btn-primary">Add CTC</a>
+          <a href="{{route('system.other_transaction.create',[$other_customer->id])}}?type=violation" class="btn btn-sm btn-primary">Add Violation</a>
+          <a href="{{route('system.other_transaction.create',[$other_customer->id])}}?type=ctc" class="btn btn-sm btn-primary">Add CTC</a>
         </span>
         <table class="table table-striped table-responsive">
           <thead>
