@@ -77,8 +77,10 @@ class OtherCustomerController extends Controller
 
 	public function  show(PageRequest $request,$id = NULL){
 		$this->data['page_title'] .= " - Show record";
+
 		$this->data['other_customer'] = $request->get('other_customer_data');
-		$this->data['transactions'] = OtherTransaction::where('customer_id',$this->data['other_customer']->id)->get();
+
+		$this->data['transactions'] = OtherTransaction::where('customer_id',$this->data['other_customer']->customer_id)->get();
 		
 		return view('system.other-customer.show',$this->data);
 	}
