@@ -55,6 +55,8 @@ class Helper{
 			'referenceCode' => $trans_id,
 			'total' => $param['amount'],
 			'firstname' => $param['first_name'],
+			'middlename' => $param['middle_name'],
+			'lastname' => $param['last_name'],
 			'emailAddress' => $param['email'],
 			'contactNumber' => $param['contact_number'],
 			'subMerchantCode' => "EOTCPHP",
