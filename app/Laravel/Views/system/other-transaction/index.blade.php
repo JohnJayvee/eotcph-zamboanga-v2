@@ -62,7 +62,7 @@
         @forelse($other_transactions as $other_transaction)
           <tr class="text-center">
             <th>{{$other_transaction->created_at}}</th>
-            <th>{{Str::title($other_transaction->customer->full_name)}}</th>
+            <th>{{Str::title($other_transaction->customer ? $other_transaction->customer->full_name :"N/A")}}</th>
             <th>{{$other_transaction->transac_type->name}}</th>
             <th>{{$other_transaction->admin ? $other_transaction->admin->full_name : "--"}}</th>
             <th class="text-center">

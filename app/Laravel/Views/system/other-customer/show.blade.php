@@ -129,7 +129,7 @@
                 <td>{{$transaction->transac_type->name}}</td>
                 <!-- <td>{{$transaction->admin ? $transaction->admin->full_name: "--"}}</td> -->
                 <th class="text-center">
-                  <div>{{$transaction->processing_fee ?: 0 }}</div>
+                  <div>{{$transaction->amount ?: 0 }}</div>
                   <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::upper($transaction->payment_status)}}</span></small></div>
                   <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->transaction_status)}} p-2 mt-1">{{Str::upper($transaction->transaction_status)}}</span></small></div>
                 </th>
