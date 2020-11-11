@@ -7,9 +7,10 @@ use App\Laravel\Requests\PageRequest;
 
 
 use App\Laravel\Models\Transaction;
-use App\Laravel\Events\SendCertificate;
+use App\Laravel\Models\OtherTransaction;
 
-use Helper, Carbon, Session, Str, DB,Input,Event,Signature,Curl,Log,PDF,Mail;
+use Helper, Carbon, Session, Str, DB,Input,Event,Signature,Curl,Log,PDF,Mail,Storage,File, Auth;
+
 class DigipepController extends Controller
 {	
 	protected $data;
@@ -22,6 +23,7 @@ class DigipepController extends Controller
 
 	public function success(PageRequest $request,$code = NULL){
 		Log::info("Digipep Success",array($request->all()));
+		
 		$response = json_decode(json_encode($request->all()));
 		if(isset($response->referenceCode)){
 			$code = strtolower($response->referenceCode);
@@ -33,6 +35,7 @@ class DigipepController extends Controller
 					break;
 				case 'OT':
 					$transaction = OtherTransaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
+					break;
 				default:
 					$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
 					break;
@@ -58,26 +61,12 @@ class DigipepController extends Controller
 					$transaction->application_payment_date = Carbon::now();
 					$transaction->application_payment_status  = "PAID";
 					$transaction->application_transaction_status  = "COMPLETED";
-					$transaction->application_eor_url = $response->eorUrl;
 
-					// $convenience_fee = $response->payment->convenienceFee;
-					// $transaction->application_convenience_fee = $convenience_fee; 
-					// $transaction->application_total_amount = $transaction->amount + $convenience_fee;
+					$convenience_fee = $response->payment->convenienceFee;
+					$transaction->application_convenience_fee = $convenience_fee; 
+					$transaction->application_total_amount = $transaction->amount + $convenience_fee;
 					$transaction->save();
 					DB::commit();
-
-					$insert_data[] = [
-			            'email' => $transaction->email,
-			            'full_name' => $transaction->customer ? $transaction->customer->full_name : $transaction->customer_name,
-			            'application_name' => $transaction->application_name,
-			            'department_name' => $transaction->department_name,
-			            'modified_at' => $transaction->modified_at,
-			            'ref_num' => $transaction->transaction_code,
-			            'link' => env("APP_URL")."/certificate/".$transaction->id,
-			        ];	
-
-					$application_data = new SendCertificate($insert_data);
-				    Event::dispatch('send-email-certificate', $application_data);
 
 				}catch(\Exception $e){
 					DB::rollBack();
@@ -98,10 +87,10 @@ class DigipepController extends Controller
 					$transaction->payment_date = Carbon::now();
 					$transaction->payment_status  = "PAID";
 					$transaction->transaction_status  = "COMPLETED";
-					$transaction->eor_url = $response->eorUrl;
-					// $convenience_fee = $response->payment->convenienceFee;
-					// $transaction->convenience_fee = $convenience_fee; 
-					// $transaction->total_amount = $transaction->processing_fee + $convenience_fee;
+
+					$convenience_fee = $response->payment->convenienceFee;
+					$transaction->convenience_fee = $convenience_fee; 
+					$transaction->total_amount = $transaction->processing_fee + $convenience_fee;
 					$transaction->save();
 					DB::commit();
 
@@ -180,7 +169,6 @@ class DigipepController extends Controller
 					$transaction->application_payment_date = Carbon::now();
 					$transaction->application_transaction_status  = "FAILED";
 					$transaction->application_payment_status  = "UNPAID";
-					$transaction->application_eor_url = $response->payment->eorURL;
 
 					$convenience_fee = $response->payment->convenienceFee;
 					$transaction->application_convenience_fee = $convenience_fee; 
@@ -207,7 +195,6 @@ class DigipepController extends Controller
 					$transaction->payment_date = Carbon::now();
 					$transaction->transaction_status  = "FAILED";
 					$transaction->payment_status  = "UNPAID";
-					$transaction->eor_url = $response->payment->eorURL;
 
 					$convenience_fee = $response->payment->convenienceFee;
 					$transaction->convenience_fee = $convenience_fee; 
@@ -281,11 +268,14 @@ class DigipepController extends Controller
 			$transaction->application_transaction_status  = "CANCELLED";
 			$transaction->save();
 		}
+
+
 		if($transaction->status != "COMPLETED" AND $prefix == "OT") {
 			$transaction->payment_date = Carbon::now();
 			$transaction->transaction_status  = "CANCELLED";
 			$transaction->save();
 		}
+
 		if($transaction->status != "COMPLETED" AND $prefix == "PF") {
 			$transaction->payment_date = Carbon::now();
 			$transaction->transaction_status  = "CANCELLED";
