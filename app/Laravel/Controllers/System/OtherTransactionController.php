@@ -49,6 +49,7 @@ class OtherTransactionController extends Controller
 		
 		$this->data['customer'] = OtherCustomer::find($id);
 		$this->data['customer_id'] = $this->data['customer']->customer_id ?: $id;
+		$this->data['id'] = $id;
 		$this->data['violation_count'] = Violators::where('customer_id' , $id)->count();
 		$this->data['page_title'] .= " - Add new record";
 		return view('system.other-transaction.'.$request->get('type'),$this->data);
@@ -110,7 +111,7 @@ class OtherTransactionController extends Controller
 					DB::commit();
 					session()->flash('notification-status', "success");
 					session()->flash('notification-msg', "Transaction has been added.");
-					return redirect()->route('system.other_customer.show',[$request->get('customer_id')]);
+					return redirect()->route('system.other_customer.show',[$request->get('id')]);
 				}catch(\Exception $e){
 					DB::rollback();
 					session()->flash('notification-status', "failed");
@@ -169,7 +170,7 @@ class OtherTransactionController extends Controller
 					
 					session()->flash('notification-status', "success");
 					session()->flash('notification-msg', "Transaction has been added.");
-					return redirect()->route('system.other_customer.show',[$request->get('customer_id')]);
+					return redirect()->route('system.other_customer.show',[$request->get('id')]);
 				}catch(\Exception $e){
 					DB::rollback();
 					session()->flash('notification-status', "failed");

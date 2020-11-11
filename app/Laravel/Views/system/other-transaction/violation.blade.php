@@ -25,6 +25,7 @@
         <input type="hidden" name="customer_id" value="{{$customer_id}}">
         <input type="hidden" name="violation_count" value="{{$violation_count}}">
         <input type="hidden" name="violation_name" value="{{old('violation_name')}}" id="input_violation_name">
+        <input type="hidden" name="id" value="{{$id}}">
         <div class="row">
         	<div class="col-md-4">
        			<div class="form-group">

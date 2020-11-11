@@ -23,6 +23,7 @@
         {!!csrf_field()!!}
         <input type="hidden" name="type" value="{{$type}}">
         <input type="hidden" name="customer_id" value="{{$customer_id}}">
+        <input type="hidden" name="id" value="{{$id}}">
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
