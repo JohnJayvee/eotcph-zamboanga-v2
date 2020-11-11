@@ -198,7 +198,7 @@ class CustomerTransactionController extends Controller
 				$new_other_customer->save();
 			}
 			$new_other_transaction = new OtherTransaction;
-			$new_other_transaction->customer_id = $auth->id;
+			$new_other_transaction->customer_id = $other_customer ? $other_customer->id : $auth->id;
 			$new_other_transaction->type = 2;
 			$new_other_transaction->email = $request->get('email');
 			$new_other_transaction->contact_number = $request->get('contact_number');
@@ -258,7 +258,8 @@ class CustomerTransactionController extends Controller
 	}
 	public function ctc_history(){
 		$auth_id = Auth::guard('customer')->user()->id;
-		$this->data['tax_transactions'] = OtherTransaction::where('customer_id', $auth_id)->where('type',2)->orderBy('created_at',"DESC")->get();
+		$other_customer = OtherCustomer::where('customer_id' , $auth_id)->first();
+		$this->data['tax_transactions'] = OtherTransaction::where('customer_id', $other_customer->id)->where('type',2)->orderBy('created_at',"DESC")->get();
 		$this->data['page_title'] = "Application history";
 		return view('web.transaction.taxhistory',$this->data);
 
