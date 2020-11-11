@@ -233,7 +233,11 @@ class CustomerTransactionController extends Controller
 				break;
 			}
 			$new_tax_certificate->save();
+
 			DB::commit();
+			if($new_other_transaction->amount > 0){
+				return redirect()->route('web.pay', [$new_other_transaction->processing_fee_code]);
+			}
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg','Thank you for applying for the Community Tax Certificate. We will process your application, please wait for the payment reference number to be sent.');
 			return redirect()->route('web.transaction.ctc_history');
