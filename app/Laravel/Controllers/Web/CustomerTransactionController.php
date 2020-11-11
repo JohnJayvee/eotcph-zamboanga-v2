@@ -198,7 +198,7 @@ class CustomerTransactionController extends Controller
 				$new_other_customer->save();
 			}
 			$new_other_transaction = new OtherTransaction;
-			$new_other_transaction->customer_id = $other_customer ? $other_customer->id : $auth->id;
+			$new_other_transaction->customer_id = $other_customer ? $other_customer->customer_id : $auth->id;
 			$new_other_transaction->type = 2;
 			$new_other_transaction->email = $request->get('email');
 			$new_other_transaction->contact_number = $request->get('contact_number');
