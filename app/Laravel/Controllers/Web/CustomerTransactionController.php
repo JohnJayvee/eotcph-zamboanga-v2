@@ -199,6 +199,7 @@ class CustomerTransactionController extends Controller
 			}
 			$new_other_transaction = new OtherTransaction;
 			$new_other_transaction->customer_id = $auth->id;
+			$new_other_transaction->type = 2;
 			$new_other_transaction->email = $request->get('email');
 			$new_other_transaction->contact_number = $request->get('contact_number');
 			$new_other_transaction->amount = $request->get('total_amount');

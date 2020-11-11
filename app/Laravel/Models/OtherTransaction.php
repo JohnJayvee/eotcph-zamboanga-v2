@@ -73,7 +73,7 @@ class OtherTransaction extends Model{
     }
 
     public function customer(){
-        return $this->BelongsTo("App\Laravel\Models\OtherCustomer",'customer_id','id');
+        return $this->BelongsTo("App\Laravel\Models\OtherCustomer",'customer_id','customer_id');
     }
 
 }
