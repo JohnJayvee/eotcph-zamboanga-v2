@@ -8,6 +8,7 @@ namespace App\Laravel\Controllers\Web;
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Models\Application;
 use App\Laravel\Models\Transaction;
+use App\Laravel\Models\OtherTransaction;
 use App\Laravel\Models\ApplicationRequirements;
 /*
  * Models
