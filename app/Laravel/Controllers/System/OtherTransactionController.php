@@ -195,6 +195,7 @@ class OtherTransactionController extends Controller
 	}
 
 	public function edit(PageRequest $request,$id = NULL){
+		$this->data['id'] = $id;
 		$this->data['type'] = $request->get('type');
 		switch ($this->data['type']) {
 			case 1:
