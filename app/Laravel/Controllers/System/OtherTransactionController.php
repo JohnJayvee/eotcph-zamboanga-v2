@@ -48,7 +48,7 @@ class OtherTransactionController extends Controller
 		$this->data['type'] = $request->get('type');
 		
 		$this->data['customer'] = OtherCustomer::find($id);
-		$this->data['customer_id'] = $id;
+		$this->data['customer_id'] = $this->data['customer']->customer_id ?: $id;
 		$this->data['violation_count'] = Violators::where('customer_id' , $id)->count();
 		$this->data['page_title'] .= " - Add new record";
 		return view('system.other-transaction.'.$request->get('type'),$this->data);
@@ -120,7 +120,7 @@ class OtherTransactionController extends Controller
 				}
 				break;
 			case 'ctc':
-				
+				try{
 					$new_other_transaction = new OtherTransaction;
 					$new_other_transaction->customer_id = $request->get('customer_id');
 					$new_other_transaction->type = 2;
@@ -170,7 +170,13 @@ class OtherTransactionController extends Controller
 					session()->flash('notification-status', "success");
 					session()->flash('notification-msg', "Transaction has been added.");
 					return redirect()->route('system.other_customer.show',[$request->get('customer_id')]);
-				
+				}catch(\Exception $e){
+					DB::rollback();
+					session()->flash('notification-status', "failed");
+					session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+					return redirect()->back();
+
+				}
 				break;
 			default:
 				# code...
