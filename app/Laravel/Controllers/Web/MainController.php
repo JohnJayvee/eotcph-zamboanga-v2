@@ -91,7 +91,7 @@ class MainController extends Controller{
 	}
 
 	public function confirmation($code = NULL){
-		sleep(20);
+		sleep(10);
 		$this->data['page_title'] = " :: confirmation";
 
 		$prefix = explode('-', $code);
