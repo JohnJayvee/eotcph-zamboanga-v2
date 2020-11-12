@@ -85,9 +85,18 @@ class Helper{
 		if($length >= 15 ) return 0.9;
 
 	}
-	public static function number_of_offense($id,$superscript = false){
-		$count = Violators::where('customer_id',$id)->count();
-		$number = abs($count);
+	public static function number_of_offense($id,$transaction_id,$superscript = false){
+
+		$count = Violators::where('customer_id',$id)->orderBy('created_at',"ASC")->get();
+		$key_count = [];
+		foreach ($count as $key => $value) {
+			array_push($key_count, $value->transaction_id);
+		}
+
+		$key_value = array_search($transaction_id, $key_count);
+		$key_value = $key_value+1;
+		
+		$number = abs($key_value);
  
         $indicators = ['th','st','nd','rd','th','th','th','th','th','th'];
  

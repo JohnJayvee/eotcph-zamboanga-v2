@@ -110,7 +110,7 @@
             <div class="col-md-6">
               <p class="text-title fw-500">Private Individual Name: <span class="text-black">{{ $violator->private_full_name}}</span></p>
               <p class="text-title fw-500">Date and Time: <span class="text-black">{{ Helper::date_format($violator->date_time)}}</span></p>
-              <p class="text-title fw-500">Number of Offense: <span class="text-black">{{ Helper::number_of_offense($violator->customer_id)}}</span></p>
+              <p class="text-title fw-500">Number of Offense: <span class="text-black">{{ Helper::number_of_offense($violator->customer_id,$violator->transaction_id)}}</span></p>
             </div>
            
           </div> 
