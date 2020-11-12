@@ -63,7 +63,8 @@
         </div> 
       </div>
     </div>
-    @if($transaction->status == "PENDING")
+
+    @if(in_array($transaction->status, ['PENDING', 'ONGOING']) AND $transaction->transaction_status == "COMPLETED")
       <a data-url="{{route('system.other_transaction.process',[$transaction->id])}}?status_type=approved" class="btn btn-primary btn-approve mt-4 border-5 text-white action-process {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
 
       <a  data-url="{{route('system.other_transaction.process',[$transaction->id])}}?status_type=declined" class="btn btn-danger btn-decline mt-4 border-5 text-white action-process {{$transaction->status == 'approved' ? "isDisabled" : ""}}""><i class="fa fa-times-circle"></i> Decline Transactions</a>
