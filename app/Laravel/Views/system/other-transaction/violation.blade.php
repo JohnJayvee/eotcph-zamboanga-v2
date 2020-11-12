@@ -22,7 +22,7 @@
         @include('system._components.notifications')
         {!!csrf_field()!!}
         <input type="hidden" name="type" value="{{$type}}">
-        <input type="text" name="customer_id" value="{{$customer_id}}">
+        <input type="hidden" name="customer_id" value="{{$customer_id}}">
         <input type="hidden" name="violation_count" value="{{$violation_count}}">
         <input type="hidden" name="violation_name" value="{{old('violation_name')}}" id="input_violation_name">
         <div class="row">
