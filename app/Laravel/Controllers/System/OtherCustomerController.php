@@ -79,8 +79,13 @@ class OtherCustomerController extends Controller
 		$this->data['page_title'] .= " - Show record";
 
 		$this->data['other_customer'] = $request->get('other_customer_data');
-
-		$this->data['transactions'] = OtherTransaction::where('customer_id',$this->data['other_customer']->customer_id)->get();
+		
+		if ($this->data['other_customer']->customer_id) {
+			$this->data['transactions'] = OtherTransaction::where('customer_id',$id)->where('is_local',"no")->get();
+		}else{
+			$this->data['transactions'] = OtherTransaction::where('customer_id',$id)->where('is_local',"yes")->get();
+		}
+		
 		
 		return view('system.other-customer.show',$this->data);
 	}

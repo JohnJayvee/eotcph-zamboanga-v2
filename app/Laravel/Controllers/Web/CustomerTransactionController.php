@@ -162,7 +162,7 @@ class CustomerTransactionController extends Controller
 		$auth = Auth::guard('customer')->user();
 		$other_customer = OtherCustomer::where('customer_id', $auth->id)->first();
 		DB::beginTransaction();
-		try{
+			
 			if ($other_customer) {
 				$other_customer->contact_number = $request->get('contact_number');
 				$other_customer->email = $request->get('email');
@@ -196,14 +196,17 @@ class CustomerTransactionController extends Controller
 				$new_other_customer->email = $request->get('email');
 				$new_other_customer->contact_number = $request->get('contact_number');
 				$new_other_customer->save();
+				$customer_id = $new_other_customer->id;
 			}
+			$customer_id = $other_customer ? $other_customer->id : $new_other_customer->id;
 			$new_other_transaction = new OtherTransaction;
-			$new_other_transaction->customer_id = $other_customer ? $other_customer->customer_id : $auth->id;
+			$new_other_transaction->customer_id = $customer_id;
 			$new_other_transaction->type = 2;
 			$new_other_transaction->email = $request->get('email');
 			$new_other_transaction->contact_number = $request->get('contact_number');
 			$new_other_transaction->amount = $request->get('total_amount');
 			$new_other_transaction->application_name = "Community Tax Certificate";
+			$new_other_transaction->is_local = "no";
 			$new_other_transaction->application_date = Carbon::now();
 			$new_other_transaction->code = 'EOTC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_other_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
 
@@ -241,12 +244,7 @@ class CustomerTransactionController extends Controller
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg','Thank you for applying for the Community Tax Certificate. We will process your application, please wait for the payment reference number to be sent.');
 			return redirect()->route('web.transaction.ctc_history');
-		}catch(\Exception $e){
-			DB::rollback();
-			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
-			return redirect()->back();
-		}
+		
 	}
 	public function history(){
 		$auth_id = Auth::guard('customer')->user()->id;

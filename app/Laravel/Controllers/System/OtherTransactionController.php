@@ -48,14 +48,14 @@ class OtherTransactionController extends Controller
 		$this->data['type'] = $request->get('type');
 		
 		$this->data['customer'] = OtherCustomer::find($id);
-		$this->data['customer_id'] = $this->data['customer']->customer_id ?: $id;
-		$this->data['id'] = $id;
+		$this->data['customer_id'] =  $id;
 		$this->data['violation_count'] = Violators::where('customer_id' , $id)->count();
 		$this->data['page_title'] .= " - Add new record";
 		return view('system.other-transaction.'.$request->get('type'),$this->data);
 	}
 
 	public function store(OtherTransactionRequest $request){
+		$customer = OtherCustomer::find($request->get('customer_id'));
 		switch ($request->get('type')) {
 			case 'violation':
 				DB::beginTransaction();
@@ -65,6 +65,7 @@ class OtherTransactionController extends Controller
 					$new_other_transaction->type = 1;
 					$new_other_transaction->email = $request->get('email');
 					$new_other_transaction->status = "APPROVED";
+					$new_other_transaction->is_local = $customer->customer_id ? "no" : "yes";
 					$new_other_transaction->contact_number = $request->get('contact_number');
 					$new_other_transaction->application_name = "Ticket Violation";
 					if ($request->get('violation_count') == 0) {
@@ -111,7 +112,7 @@ class OtherTransactionController extends Controller
 					DB::commit();
 					session()->flash('notification-status', "success");
 					session()->flash('notification-msg', "Transaction has been added.");
-					return redirect()->route('system.other_customer.show',[$request->get('id')]);
+					return redirect()->route('system.other_customer.show',[$request->get('customer_id')]);
 				}catch(\Exception $e){
 					DB::rollback();
 					session()->flash('notification-status', "failed");
@@ -131,6 +132,7 @@ class OtherTransactionController extends Controller
 					$new_other_transaction->application_name = "Community Tax Certificate";
 					$new_other_transaction->processor_user_id = Auth::user()->id;
 					$new_other_transaction->status = "APPROVED";
+					$new_other_transaction->is_local = $customer->customer_id ? "no" : "yes";
 					$new_other_transaction->save();
 					$new_other_transaction->code = 'EOTC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_other_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
 					$new_other_transaction->processing_fee_code = 'OT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_other_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
@@ -170,7 +172,7 @@ class OtherTransactionController extends Controller
 					
 					session()->flash('notification-status', "success");
 					session()->flash('notification-msg', "Transaction has been added.");
-					return redirect()->route('system.other_customer.show',[$request->get('id')]);
+					return redirect()->route('system.other_customer.show',[$request->get('customer_id')]);
 				}catch(\Exception $e){
 					DB::rollback();
 					session()->flash('notification-status', "failed");

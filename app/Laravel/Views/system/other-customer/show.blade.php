@@ -140,7 +140,9 @@
                   <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
                     <a class="dropdown-item" href="{{route('system.other_transaction.show',[$transaction->id])}}">View transaction</a>
-                   <!--  <a class="dropdown-item" href="{{route('system.other_transaction.edit',[$transaction->id])}}?type={{$transaction->type}}">Edit transaction</a> -->
+                    @if($transaction->type == 2)
+                    <a class="dropdown-item" href="{{route('system.other_transaction.edit',[$transaction->id])}}?type={{$transaction->type}}">Edit transaction</a>
+                    @endif
                    <!--  <a class="dropdown-item action-delete"  data-url="#" data-toggle="modal" data-target="#confirm-delete">Remove Record</a> -->
                   </div>
                 </td>
