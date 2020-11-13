@@ -19,7 +19,7 @@ use App\Laravel\Models\Customer;
 
 use App\Laravel\Listeners\SendCode;
 
-use Carbon,Auth,DB,Str,ImageUploader,Event;
+use Carbon,Auth,DB,Str,ImageUploader,Event,Session;
 
 class AuthController extends Controller{
 
@@ -31,12 +31,11 @@ class AuthController extends Controller{
 	}
 
 	public function login($redirect_uri = NULL){
-
 		$this->data['page_title'] = " :: Login";
 		return view('web.auth.login',$this->data);
 	}
 	public function authenticate(PageRequest $request){
-
+	
 		try{
 			$this->data['page_title'] = " :: Login";
 			$email = $request->get('email');

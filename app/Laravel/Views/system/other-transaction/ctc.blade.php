@@ -15,9 +15,7 @@
   <div class="card">
     <div class="card-body">
       <h4 class="card-title">Tax Certificate Create Form</h4>
-      <p class="card-description">
-        Fill up the <strong class="text-danger">* required</strong> fields.
-      </p>
+      
       <form class="create-form" method="POST" enctype="multipart/form-data" action={{ route('system.other_transaction.store') }}>
         @include('system._components.notifications')
         {!!csrf_field()!!}
@@ -152,7 +150,7 @@
         
         <button type="submit" class="btn btn-primary mr-2">Proceed</button>
 
-        <a href="{{route('system.other_customer.show',[$customer->id])}}" class="btn btn-light">Return to Customer Recordt</a>
+        <a href="{{route('system.other_customer.show',[$customer->id])}}" class="btn btn-light">Return to Customer Record</a>
       </form>
     </div>
   </div>

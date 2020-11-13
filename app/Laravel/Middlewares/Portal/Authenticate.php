@@ -2,9 +2,8 @@
 
 namespace App\Laravel\Middlewares\Portal;
 
-use Closure,Auth;
+use Closure,Auth,Session;
 use Illuminate\Contracts\Auth\Guard;
-
 class Authenticate {
 
 	/**
@@ -33,7 +32,8 @@ class Authenticate {
 	 * @return mixed
 	 */
 	public function handle($request, Closure $next, $guard = null)
-    {
+    {	
+
         if (!Auth::guard('customer')->check()) {
             
             $redirect_uri = $request->url();
@@ -41,7 +41,7 @@ class Authenticate {
             session()->put($redirect_key, $redirect_uri);
             session()->flash('notification-status', "error");
             session()->flash('notification-msg', "Restricted area. Users Access Only.");
-
+            Session::put('key', $request->get('type'));
             return redirect()->route('web.login', [$redirect_key]);
         }
 

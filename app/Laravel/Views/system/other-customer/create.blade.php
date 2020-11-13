@@ -15,9 +15,6 @@
   <div class="card">
     <div class="card-body">
       <h4 class="card-title">Customer Create Form</h4>
-      <p class="card-description">
-        Fill up the <strong class="text-danger">* required</strong> fields.
-      </p>
       <form class="create-form" method="POST" enctype="multipart/form-data">
         @include('system._components.notifications')
         {!!csrf_field()!!}
@@ -168,7 +165,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
-        <a href="{{route('system.department.index')}}" class="btn btn-light">Return to Local Record list</a>
+        <a href="{{route('system.other_customer.index')}}" class="btn btn-light">Return to Local Record list</a>
       </form>
     </div>
   </div>

@@ -21,7 +21,7 @@ use App\Laravel\Events\SendReference;
 use App\Laravel\Events\SendApplication;
 use App\Laravel\Events\SendEorUrl;
 
-use Carbon,Auth,DB,Str,ImageUploader,Event,FileUploader,PDF,QrCode,Helper,Curl,Log;
+use Carbon,Auth,DB,Str,ImageUploader,Event,FileUploader,PDF,QrCode,Helper,Curl,Log,Session;
 
 class CustomerTransactionController extends Controller
 {
@@ -43,15 +43,19 @@ class CustomerTransactionController extends Controller
 	public function create(PageRequest $request){
 		$this->data['page_title'] = "E-Submission";
 		$auth = Auth::guard('customer')->user();
-		switch ($request->get('type')) {
+		$type = Session::get('key') ?: $request->get('type');
+		switch ($type) {
 			case 'e_submission':
+				Session::forget('key');
 				return view('web.transaction.create',$this->data);
 			break;
 			case 'ctc':
+				Session::forget('key');
 				$this->data['other_customer'] = OtherCustomer::where('customer_id', $auth->id)->first();
 				return view('web.transaction.ctc',$this->data);
 				break;
 			default:
+				Session::forget('key');
 				$this->data['other_customer'] = OtherCustomer::where('customer_id', $auth->id)->first();
 				return view('web.transaction.ctc',$this->data);
 			break;
@@ -257,7 +261,11 @@ class CustomerTransactionController extends Controller
 	public function ctc_history(){
 		$auth_id = Auth::guard('customer')->user()->id;
 		$other_customer = OtherCustomer::where('customer_id' , $auth_id)->first();
-		$this->data['tax_transactions'] = OtherTransaction::where('customer_id', $other_customer->id)->where('type',2)->orderBy('created_at',"DESC")->get();
+		$this->data['tax_transactions'] = [];
+		if ($other_customer) {
+			$this->data['tax_transactions'] = OtherTransaction::where('customer_id', $other_customer->id)->where('type',2)->orderBy('created_at',"DESC")->get();
+		}
+		
 		$this->data['page_title'] = "Application history";
 		return view('web.transaction.taxhistory',$this->data);
 
@@ -269,6 +277,14 @@ class CustomerTransactionController extends Controller
 		$this->data['attachments'] = TransactionRequirements::where('transaction_id',$id)->get();
 		$this->data['count_file'] = TransactionRequirements::where('transaction_id',$id)->count();
 		return view('web.transaction.show',$this->data);
+
+	}
+	public function ctc_show($id = NULL){
+		
+		$this->data['page_title'] = "Application Details"; 
+		$this->data['transaction'] = OtherTransaction::find($id);
+		$this->data['ctc'] = TaxCertificate::where('transaction_id',$id)->first();
+		return view('web.transaction.ctc-show',$this->data);
 
 	}
 

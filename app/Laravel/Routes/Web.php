@@ -37,6 +37,7 @@ Route::group(['as' => "web.",
 			Route::get('ctc-history',['as' => "ctc_history", 'uses' => "CustomerTransactionController@ctc_history"]);
 			Route::get('payment/{code?}',['as' => "payment", 'uses' => "CustomerTransactionController@payment"]);
 			Route::get('show/{id?}',['as' => "show", 'uses' => "CustomerTransactionController@show"]);
+			Route::get('ctc-show/{id?}',['as' => "ctc_show", 'uses' => "CustomerTransactionController@ctc_show"]);
 			Route::get('create',['as' => "create", 'uses' => "CustomerTransactionController@create"]);
 			Route::post('create',['uses' => "CustomerTransactionController@store"]);
 			Route::post('other-store',['as' => "other_store", 'uses' => "CustomerTransactionController@other_store"]);
