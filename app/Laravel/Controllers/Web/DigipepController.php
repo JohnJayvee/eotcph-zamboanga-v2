@@ -115,6 +115,7 @@ class DigipepController extends Controller
 					$transaction->payment_status  = "PAID";
 					$transaction->transaction_status  = "COMPLETED";
 					$transaction->eor_url = $response->eorUrl;
+					$transaction->status  = "APPROVED";
 
 					$convenience_fee = $response->payment->convenienceFee;
 					$transaction->convenience_fee = $convenience_fee; 
