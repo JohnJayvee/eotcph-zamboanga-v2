@@ -81,9 +81,9 @@ class OtherCustomerController extends Controller
 		$this->data['other_customer'] = $request->get('other_customer_data');
 		
 		if ($this->data['other_customer']->customer_id) {
-			$this->data['transactions'] = OtherTransaction::where('customer_id',$id)->where('is_local',"no")->get();
+			$this->data['transactions'] = OtherTransaction::where('customer_id',$id)->where('is_local',"no")->orderBy('created_at',"DESC")->get();
 		}else{
-			$this->data['transactions'] = OtherTransaction::where('customer_id',$id)->where('is_local',"yes")->get();
+			$this->data['transactions'] = OtherTransaction::where('customer_id',$id)->where('is_local',"yes")->orderBy('created_at',"DESC")->get();
 		}
 		
 		

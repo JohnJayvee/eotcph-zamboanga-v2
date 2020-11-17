@@ -115,6 +115,7 @@
         </span>
         <table class="table table-striped table-responsive">
           <thead>
+            <th>Date</th>
             <th>Processing Fee Code</th>
             <th>Transaction Type</th>
             <!-- <th>Created By(Processor)</th> -->
@@ -125,6 +126,7 @@
           <tbody>
             @forelse($transactions as $transaction)
               <tr>
+                <td>{{Helper::date_format($transaction->created_at)}}</td>
                 <td>{{$transaction->processing_fee_code}}</td>
                 <td>{{$transaction->transac_type->name}}</td>
                 <!-- <td>{{$transaction->admin ? $transaction->admin->full_name: "--"}}</td> -->
