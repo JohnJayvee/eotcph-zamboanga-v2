@@ -47,6 +47,7 @@ class CustomerTransactionController extends Controller
 		switch ($type) {
 			case 'e_submission':
 				Session::forget('key');
+				$this->data['all_requirements'] = ApplicationRequirements::all();
 				return view('web.transaction.create',$this->data);
 			break;
 			case 'ctc':
