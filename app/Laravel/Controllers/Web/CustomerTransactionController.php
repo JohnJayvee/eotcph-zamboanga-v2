@@ -507,7 +507,7 @@ class CustomerTransactionController extends Controller
 	public function store_documents(UploadRequest $request , $code = NULL){
 
 		$code = $request->has('code') ? $request->get('code') : $code;
-		$transaction = Transaction::where('document_reference_code', $code)->first();
+		$transaction = Transaction::where('code', $code)->first();
 		
 		if(!$transaction){
 			session()->flash('notification-status',"failed");
