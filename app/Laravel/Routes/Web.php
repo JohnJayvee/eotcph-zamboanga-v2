@@ -57,6 +57,7 @@ Route::group(['as' => "web.",
 		Route::any('cancel/{code}',['as' => "cancel",'uses' => "DigipepController@cancel"]);
 		Route::any('failed/{code}',['as' => "failed",'uses' => "DigipepController@failed"]);
 	});
+
 		// Route::group(['prefix'=> "register",'as' => 'register.' ],function(){
   //           Route::get('/', [ 'as' => "index",'uses' => "AuthController@register"]);
   //           Route::post('/', [ 'uses' => "AuthController@store"]);
