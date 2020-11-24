@@ -1,4 +1,4 @@
-<!-- footer section start--> 
+<!-- footer section start-->
 <div id="gwt-standard-footer"></div>
 <footer class="footer-section">
     <!--footer top start-->
@@ -110,10 +110,10 @@
         <div class="container">
             <div class="row ">
                 <div class="col-md-12 col-lg-12 text-center">
-                    <p class="copyright-text pb-0 mb-0">© 2020 EOTC-PHP. All
+                    <p class="copyright-text pb-0 mb-0">© 2020 OBOSS. All
                         rights reserved.</p>
                 </div>
-               
+
             </div>
         </div>
     </div>

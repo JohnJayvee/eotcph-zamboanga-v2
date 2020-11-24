@@ -6,7 +6,7 @@
 
 	<style>
 		th.primary{
-			background-color: #D4EDDA; 
+			background-color: #D4EDDA;
 		}
 		table, th, td {
 		  border-collapse: collapse;
@@ -15,7 +15,7 @@
 		}
 
 		table.center {
-			margin-left:auto; 
+			margin-left:auto;
 			margin-right:auto;
 			border-bottom: solid 1px #F0F0F0;
 			border-right: solid 1px #F0F0F0;
@@ -49,16 +49,16 @@
 <body style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;  font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; margin: 0;">
 
 	<table class="center bg-white" width="55%">
-		
+
 			<tr>
 				<th colspan="2" class="primary" style="padding: 25px;">
 					<div id="pageElement">
 						<div style="float: left;color: #000;padding-left: 30px;">Thank You for using &nbsp;</div>
-					  	<div style="padding-right: 30px;"> <img src="{{asset('web/img/zamboanga-eotcphp-logo.png')}}" alt="" style="width: 130px;"> </div>
+					  	<div style="padding-right: 30px;"> <img src="{{asset('web/img/oboss.png')}}" alt="" style="width: 130px;"> </div>
 					</div>
 				</th>
 			</tr>
-		
+
 			<tr>
 				<th colspan="2" class="text-gray" style="padding: 10px;">Date: {{Helper::date_only(Carbon::now())}} | {{Helper::time_only(Carbon::now())}}</th>
 			</tr>
@@ -83,16 +83,16 @@
 				<th style="text-align: left;padding: 10px;">Date:</th>
 				<th style="text-align: right;">{{$created_at}}</th>
 			</tr>
-			
+
 			<tr>
 				<th colspan="2">
 					<p><a href="{{$link}}">Please click this link to download your reference number</a></p>
 					<p>Thank you for choosing EOTC-PHP!</p>
 				</th>
 			</tr>
-		
+
 	</table>
-	
+
 
 </body>
 </html>

@@ -9,7 +9,7 @@
   @include('web._components.styles')
   <style type="text/css">
     .auth .brand-logo img {width: 250px; }
-    
+
   </style>
 </head>
 
@@ -24,7 +24,7 @@
                                 {{ csrf_field() }}
                                 @include('web._components.notifications')
                             	<div class="brand-logo text-center">
-    				                <img src="{{asset('web/img/zamboanga-eotcphp-logo.png')}}" alt="logo" class="img-fluid" />
+    				                <img src="{{asset('web/img/oboss.png')}}" alt="logo" class="img-fluid" />
     				             </div>
                            	    <h5 class="h5 text-center mb-4">Sign in to your account</h5>
                                 <div class="form-group">

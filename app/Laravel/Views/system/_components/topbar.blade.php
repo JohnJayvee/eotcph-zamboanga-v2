@@ -1,12 +1,12 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="text-center navbar-brand-wrapper d-flex align-items-center">
-    <a class="navbar-brand brand-logo" href="{{route('system.dashboard')}}"><img src="{{asset('web/img/zamboanga-eotcphp-logo.png')}}" alt="logo"/></a>
-    <a class="navbar-brand brand-logo-mini" href="{{route('system.dashboard')}}"><img src="{{asset('web/img/zamboanga-eotcphp-logo.png')}}" alt="logo"/></a>
+    <a class="navbar-brand brand-logo" href="{{route('system.dashboard')}}"><img src="{{asset('web/img/oboss.png')}}" alt="logo"/></a>
+    <a class="navbar-brand brand-logo-mini" href="{{route('system.dashboard')}}"><img src="{{asset('web/img/oboss.png')}}" alt="logo"/></a>
   </div>
 
   <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-    <i class="fa fa-calendar-alt header-datetime" style="color: #C74A4F"> <span id="current_date" class="text-roboto"></span></i> 
-    <i class="fa fa-hourglass-half pl-3 header-datetime" style="color: #C74A4F"> <span id="current_time" class="text-roboto"></span></i> 
+    <i class="fa fa-calendar-alt header-datetime" style="color: #C74A4F"> <span id="current_date" class="text-roboto"></span></i>
+    <i class="fa fa-hourglass-half pl-3 header-datetime" style="color: #C74A4F"> <span id="current_time" class="text-roboto"></span></i>
     <ul class="navbar-nav navbar-nav-right">
       <li class="nav-item nav-profile dropdown navbar-nav-right" style="width: 300px;">
         <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="profileDropdown">

@@ -7,19 +7,19 @@
     border-bottom: 4px solid #254DA0;">
         <div class="container">
             <a class="brand-logo" href="{{route('web.main.index')}}">
-                <img src="{{asset('web/img/zamboanga-eotcphp-logo.png')}}" alt="logo" class="img-fluid" width="30%" />
+                <img src="{{asset('web/img/oboss.png')}}" alt="logo" class="img-fluid" width="30%" />
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="ti-menu"></span>
             </button>
             <div class="date-time pl-4">
-                <i class="fa fa-calendar-alt" style="color: #C74A4F"> <span id="current_date" class=""></span></i> 
-                <i class="fa fa-hourglass-half pl-4" style="color: #C74A4F"> <span id="current_time" class=""></span></i> 
+                <i class="fa fa-calendar-alt" style="color: #C74A4F"> <span id="current_date" class=""></span></i>
+                <i class="fa fa-hourglass-half pl-4" style="color: #C74A4F"> <span id="current_time" class=""></span></i>
             </div>
             <div class="collapse navbar-collapse h-auto" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto menu">
                     <li>
-                        <a href="#" class=""><img src="{{asset('placeholder/user.png')}}" alt="logo" class="img-fluid profile-image"/> Welcome , {{Str::title(Auth::guard('customer')->user()->fname)}} 
+                        <a href="#" class=""><img src="{{asset('placeholder/user.png')}}" alt="logo" class="img-fluid profile-image"/> Welcome , {{Str::title(Auth::guard('customer')->user()->fname)}}
                             <i class="fas fa-caret-down ml-2"></i>
                         </a>
                         <ul class="sub-menu">
@@ -27,7 +27,7 @@
                             <li><a href="index.html">Change Password</a></li>
                         </ul>
                     </li>
-                   
+
                     <li><a  href="{{route('web.logout')}}"><i class="fa fa-sign-out-alt"></i> Sign Out</span></a></li>
                 </ul>
             </div>
@@ -42,17 +42,17 @@
     border-bottom: 4px solid #254DA0;">
         <div class="container">
             <a class="brand-logo" href="{{route('web.main.index')}}">
-                <img src="{{asset('web/img/zamboanga-eotcphp-logo.png')}}" alt="logo" class="img-fluid" width="30%" />
+                <img src="{{asset('web/img/oboss.png')}}" alt="logo" class="img-fluid" width="30%" />
             </a>
             <div class="date-time pl-4">
-                <i class="fa fa-calendar-alt" style="color: #C74A4F"> <span id="current_date" class=""></span></i> 
-                <i class="fa fa-hourglass-half pl-4" style="color: #C74A4F"> <span id="current_time" class=""></span></i> 
+                <i class="fa fa-calendar-alt" style="color: #C74A4F"> <span id="current_date" class=""></span></i>
+                <i class="fa fa-hourglass-half pl-4" style="color: #C74A4F"> <span id="current_time" class=""></span></i>
             </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="ti-menu"></span>
             </button>
-          
+
             <div class="collapse navbar-collapse h-auto " id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto menu" >
                     {{-- <li><a  href="about-us.html">About Us</a></li> --}}

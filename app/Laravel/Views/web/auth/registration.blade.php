@@ -10,6 +10,23 @@
             <form method="POST" action="" enctype="multipart/form-data">
             {!!csrf_field()!!}
                 <div class="card-body registration-card py-0">
+                    <h5 class="text-title text-uppercase pt-5">Business</h5>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 ">
+                            <div class="form-group">
+                                <label class="text-form pb-2">Business ID</label>
+                                <input type="text" class="form-control {{ $errors->first('bn_number') ? 'is-invalid': NULL  }} form-control-sm" name="bn_number" placeholder="business number" value="{{old('bn_number')}}">
+                                @if($errors->first('bn_number'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('bn_number')}}</small>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn secondary-solid-btn px-3 py-3 fs-14 "><i class="fa fa-search pr-2"></i>Verify</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body registration-card py-0">
                     <h5 class="text-title text-uppercase pt-5">Account Details</h5>
                     <div class="row">
                         <div class="col-md-6 col-lg-6 ">
@@ -73,6 +90,16 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
+                            <div class="form-group ">
+                                <label class="text-form pb-2">Gender</label>
+                                <select name="gender" id="gender" class="form-control form-control-sm classic">
+                                    <option value="">-- select gender --</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">Contact Number</label>
                                 <div class="input-group mb-3">
@@ -80,7 +107,7 @@
                                         <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
                                     </div>
                                     <input type="text" class="form-control {{ $errors->first('contact_number') ? 'is-invalid': NULL  }} br-left-white" name="contact_number" placeholder="Contact Number" value="{{old('contact_number')}}">
-                                    
+
                                 </div>
                                 @if($errors->first('contact_number'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('contact_number')}}</small>
@@ -170,6 +197,10 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
+                                <label class="text-form pb-2">Upload TIN ID</label>
+                                <input type="file" class="form-control {{ $errors->first('tin_no') ? 'is-invalid': NULL  }} form-control-sm" name="tin_no" placeholder="TIN No." value="{{old('tin_no')}}">
+                            </div>
+                            <div class="form-group">
                                 <label class="text-form pb-2">TIN No.</label>
                                 <input type="text" class="form-control {{ $errors->first('tin_no') ? 'is-invalid': NULL  }} form-control-sm" name="tin_no" placeholder="TIN No." value="{{old('tin_no')}}">
                                 @if($errors->first('tin_no'))
@@ -178,6 +209,10 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="text-form pb-2">Upload SSS ID</label>
+                                <input type="file" class="form-control {{ $errors->first('tin_no') ? 'is-invalid': NULL  }} form-control-sm" name="tin_no" placeholder="TIN No." value="{{old('tin_no')}}">
+                            </div>
                             <div class="form-group">
                                 <label class="text-form pb-2">SSS No.</label>
                                 <input type="text" class="form-control {{ $errors->first('sss_no') ? 'is-invalid': NULL  }} form-control-sm" name="sss_no" placeholder="SSS No." value="{{old('sss_no')}}">
@@ -190,6 +225,10 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
+                                <div class="form-group">
+                                    <label class="text-form pb-2">Upload PhilHealth ID</label>
+                                    <input type="file" class="form-control {{ $errors->first('tin_no') ? 'is-invalid': NULL  }} form-control-sm" name="tin_no" placeholder="TIN No." value="{{old('tin_no')}}">
+                                </div>
                                 <label class="text-form pb-2">PHIC No.</label>
                                 <input type="text" class="form-control {{ $errors->first('phic_no') ? 'is-invalid': NULL  }} form-control-sm" name="phic_no" placeholder="PHIC No." value="{{old('phic_no')}}">
                                 @if($errors->first('phic_no'))
@@ -197,7 +236,7 @@
                                 @endif
                             </div>
                         </div>
-                        
+
                     </div>
                     <!-- <div class="row">
                         <div class="col-md-6 col-lg-6">
@@ -215,7 +254,7 @@
                                 @else
                                     <label id="lblName" style="vertical-align: top;padding-top: 40px;" class="fw-500 pl-3"></label>
                                 @endif
-                                    
+
                             </div>
                         </div>
                     </div> -->
@@ -223,7 +262,7 @@
                 </div>
             </form>
         </div>
-        
+
     </div>
 
 </section>
@@ -249,9 +288,9 @@
       var fileName = e.target.files[0].name;
       $('#lblName').text(fileName);
     });
-    
+
     $.fn.get_region = function(input_region,input_province,input_city,input_brgy,selected){
-    
+
       $(input_city).empty().prop('disabled',true)
       $(input_brgy).empty().prop('disabled',true)
 
