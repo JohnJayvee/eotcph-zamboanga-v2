@@ -7,7 +7,7 @@
     border-bottom: 4px solid #254DA0;">
         <div class="container">
             <a class="brand-logo" href="{{route('web.main.index')}}">
-                <img src="{{asset('web/img/oboss.png')}}" alt="logo" class="img-fluid" width="30%" />
+                <img src="{{asset('web/img/oasap.png')}}" alt="logo" class="img-fluid" width="30%" />
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="ti-menu"></span>
@@ -23,8 +23,8 @@
                             <i class="fas fa-caret-down ml-2"></i>
                         </a>
                         <ul class="sub-menu">
-                            <li><a href="index.html">Edit Profile</a></li>
-                            <li><a href="index.html">Change Password</a></li>
+                            <li><a href="{{route('web.profile.edit')}}">Edit Profile</a></li>
+                            <li><a href="{{route('web.profile.password')}}">Change Password</a></li>
                         </ul>
                     </li>
 
@@ -42,7 +42,7 @@
     border-bottom: 4px solid #254DA0;">
         <div class="container">
             <a class="brand-logo" href="{{route('web.main.index')}}">
-                <img src="{{asset('web/img/oboss.png')}}" alt="logo" class="img-fluid" width="30%" />
+                <img src="{{asset('web/img/oasap.png')}}" alt="logo" class="img-fluid" width="30%" />
             </a>
             <div class="date-time pl-4">
                 <i class="fa fa-calendar-alt" style="color: #C74A4F"> <span id="current_date" class=""></span></i>

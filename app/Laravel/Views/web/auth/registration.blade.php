@@ -193,50 +193,20 @@
                             </div>
                         </div>
                     </div>
-                    <h5 class="text-title text-uppercase ">Account Requirements</h5>
+                    <h5 class="text-title text-uppercase ">Upload Government ID</h5>
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label class="text-form pb-2">Upload TIN ID</label>
-                                <input type="file" class="form-control {{ $errors->first('tin_no') ? 'is-invalid': NULL  }} form-control-sm" name="tin_no" placeholder="TIN No." value="{{old('tin_no')}}">
-                            </div>
-                            <div class="form-group">
-                                <label class="text-form pb-2">TIN No.</label>
-                                <input type="text" class="form-control {{ $errors->first('tin_no') ? 'is-invalid': NULL  }} form-control-sm" name="tin_no" placeholder="TIN No." value="{{old('tin_no')}}">
-                                @if($errors->first('tin_no'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('tin_no')}}</small>
-                                @endif
+                                <label class="text-form pb-2">Government ID 1 (Required)</label>
+                                <input type="file" class="form-control form-control-sm" name="upload_1" accept="image/x-png,image/gif,image/jpeg" />
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label class="text-form pb-2">Upload SSS ID</label>
-                                <input type="file" class="form-control {{ $errors->first('tin_no') ? 'is-invalid': NULL  }} form-control-sm" name="tin_no" placeholder="TIN No." value="{{old('tin_no')}}">
-                            </div>
-                            <div class="form-group">
-                                <label class="text-form pb-2">SSS No.</label>
-                                <input type="text" class="form-control {{ $errors->first('sss_no') ? 'is-invalid': NULL  }} form-control-sm" name="sss_no" placeholder="SSS No." value="{{old('sss_no')}}">
-                                @if($errors->first('sss_no'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('sss_no')}}</small>
-                                @endif
+                                <label class="text-form pb-2">Government ID 2 (Required)</label>
+                                <input type="file" class="form-control form-control-sm" name="upload_2" accept="image/x-png,image/gif,image/jpeg" />
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-lg-6">
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <label class="text-form pb-2">Upload PhilHealth ID</label>
-                                    <input type="file" class="form-control {{ $errors->first('tin_no') ? 'is-invalid': NULL  }} form-control-sm" name="tin_no" placeholder="TIN No." value="{{old('tin_no')}}">
-                                </div>
-                                <label class="text-form pb-2">PHIC No.</label>
-                                <input type="text" class="form-control {{ $errors->first('phic_no') ? 'is-invalid': NULL  }} form-control-sm" name="phic_no" placeholder="PHIC No." value="{{old('phic_no')}}">
-                                @if($errors->first('phic_no'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('phic_no')}}</small>
-                                @endif
-                            </div>
-                        </div>
-
                     </div>
                     <!-- <div class="row">
                         <div class="col-md-6 col-lg-6">

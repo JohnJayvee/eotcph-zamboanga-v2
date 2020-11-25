@@ -26,29 +26,25 @@
                             	<div class="brand-logo text-center">
     				                <img src="{{asset('web/img/oasap.png')}}" alt="logo" class="img-fluid" />
     				             </div>
-                           	    <h5 class="h5 text-center mb-4">Sign in to your account</h5>
+                           	    <h5 class="h5 text-center mb-4">Setup your account</h5>
                                 <div class="form-group">
-                                    <input type="email" class="form-control login-input" placeholder="Email Address" name="email" value="{{old('email')}}">
+                                    <input type="number" class="form-control login-input" placeholder="Reference Number" name="reference_no" value="{{old('reference_no')}}">
                                 </div>
                                 <!-- Password -->
                                 <div class="form-group">
-                                    <input type="password" id="password-field" class="form-control login-input" placeholder="Password" name="password">
+                                    <input type="password" id="password-field" class="form-control login-input" placeholder="New Password" name="password">
+                                    <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="password-field" class="form-control login-input" placeholder="Confirm Password" name="password">
                                     <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 </div>
                                 <!-- Submit -->
-                                <button type="submit" class="btn btn-block secondary-solid-btn fw-500 mt-4 mb-3">
-                                    <i class="fa fa-sign-in-alt"></i> Sign In
+                                <button type="submit" class="btn btn-block fw-500 mt-4 mb-3">
+                                    <i class="fa fa-sign-in-alt"></i> Save
                                 </button>
-                                <a href="/activate" class="btn btn-block fw-500 mt-4 mb-3">
-                                    <i class="fa fa-sign-in-alt"></i> Activate Acoount
-                                </a>
                             </form>
-                            <div class="text-center">
-                            	<p class="fw-600 text-black mb-0">Don't have an account?</p>
-                            	<a href="{{route('web.register.index')}}" class="fw-600 sign-up">Sign Up</a>
-                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>

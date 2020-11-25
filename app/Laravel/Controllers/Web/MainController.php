@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Laravel\Controllers\Web;
 
@@ -26,8 +26,8 @@ class MainController extends Controller{
 
 
 	public function index(PageRequest $request){
-		$this->data['page_title'] = "Homepage";
-		return view('web.homepage',$this->data);
+        $this->data['page_title'] = "Homepage";
+		return view('web.dashboard',$this->data);
 	}
 
 	public function contact(PageRequest $request){
@@ -60,7 +60,7 @@ class MainController extends Controller{
 		$response['status_code'] = "TYPE_LIST";
 		$response['data'] = [$payment_amount->processing_fee,$payment_amount->partial_amount];
 		callback:
-		
+
 		return response()->json($response, 200);
 	}
 
@@ -80,7 +80,7 @@ class MainController extends Controller{
 				$string_id = "file".$value->id;
 				$is_required = " ";
 			}
-			
+
 			array_push($required, [$string,$string_id,$value->id,$is_required]);
 		}
 		$response['msg'] = "List of Requirements";

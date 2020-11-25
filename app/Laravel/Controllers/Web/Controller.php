@@ -48,9 +48,9 @@ class Controller extends BaseController{
 				// 'all_pending_leave' => AttendanceLeave::where('status','for_approval')->count(),
 
 			];
-			
+
 		}
-		
+
 	}
 
 
@@ -63,5 +63,5 @@ class Controller extends BaseController{
 	}
 
 
-	
+
 }

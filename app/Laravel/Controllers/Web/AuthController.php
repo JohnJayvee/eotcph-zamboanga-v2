@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Laravel\Controllers\Web;
 
@@ -24,10 +24,10 @@ use Carbon,Auth,DB,Str,ImageUploader,Event,Session;
 class AuthController extends Controller{
 
 	protected $data;
-	
+
 	public function __construct(){
 		parent::__construct();
-		
+
 	}
 
 	public function login($redirect_uri = NULL){
@@ -35,19 +35,19 @@ class AuthController extends Controller{
 		return view('web.auth.login',$this->data);
 	}
 	public function authenticate(PageRequest $request){
-	
+
 		try{
 			$this->data['page_title'] = " :: Login";
 			$email = $request->get('email');
 			$password = $request->get('password');
-			
+
 			if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password])){
 
 				$user = Auth::guard('customer')->user();
 				session()->put('auth_id', Auth::guard('customer')->user()->id);
 				session()->flash('notification-status','success');
 				session()->flash('notification-msg',"Welcome to EOTC Portal, {$user->full_name}!");
-				
+
 				return redirect()->route('web.transaction.create');
 			}
 			session()->flash('notification-status','error');
@@ -93,7 +93,7 @@ class AuthController extends Controller{
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
 		}
-			
+
 	}
 	public function verify(){
 		$this->data['page_title'] = " :: Verify Account";
@@ -102,7 +102,7 @@ class AuthController extends Controller{
 	}
 
 	public function verified($id = NULL , PageRequest $request){
-		
+
 		$verified_user = User::where('id',$id)->where('code',$request->get('code'))->first();
 
 		if ($verified_user) {
@@ -117,7 +117,14 @@ class AuthController extends Controller{
 			return redirect()->back();
 		}
 
-	}
+    }
+
+    public function activate(){
+
+        $this->data['page_title'] = " :: Activate Account";
+		return view('web.auth.activate',$this->data);
+    }
+
 	public function destroy(){
 		Auth::guard('customer')->logout();
 		session()->forget('auth_id');
@@ -127,4 +134,4 @@ class AuthController extends Controller{
 	}
 
 
-}	
+}

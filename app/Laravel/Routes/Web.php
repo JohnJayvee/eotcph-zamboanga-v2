@@ -6,7 +6,7 @@ Route::group(['as' => "web.",
 		 // 'domain' => env('SYSTEM_URL',''),
 		],function() {
 
-	
+
 	Route::group(['prefix'=> "/",'as' => 'main.' ],function(){
 		Route::get('/', [ 'as' => "index",'uses' => "MainController@index"]);
 	});
@@ -18,6 +18,7 @@ Route::group(['as' => "web.",
 	Route::any('logout',['as' => "logout",'uses' => "AuthController@destroy"]);
 
 	Route::group(['middleware' => ["web","portal.guest"]], function(){
+		Route::get('activate',['as' => "activate",'uses' => "AuthController@activate"]);
 		Route::get('login/{redirect_uri?}',['as' => "login",'uses' => "AuthController@login"]);
         Route::post('login/{redirect_uri?}',['uses' => "AuthController@authenticate"]);
 		Route::get('verify/{id?}',['as' => "verify",'uses' => "AuthController@verify"]);
@@ -32,6 +33,26 @@ Route::group(['as' => "web.",
 	});
 
 	Route::group(['middleware' => ["web","portal.auth"]], function(){
+
+		Route::group(['prefix' => "profile",'as' => "profile."],function(){
+			Route::get('/',['as' => 'index' ,'uses' => "ProfileController@index"]);
+			Route::get('password',['as' => 'password' ,'uses' => "ProfileController@password"]);
+			Route::post('password',['as' => 'update_password' ,'uses' => "ProfileController@update_password"]);
+			Route::get('edit',['as' => 'edit' ,'uses' => "ProfileController@edit"]);
+			Route::post('edit',['as' => 'update' ,'uses' => "ProfileController@update"]);
+
+			Route::get('edit-address',['as' => 'edit_address' ,'uses' => "ProfileController@edit_address"]);
+			Route::post('edit-address',['as' => 'update_address' ,'uses' => "ProfileController@update_address"]);
+			Route::get('edit-employment',['as' => 'edit_employment' ,'uses' => "ProfileController@edit_employment"]);
+			Route::post('edit-employment',['as' => 'update_employment' ,'uses' => "ProfileController@update_employment"]);
+
+			Route::get('verify',['as' => "verify",'uses' => "ProfileController@verify"]);
+			Route::get('verified/{token?}',['as' => "verified",'uses' => "ProfileController@verified"]);
+
+			Route::get('edit-avatar',['as' => 'edit_avatar' ,'uses' => "ProfileController@edit_avatar"]);
+			Route::post('edit-avatar',['as' => 'update_avatar' ,'uses' => "ProfileController@update_avatar"]);
+        });
+
 		Route::group(['prefix' => "transaction", 'as' => "transaction."], function () {
 			Route::get('history',['as' => "history", 'uses' => "CustomerTransactionController@history"]);
 			Route::get('ctc-history',['as' => "ctc_history", 'uses' => "CustomerTransactionController@ctc_history"]);
@@ -62,7 +83,7 @@ Route::group(['as' => "web.",
   //           Route::get('/', [ 'as' => "index",'uses' => "AuthController@register"]);
   //           Route::post('/', [ 'uses' => "AuthController@store"]);
 	 //     });
-	
+
         // Route::post('login/{redirect_uri?}',['uses' => "AuthController@authenticate"]);
         // Route::get('forgot-password',['as' => "forgot_password",'uses' => "AuthController@forgot_pass"]);
         // Route::post('change-password',['as' => "change_password",'uses' => "AuthController@change_password"]);
@@ -72,7 +93,7 @@ Route::group(['as' => "web.",
   //           $this->post('/', [ 'uses' => "AuthController@store"]);
   //           $this->get('revert', [ 'as' => "revert",'uses' => "AuthController@revert"]);
   //       });
-	
+
 
 
 });
