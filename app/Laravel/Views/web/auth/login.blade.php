@@ -39,9 +39,6 @@
                                 <button type="submit" class="btn btn-block secondary-solid-btn fw-500 mt-4 mb-3">
                                     <i class="fa fa-sign-in-alt"></i> Sign In
                                 </button>
-                                <a href="/activate" class="btn btn-block fw-500 mt-4 mb-3">
-                                    <i class="fa fa-sign-in-alt"></i> Activate Acoount
-                                </a>
                             </form>
                             <div class="text-center">
                             	<p class="fw-600 text-black mb-0">Don't have an account?</p>
