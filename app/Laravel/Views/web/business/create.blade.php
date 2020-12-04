@@ -71,17 +71,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-									<div class="form-group {{$errors->first('no_of_employee') ? 'text-danger' : NULL}}">
-										<label for="input_no_male_employee" class="text-form pb-2">Total No. of Male Employees</label>
-										<input type="number" id="input_no_male_employee" class="form-control" name="no_of_employee" value="{{old('no_of_employee')}}">
-										@if($errors->first('no_male_employee'))
-										<p class="help-block text-danger">{{$errors->first('no_of_employee')}}</p>
-										@endif
-									</div>
-								</div>
-                            </div>
-                            <div class="row">
 								<div class="col-md-6">
 									<div class="form-group {{$errors->first('no_male_employee') ? 'text-danger' : NULL}}">
 										<label for="input_no_male_employee" class="text-form pb-2">Total No. of Male Employees</label>

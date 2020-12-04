@@ -65,7 +65,6 @@ class BusinessController extends Controller
             $new_business->business_line = $request->get('business_line');
 
 			$new_business->business_id_no = $request->get('business_id_no');
-			$new_business->no_of_employee = $request->get('no_of_employee');
             $new_business->no_of_male_employee = $request->get('no_male_employee');
             $new_business->no_of_female_employee = $request->get('no_female_employee');
             $new_business->male_residing_in_city = $request->get('male_residing_in_city');
@@ -129,7 +128,6 @@ class BusinessController extends Controller
 		try{
 			$business = Business::find(session()->get('selected_business_id'));
 
-            $business->no_of_employee = $request->get('no_of_employee');
             $business->no_of_male_employee = $request->get('no_male_employee');
             $business->no_of_female_employee = $request->get('no_female_employee');
             $business->male_residing_in_city = $request->get('male_residing_in_city');
