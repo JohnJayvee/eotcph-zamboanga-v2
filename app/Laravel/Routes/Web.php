@@ -69,6 +69,8 @@ Route::group(['as' => "web.",
 			Route::get('create',['as' => "create",'uses' => "BusinessController@create"]);
 			Route::post('create',['uses' => "BusinessController@store"]);
             Route::get('profile/{id?}',['as' => "profile",'uses' => "BusinessController@business_profile"]);
+            Route::get('edit',['as' => "edit",'uses' => "BusinessController@business_edit"]);
+			Route::post('edit',['as' => "update",'uses' => "BusinessController@business_update"]);
 
             Route::get('application',['as' => "application",'uses' => "BusinessController@application"]);
 

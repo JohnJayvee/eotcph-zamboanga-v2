@@ -11,9 +11,15 @@
         <div class="row">
             @include('web.business.business_sidebar')
             <div class="col-md-9">
+                <div class="row">
+                    @include('system._components.notifications')
+                </div>
                 <div class="card">
                     <div class="card-body" style="padding: 3em">
-                        <h5 class="text-title text-uppercase">Business Information</h5>
+                        <h5 class="text-title text-uppercase">Business Information
+                        <a href="{{route('web.business.edit')}}" title=""><i class="fas fa-pencil-alt"></i></a>
+
+                        </h5>
                         <div class="row underline mb-2">
                             <div class="col-md-4 mb-2">
                                 <label class="text-uppercase">{{str_replace("_"," ",$profile->business_type)}}</label>
@@ -36,6 +42,10 @@
                              <div class="col-md-4">
                                 <label class="text-uppercase">{{$profile->business_name}}</label>
                                 <p>Business Name</p>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-uppercase"><a href="{{$profile->website_url}}">{{$profile->website_url}}</a></label>
+                                <p>Website (URL)</p>
                             </div>
 
                         </div>
@@ -67,7 +77,24 @@
                                 <label>{{$profile->no_of_employee}}</label>
                                 <p>No. of Employee</p>
                             </div>
-
+                        </div>
+                        <div class="row underline mb-2">
+                            <div class="col-md-3">
+                                <label class="text-uppercase">{{$profile->no_of_male_employee}}</label>
+                                <p>No. of Male Employee</p>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="text-uppercase">{{$profile->no_of_female_employee}}</label>
+                                <p>No. of Female Employee</p>
+                            </div>
+                            <div class="col-md-3">
+                                <label>{{$profile->male_residing_in_city}}</label>
+                                <p>No. of Male Employees Residing In City</p>
+                            </div>
+                            <div class="col-md-3">
+                                <label>{{$profile->female_residing_in_city}}</label>
+                                <p>No. of Female Employees Residing In City</p>
+                            </div>
                         </div>
                         <h5 class="text-title text-uppercase mt-4">Business Address Information</h5>
                         <div class="row underline mb-2">
