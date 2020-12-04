@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="{{asset('web/css/site.css?v=1.02')}}">
 
 <style type="text/css">
-    .bg-transparent.affix {background: rgba(29,29,31,0.72)!important; 
+    .bg-transparent.affix {background: rgba(29,29,31,0.72)!important;
         -webkit-backdrop-filter: saturate(180%) blur(20px);
         backdrop-filter: saturate(180%) blur(20px);
     }
@@ -37,10 +37,10 @@
         -webkit-backdrop-filter: saturate(50%) blur(3px);
         backdrop-filter: saturate(50%) blur(3px);
     }
-    .gradient-overlay:before { 
+    .gradient-overlay:before {
         background-image: linear-gradient(75deg, #1d1d1fDD 10%, #1d1d1fDD) !important;
         -webkit-backdrop-filter: saturate(50%) blur(3px);
-        backdrop-filter: saturate(50%) blur(3px); 
+        backdrop-filter: saturate(50%) blur(3px);
      }
     .gradient-bg {
     background: linear-gradient(75deg, #1d1d1f 10%, #1d1d1f) !important;
@@ -50,12 +50,12 @@
     .text-title{
         color: #254DA0 !important;
         font-size: 15px;
-        
+
     }
     .text-title-two{
         color: #308CDC;
-       
-        
+
+
     }
     .text-uppercase{
         text-transform: uppercase;
@@ -77,12 +77,15 @@
     .border-none{
         border: none;
     }
-    
+
     .fs-12{
         font-size: 12px;
     }
     .fs-14{
         font-size: 14px;
+    }
+    .fs-15{
+        font-size: 18px;
     }
     .fw-500{
         font-weight: 500;
@@ -122,9 +125,9 @@
         width: 20px;
     }
     .custom-control-label::before {
-       
+
         top: -0.2rem !important;
-       
+
     }
     .custom-control-label::after {
         top: -0.3rem;
@@ -143,11 +146,11 @@
         -webkit-appearance: none;
         -moz-appearance: none;
     }
-    
+
 
     /*.menu li a { padding: 20px 30px; }
-    .menu li a .badge{ font-size: 1em; padding: 7px 10px;} 
-   
+    .menu li a .badge{ font-size: 1em; padding: 7px 10px;}
+
     body, h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .navbar, .brand, .btn, .btn-simple, a, .td-name, td,a.detail-link { font-family: 'SF Pro Display', sans-serif; }
     .outline-btn, .secondary-solid-btn, .primary-solid-btn, .solid-white-btn, .outline-white-btn, .secondary-outline-btn { font-family: 'SF Pro Display', sans-serif; }*/
 
@@ -191,7 +194,7 @@
     }
 
     .services-single:hover{
-        background: #1d1d1f!important; 
+        background: #1d1d1f!important;
         color: #f5f5f7;
     }
     .equal {
@@ -221,7 +224,7 @@
 
     @media (max-width: 992px) and (min-width: 320px){
         .navbar {
-            background: #fff!important; 
+            background: #fff!important;
             -webkit-backdrop-filter: saturate(180%) blur(20px);
             backdrop-filter: saturate(180%) blur(20px);
             padding: .45rem 1rem !important;
@@ -280,7 +283,7 @@
         text-align: center;
         display: block;
         border-radius: 5px 5px 0 0;
-        
+
     }
     .modal-header .icon-box {
         color: #fff;
@@ -293,7 +296,44 @@
         padding: 15px;
         text-align: center;
     }
-    
+    .custom-btn{
+        padding: 5px 10px;
+        border-radius: 10px;
+        height: 37px;
+    }
+    .custom-btn:hover{
+        background-color: #7093DC !important;
+        color: #fff !important;
+    }
+    #input_partial_label:focus{
+         outline:none;
+    }
+    .avatar-preview {
+        width: 110px;
+        height: 110px;
+        position: relative;
+        border-radius: 100%;
+        border: 6px solid #F8F8F8;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+    }
+    .sd-title {
+        float: left;
+        width: 100%;
+        padding: 5px;
+        border-bottom: 1px solid #e5e5e5;
+        position: relative;
+        display: grid;
+    }
+    .suggestions-list {
+    float: left;
+    width: 100%;
+    padding: 13px 0 30px 0;
+}
+    .suggestion-usd {
+    float: left;
+    width: 100%;
+    padding: 15px 20px;
+}
 </style>
 
 <script src="{{asset('web/js/jquery-3.4.1.min.js')}}"></script>

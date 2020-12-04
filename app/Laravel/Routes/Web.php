@@ -62,6 +62,27 @@ Route::group(['as' => "web.",
 			Route::get('create',['as' => "create", 'uses' => "CustomerTransactionController@create"]);
 			Route::post('create',['uses' => "CustomerTransactionController@store"]);
 			Route::post('other-store',['as' => "other_store", 'uses' => "CustomerTransactionController@other_store"]);
+        });
+
+        Route::group(['prefix' => "business", 'as' => "business."], function () {
+			Route::get('/',['as' => "index",'uses' => "BusinessController@index"]);
+			Route::get('create',['as' => "create",'uses' => "BusinessController@create"]);
+			Route::post('create',['uses' => "BusinessController@store"]);
+            Route::get('profile/{id?}',['as' => "profile",'uses' => "BusinessController@business_profile"]);
+
+            Route::get('application',['as' => "application",'uses' => "BusinessController@application"]);
+
+            Route::group(['prefix' => "application", 'as' => "application."], function () {
+                Route::get('create',['as' => "create",'uses' => "ApplicationController@create"]);
+                Route::post('create',['uses' => "ApplicationController@store"]);
+
+
+                Route::group(['as' => "business_permit.",'prefix' => "business-permit"],function(){
+                    Route::get('/',['as' => "create",'uses' => "BusinessPermitController@create"]);
+                    Route::post('/',['uses' => "BusinessPermitController@store"]);
+                });
+
+            });
 		});
 	});
 	Route::get('pay/{code?}',['as' => "pay", 'uses' => "CustomerTransactionController@pay"]);

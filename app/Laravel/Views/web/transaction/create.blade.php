@@ -8,7 +8,7 @@
 <!--team section start-->
 <section class="px-120 pt-110 pb-80 gray-light-bg">
     <div class="container">
-         
+
          <div class="row flex-row items-center px-4">
             <h5 class="text-title pb-3"><i class="fa fa-file"></i> E<span class="text-title-two"> SUBMISSION</span></h5>
             <a href="{{route('web.transaction.history')}}" class="custom-btn badge-primary-2 text-white " style="float: right;margin-left: auto;">Application History</a>
@@ -22,6 +22,17 @@
                 <!-- <input type="hidden" name="regional_name" id="input_regional_name" value="{{old('regional_name')}}"> -->
                 <div class="card-body px-5 py-0">
                     <h5 class="text-title text-uppercase pt-5">Application information</h5>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Business ID</label>
+                                <input type="text" class="form-control form-control-sm {{ $errors->first('business_id') ? 'is-invalid': NULL  }}"  placeholder="E.g. 10000239" name="business_id" value="{{old('business_id')}}">
+                                @if($errors->first('business_id'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('business_id')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
@@ -79,7 +90,7 @@
                             </div> -->
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Department</label>
+                                <label for="exampleInputEmail1" class="text-form pb-2">Bureau / Office</label>
                                 {!!Form::select("department_id", $department, old('department_id'), ['id' => "input_department_id", 'class' => "form-control form-control-sm classic ".($errors->first('department_id') ? 'border-red' : NULL)])!!}
                             </div>
                             @if($errors->first('department_id'))
@@ -90,7 +101,7 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1" class="text-form pb-2">Type of Application</label>
                                 {!!Form::select('application_id',['' => "--Choose Application Type--"],old('application_id'),['id' => "input_application_id",'class' => "form-control form-control-sm classic ".($errors->first('application_id') ? 'border-red' : NULL)])!!}
-                               
+
                             </div>
                             @if($errors->first('application_id'))
                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('application_id')}}</small>
@@ -115,32 +126,17 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 col-lg-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Partial Amount</label>
-                                <div class="input-group mb-3">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text text-title fw-600">PHP <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
-                                  </div>
-                                  <input type="text" class="form-control br-left-white" placeholder="Partial Amount" name="partial_amount" value="{{old('partial_amount')}}" id="input_partial_amount" readonly>
-                                </div>
-                                @if($errors->first('partial_amount'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('partial_amount')}}</small>
-                                @endif
-                            </div>
-                        </div>
-                       
                     </div>
                    <input type="hidden" name="requirements_id" id="requirements_id_containter">
-                   
+
                     <div id="requirements_container">
-                        
+
                         <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;" id="requirements">
                             <thead>
-                               
+
                             </thead>
                             <tbody>
-                               
+
                             </tbody>
                         </table>
                     </div>
@@ -179,13 +175,13 @@
                     <div class="custom-control custom-checkbox mb-3">
                         <input type="checkbox" class="custom-control-input" id="customControlValidation1" name="is_check" value="1">
                         <label class="custom-control-label fs-14 fw-600 text-black" for="customControlValidation1">&nbsp;&nbsp; Check this option if you're going to submit physical copies of your documents. The system will generate a QR Code that you'll have to attach to the envelope of your physical copies.</label>
-                        
+
                     </div>
                     <button class="btn badge badge-primary-2 text-white px-4 py-2 fs-14" type="submit"><i class="fa fa-paper-plane pr-2"></i>  Send Application</button>
                 </div>
             </form>
         </div>
-        
+
     </div>
 
 </section>
@@ -325,11 +321,11 @@ $(document).ready(function() {
         $("#requirements").find('tbody').empty();
         $("#requirements").find('thead').empty();
         var _text = $("#input_application_id option:selected").text();
-        
+
         var application_id = $(this).val()
         $(this).get_partial_amount(application_id,"#input_application_id","")
         $(this).get_requirements(application_id,"#input_application_id","")
-        
+
         $('#input_application_name').val(_text);
 
     });

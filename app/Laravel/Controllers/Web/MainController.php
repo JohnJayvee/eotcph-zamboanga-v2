@@ -28,6 +28,7 @@ class MainController extends Controller{
 	public function index(PageRequest $request){
         $this->data['page_title'] = "Homepage";
 		return view('web.homepage',$this->data);
+		// return view('web.application.form',$this->data);
 	}
 
 	public function contact(PageRequest $request){

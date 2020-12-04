@@ -31,7 +31,8 @@ class AuthController extends Controller{
 	}
 
 	public function login($redirect_uri = NULL){
-		$this->data['page_title'] = " :: Login";
+        $this->data['page_title'] = " :: Login";
+        session(['link' => url()->previous()]);
 		return view('web.auth.login',$this->data);
 	}
 	public function authenticate(PageRequest $request){
@@ -48,11 +49,15 @@ class AuthController extends Controller{
 				session()->flash('notification-status','success');
 				session()->flash('notification-msg',"Welcome to EOTC Portal, {$user->full_name}!");
 
-				return redirect()->route('web.transaction.create');
+                if(!session()->has(session('link')))
+                {
+                    return redirect(session('link'));
+                }
+                return redirect()->route('web.business.index');
 			}
 			session()->flash('notification-status','error');
 			session()->flash('notification-msg','Wrong username or password.');
-			return redirect()->back();
+			return view('web.auth.login',$this->data);
 
 		}catch(Exception $e){
 			abort(500);

@@ -6,7 +6,7 @@
     <nav class="navbar navbar-expand-lg fixed-top bg-white p-0" style="
     border-bottom: 4px solid #254DA0;">
         <div class="container">
-            <a class="brand-logo" href="{{route('web.main.index')}}">
+            <a class="brand-logo" href="{{route('web.business.index')}}">
                 <img src="{{asset('web/img/oasap.png')}}" alt="logo" class="img-fluid" width="30%" />
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,7 +27,14 @@
                             <li><a href="{{route('web.profile.password')}}">Change Password</a></li>
                         </ul>
                     </li>
-
+                    <li>
+                        <li><a  href="#"><i class="fa fa-handshake"></i> Services <i class="fas fa-caret-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="{{route('web.business.create')}}">New Registration</a></li>
+                            <li><a href="{{route('web.business.index')}}">Renewal</a></li>
+                            <li><a href="{{route('web.transaction.create')}}">Taxes , Fees and Dues</a></li>
+                        </ul>
+                    </li>
                     <li><a  href="{{route('web.logout')}}"><i class="fa fa-sign-out-alt"></i> Sign Out</span></a></li>
                 </ul>
             </div>
@@ -57,7 +64,14 @@
                 <ul class="navbar-nav ml-auto menu" >
                     {{-- <li><a  href="about-us.html">About Us</a></li> --}}
                     <li><a  href="{{route('web.main.index')}}"><i class="fa fa-home" ></i> Home</a></li>
-                    <li><a  href="#"><i class="fa fa-handshake"></i> Service</a></li>
+                    <li>
+                        <li><a  href="#"><i class="fa fa-handshake"></i> Services <i class="fas fa-caret-down"></i></a>
+                        <ul class="sub-menu">
+                            <li><a href="{{route('web.business.create')}}">New Registration</a></li>
+                            <li><a href="{{route('web.business.index')}}">Renewal</a></li>
+                            <li><a href="{{route('web.transaction.create')}}">Taxes , Fees and Dues</a></li>
+                        </ul>
+                    </li>
                     <li><a  href="#"><i class="fa fa-list-alt"></i> About Us</a></li>
                     <li><a  href="{{route('web.login')}}"><span class="badge badge-primary-2"><i class="fa fa-sign-in-alt"></i> Login</span></a></li>
 
