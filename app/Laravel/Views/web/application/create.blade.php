@@ -24,13 +24,13 @@
                                         <select class="form-control" id="input_application_type" name="application_type">
                                             <option value="" selected="selected">-Choose Business Type-</option>
                                             <option value="business_permit">Business/Mayor's Permit</option>
-                                            <option value="locational_clearance">Locational Clearance</option>
+                                            {{-- <option value="locational_clearance">Locational Clearance</option>
                                             <option value="sanitary_permit">Sanitary Permit</option>
                                             <option value="occupancy_permit">Occupancy Permit</option>
                                             <option value="building_permit">Building Permit</option>
                                             <option value="electrical_permit">Electrical Permit</option>
                                             <option value="mechanical_permit">Mechanical Permit</option>
-                                            <option value="anti_fencing_certificate">Anti-Fencing Certificate</option>
+                                            <option value="anti_fencing_certificate">Anti-Fencing Certificate</option> --}}
                                         </select>
                                     </div>
                                 </div>
