@@ -73,10 +73,6 @@
                                 <label class="text-uppercase">{{$profile->capitalization}}</label>
                                 <p>Capitalization</p>
                             </div>
-                            <div class="col-md-4">
-                                <label>{{$profile->no_of_employee}}</label>
-                                <p>No. of Employee</p>
-                            </div>
                         </div>
                         <div class="row underline mb-2">
                             <div class="col-md-3">

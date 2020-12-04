@@ -3,7 +3,7 @@
         <div class="card-body">
             <img class="card-img-top avatar-preview" src="{{asset('placeholder/user.png')}}" alt="Card image cap">
             <h5 class="card-title">{{$auth->full_name}}</h5>
-           
+
         </div>
     </div>
     <div class="card mt-2">
@@ -13,7 +13,11 @@
         </div>
          <div class="card-body text-center">
             @forelse($business_profiles as $index)
-            <a href="{{route('web.business.profile',[$index->id])}}" >{{Str::title($index->business_name)}}<i class="fa fa-fw fa-eye ml-2 mt-1"></i></a>
+            <div class="row">
+                <a href="{{route('web.business.profile',[$index->id])}}" class="sgt-text">{{Str::title($index->business_name)}}
+                    <i class="fa fa-fw fa-eye ml-2 mt-1"></i>
+                </a>
+            </div>
             @empty
             @endforelse
         </div>
