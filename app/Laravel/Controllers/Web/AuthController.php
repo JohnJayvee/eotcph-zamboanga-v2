@@ -6,19 +6,21 @@ namespace App\Laravel\Controllers\Web;
  * Request Validator
  */
 
+use App\Laravel\Models\Customer;
+use App\Laravel\Listeners\SendCode;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
-
-use App\Laravel\Requests\PageRequest;
-use App\Laravel\Requests\Web\RegisterRequest;
 
 /*
  * Models
  */
-use App\Laravel\Models\Customer;
+use App\Laravel\Requests\PageRequest;
 
-use App\Laravel\Listeners\SendCode;
-
+use App\Laravel\Events\SendCustomerOTP;
+use App\Laravel\Events\SendCustomerOTPEmail;
+use App\Laravel\Models\CustomerOTP;
+use App\Laravel\Requests\Web\RegisterRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Event,Session;
 
 class AuthController extends Controller{
@@ -65,40 +67,126 @@ class AuthController extends Controller{
 	}
 
 	public function register(){
+        // session()->put('register.progress', 1);
 		$this->data['page_title'] = " :: Create Account";
 		return view('web.auth.registration',$this->data);
-	}
-	public function store(RegisterRequest $request){
-		DB::beginTransaction();
-		try{
-			$new_customer = new Customer;
-			$new_customer->fill($request->all());
-			$new_customer->region = $request->get('region');
-			$new_customer->region_name = $request->get('region_name');
-			$new_customer->town = $request->get('town');
-			$new_customer->town_name = $request->get('town_name');
-			$new_customer->barangay = $request->get('brgy');
-			$new_customer->barangay_name= $request->get('brgy_name');
-			$new_customer->street_name = $request->get('street_name');
-			$new_customer->unit_number = $request->get('unit_number');
-			$new_customer->zipcode = $request->get('zipcode');
-			$new_customer->birthdate = $request->get('birthdate');
-			$new_customer->tin_no = $request->get('tin_no');
-			$new_customer->sss_no = $request->get('sss_no');
-			$new_customer->phic_no = $request->get('phic_no');
-			$new_customer->password = bcrypt($request->get('password'));
-			$new_customer->save();
-			DB::commit();
-			session()->flash('notification-status', "success");
-			session()->flash('notification-msg','Successfully registered.');
-			return redirect()->route('web.login');
-		}catch(\Exception $e){
-			DB::rollback();
-			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
-			return redirect()->back();
-		}
+    }
 
+    public function sendOTP(PageRequest $request){
+        $otp = str_pad(rand('00000', 99999), 6, "0", STR_PAD_LEFT);
+        $insert[] = [
+            'contact_number' => $request->contact_number,
+            'otp' => $otp,
+            'email' => $request->email,
+        ];
+
+        $new_customer_otp = new CustomerOTP;
+
+        $new_customer_otp->customer_mobile_no = $request->contact_number;
+        $new_customer_otp->otp = $otp;
+
+        $new_customer_otp->save();
+
+        // $notification_data = new SendCustomerOTP($insert);
+        // Event::dispatch('send-customer-otp', $notification_data);
+
+        $notification_data = new SendCustomerOTPEmail($insert);
+        Event::dispatch('send-customer-otp-email', $notification_data);
+
+    }
+	public function store(RegisterRequest $request){
+
+        switch(session('register.progress',1)){
+            case 1:
+                $otp = str_pad(rand('00000', 99999), 6, "0", STR_PAD_LEFT);
+                $insert[] = [
+                    'contact_number' => $request->contact_number,
+                    'otp' => $otp,
+                    'email' => $request->email,
+                ];
+
+                $new_customer_otp = new CustomerOTP;
+
+                $new_customer_otp->customer_mobile_no = $request->contact_number;
+                $new_customer_otp->otp = $otp;
+
+                $new_customer_otp->save();
+
+                $notification_data = new SendCustomerOTPEmail($insert);
+                Event::dispatch('send-customer-otp-email', $notification_data);
+
+                session()->put('register.progress', 2);
+
+                session()->put('register.fname', $request->fname);
+                session()->put('register.lname', $request->lname);
+                session()->put('register.mname', $request->fname);
+                session()->put('register.email', $request->email);
+                session()->put('register.contact_number', $request->contact_number);
+                session()->put('register.region_name', $request->region_name);
+                session()->put('register.town', $request->town);
+                session()->put('register.town_name', $request->town_name);
+                session()->put('register.barangay', $request->barangay);
+                session()->put('register.barangay_name', $request->barangay_name);
+                session()->put('register.street_name', $request->street_name);
+                session()->put('register.unit_number', $request->unit_number);
+                session()->put('register.zipcode', $request->zipcode);
+                session()->put('register.tin_no', $request->tin_no);
+                session()->put('register.sss_no', $request->sss_no);
+                session()->put('register.phic_no', $request->phic_no);
+                session()->put('register.password', bcrypt($request->get('password')));
+
+                break;
+            default:
+                DB::beginTransaction();
+                try{
+
+                    $account = CustomerOTP::where('otp',request('code'))->first();
+                    if(!$account){
+                        goto callback;
+                    }
+                    if ($account) {
+                        CustomerOTP::where('id',$account->id)->delete();
+                        DB::commit();
+                    }
+                    $new_customer = new Customer;
+                    $new_customer->fname = session('register.fname');
+                    $new_customer->lname = session('register.lname');
+                    $new_customer->mname = session('register.mname');
+                    $new_customer->email = session('register.email');
+                    $new_customer->contact_number = session('register.contact_number');
+
+                    $new_customer->region = session('register.region');
+                    $new_customer->region_name =session('register.region_name');
+                    $new_customer->town = session('register.town');
+                    $new_customer->town_name = session('register.town_name');
+                    $new_customer->barangay = session('register.barangay');
+                    $new_customer->barangay_name= session('register.barangay_name');
+                    $new_customer->street_name = session('register.street_name');
+                    $new_customer->unit_number = session('register.unit_number');
+                    $new_customer->zipcode = session('register.zipcode');
+                    $new_customer->birthdate = session('register.birthdate');
+                    $new_customer->tin_no = session('register.tin_no');
+                    $new_customer->sss_no = session('register.sss_no');
+                    $new_customer->phic_no = session('register.phic_no');
+                    $new_customer->password = session('register.password');
+                    $new_customer->save();
+
+                    DB::commit();
+                    session()->flash('notification-status', "success");
+                    session()->flash('notification-msg','Successfully registered.');
+                    session()->forget('register');
+                    return redirect()->route('web.login');
+                }catch(\Exception $e){
+                    DB::rollback();
+
+                    dd($e->getMessage());
+                   goto callback;
+                }
+                break;
+        }
+        callback:
+        session()->flash('notification-status', "failed");
+        return redirect()->back();
 	}
 	public function verify(){
 		$this->data['page_title'] = " :: Verify Account";

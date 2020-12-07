@@ -80,7 +80,7 @@
                                         <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
                                     </div>
                                     <input type="text" class="form-control {{ $errors->first('contact_number') ? 'is-invalid': NULL  }} br-left-white" name="contact_number" placeholder="Contact Number" value="{{old('contact_number')}}">
-                                    
+
                                 </div>
                                 @if($errors->first('contact_number'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('contact_number')}}</small>
@@ -197,7 +197,7 @@
                                 @endif
                             </div>
                         </div>
-                        
+
                     </div>
                     <!-- <div class="row">
                         <div class="col-md-6 col-lg-6">
@@ -215,15 +215,18 @@
                                 @else
                                     <label id="lblName" style="vertical-align: top;padding-top: 40px;" class="fw-500 pl-3"></label>
                                 @endif
-                                    
+
                             </div>
                         </div>
                     </div> -->
-                     <button type="submit" class="btn secondary-solid-btn px-3 py-3 fs-14 "><i class="fa fa-paper-plane pr-2"></i>Create Account</button>
+                    @if (session('register.progress') == 2)
+                    @include('web.auth.otp.modal')
+                    @endif
+                    <button type="submit" class="btn secondary-solid-btn px-3 py-3 fs-14 otp_trigger"><i class="fa fa-paper-plane pr-2"></i>Create Account</button>
                 </div>
             </form>
         </div>
-        
+
     </div>
 
 </section>
@@ -249,9 +252,9 @@
       var fileName = e.target.files[0].name;
       $('#lblName').text(fileName);
     });
-    
+
     $.fn.get_region = function(input_region,input_province,input_city,input_brgy,selected){
-    
+
       $(input_city).empty().prop('disabled',true)
       $(input_brgy).empty().prop('disabled',true)
 
@@ -340,6 +343,7 @@
       });
     }
     $(function(){
+        $('.modal').modal('show');
         $('.datepicker').datepicker({
           format : "yyyy-mm-dd",
           maxViewMode : 2,
@@ -388,6 +392,59 @@
         } else {
         input.attr("type", "password");
         }
+    });
+    // $(".otp_trigger").click(function (e){
+    //     e.preventDefault();
+    //     $('.modal').modal('show');
+
+    //     let contact_number = $("input[name=contact_number]").val();
+    //     let _token   = $('meta[name="csrf-token"]').attr('content');
+    //     $.ajax({
+    //         url: "{{ route('web.register.otp') }}",
+    //         type: "POST",
+    //         data: {
+    //             "_token": "{{ csrf_token() }}",
+    //             contact_number: contact_number,
+    //         },
+    //         success:function(response){
+    //             console.log(response);
+    //             if(response) {
+    //                 $('.success').text(response.success);
+    //             }
+    //         }
+    //     })
+    // })
+    $('.submitOTP').click(function(e){
+        // e.preventDefault();
+        var otpCode='';
+        $('input[type=number]').each(function(){
+            otpCode+=this.value;
+        });
+        $('input[name=code]').val(otpCode);
+        $(this).submit();
+    });
+    $('.digit-group').find('input').each(function() {
+        $(this).attr('maxlength', 1);
+        $(this).on('keyup', function(e) {
+            var parent = $($(this).parent());
+            if(e.keyCode === 8 || e.keyCode === 37) {
+                var prev = parent.find('input#' + $(this).data('previous'));
+
+                if(prev.length) {
+                    $(prev).select();
+                }
+            } else if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode === 39) {
+                var next = parent.find('input#' + $(this).data('next'));
+
+                if(next.length) {
+                    $(next).select();
+                } else {
+                    if(parent.data('autosubmit')) {
+                        parent.submit();
+                    }
+                }
+            }
+        });
     });
 </script>
 

@@ -29,6 +29,8 @@ Route::group(['as' => "web.",
 		Route::group(['prefix'=> "register",'as' => 'register.' ],function(){
             Route::get('/', [ 'as' => "index",'uses' => "AuthController@register"]);
             Route::post('/', [ 'uses' => "AuthController@store"]);
+
+            Route::post('/otp', [ 'as' => "otp", 'uses' => "AuthController@sendOTP"]);
         });
 	});
 
