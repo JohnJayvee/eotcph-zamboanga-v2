@@ -1,5 +1,8 @@
 <?php
 
+Route::get('sample', function () {
+    return view('emails.collection-email');
+});
 /*,'domain' => env("FRONTEND_URL", "wineapp.localhost.com")*/
 Route::group(['as' => "system.",
 		 'namespace' => "System",
@@ -95,7 +98,7 @@ Route::group(['as' => "auth."], function(){
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "ApplicationRequirementController@destroy",'middleware' => "system.exist:requirements"]);
 			Route::get('upload',['as' => "upload",'uses' => "ApplicationRequirementController@upload"]);
 			Route::post('upload',['uses' => "ApplicationRequirementController@upload_department"]);
-			
+
 		});
 
 		Route::group(['as' => "regional_office.",'prefix' => "regional-office"], function(){
@@ -108,7 +111,7 @@ Route::group(['as' => "auth."], function(){
 			// Route::any('get-municipalities',['as' => "get_municipalities", 'uses' => "ZoneLocationController@get_municipalities"]);
 			// Route::any('get-province',['as' => "get_provinces", 'uses' => "ZoneLocationController@get_provinces"]);
 			// Route::any('get-region',['as' => "get_region", 'uses' => "ZoneLocationController@get_region"]);
-			
+
 		});
 
 		Route::group(['as' => "application.",'prefix' => "application"], function(){
@@ -118,6 +121,15 @@ Route::group(['as' => "auth."], function(){
 			Route::get('edit/{id?}',['as' => "edit",'uses' => "ApplicationController@edit",'middleware' => "system.exist:application"]);
 			Route::post('edit/{id?}',['uses' => "ApplicationController@update",'middleware' => "system.exist:application"]);
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "ApplicationController@destroy",'middleware' => "system.exist:application"]);
+        });
+
+        Route::group(['as' => "collection_fees.",'prefix' => "collection-of-fees"], function(){
+			Route::get('/',['as' => "index",'uses' => "CollectionOfFeesController@index"]);
+            Route::get('create',['as' => "create",'uses' => "CollectionOfFeesController@create"]);
+            Route::post('create',['uses' => "CollectionOfFeesController@store"]);
+            Route::get('edit/{id?}',['as' => "edit",'uses' => "CollectionOfFeesController@edit"]);
+			Route::post('edit/{id?}',['uses' => "CollectionOfFeesController@update"]);
+			Route::any('delete/{id?}',['as' => "destroy",'uses' => "CollectionOfFeesController@destroy"]);
 		});
 
 		Route::group(['as' => "processor.",'prefix' => "processor"], function(){
@@ -134,7 +146,7 @@ Route::group(['as' => "auth."], function(){
 		});
 	});
 
-	
+
 
 
 });

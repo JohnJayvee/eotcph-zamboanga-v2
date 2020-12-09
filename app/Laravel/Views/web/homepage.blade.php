@@ -17,7 +17,7 @@
                             <h5 style="letter-spacing: 3px;"><i class="fa fa-file"></i> E<span class="font-weight-lighter">SUBMISSION</span></h5>
                         </div>
                         <div class="col-lg-12">
-                            <a href="#" data-url="{{route('web.transaction.create')}}" class="btn btn-white btn-submission"> <i class="fa fa-laptop"></i> Submit</a>
+                            <a href="{{ route('web.business.index') }}" data-url="" class="btn btn-white btn-submission"> <i class="fa fa-laptop"></i> Submit</a>
                         </div>
                     </div>
 

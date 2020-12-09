@@ -1,7 +1,7 @@
 <nav class="sidebar sidebar-offcanvas p-0" id="sidebar" style="background-color: #31353D;color: #ffff;">
   <h6 class="pl-3 pt-4">Menu</h6>
   <ul class="nav">
-    
+
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.dashboard')) ? 'active' : ''}}">
       <a class="nav-link" href="{{route('system.dashboard')}}">
         <i class="fa fa-home menu-icon"></i>
@@ -73,13 +73,19 @@
             <span class="menu-title">Applications</span>
           </a>
         </li>
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.collection_fees.index')) ? 'active' : ''}}">
+            <a class="nav-link" href="{{route('system.collection_fees.index')}}">
+              <i class="fa fa-check-circle menu-icon"></i>
+              <span class="menu-title">Collection of Fees</span>
+            </a>
+          </li>
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.department.index','system.department.create','system.department.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.department.index')}}">
             <i class="fa fa-globe menu-icon"></i>
             <span class="menu-title">Department</span>
           </a>
         </li>
-       
+
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.application_requirements.index','system.application_requirements.create','system.application_requirements.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.application_requirements.index')}}">
             <i class="fa fa-check-circle menu-icon"></i>

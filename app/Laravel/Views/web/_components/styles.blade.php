@@ -1,5 +1,5 @@
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700%7COpen+Sans:400,600&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="{{asset('web/css/font-awesome.min.css')}}">
 <link rel="stylesheet" href="{{asset('web/css/bootstrap.min.css')}}">
 <link rel="stylesheet" href="{{asset('web/css/magnific-popup.css')}}">
 <link rel="stylesheet" href="{{asset('web/css/themify-icons.css')}}">
@@ -325,29 +325,119 @@
         display: grid;
     }
     .suggestions-list {
-    float: left;
-    width: 100%;
-    padding: 13px 0 30px 0;
-}
-    .suggestion-usd {
-    float: left;
-    width: 100%;
-    padding: 15px 20px;
-}
-
-    .digit-group input{
-        width: 30px;
-        height: 50px;
-        border-color: lighten($BaseBG, 5%);
-        border:
-        line-height: 50px;
-        text-align: center;
-        font-size: 24px;
-        font-family: 'Raleway', sans-serif;
-        font-weight: 200;
-        color: black;
-        margin: 0 2px;
+        float: left;
+        width: 100%;
+        padding: 13px 0 30px 0;
     }
+    .suggestion-usd {
+        float: left;
+        width: 100%;
+        padding: 15px 20px;
+    }
+    /* Profile container */
+    .profile {
+      margin: 20px 0;
+    }
+
+    /* Profile sidebar */
+    .profile-sidebar {
+      padding: 20px 0 10px 0;
+      background: #fff;
+    }
+
+    .profile-userpic img {
+      float: none;
+      margin: 0 auto;
+      width: 50%;
+      height: 50%;
+      -webkit-border-radius: 50% !important;
+      -moz-border-radius: 50% !important;
+      border-radius: 50% !important;
+    }
+
+    .profile-usertitle {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .profile-usertitle-name {
+      color: #5a7391;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .profile-usertitle-job {
+      text-transform: uppercase;
+      color: #5b9bd1;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .profile-userbuttons {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .profile-userbuttons .btn {
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 15px;
+      margin-right: 5px;
+    }
+
+    .profile-userbuttons .btn:last-child {
+      margin-right: 0px;
+    }
+
+    .profile-usermenu {
+      margin-top: 30px;
+    }
+
+    .profile-usermenu ul li {
+      border-bottom: 1px solid #f0f4f7;
+    }
+
+    .profile-usermenu ul li:last-child {
+      border-bottom: none;
+    }
+
+    .profile-usermenu ul li a {
+      color: #93a3b5;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .profile-usermenu ul li a i {
+      margin-right: 8px;
+      font-size: 14px;
+    }
+
+    .profile-usermenu ul li a:hover {
+      background-color: #fafcfd;
+      color: #5b9bd1;
+    }
+
+    .profile-usermenu ul li.active {
+      border-bottom: none;
+    }
+
+    .profile-usermenu ul li.active a {
+      color: #5b9bd1;
+      background-color: #f6f9fb;
+      border-left: 2px solid #5b9bd1;
+      margin-left: -2px;
+    }
+
+    /* Profile Content */
+    .profile-content {
+      padding: 20px;
+      background: #fff;
+      min-height: 460px;
+    }
+
     input[type='number'] {
     -moz-appearance:textfield;
     }

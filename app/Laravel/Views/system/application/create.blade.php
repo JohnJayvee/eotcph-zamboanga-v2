@@ -25,7 +25,7 @@
           <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
           @endif
         </div>
-       
+
         <div class="form-group">
           <label for="input_suffix">Department</label>
           {!!Form::select("department_id", $department, old('department_id'), ['id' => "input_department_id", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('department_id') ? 'is-invalid' : NULL)])!!}
@@ -59,6 +59,13 @@
           {!!Form::select("requirements_id[]", $requirements, old('requirements_id'), ['id' => "input_requirements_id", 'multiple' => 'multiple','class' => "custom-select select2 mb-2 mr-sm-2 ".($errors->first('requirements_id') ? 'is-invalid' : NULL)])!!}
           @if($errors->first('requirements_id'))
           <p class="mt-1 text-danger">{!!$errors->first('requirements_id')!!}</p>
+          @endif
+        </div>
+        <div class="form-group">
+          <label for="input_suffix">Define Collection Fee (Optional)</label>
+          {!!Form::select("define_collection_fee", $collections, old('define_collection_fee'), ['id' => "define_collection_fee", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('define_collection_fee') ? 'is-invalid' : NULL)])!!}
+          @if($errors->first('requirements_id'))
+          <p class="mt-1 text-danger">{!!$errors->first('define_collection_fee')!!}</p>
           @endif
         </div>
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>

@@ -51,15 +51,11 @@ class AuthController extends Controller{
 				session()->flash('notification-status','success');
 				session()->flash('notification-msg',"Welcome to EOTC Portal, {$user->full_name}!");
 
-                if(!session()->has(session('link')))
-                {
-                    return redirect(session('link'));
-                }
-                return redirect()->route('web.business.index');
+				return redirect()->route('web.business.index');
 			}
 			session()->flash('notification-status','error');
 			session()->flash('notification-msg','Wrong username or password.');
-			return view('web.auth.login',$this->data);
+			return redirect()->back();
 
 		}catch(Exception $e){
 			abort(500);

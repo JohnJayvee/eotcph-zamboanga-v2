@@ -13,7 +13,7 @@ use App\Laravel\Requests\System\ApplicationRequest;
 use App\Laravel\Models\Application;
 use App\Laravel\Models\Department;
 use App\Laravel\Models\ApplicationRequirements;
-
+use App\Laravel\Models\CollectionOfFees;
 /* App Classes
  */
 use Carbon,Auth,DB,Str,Helper;
@@ -22,7 +22,7 @@ class ApplicationController extends Controller
 {
     protected $data;
 	protected $per_page;
-	
+
 	public function __construct(){
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
@@ -56,7 +56,9 @@ class ApplicationController extends Controller
 	}
 
 	public function  create(PageRequest $request){
-		$this->data['page_title'] .= "Application - Add new record";
+        $this->data['page_title'] .= "Application - Add new record";
+
+        $this->data['collections'] = CollectionOfFees::all()->pluck('collection_name', 'id');
 		return view('system.application.create',$this->data);
 	}
 	public function store(ApplicationRequest $request){
@@ -113,7 +115,7 @@ class ApplicationController extends Controller
 		}
 	}
 
-	
+
 
 	public function  destroy(PageRequest $request,$id = NULL){
 		$application = $request->get('application_data');
