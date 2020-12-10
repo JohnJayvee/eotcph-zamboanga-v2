@@ -28,6 +28,8 @@ class ApplicationController extends Controller
 		array_merge($this->data, parent::get_data());
 		$this->data['department'] = ['' => "All Department"] + Department::pluck('name','id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
+		$this->data['types'] = ['' => "Choose Application Type",'e_submission' => "E-Submission" , 'business' => "Business Transaction"];
+		$this->data['permit_types'] = ['' => "Choose Permit Type",'bnrs' => "BNRS" , 'business_clearance' => "Business Clearance",'business_permit' => "Business Permit",'occupational_permit'=>"Occupational Permit",'bfp_certificate' => "BFP Certificate" , 'sanitary_permit' => "Sanitary Permit" , 'bir_2303' => "BIR 2303" , 'bir_1921' => "BIR 1921"];
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
 	}
 
@@ -67,6 +69,8 @@ class ApplicationController extends Controller
 			$new_application = new Application;
 			$new_application->department_id = $request->get('department_id');
 			$new_application->name = $request->get('name');
+			$new_application->type = $request->get('type');
+			$new_application->permit_type = $request->get('permit_type');
 			$new_application->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_application->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			// $new_application->processing_days = $request->get('processing_days');
@@ -97,6 +101,8 @@ class ApplicationController extends Controller
 			$application = $request->get('application_data');
 			$application->department_id = $request->get('department_id');
 			$application->name = $request->get('name');
+			$application->type = $request->get('type');
+			$application->permit_type = $request->get('permit_type');
 			$application->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$application->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			$application->processing_days = $request->get('processing_days');

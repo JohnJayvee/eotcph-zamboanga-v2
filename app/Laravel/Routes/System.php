@@ -43,6 +43,19 @@ Route::group(['as' => "auth."], function(){
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "TransactionController@destroy"]);
 		});
 
+		Route::group(['as' => "business_transaction.",'prefix' => "business-transaction"], function(){
+			Route::get('/',['as' => "index",'uses' => "BusinessTransactionController@index"]);
+			Route::get('pending',['as' => "pending",'uses' => "BusinessTransactionController@pending"]);
+			Route::get('ongoing',['as' => "ongoing",'uses' => "BusinessTransactionController@ongoing"]);
+			Route::get('approved',['as' => "approved",'uses' => "BusinessTransactionController@approved"]);
+			Route::get('declined',['as' => "declined",'uses' => "BusinessTransactionController@declined"]);
+			Route::get('resent',['as' => "resent",'uses' => "BusinessTransactionController@resent"]);
+			Route::get('show/{id?}',['as' => "show",'uses' => "BusinessTransactionController@show",'middleware' => "system.exist:business_transaction"]);
+			Route::get('process/{id?}',['as' => "process",'uses' => "BusinessTransactionController@process",'middleware' => "system.exist:business_transaction"]);
+			
+			Route::any('delete/{id?}',['as' => "destroy",'uses' => "BusinessTransactionController@destroy"]);
+		});
+
 
 		Route::group(['as' => "profile.",'prefix' => "profile"], function(){
 			Route::get('/',['as' => "index",'uses' => "ProfileController@index"]);

@@ -3,7 +3,7 @@
 namespace App\Laravel\Middlewares\System;
 
 use Closure, Helper,Str;
-use App\Laravel\Models\{Department,ApplicationType,Application,User,Transaction,RegionalOffice,ApplicationRequirements,OtherCustomer,OtherTransaction};
+use App\Laravel\Models\{Department,ApplicationType,Application,User,Transaction,RegionalOffice,ApplicationRequirements,OtherCustomer,OtherTransaction,BusinessTransaction};
 
 use App\Laravel\Models\{AccountCode};
 
@@ -103,6 +103,15 @@ class ExistRecord
                     $module = "other-customer.index";
                 }
             break;
+            case 'business_transaction':
+                if(! $this->__exist_business_transaction($request)) {
+                    $found_record = false;
+                    session()->flash('notification-status', "failed");
+                    session()->flash('notification-msg', "No record found or resource already removed.");
+
+                    $module = "bsuiness-transaction.index";
+                }
+            break;
             
         }
 
@@ -193,6 +202,17 @@ class ExistRecord
 
         if($other_transaction){
             $request->merge(['other_transaction_data' => $other_transaction]);
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+    private function __exist_business_transaction($request){
+        $business_transaction = BusinessTransaction::find($this->reference_id);
+
+        if($business_transaction){
+            $request->merge(['business_transaction_data' => $business_transaction]);
             return TRUE;
         }
 

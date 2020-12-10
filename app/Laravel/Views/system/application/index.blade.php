@@ -49,8 +49,9 @@
     <div class="shadow-sm fs-15">
       <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
         <thead>
-          <tr>
+          <tr class="text-center">
             <th width="25%" class="text-title p-3">Application Name</th>
+            <th width="25%" class="text-title p-3">Application Type</th>
             <th width="25%" class="text-title p-3">Payment Fee</th>
             <th width="25%" class="text-title p-3">Department</th>
             <th width="25%" class="text-title p-3">Created At</th>
@@ -59,11 +60,12 @@
         </thead>
         <tbody>
           @forelse($applications as $application)
-          <tr>
-            <td>{{ $application->name}}</td>
-            <td>PHP {{ Helper::money_format($application->processing_fee)}}</td>
-            <td>{{ $application->department ? Str::title($application->department->name) : "N/A"}}</td>
-            <td>{{ Helper::date_format($application->created_at)}}</th>
+          <tr class="text-center">
+            <td >{{ $application->name}}</td>
+            <td >{{ str::title( $application->type ?: "-")}}</td>
+            <td >PHP {{ Helper::money_format($application->processing_fee)}}</td>
+            <td >{{ $application->department ? Str::title($application->department->name) : "-"}}</td>
+            <td >{{ Helper::date_format($application->created_at)}}</th>
             <td >
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">

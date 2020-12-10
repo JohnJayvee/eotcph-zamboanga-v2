@@ -59,6 +59,24 @@
         @endif
       </div>
     </li>
+    <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.transaction.show','system.business_transaction.pending')) ? 'active' : ''}}">
+      <a class="nav-link" data-toggle="collapse" href="#business_transaction" aria-expanded="false" aria-controls="business_transaction">
+        <i class="fa fa-file menu-icon"></i>
+        <span class="menu-title">Business Transactions</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="business_transaction">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item"> <a class="nav-link" href="{{route('system.business_transaction.pending')}}">Pending
+            <!-- @if($counter['pending'] > 0)
+              <span class="badge badge-sm badge-primary">{{$counter['pending']}}</span>
+            @endif -->
+          </a></li>
+        </ul>
+       
+      
+      </div>
+    </li>
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.other_customer.index','system.other_customer.create','system.other_transaction.index','system.other_transaction.show','system.other_customer.show','system.other_transaction.create')) ? 'active' : ''}}">
       <a class="nav-link" href="{{route('system.other_customer.index')}}">
         <i class="fa fa-file menu-icon"></i>

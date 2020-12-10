@@ -8,6 +8,7 @@ use App\Laravel\Requests\PageRequest;
 use App\Laravel\Models\BusinessActivity;
 use Carbon,Auth,Str,Curl,Helper, DB, Log;
 use App\Laravel\Models\ApplicationBusinessPermit;
+use App\Laravel\Models\BusinessTransaction;
 use App\Laravel\Requests\Web\BusinessPermitRequest;
 
 class BusinessPermitController extends Controller{
@@ -16,6 +17,7 @@ class BusinessPermitController extends Controller{
 
 	public function __construct(){
 		parent::__construct();
+        
 	}
 
 	public function create(PageRequest $request){
@@ -30,10 +32,11 @@ class BusinessPermitController extends Controller{
 	}
 
 	public function store(BusinessPermitRequest $request){
+        $application_id = session()->get('application_id');
+        $application_name = session()->get('application_name');
         $auth = Auth::guard('customer')->user();
         $business = Business::find(session()->get('selected_business_id'));
         $this->data['business'] = $business;
-
 		DB::beginTransaction();
 		try{
 			$new_business_permit = new ApplicationBusinessPermit();
@@ -84,6 +87,21 @@ class BusinessPermitController extends Controller{
 
             $new_business_permit->save();
 
+            $new_business_transaction = new BusinessTransaction();
+            $new_business_transaction->owners_id = $auth->id;
+            $new_business_transaction->business_id = $business->id;
+            $new_business_transaction->business_name = $business->business_name;
+            $new_business_transaction->email = $auth->email;
+            $new_business_transaction->contact_number = $auth->contact_number;
+            $new_business_transaction->application_id = $application_id;
+            $new_business_transaction->application_name = $application_name;
+            $new_business_transaction->save();
+            $new_business_transaction->code = 'EOTC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_business_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
+
+            $new_business_transaction->processing_fee_code = 'BT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_business_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
+
+            $new_business_transaction->document_reference_code = 'EOTC-DOC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_business_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
+            $new_business_transaction->save();
             foreach ($request->line_of_business as $key => $v) {
                 $data = [
                     'application_business_permit_id' => $new_business_permit->id,
@@ -98,6 +116,8 @@ class BusinessPermitController extends Controller{
 
 			DB::commit();
 			session()->flash('notification-status', "success");
+            session()->forget('application_id');
+            session()->forget('application_name');
 			session()->flash('notification-msg', "Business Permit Added to this Business CV.");
 			return redirect()->route('web.business.index');
 		}catch(\Exception $e){

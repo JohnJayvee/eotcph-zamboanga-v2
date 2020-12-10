@@ -9,13 +9,18 @@ class ApplicationRequest extends RequestManager{
 
 		$rules = [
 			'name' => "required",
-			'department_id' => "required",
 			'processing_fee' => "required|numeric|min:0",
 			'partial_amount' => "required|numeric|min:0",
 			// 'processing_days' => "required|integer",
-			'requirements_id' => "required"
+			'requirements_id' => "required",
+			'type' => "required"
 		];
-
+		if($this->get('type') == "e_submission"){
+			$rules['department_id'] = "required";
+		}
+		if($this->get('type') == "business"){
+			$rules['permit_type'] = "required";
+		}
 		return $rules;
 	}
 

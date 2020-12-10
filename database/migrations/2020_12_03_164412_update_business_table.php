@@ -29,8 +29,8 @@ class UpdateBusinessTable extends Migration
      */
     public function down()
     {
-        Schema::table('business', function (Blueprint $table) {
-            //
+        Schema::table('application', function($table){
+            $table->dropColumn(['business_id_no','no_of_male_employee','no_of_female_employee','male_residing_in_city','female_residing_in_city']);
         });
     }
 }

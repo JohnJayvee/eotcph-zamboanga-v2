@@ -25,8 +25,21 @@
           <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
           @endif
         </div>
-       
         <div class="form-group">
+          <label for="input_suffix">Type</label>
+          {!!Form::select("type", $types, old('type',$application->type), ['id' => "input_type", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('type') ? 'is-invalid' : NULL)])!!}
+          @if($errors->first('type'))
+          <p class="mt-1 text-danger">{!!$errors->first('type')!!}</p>
+          @endif
+        </div>
+        <div class="form-group" id="permit_type_container">
+          <label for="input_suffix">Permit Type</label>
+          {!!Form::select("permit_type", $permit_types, old('permit_type',$application->permit_type), ['id' => "input_permit_type", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('permit_type') ? 'is-invalid' : NULL)])!!}
+          @if($errors->first('permit_type'))
+          <p class="mt-1 text-danger">{!!$errors->first('permit_type')!!}</p>
+          @endif
+        </div>
+        <div class="form-group" id="department_container">
           <label for="input_suffix">Department</label>
           {!!Form::select("department_id", $department, old('department_id',$application->department_id), ['id' => "input_department_id", 'class' => "form-control mb-2 mr-sm-2 ".($errors->first('department_id') ? 'is-invalid' : NULL)])!!}
           @if($errors->first('department_id'))
@@ -86,6 +99,21 @@
 <script type="text/javascript">
     $(document).ready(function(){
       $('#input_requirements_id').select2({placeholder: "Select Requirements"});
+      $('#input_type').on('change', function(){
+        var val = $(this).val();
+
+        if (val == "business") {
+            $('#department_container').hide();
+            $('#permit_type_container').show();
+        }else  if (val == "e_submission"){
+            $('#department_container').show();
+            $('#permit_type_container').hide();
+        }else{
+            $('#department_container').hide();
+            $('#permit_type_container').hide();
+        }
+
+      }).change();
     });//document ready
 </script>
 @endsection

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Laravel\Traits\DateFormatter;
 use Str;
 
-class Business extends Model{
+class BusinessTransaction extends Model{
     
     use SoftDeletes,DateFormatter;
     
@@ -16,7 +16,7 @@ class Business extends Model{
      *
      * @var string
      */
-    protected $table = "business";
+    protected $table = "business_transaction";
 
     /**
      * The database connection used by the model.
@@ -63,8 +63,14 @@ class Business extends Model{
     protected $casts = [
     ];
 
-    public function getBusinessAddressAttribute(){
-        return Str::title("{$this->unit_no} {$this->street_address} ");
+    public function owner(){
+        return $this->BelongsTo("App\Laravel\Models\Customer",'owners_id','id');
     }
 
+    public function business_info(){
+        return $this->BelongsTo("App\Laravel\Models\Business",'business_id','id');
+    }
+    public function type(){
+        return $this->BelongsTo("App\Laravel\Models\Application",'application_id','id');
+    }
 }

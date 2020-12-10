@@ -21,17 +21,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group ">
                                         <label for="">Application Forms</label>
-                                        <select class="form-control" id="input_application_type" name="application_type">
-                                            <option value="" selected="selected">-Choose Business Type-</option>
-                                            <option value="business_permit">Business/Mayor's Permit</option>
-                                            {{-- <option value="locational_clearance">Locational Clearance</option>
-                                            <option value="sanitary_permit">Sanitary Permit</option>
-                                            <option value="occupancy_permit">Occupancy Permit</option>
-                                            <option value="building_permit">Building Permit</option>
-                                            <option value="electrical_permit">Electrical Permit</option>
-                                            <option value="mechanical_permit">Mechanical Permit</option>
-                                            <option value="anti_fencing_certificate">Anti-Fencing Certificate</option> --}}
-                                        </select>
+                                        {!!Form::select("application_type", $permit_types, old('application_type'), ['id' => "input_application_type", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('application_type') ? 'is-invalid' : NULL)])!!}
                                     </div>
                                 </div>
                             </div>

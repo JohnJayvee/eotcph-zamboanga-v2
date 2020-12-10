@@ -16,6 +16,8 @@ use Illuminate\Contracts\Auth\Guard;
  */
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Models\ApplicationBusinessPermit;
+use App\Laravel\Models\Application;
+
 use Carbon,Auth,DB,Str,ImageUploader,Event,Session;
 
 class ApplicationController extends Controller{
@@ -24,7 +26,7 @@ class ApplicationController extends Controller{
 
 	public function __construct(){
 		parent::__construct();
-
+		$this->data['permit_types'] =  Application::where('type',"business")->pluck('name', 'id')->toArray();
     }
 
     public function create(){
@@ -40,12 +42,12 @@ class ApplicationController extends Controller{
 
     public function store(PageRequest $request){
 		// $auth = $request->user();
-
-		$application_type = Str::lower($request->get('application_type'));
+    	$application = Application::find($request->get('application_type'));
 		session()->put('application.current_progress',1);
-		session()->put('application.type',$application_type);
-
-		switch($application_type){
+		session()->put('application.type',$application->permit_type);
+		session()->put('application_id',$application->id);
+		session()->put('application_name',$application->name);
+		switch($application->permit_type){
 			// case 'bnrs':
 			// case 'business_clearance':
 			// case 'business_permit':
@@ -63,12 +65,12 @@ class ApplicationController extends Controller{
 
 			// break;
             default:
-            	if($application_type != 'business_permit'){
+            	if($application->permit_type != 'business_permit'){
 					session()->flash('notification-status',"warning");
 					session()->flash('notification-msg',"Application not yet active. Please try again later.");
 					return redirect()->back();
 				}
-				return redirect()->route("web.business.application.{$application_type}.create");
+				return redirect()->route("web.business.application.{$application->permit_type}.create");
 			break;
 		}
 

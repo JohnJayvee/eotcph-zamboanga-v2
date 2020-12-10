@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateTableApplicationAddCollectionId extends Migration
+class UpdateTableApplicationAddFieldApplicationType extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class UpdateTableApplicationAddCollectionId extends Migration
     public function up()
     {
         Schema::table('application', function (Blueprint $table) {
-            $table->string('collection_id')->nullable()->after('requirements_id');
+            $table->string('type')->nullable();
+            $table->string('permit_type')->nullable();
         });
     }
 
@@ -26,7 +27,7 @@ class UpdateTableApplicationAddCollectionId extends Migration
     public function down()
     {
         Schema::table('application', function($table){
-            $table->dropColumn(['collection_id']);
+            $table->dropColumn(['type','permit_type']);
         });
     }
 }
