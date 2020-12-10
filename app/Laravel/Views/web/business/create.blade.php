@@ -10,24 +10,26 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <form class="create-form" method="POST" enctype="multipart/form-data">
                     @include('system._components.notifications')
-                    {!!csrf_field()!!}
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="text-title text-uppercase">Business ID No.</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Business ID No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_id_no') ? 'is-invalid': NULL  }}"  name="business_id_no" value="{{old('business_id_no') }}">
-                                        @if($errors->first('business_id_no'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('business_id_no')}}</small>
-                                        @endif
+                            <form meethod="get">
+                                <h5 class="text-title text-uppercase">Business ID No.</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1" class="text-form pb-2">Business ID No.</label>
+                                            <input type="text" class="form-control form-control-sm {{ $errors->first('business_id_no') ? 'is-invalid': NULL  }}"  name="business_id_no" value="{{old('business_id_no') }}">
+                                            @if($errors->first('business_id_no'))
+                                                <small class="form-text pl-1" style="color:red;">{{$errors->first('business_id_no')}}</small>
+                                            @endif
+                                        </div>
+                                        <button type="submit" class="btn badge-primary-2 text-white mr-2" style="float: right;">Validate</button>
                                     </div>
-                                    <button type="button" class="btn badge-primary-2 text-white mr-2" style="float: right;">Validate</button>
                                 </div>
-                            </div>
+                            </form>
+                            <form class="create-form" method="POST"  action="{{ route('web.business.create') }}" enctype="multipart/form-data">
+                            {!!csrf_field()!!}
                             <h5 class="text-title text-uppercase">Business Information</h5>
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
@@ -63,7 +65,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business Name</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('dominant_name') ? 'is-invalid': NULL  }}"  name="business_name" value="{{old('business_name') }}">
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('dominant_name') ? 'is-invalid': NULL  }}"  name="business_name" value="{{old('business_name', $business['BusinessName'] ?? '') }}">
                                         @if($errors->first('business_name'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('business_name')}}</small>
                                         @endif
@@ -179,7 +181,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('unit_no') ? 'is-invalid': NULL  }}"  name="unit_no" value="{{old('unit_no') }}">
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('unit_no') ? 'is-invalid': NULL  }}"  name="unit_no" value="{{old('unit_no'), ($business['BusBldgName'] ?? '').' '.($business['BusBldgNo'] ?? '')}}">
                                         @if($errors->first('unit_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('unit_no')}}</small>
                                         @endif
@@ -188,7 +190,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Street Address</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('street_address') ? 'is-invalid': NULL  }}"  name="street_address" value="{{old('street_address') }}">
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('street_address') ? 'is-invalid': NULL  }}"  name="street_address" value="{{old('street_address', $business['BusStreet'] ?? '') }}">
                                         @if($errors->first('street_address'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('street_address')}}</small>
                                         @endif
@@ -199,7 +201,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
-                                        <input type="email" class="form-control form-control-sm {{ $errors->first('email') ? 'is-invalid': NULL  }}"  name="email" value="{{old('email',$auth->email) }}">
+                                        <input type="email" class="form-control form-control-sm {{ $errors->first('email') ? 'is-invalid': NULL  }}"  name="email" value="{{old('email', $business['BusEmailAddress'] ?? '') }}">
                                         @if($errors->first('email'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
                                         @endif
@@ -208,7 +210,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Website (URL)</label>
-                                        <input type="url" class="form-control form-control-sm {{ $errors->first('website_url') ? 'is-invalid': NULL  }}"  name="website_url" value="{{old('website_url') }}">
+                                        <input type="url" class="form-control form-control-sm {{ $errors->first('website_url') ? 'is-invalid': NULL  }}"  name="website_url" value="{{old('website_url', $business['BusWebsite'] ?? '') }}">
                                         @if($errors->first('website_url'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('website_url')}}</small>
                                         @endif
@@ -219,7 +221,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('mobile_no') ? 'is-invalid': NULL  }}"  name="mobile_no" value="{{old('mobile_no',$auth->mobile_no) }}">
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('mobile_no') ? 'is-invalid': NULL  }}"  name="mobile_no" value="{{old('mobile_no') }}">
                                         @if($errors->first('mobile_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('mobile_no')}}</small>
                                         @endif
@@ -228,7 +230,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Telephone Number</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('telephone_no') ? 'is-invalid': NULL  }}"  name="telephone_no" value="{{old('telephone_no',$auth->telephone_no) }}">
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('telephone_no') ? 'is-invalid': NULL  }}"  name="telephone_no" value="{{old('telephone_no',$business['BusTelNo'] ?? '') }}">
                                         @if($errors->first('telephone_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('telephone_no')}}</small>
                                         @endif
@@ -244,7 +246,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">TIN No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('tin_no') ? 'is-invalid': NULL  }}"  name="tin_no" value="{{old('tin_no') }}">
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('tin_no') ? 'is-invalid': NULL  }}"  name="tin_no" value="{{old('tin_no', $business['BusTIN'] ?? '') }}">
                                         @if($errors->first('tin_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('tin_no')}}</small>
                                         @endif

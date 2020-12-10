@@ -12,7 +12,7 @@
     }
 </style>
 
-<div class="modal" tabindex="-1">
+<div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-body">

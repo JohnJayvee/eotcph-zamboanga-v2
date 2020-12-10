@@ -90,7 +90,7 @@ class AuthController extends Controller{
         Event::dispatch('send-customer-otp-email', $notification_data);
 
     }
-	public function store(RegisterRequest $request){
+	public function store(PageRequest $request){
 
         switch(session('register.progress',1)){
             case 1:

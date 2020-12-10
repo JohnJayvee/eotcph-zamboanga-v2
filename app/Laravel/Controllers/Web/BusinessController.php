@@ -43,11 +43,37 @@ class BusinessController extends Controller
 		$this->data['auth'] = Auth::guard('customer')->user();
 		return view('web.business.index',$this->data);
 	}
-	public function create(){
+	public function create(PageRequest $request){
 		$this->data['page_title'] = "Create Business CV";
-		$this->data['auth'] = Auth::guard('customer')->user();
+        $this->data['auth'] = Auth::guard('customer')->user();
 
+        if($request->business_id_no){
+            $request_body = [
+                'business_id' => $request->business_id_no,
+            ];
+            $response = Curl::to(env('OBOSS_BUSINESS_PROFILE'))
+                         ->withData($request_body)
+                         ->asJson( true )
+                         ->returnResponseObject()
+                         ->post();
+            if($response->status == "200"){
+                $content = $response->content;
+
+                session()->flash('notification-status', "success");
+                session()->flash('notification-msg', "Business validated");
+
+                $this->data['business'] = $response->content['data'];
+
+            } else {
+                session()->flash('notification-status', "failed");
+                session()->flash('notification-msg', "Business not found");
+            }
+        }
 		return view('web.business.create',$this->data);
+
+    }
+
+    public function validate_bn(){
 
     }
 

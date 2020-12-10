@@ -37,6 +37,6 @@
 <p style="font-size: 25px;margin-top: 2em;">Please print this Document Reference Number and attach this
 to your physical documents/requirements and send this
 document to our office.</p>
-<p style="font-size: 25px;">Thank you for choosing oASAP!</p>
+<p style="font-size: 25px;">Thank you for choosing oBOSS!</p>
 </body>
 </html>

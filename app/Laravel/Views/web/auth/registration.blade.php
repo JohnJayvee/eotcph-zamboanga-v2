@@ -15,7 +15,7 @@
                         <div class="col-md-6 col-lg-6 ">
                             <div class="form-group">
                                 <label class="text-form pb-2">Email</label>
-                                <input type="email" class="form-control {{ $errors->first('email') ? 'is-invalid': NULL  }} form-control-sm" name="email" placeholder="Email Address" value="{{old('email')}}">
+                                <input type="email" class="form-control {{ $errors->first('email') ? 'is-invalid': NULL  }} form-control-sm" name="email" placeholder="Email Address" value="{{old('email'), session('register.email')}}">
                                 @if($errors->first('email'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
                                 @endif
