@@ -37,7 +37,8 @@ class CollectionOfFeesController extends Controller
 		$this->data['page_title'] = "Collection of Fees";
 		$auth = Auth::user();
 
-		$this->data['collections'] = CollectionOfFees::all()->paginate($this->per_page);
+        $this->data['collections'] = CollectionOfFees::all()->paginate($this->per_page);
+        // dd($this->data);
 		return view('system.collection-of-fees.index',$this->data);
 	}
 

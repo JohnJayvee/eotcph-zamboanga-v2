@@ -47,13 +47,10 @@
         </tbody>
       </table>
     </div>
-    @if($collection->collection_name > 0)
       <nav class="mt-2">
-       <!--  <p>Showing <strong>{{$collection->firstItem()}}</strong> to <strong>{{$collection->lastItem()}}</strong> of <strong>{{$collection->total()}}</strong> entries</p> -->
-        {!!$collection->appends(request()->query())->render()!!}
+        {!!$collections->render()!!}
         </ul>
       </nav>
-    @endif
   </div>
 </div>
 @stop
