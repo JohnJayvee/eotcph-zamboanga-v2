@@ -437,7 +437,18 @@
       background: #fff;
       min-height: 460px;
     }
-
+    .digit-group input{
+        width: 30px;
+		height: 50px;
+		border: 1px solid;
+		line-height: 50px;
+		text-align: center;
+		font-size: 24px;
+		font-family: 'Raleway', sans-serif;
+		font-weight: 200;
+		color: black;
+		margin: 0 2px;
+    }
     input[type='number'] {
     -moz-appearance:textfield;
     }
