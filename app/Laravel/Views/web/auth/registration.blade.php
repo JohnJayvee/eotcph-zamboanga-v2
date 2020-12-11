@@ -15,7 +15,7 @@
                         <div class="col-md-6 col-lg-6 ">
                             <div class="form-group">
                                 <label class="text-form pb-2">Email</label>
-                                <input type="email" class="form-control {{ $errors->first('email') ? 'is-invalid': NULL  }} form-control-sm" name="email" placeholder="Email Address" value="{{old('email'), session('register.email')}}">
+                                <input type="email" class="form-control {{ $errors->first('email') ? 'is-invalid': NULL  }} form-control-sm" name="email" placeholder="Email Address" value="{{old('email', session('register.email'))}}">
                                 @if($errors->first('email'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
                                 @endif
@@ -24,7 +24,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">Password</label>
-                                <input type="password" class="form-control {{ $errors->first('password') ? 'is-invalid': NULL  }} form-control-sm" name="password" placeholder="Password" id="password-field">
+                                <input type="password" class="form-control {{ $errors->first('password') ? 'is-invalid': NULL  }} form-control-sm" name="password" placeholder="Password" id="password-field" value="{{ session('register.password_uncrypt') }}">
                                 <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 @if($errors->first('password'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('password')}}</small>
@@ -36,7 +36,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">Confirm Password</label>
-                                <input type="password" class="form-control form-control-sm" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password">
+                                <input type="password" class="form-control form-control-sm" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" value="{{ session('register.password_uncrypt') }}">
                                 <span toggle="#password_confirmation" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">First Name</label>
-                                <input type="text" class="form-control {{ $errors->first('fname') ? 'is-invalid': NULL  }} form-control-sm" name="fname" placeholder="Firstname" value="{{old('fname')}}">
+                                <input type="text" class="form-control {{ $errors->first('fname') ? 'is-invalid': NULL  }} form-control-sm" name="fname" placeholder="Firstname" value="{{old('fname', session('register.fname'))}}">
                                  @if($errors->first('fname'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('fname')}}</small>
                                 @endif
@@ -58,7 +58,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group mb-0">
                                 <label class="text-form pb-2">Last Name</label>
-                                <input type="text" class="form-control {{ $errors->first('lname') ? 'is-invalid': NULL  }} form-control-sm" name="lname" placeholder="Lastname" value="{{old('lname')}}">
+                                <input type="text" class="form-control {{ $errors->first('lname') ? 'is-invalid': NULL  }} form-control-sm" name="lname" placeholder="Lastname" value="{{old('lname', session('register.lname'))}}">
                                 @if($errors->first('lname'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('lname')}}</small>
                                 @endif
@@ -69,7 +69,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group ">
                                 <label class="text-form pb-2">Middle Name</label>
-                                <input type="text" class="form-control form-control-sm" name="mname" placeholder="Middlename" value="{{old('mname')}}">
+                                <input type="text" class="form-control form-control-sm" name="mname" placeholder="Middlename" value="{{old('mname', session('register.mname'))}}">
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
@@ -79,7 +79,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
                                     </div>
-                                    <input type="text" class="form-control {{ $errors->first('contact_number') ? 'is-invalid': NULL  }} br-left-white" name="contact_number" placeholder="Contact Number" value="{{old('contact_number')}}">
+                                    <input type="text" class="form-control {{ $errors->first('contact_number') ? 'is-invalid': NULL  }} br-left-white" name="contact_number" placeholder="Contact Number" value="{{old('contact_number', session('register.contact_number'))}}">
 
                                 </div>
                                 @if($errors->first('contact_number'))
@@ -88,9 +88,9 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" class="form-control" name="region_name" id="input_region_name" value="{{old('region_name')}}">
-                    <input type="hidden" class="form-control" name="town_name" id="input_town_name" value="{{old('town_name')}}">
-                    <input type="hidden" class="form-control" name="brgy_name" id="input_brgy_name" value="{{old('brgy_name')}}">
+                    <input type="hidden" class="form-control" name="region_name" id="input_region_name" value="{{old('region_name', session('register.region_name'))}}">
+                    <input type="hidden" class="form-control" name="town_name" id="input_town_name" value="{{old('town_name', session('register.town_name'))}}">
+                    <input type="hidden" class="form-control" name="brgy_name" id="input_brgy_name" value="{{old('brgy_name', session('register.brgy_name'))}}">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -124,7 +124,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">Street Name</label>
-                                <input type="text" class="form-control {{ $errors->first('street_name') ? 'is-invalid': NULL  }} form-control-sm" name="street_name" placeholder="Street Name" value="{{old('street_name')}}">
+                                <input type="text" class="form-control {{ $errors->first('street_name') ? 'is-invalid': NULL  }} form-control-sm" name="street_name" placeholder="Street Name" value="{{old('street_name', session('register.street_name'))}}">
                                  @if($errors->first('street_name'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('street_name')}}</small>
                                 @endif
@@ -133,7 +133,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">BLDG/ Unit Number</label>
-                                <input type="text" class="form-control {{ $errors->first('unit_number') ? 'is-invalid': NULL  }} form-control-sm" name="unit_number" placeholder="Unit Number" value="{{old('unit_number')}}">
+                                <input type="text" class="form-control {{ $errors->first('unit_number') ? 'is-invalid': NULL  }} form-control-sm" name="unit_number" placeholder="Unit Number" value="{{old('unit_number', session('register.unit_number'))}}">
                                 @if($errors->first('unit_number'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('unit_number')}}</small>
                                 @endif
@@ -145,7 +145,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label for="input_zipcode" class="text-form pb-2">Zipcode</label>
-                                <input type="text" id="input_zipcode" class="form-control {{ $errors->first('zipcode') ? 'is-invalid': NULL  }}" name="zipcode" value="{{old('zipcode',session()->get('soleproprietorship.new_business.zip_code'))}}" readonly="readonly">
+                                <input type="text" id="input_zipcode" class="form-control {{ $errors->first('zipcode') ? 'is-invalid': NULL  }}" name="zipcode" value="{{old('zipcode', session('register.zipcode'))}}" readonly="readonly">
                                 @if($errors->first('zipcode'))
                                 <p class="help-block text-danger">{{$errors->first('zipcode')}}</p>
                                 @endif
@@ -155,7 +155,7 @@
                             <div class="form-group">
                                 <label class="text-form pb-2">Birthdate</label>
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control datepicker {{ $errors->first('birthdate') ? 'is-invalid': NULL  }} br-right-white p-2" name="birthdate" placeholder="YYYY-MM-DD" value="{{old('birthdate')}}">
+                                    <input type="text" class="form-control datepicker {{ $errors->first('birthdate') ? 'is-invalid': NULL  }} br-right-white p-2" name="birthdate" placeholder="YYYY-MM-DD" value="{{old('birthdate', session('register.birthdate'))}}">
                                     <div class="input-group-append">
                                         <span class="input-group-text text-title fw-600"><i class="fa fa-calendar"></i></span>
                                     </div>
@@ -171,7 +171,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">TIN No.</label>
-                                <input type="text" class="form-control {{ $errors->first('tin_no') ? 'is-invalid': NULL  }} form-control-sm" name="tin_no" placeholder="TIN No." value="{{old('tin_no')}}">
+                                <input type="text" class="form-control {{ $errors->first('tin_no') ? 'is-invalid': NULL  }} form-control-sm" name="tin_no" placeholder="TIN No." value="{{old('tin_no', session('register.tin_no'))}}">
                                 @if($errors->first('tin_no'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('tin_no')}}</small>
                                 @endif
@@ -180,7 +180,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">SSS No.</label>
-                                <input type="text" class="form-control {{ $errors->first('sss_no') ? 'is-invalid': NULL  }} form-control-sm" name="sss_no" placeholder="SSS No." value="{{old('sss_no')}}">
+                                <input type="text" class="form-control {{ $errors->first('sss_no') ? 'is-invalid': NULL  }} form-control-sm" name="sss_no" placeholder="SSS No." value="{{old('sss_no', session('register.sss_no'))}}">
                                 @if($errors->first('sss_no'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('sss_no')}}</small>
                                 @endif
@@ -191,13 +191,27 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">PHIC No.</label>
-                                <input type="text" class="form-control {{ $errors->first('phic_no') ? 'is-invalid': NULL  }} form-control-sm" name="phic_no" placeholder="PHIC No." value="{{old('phic_no')}}">
+                                <input type="text" class="form-control {{ $errors->first('phic_no') ? 'is-invalid': NULL  }} form-control-sm" name="phic_no" placeholder="PHIC No." value="{{old('phic_no', session('register.phic_no'))}}">
                                 @if($errors->first('phic_no'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('phic_no')}}</small>
                                 @endif
                             </div>
                         </div>
-
+                    </div>
+                    <h5 class="text-title text-uppercase ">Upload Government ID</h5>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="text-form pb-2">Government ID 1 (Required)</label>
+                                <input type="file" class="form-control form-control-sm" name="upload_1" accept="image/x-png,image/gif,image/jpeg" />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="text-form pb-2">Government ID 2 (Required)</label>
+                                <input type="file" class="form-control form-control-sm" name="upload_2" accept="image/x-png,image/gif,image/jpeg" />
+                            </div>
+                        </div>
                     </div>
                     <!-- <div class="row">
                         <div class="col-md-6 col-lg-6">
@@ -252,7 +266,6 @@
       var fileName = e.target.files[0].name;
       $('#lblName').text(fileName);
     });
-
     $.fn.get_region = function(input_region,input_province,input_city,input_brgy,selected){
 
       $(input_city).empty().prop('disabled',true)
@@ -273,11 +286,12 @@
 
           $(input_region).prop('disabled',false)
           $(input_region).prepend($('<option>',{value : "",text : "--Select Region--"}))
-          if(selected.length > 0){
-            $(input_region).val($(input_region+" option[value="+selected+"]").val());
-          }else{
-            $(input_region).val($(input_region+" option:first").val());
-          }
+            if(selected.length > 0){
+                $(input_region).val($(input_region+" option[value="+selected+"]").val());
+            }else{
+                $(input_region).val($(input_region+" option:first").val());
+            }
+
       });
       // return result;
     };
@@ -351,15 +365,17 @@
           zIndexOffset: 9999
         });
 
-        $(this).get_region("#input_region","#input_province","#input_town","#input_brgy","{{old('region')}}")
-
-        $("#input_region").on("change",function(){
+        $(this).get_region("#input_region","#input_province","#input_town","#input_brgy","{{old('region', session('register.region'))}}")
+        $(this).get_city("{{ session('register.region') }}", "#input_town", "#input_brgy", "{{old('town', session('register.town'))}}");
+        $(this).get_brgy("{{ session('register.town') }}", "#input_brgy", "{{old('brgy', session('register.barangay'))}}");
+        $("#input_region").on("change", function(){
             var _val = $(this).val();
             var _text = $("#input_region option:selected").text();
             $(this).get_city($("#input_region").val(), "#input_town", "#input_brgy", "{{old('town')}}");
             $('#input_zipcode').val('');
             $('#input_region_name').val(_text);
         });
+
 
         $("#input_town").on("change",function(){
             var _val = $(this).val();
@@ -393,27 +409,6 @@
         input.attr("type", "password");
         }
     });
-    // $(".otp_trigger").click(function (e){
-    //     e.preventDefault();
-    //     $('.modal').modal('show');
-
-    //     let contact_number = $("input[name=contact_number]").val();
-    //     let _token   = $('meta[name="csrf-token"]').attr('content');
-    //     $.ajax({
-    //         url: "{{ route('web.register.otp') }}",
-    //         type: "POST",
-    //         data: {
-    //             "_token": "{{ csrf_token() }}",
-    //             contact_number: contact_number,
-    //         },
-    //         success:function(response){
-    //             console.log(response);
-    //             if(response) {
-    //                 $('.success').text(response.success);
-    //             }
-    //         }
-    //     })
-    // })
     $('.submitOTP').click(function(e){
         // e.preventDefault();
         var otpCode='';

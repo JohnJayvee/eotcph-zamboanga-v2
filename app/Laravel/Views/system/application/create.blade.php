@@ -46,6 +46,13 @@
           <p class="mt-1 text-danger">{!!$errors->first('department_id')!!}</p>
           @endif
         </div>
+        <div class="form-group" style="display: none;" id="department_selector">
+            <label for="input_suffix">Department</label>
+            {!!Form::select("department_id", $department, old('department_id'), ['id' => "input_department_id", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('department_id') ? 'is-invalid' : NULL)])!!}
+            @if($errors->first('department_id'))
+            <p class="mt-1 text-danger">{!!$errors->first('department_id')!!}</p>
+            @endif
+          </div>
         <div class="form-group">
           <label for="input_title">Processing Fee <code style="font-size: 12px;"><i>Note: Input 0 If there is no processing Fee</i></code></label>
           <input type="text" class="form-control {{$errors->first('processing_fee') ? 'is-invalid' : NULL}}" id="input_title" name="processing_fee" placeholder="Payment Fee" value="{{old('processing_fee')}}">
@@ -79,6 +86,7 @@
           {!!Form::select("collection_id", $collections, old('collection_id'), ['id' => "collection_id", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('collection_id') ? 'is-invalid' : NULL)])!!}
           @if($errors->first('collection_id'))
           <p class="mt-1 text-danger">{!!$errors->first('collection_id')!!}</p>
+
           @endif
         </div>
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>

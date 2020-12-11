@@ -30,6 +30,7 @@
                             </form>
                             <form class="create-form" method="POST"  action="{{ route('web.business.create') }}" enctype="multipart/form-data">
                             {!!csrf_field()!!}
+                            <input type="hidden" name="BusinessID" value="{{ $business['BusinessID'] ?? '' }}">
                             <h5 class="text-title text-uppercase">Business Information</h5>
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
@@ -117,7 +118,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Line of Business</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_line') ? 'is-invalid': NULL  }}"  name="business_line" value="{{old('business_line') }}">
+                                        {!!Form::select("business_line[]", $lob ?? [],old('business_line'), ['id' => "input_business_line", 'multiple' => 'multiple','class' => "custom-select select2 mb-2 mr-sm-2 ".($errors->first('business_line') ? 'is-invalid' : NULL)])!!}
                                         @if($errors->first('business_line'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('business_line')}}</small>
                                         @endif
@@ -133,8 +134,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <input type="hidden" class="form-control" name="region_name" id="input_region_name" value="{{old('region_name')}}">
-                            <input type="hidden" class="form-control" name="town_name" id="input_town_name" value="{{old('town_name')}}">
+                            <input type="hidden" class="form-control" name="region_name" id="input_region_name" value="{{old('region_name', 'REGION IX (ZAMBOANGA PENINSULA)')}}">
+                            <input type="hidden" class="form-control" name="town_name" id="input_town_name" value="{{old('town_name', 'ZAMBOANGA DEL SUR - CITY OF ZAMBOANGA')}}">
                             <input type="hidden" class="form-control" name="brgy_name" id="input_brgy_name" value="{{old('brgy_name')}}">
 
                             <div class="row">
@@ -237,6 +238,77 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead class="text-center">
+                                                <th class="text-form text-uppercase">Line of Business</th>
+                                            </thead>
+                                            <tbody class="multi-field-wrapper">
+                                                @if (!empty($lob))
+                                                    @foreach ($lob as $key => $item)
+                                                    <div class="multi-fields">
+                                                        <div class="multi-field">
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="text" class="form-control form-control-sm" name="line_of_business[]" value="{{ $item }}">
+                                                                    <button type="button" class="btn btn-danger">Remove</button>
+                                                                </td>
+                                                            </tr>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach
+                                                    <tr>
+                                                        <td>
+                                                            <input type="text" class="form-control form-control-sm" name="line_of_business[]" value="">
+                                                        </td>
+                                                    </tr>
+                                                @else
+                                                <tr>
+                                                    <td>
+                                                        <input type="text" class="form-control form-control-sm" name="line_of_business[]" value="">
+                                                    </td>
+                                                </tr>
+                                                @endif
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button type="button" class="btn badge-primary-2 text-white mr-2 add-field" style="float: left;">hindi ako gumagana wag i-click</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                {{-- <div class="multi-field-wrapper">
+                                    <div class="multi-fields">
+                                        <div class="multi-field">
+                                            <input type="text" name="stuff[]">
+                                            <button type="button" class="remove-field">Remove</button>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="add-field">Add field</button>
+                                </div> --}}
+                                <script>
+                                    $(function(){
+                                        function addField( $wrapper ) {
+                                            var $elem = $('.multi-field:first-child', $wrapper).clone(true).appendTo($wrapper).find('td');
+                                            $elem.val('').focus();
+                                            return $elem;
+                                        }
+                                        $('.multi-field-wrapper').each(function() {
+                                            var $wrapper = $('.multi-fields', this);
+                                            $(".add-field", $(this)).click(function(e) {
+                                                addField( $wrapper )
+                                                console.log('asdsad');
+                                            });
+                                            $('.multi-field .remove-field', $wrapper).click(function() {
+                                                if ($('.multi-field', $wrapper).length > 1)
+                                                    $(this).parent('.multi-field').remove();
+                                            });
+                                        });
+                                    })
+                                </script>
+                            </div>
                         </div>
                     </div>
                     <div class="card">
@@ -299,9 +371,23 @@
 
 
 @stop
+@section('page-styles')
+<link rel="stylesheet" type="text/css" href="{{asset('system/vendors/select2/select2.min.css')}}"/>
+<style type="text/css">
+  .is-invalid{
+    border: solid 2px;
+  }
+  .select2-container--default .select2-selection--multiple .select2-selection__choice{
+    font-size: 18px;
+  }
+  span.select2.select2-container{
+    width: 100% !important;
+  }
+</style>
+@endsection
 
 @section('page-scripts')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 
 <script type="text/javascript">
      $.fn.get_region = function(input_region,input_province,input_city,input_brgy,selected){
@@ -394,9 +480,12 @@
       });
     }
      $(function(){
-
-        $(this).get_region("#input_region","#input_province","#input_town","#input_brgy","{{old('region')}}")
-
+        $('.select2').select2({
+            tags: true,
+        });
+        load_barangay();
+        $(this).get_region("#input_region","#input_province","#input_town","#input_brgy","{{old('region', '090000000')}}")
+        $(this).get_city("090000000", "#input_town", "#input_brgy", "{{old('town', '097332000')}}");
         $("#input_region").on("change",function(){
             var _val = $(this).val();
             var _text = $("#input_region option:selected").text();
@@ -412,6 +501,14 @@
             $('#input_zipcode').val('');
             $('#input_town_name').val(_text);
         });
+
+        function load_barangay() {
+            var _val = "097332000";
+            var _text = "ZAMBOANGA DEL SUR - CITY OF ZAMBOANGA";
+            $(this).get_brgy(_val, "#input_brgy", "");
+            $('#input_zipcode').val('');
+            $('#input_town_name').val(_text);
+        }
 
         @if(strlen(old('region')) > 0)
             $(this).get_city("{{old('region')}}", "#input_town", "#input_brgy", "{{old('town')}}");

@@ -76,7 +76,9 @@ class ApplicationController extends Controller
 			$new_application->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_application->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			// $new_application->processing_days = $request->get('processing_days');
-			$new_application->requirements_id = implode(",", $request->get('requirements_id'));
+            // $new_application->requirements_id = implode(",", $request->get('requirements_id'));
+			$new_application->collection_id = $request->get('define_collection_fee');
+            $new_application->application_type = $request->get('application_type');
 			$new_application->save();
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -85,7 +87,7 @@ class ApplicationController extends Controller
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
 			return redirect()->back();
 		}
 	}

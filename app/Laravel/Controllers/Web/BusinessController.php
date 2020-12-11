@@ -10,6 +10,7 @@ use App\Laravel\Requests\Web\TransactionRequest;
 use App\Laravel\Requests\Web\UploadRequest;
 use App\Laravel\Requests\Web\BusinessRequest;
 use App\Laravel\Models\Business;
+use App\Laravel\Models\BusinessLine;
 use App\Laravel\Requests\Web\EditBusinessRequest;
 /*
  * Models
@@ -63,7 +64,11 @@ class BusinessController extends Controller
                 session()->flash('notification-msg', "Business validated");
 
                 $this->data['business'] = $response->content['data'];
-
+                foreach ($this->data['business']['LineOfBusiness'] as $key => $value) {
+                    if(!empty($value['Particulars'])){
+                        $this->data['lob'][] = $value['Particulars'];
+                    }
+                }
             } else {
                 session()->flash('notification-status', "failed");
                 session()->flash('notification-msg', "Business not found");
@@ -77,7 +82,7 @@ class BusinessController extends Controller
 
     }
 
-	public function store(BusinessRequest $request){
+	public function store(PageRequest $request){
 		$auth = Auth::guard('customer')->user();
 
 		DB::beginTransaction();
@@ -88,9 +93,9 @@ class BusinessController extends Controller
 			$new_business->business_type = $request->get('business_type');
 			$new_business->dominant_name = $request->get('dominant_name');
 			$new_business->business_name = $request->get('business_name');
-            $new_business->business_line = $request->get('business_line');
+            $new_business->business_line = implode(",", $request->get('business_line'));
 
-			$new_business->business_id_no = $request->get('business_id_no');
+			$new_business->business_id_no = $request->get('BusinessID');
             $new_business->no_of_male_employee = $request->get('no_male_employee');
             $new_business->no_of_female_employee = $request->get('no_female_employee');
             $new_business->male_residing_in_city = $request->get('male_residing_in_city');
@@ -114,7 +119,16 @@ class BusinessController extends Controller
 			$new_business->sss_no = $request->get('sss_no');
 			$new_business->philhealth_no = $request->get('philhealth_no');
 			$new_business->pagibig_no = $request->get('pagibig_no');
-			$new_business->save();
+            $new_business->save();
+
+
+            foreach ($request->business_line as $key => $v) {
+                $data = [
+                    'business_id' => $new_business->id,
+                    'name' => $request->business_line[$v],
+                ];
+                BusinessLine::insert($data);
+            }
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "New Bureau/Office has been added.");
