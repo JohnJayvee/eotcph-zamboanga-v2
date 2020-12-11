@@ -30,7 +30,6 @@ class UpdateBusinessTableUpdateBusinessCv extends Migration
             $table->string('rep_tin')->nullable();
 
             $table->string('business_area')->nullable();
-            $table->string('website_url')->nullable();
 
             $table->string('lessor_fullname')->nullable();
             $table->string('lessor_gender')->nullable();
@@ -78,7 +77,6 @@ class UpdateBusinessTableUpdateBusinessCv extends Migration
                 'rep_position',
                 'rep_tin',
                 'business_area',
-                'website_url',
                 'lessor_fullname',
                 'lessor_gender',
                 'lessor_monthly_rental',
