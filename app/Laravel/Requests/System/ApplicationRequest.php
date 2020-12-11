@@ -20,6 +20,7 @@ class ApplicationRequest extends RequestManager{
 		}
 		if($this->get('type') == "business"){
 			$rules['permit_type'] = "required";
+			$rules['collection_id'] = "required";
 		}
 		return $rules;
 	}

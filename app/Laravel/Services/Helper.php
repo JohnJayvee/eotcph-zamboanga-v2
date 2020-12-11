@@ -4,6 +4,7 @@ namespace App\Laravel\Services;
 use App\Laravel\Models\Transaction;
 use App\Laravel\Models\TaxCertificate;
 use App\Laravel\Models\Violators;
+use App\Laravel\Models\CollectionOfFees;
 use Route,Str,Carbon,Input,DB,DateTime,DateInterval,DatePeriod;
 
 class Helper{
@@ -84,6 +85,14 @@ class Helper{
 		if($length < 15) return 1;
 		if($length >= 15 ) return 0.9;
 
+	}
+
+	public static function total_breaKdown($id = NULL){
+
+		$total = CollectionOfFees::find($id);
+
+		$total_amount = $total->permit_fee + $total->electrical_fee + $total->plumbing_fee + $total->mechanical_fee + $total->signboard_fee + $total->zoning_fee + $total->certification_fee_cvo + $total->health_certificate_fee + $total->certification_fee_tetuan + $total->garbage_fee + $total->inspection_fee + $total->sanitary_inspection_fee + $total->sticker;
+		return $total_amount;
 	}
 	public static function number_of_offense($id,$transaction_id,$superscript = false){
 

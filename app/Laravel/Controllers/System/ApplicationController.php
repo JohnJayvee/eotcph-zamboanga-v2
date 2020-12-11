@@ -30,6 +30,8 @@ class ApplicationController extends Controller
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->data['types'] = ['' => "Choose Application Type",'e_submission' => "E-Submission" , 'business' => "Business Transaction"];
 		$this->data['permit_types'] = ['' => "Choose Permit Type",'bnrs' => "BNRS" , 'business_clearance' => "Business Clearance",'business_permit' => "Business Permit",'occupational_permit'=>"Occupational Permit",'bfp_certificate' => "BFP Certificate" , 'sanitary_permit' => "Sanitary Permit" , 'bir_2303' => "BIR 2303" , 'bir_1921' => "BIR 1921"];
+        $this->data['collections'] = CollectionOfFees::all()->pluck('collection_name', 'id');
+
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
 	}
 
@@ -60,7 +62,6 @@ class ApplicationController extends Controller
 	public function  create(PageRequest $request){
         $this->data['page_title'] .= "Application - Add new record";
 
-        $this->data['collections'] = CollectionOfFees::all()->pluck('collection_name', 'id');
 		return view('system.application.create',$this->data);
 	}
 	public function store(ApplicationRequest $request){
@@ -71,6 +72,7 @@ class ApplicationController extends Controller
 			$new_application->name = $request->get('name');
 			$new_application->type = $request->get('type');
 			$new_application->permit_type = $request->get('permit_type');
+			$new_application->collection_id = $request->get('collection_id');
 			$new_application->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_application->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			// $new_application->processing_days = $request->get('processing_days');
@@ -107,6 +109,7 @@ class ApplicationController extends Controller
 			$application->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			$application->processing_days = $request->get('processing_days');
 			$application->requirements_id = implode(",", $request->get('requirements_id'));
+			$application->collection_id = $request->get('collection_id');
 			$application->save();
 
 			DB::commit();

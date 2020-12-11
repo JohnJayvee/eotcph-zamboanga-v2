@@ -10,7 +10,8 @@ use App\Laravel\Requests\PageRequest;
 /*
  * Models
  */
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application,ApplicationRequirements,TransactionRequirements};
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application,ApplicationRequirements,TransactionRequirements,CollectionOfFees};
+use App\Laravel\Requests\System\BPLORequest;
 
 
 use App\Laravel\Events\SendApprovedReference;
@@ -126,10 +127,33 @@ class BusinessTransactionController extends Controller
 		$this->data['attachments'] = TransactionRequirements::where('transaction_id',$id)->get();
 		$this->data['transaction'] = $request->get('business_transaction_data');
 		$id = $this->data['transaction']->requirements_id;
-
 		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $id))->get();
-		
+		$collection_id = Application::find($this->data['transaction']->application_id);
+		$this->data['department'] =  Department::pluck('name','id')->toArray();
+		$this->data['breakdown_collection'] = CollectionOfFees::find($collection_id->collection_id);
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.business-transaction.show',$this->data);
+	}
+
+	public function bplo_approved (BPLORequest $request ){
+		DB::beginTransaction();
+		try{
+			$transaction_id = $request->get('transaction_id');
+
+			$transaction = BusinessTransaction::find($transaction_id);
+
+			$transaction->department_destination = implode(",", $request->get('department_id'));
+			$transaction->save();
+
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "Application had been modified.");
+			return redirect()->route('system.business_transaction.pending');
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
 	}
 }
