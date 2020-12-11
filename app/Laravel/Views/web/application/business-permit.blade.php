@@ -28,7 +28,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business ID. No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_id_no') ? 'is-invalid': NULL  }}"  name="business_id_no" value="{{old('business_id_no', $business->id) }}">
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_id_no') ? 'is-invalid': NULL  }}"  name="business_id_no" value="{{old('business_id_no', $business->business_id_no) }}">
                                         @if($errors->first('business_id_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('business_id_no')}}</small>
                                         @endif
@@ -758,6 +758,46 @@
                                                 </tr>
                                                 @endforeach
                                             </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <th class="text-title">Requirment Name</th>
+                                                <th class="text-title">File</th>
+                                            </thead>
+                                            <tr>
+                                                <td>BN Certificate</td>
+                                                <td><input type="file"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Barangay Clearance</td>
+                                                <td><input type="file"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Occupancy Permit</td>
+                                                <td><input type="file"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Land Title (Home based) *If owned</td>
+                                                <td><input type="file"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Authorization from Owner *If rent</td>
+                                                <td><input type="file"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Actual Photo of Establishment</td>
+                                                <td><input type="file"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>BIR ITR Form</td>
+                                                <td><input type="file"></td>
+                                            </tr>
                                         </table>
                                     </div>
                                 </div>

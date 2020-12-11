@@ -63,8 +63,7 @@ class AuthController extends Controller{
 	}
 
 	public function register(){
-        // session()->put('register.progress', 1);
-		$this->data['page_title'] = " :: Create Account";
+        $this->data['page_title'] = " :: Create Account";
 		return view('web.auth.registration',$this->data);
     }
 
@@ -90,7 +89,7 @@ class AuthController extends Controller{
         Event::dispatch('send-customer-otp-email', $notification_data);
 
     }
-	public function store(PageRequest $request){
+	public function store(RegisterRequest $request){
 
         switch(session('register.progress',1)){
             case 1:
@@ -115,21 +114,24 @@ class AuthController extends Controller{
 
                 session()->put('register.fname', $request->fname);
                 session()->put('register.lname', $request->lname);
-                session()->put('register.mname', $request->fname);
+                session()->put('register.mname', $request->mname);
                 session()->put('register.email', $request->email);
                 session()->put('register.contact_number', $request->contact_number);
+                session()->put('register.region', $request->region);
                 session()->put('register.region_name', $request->region_name);
                 session()->put('register.town', $request->town);
                 session()->put('register.town_name', $request->town_name);
-                session()->put('register.barangay', $request->barangay);
-                session()->put('register.barangay_name', $request->barangay_name);
+                session()->put('register.barangay', $request->brgy);
+                session()->put('register.barangay_name', $request->brgy_name);
                 session()->put('register.street_name', $request->street_name);
                 session()->put('register.unit_number', $request->unit_number);
                 session()->put('register.zipcode', $request->zipcode);
+                session()->put('register.birthdate', $request->birthdate);
                 session()->put('register.tin_no', $request->tin_no);
                 session()->put('register.sss_no', $request->sss_no);
                 session()->put('register.phic_no', $request->phic_no);
                 session()->put('register.password', bcrypt($request->get('password')));
+                session()->put('register.password_uncrypt', $request->get('password'));
 
                 break;
             default:
@@ -152,11 +154,11 @@ class AuthController extends Controller{
                     $new_customer->contact_number = session('register.contact_number');
 
                     $new_customer->region = session('register.region');
-                    $new_customer->region_name =session('register.region_name');
+                    $new_customer->region_name = session('register.region_name');
                     $new_customer->town = session('register.town');
                     $new_customer->town_name = session('register.town_name');
                     $new_customer->barangay = session('register.barangay');
-                    $new_customer->barangay_name= session('register.barangay_name');
+                    $new_customer->barangay_name = session('register.barangay_name');
                     $new_customer->street_name = session('register.street_name');
                     $new_customer->unit_number = session('register.unit_number');
                     $new_customer->zipcode = session('register.zipcode');
