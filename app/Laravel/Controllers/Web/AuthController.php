@@ -46,12 +46,18 @@ class AuthController extends Controller{
 
 			if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password])){
 
-				$user = Auth::guard('customer')->user();
-				session()->put('auth_id', Auth::guard('customer')->user()->id);
-				session()->flash('notification-status','success');
-				session()->flash('notification-msg',"Welcome to EOTC Portal, {$user->full_name}!");
+				if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'approved'])){
+                    $user = Auth::guard('customer')->user();
+                    session()->put('auth_id', Auth::guard('customer')->user()->id);
+                    session()->flash('notification-status','success');
+                    session()->flash('notification-msg',"Welcome to EOTC Portal, {$user->full_name}!");
 
-				return redirect()->route('web.business.index');
+                    return redirect()->route('web.business.index');
+                } else {
+                    session()->flash('notification-status','error');
+                    session()->flash('notification-msg','BPLO Activation Required.');
+                    return redirect()->back();
+                }
 			}
 			session()->flash('notification-status','error');
 			session()->flash('notification-msg','Wrong username or password.');
@@ -147,6 +153,7 @@ class AuthController extends Controller{
                         DB::commit();
                     }
                     $new_customer = new Customer;
+                    $new_customer->status = 'pending';
                     $new_customer->fname = session('register.fname');
                     $new_customer->lname = session('register.lname');
                     $new_customer->mname = session('register.mname');

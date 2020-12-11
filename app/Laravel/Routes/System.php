@@ -144,6 +144,16 @@ Route::group(['as' => "auth."], function(){
             Route::get('edit/{id?}',['as' => "edit",'uses' => "CollectionOfFeesController@edit"]);
 			Route::post('edit/{id?}',['uses' => "CollectionOfFeesController@update"]);
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "CollectionOfFeesController@destroy"]);
+        });
+
+
+        Route::group(['as' => "bplo.",'prefix' => "bplo"], function(){
+			Route::get('/',['as' => "index",'uses' => "BPLOController@index"]);
+            Route::get('create',['as' => "create",'uses' => "BPLOController@create"]);
+            Route::post('create',['uses' => "BPLOController@store"]);
+            Route::get('edit/{id?}',['as' => "edit",'uses' => "BPLOController@edit"]);
+			Route::post('edit/{id?}',['uses' => "BPLOController@update"]);
+			Route::any('delete/{id?}',['as' => "destroy",'uses' => "BPLOController@destroy"]);
 		});
 
 		Route::group(['as' => "processor.",'prefix' => "processor"], function(){

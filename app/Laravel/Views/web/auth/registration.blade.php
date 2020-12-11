@@ -203,13 +203,21 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">Government ID 1 (Required)</label>
-                                <input type="file" class="form-control form-control-sm" name="upload_1" accept="image/x-png,image/gif,image/jpeg" />
+                                <input type="file" class="form-control form-control-sm" name="upload_id_1" accept="image/x-png,image/gif,image/jpeg" />
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">Government ID 2 (Required)</label>
-                                <input type="file" class="form-control form-control-sm" name="upload_2" accept="image/x-png,image/gif,image/jpeg" />
+                                <input type="file" class="form-control form-control-sm" name="upload_id_2" accept="image/x-png,image/gif,image/jpeg" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="text-form pb-2">Business Permit (Required)</label>
+                                <input type="file" class="form-control form-control-sm" name="upload_business_permit" accept="image/x-png,image/gif,image/jpeg" />
                             </div>
                         </div>
                     </div>
