@@ -53,8 +53,12 @@ class AuthController extends Controller{
                     session()->flash('notification-msg',"Welcome to EOTC Portal, {$user->full_name}!");
 
                     return redirect()->route('web.business.index');
-                } else {
+                } else if (Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'declined'])){
                     session()->flash('notification-status','error');
+                    session()->flash('notification-msg','Your Account has been Declined.');
+                    return redirect()->back();
+                } else if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'pending'])){
+                    session()->flash('notification-status','warning');
                     session()->flash('notification-msg','BPLO Activation Required.');
                     return redirect()->back();
                 }
