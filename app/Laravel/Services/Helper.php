@@ -5,6 +5,8 @@ use App\Laravel\Models\Transaction;
 use App\Laravel\Models\TaxCertificate;
 use App\Laravel\Models\Violators;
 use App\Laravel\Models\CollectionOfFees;
+use App\Laravel\Models\Department;
+
 use Route,Str,Carbon,Input,DB,DateTime,DateInterval,DatePeriod;
 
 class Helper{
@@ -86,8 +88,12 @@ class Helper{
 		if($length >= 15 ) return 0.9;
 
 	}
+	public static function department_name($id = NULL){
+		$department = Department::find($id);
 
-	public static function total_breaKdown($id = NULL){
+		return $department->name;
+	}
+	public static function total_breakdown($id = NULL){
 
 		$total = CollectionOfFees::find($id);
 

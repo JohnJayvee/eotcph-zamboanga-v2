@@ -48,10 +48,17 @@
           <div class="col-md-6 mt-4">
             <p class="text-title fw-500">Transaction Details:</p>
             <p class="text-title fw-500">Application : <span class="text-black">{{str::title($transaction->application_name)}}</span></p>
-            <p class="text-title fw-500">Application Status: <span class="badge  badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::title($transaction->status)}}</span></p>
-            <p class="text-title fw-500">Transacation Status: <span class="badge  badge-{{Helper::status_badge($transaction->transaction_status)}} p-2">{{Str::title($transaction->transaction_status)}}</span></p>
-            <p class="fw-500" style="color: #DC3C3B;">Processing Fee: Php {{Helper::money_format($transaction->amount) ?: "0" }} [{{$transaction->processing_fee_code}}]</p>
+            <p class="text-title fw-500">Status: <span class="badge  badge-{{Helper::status_badge($transaction->transaction_status)}} p-2">{{Str::title($transaction->transaction_status)}}</span></p>
+            <p class="fw-500" style="color: #DC3C3B;">Processing Fee: Php {{Helper::money_format($transaction->processing_fee) ?: "0" }} [{{$transaction->processing_fee_code}}]</p>
             <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p>
+            <p class="text-title fw-500">Approved Department: 
+            <span class="text-black">
+              @if($transaction->approved_department)
+                @foreach(explode(",", $transaction->approved_department) as $department)
+                  {{Helper::department_name($department)}}
+                @endforeach
+              @endif
+            </span></p>
           </div>
           <div class="col-md-6 mt-4">
             <p class="text-title fw-500">Owners Name: <span class="text-black">{{str::title($transaction->owner ? $transaction->owner->full_name : $transaction->customer_name)}}</span></p>
@@ -138,10 +145,8 @@
         </div>
       </div>
     </div>
-    @if(in_array($transaction->status, ['PENDING', 'ONGOING']))
-      <a data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=approved&collection_id={{$breakdown_collection->id}}"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
-      <a  data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=declined" class="btn btn-danger mt-4 btn-decline border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}""><i class="fa fa-times-circle"></i> Decline Transactions</a>
-    @endif
+    <a data-url="{{route('system.transaction.process',[$transaction->id])}}?status_type=approved"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
+    <a  data-url="{{route('system.transaction.process',[$transaction->id])}}?status_type=declined" class="btn btn-danger mt-4 btn-decline border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}""><i class="fa fa-times-circle"></i> Decline Transactions</a>
   </div>
 </div>
 @stop
@@ -207,7 +212,7 @@
         }
       });
     });
-    /*$(".btn-approved").on('click', function(){
+    $(".btn-approved").on('click', function(){
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
@@ -226,22 +231,6 @@
         }
         if (result.value) {
           window.location.href = url + "&amount="+result.value;
-        }
-      });
-    });*/
-    $(".btn-approved").on('click', function(){
-      var url = $(this).data('url');
-      var self = $(this)
-      Swal.fire({
-        title: 'Are you sure you want to approved this application ?',
-        text: "You will not be able to undo this action, proceed?",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: `Proceed`,
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          window.location.href = url
         }
       });
     });

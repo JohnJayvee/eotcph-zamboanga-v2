@@ -73,4 +73,13 @@ class BusinessTransaction extends Model{
     public function type(){
         return $this->BelongsTo("App\Laravel\Models\Application",'application_id','id');
     }
+
+    public function department(){
+        return $this->belongsToMany('App\Laravel\Models\Department');
+    }
+     public function admin(){
+        return $this->BelongsTo("App\Laravel\Models\User",'processor_user_id','id');
+    }
+
+
 }

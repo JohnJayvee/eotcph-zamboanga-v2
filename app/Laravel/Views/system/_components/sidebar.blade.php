@@ -59,7 +59,7 @@
         @endif
       </div>
     </li>
-    <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.transaction.show','system.business_transaction.pending')) ? 'active' : ''}}">
+    <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.business_transaction.show','system.business_transaction.pending','system.business_transaction.approved','system.business_transaction.declined')) ? 'active' : ''}}">
       <a class="nav-link" data-toggle="collapse" href="#business_transaction" aria-expanded="false" aria-controls="business_transaction">
         <i class="fa fa-file menu-icon"></i>
         <span class="menu-title">Business Transactions</span>
@@ -68,6 +68,16 @@
       <div class="collapse" id="business_transaction">
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{{route('system.business_transaction.pending')}}">Pending
+            <!-- @if($counter['pending'] > 0)
+              <span class="badge badge-sm badge-primary">{{$counter['pending']}}</span>
+            @endif -->
+          </a></li>
+          <li class="nav-item"> <a class="nav-link" href="{{route('system.business_transaction.approved')}}">Approved
+            <!-- @if($counter['pending'] > 0)
+              <span class="badge badge-sm badge-primary">{{$counter['pending']}}</span>
+            @endif -->
+          </a></li>
+          <li class="nav-item"> <a class="nav-link" href="{{route('system.business_transaction.declined')}}">Declined
             <!-- @if($counter['pending'] > 0)
               <span class="badge badge-sm badge-primary">{{$counter['pending']}}</span>
             @endif -->
