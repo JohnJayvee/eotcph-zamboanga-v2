@@ -78,7 +78,6 @@ class ApplicationController extends Controller
 			// $new_application->processing_days = $request->get('processing_days');
             // $new_application->requirements_id = implode(",", $request->get('requirements_id'));
 			$new_application->collection_id = $request->get('define_collection_fee');
-            $new_application->application_type = $request->get('application_type');
 			$new_application->save();
 			DB::commit();
 			session()->flash('notification-status', "success");
