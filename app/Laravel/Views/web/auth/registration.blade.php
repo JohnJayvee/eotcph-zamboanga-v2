@@ -354,7 +354,7 @@
       });
     }
     $(function(){
-        $('.modal').modal('show');
+        $('.otp-modal').modal('show');
         $('.datepicker').datepicker({
           format : "yyyy-mm-dd",
           maxViewMode : 2,
