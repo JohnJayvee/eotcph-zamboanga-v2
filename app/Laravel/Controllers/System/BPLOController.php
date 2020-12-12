@@ -5,20 +5,24 @@ namespace App\Laravel\Controllers\System;
 /*
  * Request Validator
  */
-use Carbon,Auth,DB,Str,Helper;
+use App\Laravel\Models\Customer;
 use App\Laravel\Models\Department;
 /*
  * Models
  */
 use App\Laravel\Models\Application;
+use Carbon,Auth,DB,Str,Helper,Event;
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Models\CollectionOfFees;
 use App\Laravel\Models\ApplicationRequirements;
-use App\Laravel\Models\Customer;
 /* App Classes
  */
 use App\Laravel\Requests\System\ApplicationRequest;
 use App\Laravel\Requests\System\CollectionFeeRequest;
+use App\Laravel\Events\SendCustomerRegistractionActive;
+use App\Laravel\Events\SendCustomerRegistractionDecline;
+use App\Laravel\Events\SendCustomerRegistractionActiveEmail;
+use App\Laravel\Events\SendCustomerRegistractionDeclinedEmail;
 
 class BPLOController extends Controller
 {
@@ -34,7 +38,7 @@ class BPLOController extends Controller
 	}
 
 	public function  index(PageRequest $request){
-		$this->data['page_title'] = "Business Processing and Licensing Office";
+		$this->data['page_title'] = "Registrants";
 		$auth = Auth::user();
 
         $this->data['customer'] = Customer::all()->paginate($this->per_page);
@@ -74,15 +78,43 @@ class BPLOController extends Controller
             $update_customer = Customer::find($id);
             $update_customer->status = $request->status;
             $update_customer->save();
-			DB::commit();
-			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Registrant has been.".$request->status);
-			return redirect()->route('system.bplo.index');
+            DB::commit();
+
+        $insert[] = [
+            'contact_number' => $request->contact_number,
+            'email' => $update_customer->email,
+            'name' => $update_customer->name,
+        ];
+
+        if($request->status == 'approved'){
+
+            // via SMS
+            // $notification_data = new SendCustomerRegistractionActive($insert);
+            // Event::dispatch('send-customer-registration-active', $notification_data);
+
+            // via Email
+            $notification_data = new SendCustomerRegistractionActiveEmail($insert);
+            Event::dispatch('send-customer-registration-active-email', $notification_data);
+        } else {
+
+            //  via SMS
+            // $notification_data = new SendCustomerRegistractionDecline($insert);
+            // Event::dispatch('send-customer-registration-declined', $notification_data);
+
+            // via Email
+            $notification_data = new SendCustomerRegistractionDeclinedEmail($insert);
+            Event::dispatch('send-customer-registration-declined-email', $notification_data);
+        }
+
+        session()->flash('notification-status', "success");
+        session()->flash('notification-msg', "Registrant has been.".$request->status);
+        return redirect()->route('system.bplo.index');
+
 		}catch(\Exception $e){
-			DB::rollback();
-			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
-			return redirect()->back();
+        DB::rollback();
+        session()->flash('notification-status', "failed");
+        session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
+        return redirect()->back();
 		}
 	}
 

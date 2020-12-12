@@ -21,6 +21,7 @@
       <table class="table table-striped table-wrap" style="table-layout: fixed;">
         <thead>
           <tr>
+            <th width="25%" class="text-title p-3">Date Registered</th>
             <th width="25%" class="text-title p-3">Registrant Name</th>
             <th width="25%" class="text-title p-3">Status</th>
             <th width="10%" class="text-title p-3">Action</th>
@@ -29,6 +30,7 @@
         <tbody>
           @forelse($customer as $customers)
           <tr>
+            <td>{{ Helper::date_format($customers->created_at)}}</td>
             <td>{{ $customers->name}}</td>
             <td><span class="badge badge-{{ Helper::status_badge($customers->status)}}">{{ $customers->status}}</span></th>
             <td >

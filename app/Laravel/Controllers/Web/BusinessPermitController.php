@@ -4,11 +4,12 @@ namespace App\Laravel\Controllers\Web;
 
 use App\Laravel\Models\Business;
 use App\Http\Controllers\Controller;
+use App\Laravel\Models\BusinessLine;
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Models\BusinessActivity;
 use Carbon,Auth,Str,Curl,Helper, DB, Log;
-use App\Laravel\Models\ApplicationBusinessPermit;
 use App\Laravel\Models\BusinessTransaction;
+use App\Laravel\Models\ApplicationBusinessPermit;
 use App\Laravel\Requests\Web\BusinessPermitRequest;
 
 class BusinessPermitController extends Controller{
@@ -17,7 +18,7 @@ class BusinessPermitController extends Controller{
 
 	public function __construct(){
 		parent::__construct();
-        
+
 	}
 
 	public function create(PageRequest $request){
@@ -27,6 +28,8 @@ class BusinessPermitController extends Controller{
             $this->data['business_profiles'] = Business::where('customer_id',$this->data['auth']->id)->get();
             $business = Business::find(session()->get('selected_business_id'));
             $this->data['business'] = $business;
+            $this->data['business_line'] = BusinessLine::where('business_id', session()->get('selected_business_id'))->get();
+
         }
         return view('web.application.business-permit', $this->data);
 	}

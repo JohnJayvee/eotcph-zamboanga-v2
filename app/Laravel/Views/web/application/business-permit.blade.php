@@ -19,19 +19,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Application No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('application_no') ? 'is-invalid': NULL  }}"  name="application_no" value="{{old('application_no') }}">
-                                        @if($errors->first('application_no'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('application_no')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">20-00001-e</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business ID. No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_id_no') ? 'is-invalid': NULL  }}"  name="business_id_no" value="{{old('business_id_no', $business->business_id_no) }}">
-                                        @if($errors->first('business_id_no'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('business_id_no')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->business_id_no }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -157,10 +151,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Date of Application</label>
-                                        <input type="date" class="form-control form-control-sm {{ $errors->first('application_date') ? 'is-invalid': NULL  }}"  name="application_date" value="{{old('application_date') }}">
-                                        @if($errors->first('application_date'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('application_date')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ now() }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -168,19 +159,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">DTI/SEC/CDA registration No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('dti_sec_cda_registration_no') ? 'is-invalid': NULL  }}"  name="dti_sec_cda_registration_no" value="{{old('dti_sec_cda_registration_no') }}">
-                                        @if($errors->first('dti_sec_cda_registration_no'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('dti_sec_cda_registration_no')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->dti_sec_cda_registration_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">DTI/SEC/CDA registration Date</label>
-                                        <input type="date" class="form-control form-control-sm {{ $errors->first('dti_sec_cda_registration_date') ? 'is-invalid': NULL  }}"  name="dti_sec_cda_registration_date" value="{{old('dti_sec_cda_registration_date') }}">
-                                        @if($errors->first('dti_sec_cda_registration_date'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('dti_sec_cda_registration_date')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->dti_sec_cda_registration_date }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -188,19 +173,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">CTC No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('ctc_no') ? 'is-invalid': NULL  }}"  name="ctc_no" value="{{old('ctc_no') }}">
-                                        @if($errors->first('ctc_no'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('ctc_no')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->ctc_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business TIN.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_tin') ? 'is-invalid': NULL  }}"  name="business_tin" value="{{old('business_tin') }}">
-                                        @if($errors->first('business_tin'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('business_tin')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->ctc_date_issue }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -211,51 +190,12 @@
                                         <p class="form-data text-success">{{ $business->business_type}}</p>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Frequency of Payment</label>
-                                        <select name="frequency_of_payment" id="" class="form-control">
-                                            <option value="Annualy">Annualy</option>
-                                            <option value="semi-annually">Semi-Annually</option>
-                                            <option value="quarterly">Quarterly</option>
-                                        </select>
-                                    </div>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="" class="text-form pb-2">Are you enjoying tax incentive from any Goverment Entity?</label>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-control form-control-sm" type="checkbox" name="checkbox" value="yes" style="width: 30px; height: 30px;">
-                                            <label class="my-2 mx-1" for="inlineCheckbox1">YES</label>
-                                            {{-- <small class="my-2" for="inlineCheckbox3">Please Specify entity:</small> --}}
-                                        </div>
-                                        <script>
-                                            $(function(){
-                                                $('input[name="checkbox"]').on('change', function () {
-                                                    $('input[name="checkbox"]').not(this).prop('checked', false);
-                                                    if($(this).val() == 'yes'){
-                                                        $('input[name="tax_incentive"]').val('');
-                                                        $('#checkYes').show();
-                                                    }
-                                                    if($(this).val() == 'no'){
-                                                        $('#checkYes').hide();
-                                                        $('input[name="tax_incentive"]').val('no');
-                                                    }
-                                                });
-                                            })
-                                        </script>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-control form-control-sm" type="checkbox" name="checkbox" value="no" style="width: 30px; height: 30px;">
-                                            <label class="my-2 mx-1" for="inlineCheckbox3">NO</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group" style="display:none;" id="checkYes">
-                                        <label class="text-form pb-2 text-title">Please Specify entity:</label>
-                                        <input type="text" class="form-control form-control-sm" name="tax_incentive">
+                                        <p class="form-data text-success">{{ $business->tax_incentive }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -269,10 +209,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Trade name / Franchise</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('trade_name') ? 'is-invalid': NULL  }}"  name="trade_name" value="{{old('trade_name') }}">
-                                        @if($errors->first('trade_name'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('trade_name')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->tradename }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -311,19 +248,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('rep_lastname') ? 'is-invalid': NULL  }}"  name="rep_lastname" value="{{old('rep_lastname') }}">
-                                        @if($errors->first('rep_lastname'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_lastname')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->rep_lastname }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('rep_firstname') ? 'is-invalid': NULL  }}"  name="rep_firstname" value="{{old('rep_firstname') }}">
-                                        @if($errors->first('rep_firstname'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_firstname')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->rep_firstname }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -331,19 +262,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('rep_middlename') ? 'is-invalid': NULL  }}"  name="rep_middlename" value="{{old('rep_middlename') }}">
-                                        @if($errors->first('rep_middlename'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_middlename')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->rep_middlename }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
-                                        <select name="rep_gender" id="" class="form-control">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
+                                        <p class="form-data text-success">{{ $business->rep_gender }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -351,26 +276,17 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Position</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('rep_position') ? 'is-invalid': NULL  }}"  name="rep_position" value="{{old('rep_position') }}">
-                                        @if($errors->first('rep_position'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_position')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->rep_position }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">TIN</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('rep_tin') ? 'is-invalid': NULL  }}"  name="rep_tin" value="{{old('rep_tin') }}">
-                                        @if($errors->first('rep_tin'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_tin')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->rep_tin }}</p>
                                     </div>
                                 </div>
                             </div>
                             <h5 class="text-title text-uppercase">Business Address</h5>
-                            <input type="hidden" class="form-control" name="business_region_name" id="input_region_name" value="{{old('business_region_name')}}">
-                            <input type="hidden" class="form-control" name="business_town_name" id="input_town_name" value="{{old('business_town_name')}}">
-                            <input type="hidden" class="form-control" name="business_brgy_name" id="input_brgy_name" value="{{old('business_brgy_name')}}">
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
@@ -444,10 +360,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business Area (Sq. m)</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_area') ? 'is-invalid': NULL  }}"  name="business_area" value="{{old('business_area',$auth->telephone_no) }}">
-                                        @if($errors->first('business_area'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('business_area')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->business_name }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -514,7 +427,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No.</label>
-                                        <p class="form-data text-success">{{ $auth->unit_no }}</p>
+                                        <p class="form-data text-success">{{ $auth->unit_number }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
@@ -562,19 +475,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Monthly Rental</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('lessor_monthly_rental') ? 'is-invalid': NULL  }}"  name="lessor_monthly_rental" value="{{old('lessor_monthly_rental',$auth->telephone_no) }}">
-                                        @if($errors->first('lessor_monthly_rental'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_monthly_rental')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_monthly_rental }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Start Date of Rental (MM/DD/YYYY)</label>
-                                        <input type="date" class="form-control form-control-sm {{ $errors->first('lessor_rental_date') ? 'is-invalid': NULL  }}"  name="lessor_rental_date" value="{{old('lessor_rental_date',$auth->telephone_no) }}">
-                                        @if($errors->first('lessor_rental_date'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_rental_date')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_rental_date }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -582,19 +489,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Name of Lessor / Corporation</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('lessor_fullname') ? 'is-invalid': NULL  }}"  name="lessor_fullname" value="{{old('lessor_fullname',$auth->telephone_no) }}">
-                                        @if($errors->first('lessor_fullname'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_fullname')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_fullname }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
-                                        <select name="lessor_gender" id="" class="form-control">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
+                                        <p class="form-data text-success">{{ $business->lessor_gender }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -602,10 +503,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                     <label for="exampleInputEmail1" class="text-form pb-2">Region</label>
-                                        {!!Form::select('region',[],old('region'),['id' => "input_region",'class' => "form-control form-control-sm classic ".($errors->first('lessor_region') ? 'border-red' : NULL)])!!}
-                                        @if($errors->first('lessor_region'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_region')}}</small>
-                                        @endif
+                                    <p class="form-data text-success">{{ $business->lessor_region_name }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -613,28 +511,19 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label class="text-form pb-2">City Municipality</label>
-                                        {!!Form::select('town',[],old('lessor_town'),['id' => "input_town",'class' => "form-control form-control-sm classic ".($errors->first('lessor_town') ? 'border-red' : NULL)])!!}
-                                        @if($errors->first('lessor_town'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_town')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_town_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-4">
                                     <div class="form-group">
                                         <label class="text-form pb-2">Barangay</label>
-                                        {!!Form::select('brgy',[],old('lessor_brgy'),['id' => "input_brgy",'class' => "form-control form-control-sm classic ".($errors->first('lessor_brgy') ? 'border-red' : NULL)])!!}
-                                        @if($errors->first('lessor_brgy'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_brgy')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_brgy_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label for="input_zipcode" class="text-form pb-2">Zipcode</label>
-                                        <input type="text" id="input_zipcode" class="form-control form-control-sm  {{ $errors->first('lessor_zipcode') ? 'is-invalid': NULL  }}" name="lessor_zipcode" value="{{old('lessor_zipcode')}}" readonly="readonly">
-                                        @if($errors->first('lessor_zipcode'))
-                                        <p class="help-block text-danger">{{$errors->first('lessor_zipcode')}}</p>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_zipcode }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -642,19 +531,13 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('lessor_unit_no') ? 'is-invalid': NULL  }}"  name="lessor_unit_no" value="{{old('lessor_unit_no') }}">
-                                        @if($errors->first('lessor_unit_no'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_unit_no')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_unit_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Street Address</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('lessor_street_address') ? 'is-invalid': NULL  }}"  name="lessor_street_address" value="{{old('lessor_street_address') }}">
-                                        @if($errors->first('lessor_street_address'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_street_address')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_street_address }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -662,10 +545,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('lessor_email') ? 'is-invalid': NULL  }}"  name="lessor_email" value="{{old('lessor_email',$auth->email) }}">
-                                        @if($errors->first('lessor_email'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_email')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -673,19 +553,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('lessor_mobile_no') ? 'is-invalid': NULL  }}"  name="lessor_mobile_no" value="{{old('lessor_mobile_no',$auth->mobile_no) }}">
-                                        @if($errors->first('lessor_mobile_no'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_mobile_no')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_mobile_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Telephone Number</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('lessor_tel_no') ? 'is-invalid': NULL  }}"  name="lessor_tel_no" value="{{old('lessor_tel_no',$auth->telephone_no) }}">
-                                        @if($errors->first('lessor_tel_no'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_tel_no')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->lessor_tel_no }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -694,19 +568,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Contact Person</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('emergency_contact_fullname') ? 'is-invalid': NULL  }}"  name="emergency_contact_fullname" value="{{old('emergency_contact_fullname',$auth->telephone_no) }}">
-                                        @if($errors->first('emergency_contact_fullname'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('emergency_contact_fullname')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->emergency_contact_fullname }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Tel. No</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('emergency_contact_tel_no') ? 'is-invalid': NULL  }}"  name="emergency_contact_tel_no" value="{{old('emergency_contact_tel_no',$auth->telephone_no) }}">
-                                        @if($errors->first('emergency_contact_tel_no'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('emergency_contact_tel_no')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->emergency_contact_tel_no }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -714,19 +582,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Mobile No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('emergency_contact_mobile_no') ? 'is-invalid': NULL  }}"  name="emergency_contact_mobile_no" value="{{old('emergency_contact_mobile_no',$auth->telephone_no) }}">
-                                        @if($errors->first('emergency_contact_mobile_no'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('emergency_contact_mobile_no')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->emergency_contact_mobile_no}}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email Address</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('emergency_contact_email') ? 'is-invalid': NULL  }}"  name="emergency_contact_email" value="{{old('emergency_contact_email',$auth->telephone_no) }}">
-                                        @if($errors->first('emergency_contact_email'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('emergency_contact_email')}}</small>
-                                        @endif
+                                        <p class="form-data text-success">{{ $business->emergency_contact_email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -741,10 +603,10 @@
                                                 <th class="text-title text-uppercase renew" style="display: none;">Renew (Gross Sales / Receipt)</th>
                                             </thead>
                                             <tbody>
-                                                @foreach (range(0,3) as $item)
-                                                <tr>
+                                                @foreach ($business_line as $key => $item)
+                                                <tr id="repeat_form">
                                                     <td>
-                                                        <input type="text" class="form-control form-control-sm" name="line_of_business[]">
+                                                        <input type="text" class="form-control form-control-sm" name="line_of_business[]" value="{{ $item->name }}">
                                                     </td>
                                                     <td>
                                                         <input type="number" class="form-control form-control-sm" name="no_of_units[]">
@@ -759,6 +621,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        <button class="btn btn-light btn-sm" id="repeater_add_activity" type="button"><i class="fa fa-plus mr-2"></i>Add New Business Line</button>
                                     </div>
                                 </div>
                             </div>
@@ -802,14 +665,32 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn badge-primary-2 text-white" style="float: right;">Apply</button>
+                            <button type="submit" class="btn badge-primary-2 text-white trigger-modal" style="float: right;">Apply</button>
                             <a href="{{route('web.business.index')}}" class="btn btn-light mr-2" style="float: right;">Cancel</a>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-
+        <!-- Modal -->
+        <div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <h1 class="text-success">Success</h1>
+                            <p style="font-weight: bold">This is to confirm that we have recieved your assessment request. We will process your request and will update you on the status. Thank you!</p>
+                            <a href="{{route('web.business.index')}}" class="btn btn-light text-success">Back to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('.trigger-modal').click(function (){
+                $('.modal').modal('show');
+            })
+        </script>
     </div>
 
 </section>
@@ -819,7 +700,6 @@
 @stop
 
 @section('page-scripts')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script type="text/javascript">
      $.fn.get_region = function(input_region,input_province,input_city,input_brgy,selected){
@@ -945,6 +825,10 @@
             $('#input_brgy_name').val(_text);
         });
 
+        $('#repeater_add_activity').on('click', function(){
+            var repeat_item = $("#repeat_form").eq(0).prop('outerHTML');
+            $("tbody").append(repeat_item)
+        });
     })
 </script>
 @endsection

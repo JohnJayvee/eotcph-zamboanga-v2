@@ -37,6 +37,18 @@ class EventServiceProvider extends ServiceProvider
         'send-customer-otp-email' => [
             'App\Laravel\Listeners\SendCustomerOTPEmailListener'
         ],
+        'send-customer-registration-active-email' => [
+            'App\Laravel\Listeners\SendCustomerRegistrationActiveEmailListener'
+        ],
+        'send-customer-registration-declined-email' => [
+            'App\Laravel\Listeners\SendCustomerRegistrationDeclinedEmailListener'
+        ],
+        'send-customer-registration-active' => [
+            'App\Laravel\Listeners\SendCustomerRegistrationActiveListener'
+        ],
+        'send-customer-registration-declined' => [
+            'App\Laravel\Listeners\SendCustomerRegistrationDeclinedListener'
+        ],
         'send-sms-approved' => [
             'App\Laravel\Listeners\SendApprovedReferenceListener'
         ],

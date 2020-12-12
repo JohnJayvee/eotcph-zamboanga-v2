@@ -9,17 +9,18 @@ namespace App\Laravel\Controllers\Web;
 use App\Laravel\Models\Customer;
 use App\Laravel\Listeners\SendCode;
 
+use App\Laravel\Models\CustomerOTP;
 use App\Http\Controllers\Controller;
-use Illuminate\Contracts\Auth\Guard;
 
 /*
  * Models
  */
-use App\Laravel\Requests\PageRequest;
+use App\Laravel\Models\CustomerFile;
 
+use Illuminate\Contracts\Auth\Guard;
+use App\Laravel\Requests\PageRequest;
 use App\Laravel\Events\SendCustomerOTP;
 use App\Laravel\Events\SendCustomerOTPEmail;
-use App\Laravel\Models\CustomerOTP;
 use App\Laravel\Requests\Web\RegisterRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Event,Session;
 
@@ -74,6 +75,7 @@ class AuthController extends Controller{
 
 	public function register(){
         $this->data['page_title'] = " :: Create Account";
+        // session()->forget('register');
 		return view('web.auth.registration',$this->data);
     }
 
@@ -99,7 +101,7 @@ class AuthController extends Controller{
         Event::dispatch('send-customer-otp-email', $notification_data);
 
     }
-	public function store(RegisterRequest $request){
+	public function store(PageRequest $request){
 
         switch(session('register.progress',1)){
             case 1:
@@ -180,6 +182,27 @@ class AuthController extends Controller{
                     $new_customer->password = session('register.password');
                     $new_customer->save();
 
+                    // $customer_id = $new_customer->id;
+                    // if(count(request('file')) > 0){
+                    //     foreach (request('file') as $key => $value) {
+
+                    //         $new_file = new CustomerFile;
+                    //         $file_type = 'business-permit';
+                    //         $ext = $value->getClientOriginalExtension();
+                    //         $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($key))) . "." . $ext;
+                    //         $file = FileUploader::upload($value, "uploads/{$customer_id}/file", $filename);
+                    //         $new_file->path = $file['path'];
+                    //         $new_file->directory = $file['directory'];
+                    //         $new_file->filename = $file['filename'];
+                    //         $new_file->storage = $file['source'];
+                    //         $new_file->application_id = $customer_id;
+                    //         $new_file->type = $file_type;
+                    //         $new_file->original_name = $request->file;
+                    //         $new_file->save();
+                    //     }
+                    // }
+
+
                     DB::commit();
                     session()->flash('notification-status', "success");
                     session()->flash('notification-msg','Successfully registered.');
@@ -187,8 +210,6 @@ class AuthController extends Controller{
                     return redirect()->route('web.login');
                 }catch(\Exception $e){
                     DB::rollback();
-
-                    dd($e->getMessage());
                    goto callback;
                 }
                 break;
