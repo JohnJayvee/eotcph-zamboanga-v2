@@ -8,7 +8,7 @@
          <h5 class="text-title pb-3"><i class="fa fa-pencil-alt"></i> CREATE ACCOUNT</h5>
         <div class="card login-signup-form" style="border-radius: 8px;">
             <form method="POST" action="" enctype="multipart/form-data">
-            {!!csrf_field()!!}
+            @csrf
                 <div class="card-body registration-card py-0">
                     <h5 class="text-title text-uppercase pt-5">Account Details</h5>
                     <div class="row">
@@ -201,38 +201,35 @@
                     <h5 class="text-title text-uppercase ">Upload Government ID</h5>
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group {{$errors->first('file') ? 'text-danger' : NULL}}">
                                 <label class="text-form pb-2">Government ID 1 (Required)</label>
-                                <input type="file" class="form-control form-control-sm" name="upload_1" accept="image/x-png,image/gif,image/jpeg" />
+                                <input type="file" class="form-control form-control-sm" name="file" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
+                                @if($errors->first('file'))
+                                <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group {{$errors->first('file') ? 'text-danger' : NULL}}">
                                 <label class="text-form pb-2">Government ID 2 (Required)</label>
-                                <input type="file" class="form-control form-control-sm" name="upload_2" accept="image/x-png,image/gif,image/jpeg" />
+                                <input type="file" class="form-control form-control-sm" name="file" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
+                                @if($errors->first('file'))
+                                <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                @endif
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="row">
+                    <div class="row">
                         <div class="col-md-6 col-lg-6">
-                            <label class="text-form pb-2">Application Requirements</label>
-                            <div class="form-group">
-                                <div class="upload-btn-wrapper">
-                                    <button class="btn vertical" style="color: #ADADAD">
-                                        <i class="fa fa-upload fa-4x" ></i>
-                                        <span class="pt-1">Upload Here</span>
-                                    </button>
-                                    <input type="file" name="file" class="form-control" id="file">
-                                </div>
+                            <div class="form-group {{$errors->first('file') ? 'text-danger' : NULL}}">
+                                <label class="text-form pb-2">Business Permit (Required)</label>
+                                <input type="file" class="form-control form-control-sm" name="file" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
                                 @if($errors->first('file'))
-                                    <label style="vertical-align: top;padding-top: 40px;color: red;" class="fw-500 pl-3">{{$errors->first('file')}}</label>
-                                @else
-                                    <label id="lblName" style="vertical-align: top;padding-top: 40px;" class="fw-500 pl-3"></label>
+                                <p class="help-block text-danger">{{$errors->first('file')}}</p>
                                 @endif
-
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                     @if (session('register.progress') == 2)
                     @include('web.auth.otp.modal')
                     @endif
@@ -357,7 +354,7 @@
       });
     }
     $(function(){
-        $('.modal').modal('show');
+        $('.otp-modal').modal('show');
         $('.datepicker').datepicker({
           format : "yyyy-mm-dd",
           maxViewMode : 2,

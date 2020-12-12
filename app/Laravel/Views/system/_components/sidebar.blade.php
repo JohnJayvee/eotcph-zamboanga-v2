@@ -83,8 +83,8 @@
             @endif -->
           </a></li>
         </ul>
-       
-      
+
+
       </div>
     </li>
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.other_customer.index','system.other_customer.create','system.other_transaction.index','system.other_transaction.show','system.other_customer.show','system.other_transaction.create')) ? 'active' : ''}}">
@@ -106,7 +106,13 @@
               <i class="fa fa-check-circle menu-icon"></i>
               <span class="menu-title">Collection of Fees</span>
             </a>
-          </li>
+        </li>
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.bplo.index')) ? 'active' : ''}}">
+            <a class="nav-link" href="{{route('system.bplo.index')}}">
+              <i class="fa fa-user menu-icon"></i>
+              <span class="menu-title">Registrants</span>
+            </a>
+        </li>
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.department.index','system.department.create','system.department.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.department.index')}}">
             <i class="fa fa-globe menu-icon"></i>

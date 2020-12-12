@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Laravel\Services;
 use App\Laravel\Models\Transaction;
@@ -26,7 +26,7 @@ class Helper{
 			case 'regular': $result = "Regular Session"; break;
 			case 'weekend_ot': $result = "Weekend OT"; break;
 			case 'regular_special_holiday': $result = "Regular/Special Holiday"; break;
-			default:  
+			default:
 				$result = Str::title(str_replace("_", " ", $type));
 		}
 		return $result;
@@ -34,16 +34,16 @@ class Helper{
 	public static function attendance_badge($type = NULL){
 		$result = "default";
 		switch($type){
-			case 'vacation_leave': 
+			case 'vacation_leave':
 			case 'regular': $result = "success";break;
-			case 'legacy_leave': 
+			case 'legacy_leave':
 			case 'weekend_ot': $result = "primary";break;
-			case 'emergency_leave': 
+			case 'emergency_leave':
 			case 'regular_special_holiday': $result = "info";break;
 			case 'special_holiday': $result = "warning";break;
 			case 'double_regular_holiday':
 			case 'triple_regular_holiday':
-			case 'sick_leave': 
+			case 'sick_leave':
 			case 'regular_holiday': $result = "danger";break;
 			case 'absent' : $result = "black";break;
 		}
@@ -76,14 +76,14 @@ class Helper{
 			]
 
 		];
-		
+
 		return $request;
 	}
 
 	public static function barcode_length($barcode = NULL){
 		$length = strlen($barcode);
 		if($length < 4) return 1.6;
-		if($length < 9 ) return 0.9; 
+		if($length < 9 ) return 0.9;
 		if($length < 15) return 1;
 		if($length >= 15 ) return 0.9;
 
@@ -110,16 +110,16 @@ class Helper{
 
 		$key_value = array_search($transaction_id, $key_count);
 		$key_value = $key_value+1;
-		
+
 		$number = abs($key_value);
- 
+
         $indicators = ['th','st','nd','rd','th','th','th','th','th','th'];
- 
+
         $suffix = $superscript ? '<sup>' . $indicators[$number % 10] . '</sup>' : $indicators[$number % 10];
         if ($number % 100 >= 11 && $number % 100 <= 13) {
             $suffix = $superscript ? '<sup>th</sup>' : 'th';
         }
- 
+
         return number_format($number) . $suffix;
 	}
 	public static function tax($type = NULL){
@@ -229,16 +229,16 @@ class Helper{
 		}
 
 		return $result;
-	} 
+	}
 
 	public static function status_badge($type){
 		$result = "default";
 		switch(Str::lower($type)){
-			case 'unpaid' : 
+			case 'unpaid' :
 			case 'inactive': $result = "secondary"; break;
 			case 'ongoing': $result = "info"; break;
 			case 'completed': $result = 'primary'; break;
-			case 'paid' : 
+			case 'paid' :
 			case 'approved':
 			case 'active': $result = "success"; break;
 			case 'pending' : $result = "warning"; break;
@@ -319,7 +319,7 @@ class Helper{
 	public static function greet($time = NULL) {
 		if(!$time) $time = Carbon::now();
 		$hour = date("G",strtotime($time));
-		
+
 		if($hour < 5) {
 			$greeting = "You woke up early";
 		}elseif($hour < 10){
@@ -401,7 +401,7 @@ class Helper{
 	public static function is_active(array $routes, $class = "active") {
 		return  in_array(Route::currentRouteName(), $routes) ? $class : NULL;
 	}
-	
+
 	/**
 	 * Generate seven uppercase characters randomly
 	 *
@@ -639,7 +639,19 @@ class Helper{
 		$application_count = Transaction::where('processor_user_id',$id)->count();
 
 		return $application_count;
-		
-	}
+
+    }
+
+    public static function resolve_file_name($type)
+    {
+
+        switch ($type) {
+            case "'gov_id_1'": return 'Government ID 1' ;  break;
+            case "'gov_id_2'": return 'Government ID 2' ;  break;
+            case "'business_permit'": return 'Business Permit' ;  break;
+
+            default: return '';    break;
+        }
+    }
 }
 

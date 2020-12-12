@@ -20,9 +20,11 @@ class RegisterRequest extends RequestManager{
 			'birthdate' => "required",
 			'contact_number' => "required|max:10|phone:PH",
 			'email'	=> "required|unique:customer,email,{$id}",
-			'password'	=> "required|password_format|confirmed",
+            'password'	=> "required|password_format|confirmed",
+            // 'file' => 'required',
+            // 'file.*' => 'mimes:png,jpg,jpeg,pdf',
 		];
-		
+
 		return $rules;
 	}
 
@@ -30,7 +32,9 @@ class RegisterRequest extends RequestManager{
 		return [
 			'required'	=> "Field is required.",
 			'contact_number.phone' => "Please provide a valid PH mobile number.",
-			'password_format' => "Password must be 6-20 alphanumeric and some allowed special characters only.",
+            'password_format' => "Password must be 6-20 alphanumeric and some allowed special characters only.",
+            'file.mimes' => "Invalid File",
+            'file.required' => "Field is required.",
 		];
 	}
 }

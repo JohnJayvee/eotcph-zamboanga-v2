@@ -12,7 +12,7 @@
     }
 </style>
 
-<div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
+<div class="modal otp-modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-body">
@@ -43,3 +43,23 @@
       </div>
     </div>
   </div>
+
+
+  <div class="modal success-modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <h1 class="text-success">Success</h1>
+                    <p style="font-weight: bold">We have received your Account Creation Request. Please wait for the BPLO approval. We will inform you of the updates. Thank you!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('.submitOTP').click(function (){
+        $('.otp-modal').modal('hide');
+        $('.success-modal').modal('show');
+    })
+</script>
