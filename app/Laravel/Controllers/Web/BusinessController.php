@@ -99,7 +99,6 @@ class BusinessController extends Controller
                         ->post();
                 if($response->status == "200"){
                     $content = $response->content;
-                    dd($content);
                     session()->flash('notification-status', "success");
                     session()->flash('notification-msg', "Business validated");
 
@@ -179,17 +178,16 @@ class BusinessController extends Controller
 			$new_business->philhealth_no = $request->get('philhealth_no');
             $new_business->pagibig_no = $request->get('pagibig_no');
 
-            // dd($new_business);
-            // $new_business->save();
+            $new_business->save();
 
 
-            // foreach ($request->business_line as $key => $v) {
-            //     $data = [
-            //         'business_id' => $new_business->id,
-            //         'name' => $request->business_line[$key],
-            //     ];
-            //     BusinessLine::insert($data);
-            // }
+            foreach ($request->business_line as $key => $v) {
+                $data = [
+                    'business_id' => $new_business->id,
+                    'name' => $request->business_line[$key],
+                ];
+                BusinessLine::insert($data);
+            }
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "New Bureau/Office has been added.");
