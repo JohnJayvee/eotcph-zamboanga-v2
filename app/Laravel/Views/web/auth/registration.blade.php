@@ -79,11 +79,25 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
                                     </div>
-                                    <input type="text" class="form-control {{ $errors->first('contact_number') ? 'is-invalid': NULL  }} br-left-white" name="contact_number" placeholder="Contact Number" value="{{old('contact_number', session('register.contact_number'))}}">
+                                    <input type="number" class="form-control {{ $errors->first('contact_number') ? 'is-invalid': NULL  }} br-left-white" name="contact_number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" placeholder="Contact Number" value="{{old('contact_number', session('register.contact_number'))}}">
 
                                 </div>
                                 @if($errors->first('contact_number'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('contact_number')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2 {{ $errors->first('gender') ? 'is-invalid': NULL  }} ">Gender</label>
+                                <select name="gender" id="" class="form-control">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                                @if($errors->first('gender'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('gender')}}</small>
                                 @endif
                             </div>
                         </div>
@@ -203,7 +217,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group {{$errors->first('file') ? 'text-danger' : NULL}}">
                                 <label class="text-form pb-2">Government ID 1 (Required)</label>
-                                <input type="file" class="form-control form-control-sm" name="file" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
+                                <input type="file" class="form-control form-control-sm" name="file[gov_id_1]" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
                                 @if($errors->first('file'))
                                 <p class="help-block text-danger">{{$errors->first('file')}}</p>
                                 @endif
@@ -212,7 +226,7 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group {{$errors->first('file') ? 'text-danger' : NULL}}">
                                 <label class="text-form pb-2">Government ID 2 (Required)</label>
-                                <input type="file" class="form-control form-control-sm" name="file" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
+                                <input type="file" class="form-control form-control-sm" name="file[gov_id_2]" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
                                 @if($errors->first('file'))
                                 <p class="help-block text-danger">{{$errors->first('file')}}</p>
                                 @endif
@@ -223,16 +237,13 @@
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group {{$errors->first('file') ? 'text-danger' : NULL}}">
                                 <label class="text-form pb-2">Business Permit (Required)</label>
-                                <input type="file" class="form-control form-control-sm" name="file" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
+                                <input type="file" class="form-control form-control-sm" name="file[business_permit]" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
                                 @if($errors->first('file'))
                                 <p class="help-block text-danger">{{$errors->first('file')}}</p>
                                 @endif
                             </div>
                         </div>
                     </div>
-                    @if (session('register.progress') == 2)
-                    @include('web.auth.otp.modal')
-                    @endif
                     <button type="submit" class="btn secondary-solid-btn px-3 py-3 fs-14 otp_trigger"><i class="fa fa-paper-plane pr-2"></i>Create Account</button>
                 </div>
             </form>
@@ -354,7 +365,6 @@
       });
     }
     $(function(){
-        $('.otp-modal').modal('show');
         $('.datepicker').datepicker({
           format : "yyyy-mm-dd",
           maxViewMode : 2,
@@ -405,38 +415,6 @@
         } else {
         input.attr("type", "password");
         }
-    });
-    $('.submitOTP').click(function(e){
-        // e.preventDefault();
-        var otpCode='';
-        $('input[type=number]').each(function(){
-            otpCode+=this.value;
-        });
-        $('input[name=code]').val(otpCode);
-        $(this).submit();
-    });
-    $('.digit-group').find('input').each(function() {
-        $(this).attr('maxlength', 1);
-        $(this).on('keyup', function(e) {
-            var parent = $($(this).parent());
-            if(e.keyCode === 8 || e.keyCode === 37) {
-                var prev = parent.find('input#' + $(this).data('previous'));
-
-                if(prev.length) {
-                    $(prev).select();
-                }
-            } else if((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode === 39) {
-                var next = parent.find('input#' + $(this).data('next'));
-
-                if(next.length) {
-                    $(next).select();
-                } else {
-                    if(parent.data('autosubmit')) {
-                        parent.submit();
-                    }
-                }
-            }
-        });
     });
 </script>
 

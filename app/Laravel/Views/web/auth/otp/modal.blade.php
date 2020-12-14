@@ -20,6 +20,8 @@
             <h3 class="text-form text-title">ENTER ONE-TIME PASSWORD</h3>
             <p>An OTP was sent to your mobile number. This is valid for <b>5 minutes</b></p>
             <div class="text-center pt-2 pb-2">
+                <form method="POST" action="{{ route('web.register.otp_submit') }}">
+                    @csrf
                     <div class="digit-group">
                         <input type="number" id="digit-1" name="digit-1" data-next="digit-2" />
                         <input type="number" id="digit-2" name="digit-2" data-next="digit-3" data-previous="digit-1" />
@@ -37,6 +39,7 @@
                             <a href="#" class="otp-btn m-2" data-dismiss="modal">Close</a>
                         </div>
                     </div>
+                </form>
             </div>
           </div>
         </div>

@@ -7,10 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Laravel\Models\BusinessLine;
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Models\BusinessActivity;
-use Carbon,Auth,Str,Curl,Helper, DB, Log;
+use Carbon,Auth,Str,Curl,Helper, DB, Log,Event;
 use App\Laravel\Models\BusinessTransaction;
 use App\Laravel\Models\ApplicationBusinessPermit;
 use App\Laravel\Requests\Web\BusinessPermitRequest;
+use App\Laravel\Events\SendBusinessPermitConfirmation;
 
 class BusinessPermitController extends Controller{
 
@@ -45,6 +46,7 @@ class BusinessPermitController extends Controller{
 			$new_business_permit = new ApplicationBusinessPermit();
             $new_business_permit->customer_id = $auth->id;
             $new_business_permit->business_id = $business->id;
+            $new_business_permit->status = 'pending';
             $new_business_permit->application_date = $request->application_date;
             $new_business_permit->dti_sec_cda_registration_no = $request->dti_sec_cda_registration_no;
             $new_business_permit->dti_sec_cda_registration_date = $request->dti_sec_cda_registration_date;
@@ -114,8 +116,16 @@ class BusinessPermitController extends Controller{
 
                 BusinessActivity::insert($data);
             }
+            DB::commit();
 
-			DB::commit();
+            $insert[] = [
+                'email' => $auth->email,
+                'name' => $auth->name
+            ];
+
+            $notification_data = new SendBusinessPermitConfirmation($insert);
+            Event::dispatch('send-business-permit-assessment-confirmation', $notification_data);
+
 			session()->flash('notification-status', "success");
             session()->forget('application_id');
             session()->forget('application_name');

@@ -83,6 +83,32 @@ class BusinessController extends Controller
 
 		DB::beginTransaction();
 		try{
+            if($request->dti_sec_cda_registration_no || $request->business_name){
+                $request_body = [
+                    'bnn' => $request->dti_sec_cda_registration_no,
+                    'business_name' => $request->business_name
+                ];
+                $response = Curl::to(env('BNRS_BNN'))
+                        ->withHeaders( [
+                            "X-BNRS-API-Code: ".env('BNRS_CODE'),
+                            "X-BNRS-API-Secret: ".env("BNRS_SECRET")
+                        ])
+                        ->withData($request_body)
+                        ->asJson( true )
+                        ->returnResponseObject()
+                        ->post();
+                if($response->status == "200"){
+                    $content = $response->content;
+                    dd($content);
+                    session()->flash('notification-status', "success");
+                    session()->flash('notification-msg', "Business validated");
+
+                } else {
+                    session()->flash('notification-status', "failed");
+                    session()->flash('notification-msg', "Business not found");
+                }
+            }
+
 			$new_business = new Business;
 			$new_business->customer_id = $auth->id;
 			$new_business->business_scope = $request->get('business_scope');
@@ -105,7 +131,7 @@ class BusinessController extends Controller
             $new_business->rep_position = $request->rep_position;
             $new_business->rep_tin = $request->rep_tin;
 
-            $new_business->website_url = $request->business_website;
+            $new_business->website_url = $request->website_url;
             $new_business->business_area = $request->business_area;
 
             $new_business->lessor_fullname = $request->lessor_fullname;
@@ -116,10 +142,19 @@ class BusinessController extends Controller
             $new_business->lessor_tel_no = $request->lessor_tel_no;
             $new_business->lessor_email = $request->lessor_email;
             $new_business->lessor_unit_no = $request->lessor_unit_no;
-            $new_business->lessor_street_address = $request->street_address;
+            $new_business->lessor_street_address = $request->lessor_street_address;
             $new_business->lessor_brgy = $request->lessor_brgy;
             $new_business->lessor_brgy_name = $request->lessor_brgy_name;
-            $new_business->lessor_zipcode = $request->lessor_zipcode;
+            $new_business->lessor_region = $request->lessor_region;
+            $new_business->lessor_region_name = $request->lessor_region_name;
+			$new_business->lessor_town = $request->lessor_town;
+			$new_business->lessor_town_name = $request->lessor_town_name;
+            $new_business->lessor_zipcode = $request->lessor_region;
+
+            $new_business->emergency_contact_fullname = $request->emergency_contact_fullname;
+			$new_business->emergency_contact_mobile_no = $request->emergency_contact_mobile_no;
+			$new_business->emergency_contact_tel_no = $request->emergency_contact_tel_no;
+            $new_business->emergency_contact_email = $request->emergency_contact_email;
 
             $new_business->no_of_male_employee = $request->get('no_male_employee');
             $new_business->no_of_female_employee = $request->get('no_female_employee');
@@ -144,16 +179,17 @@ class BusinessController extends Controller
 			$new_business->philhealth_no = $request->get('philhealth_no');
             $new_business->pagibig_no = $request->get('pagibig_no');
 
-            $new_business->save();
+            // dd($new_business);
+            // $new_business->save();
 
 
-            foreach ($request->business_line as $key => $v) {
-                $data = [
-                    'business_id' => $new_business->id,
-                    'name' => $request->business_line[$key],
-                ];
-                BusinessLine::insert($data);
-            }
+            // foreach ($request->business_line as $key => $v) {
+            //     $data = [
+            //         'business_id' => $new_business->id,
+            //         'name' => $request->business_line[$key],
+            //     ];
+            //     BusinessLine::insert($data);
+            // }
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "New Bureau/Office has been added.");

@@ -30,23 +30,32 @@ class ApplicationController extends Controller{
     }
 
     public function create(){
+        $business_id = session()->get('selected_business_id');
         $this->data['page_title'] = "Choose Application";
         $this->data['profile'] = Business::find(session()->get('selected_business_id'));
         if (Auth::guard('customer')->user()) {
 			$this->data['auth'] = Auth::guard('customer')->user();
-			$this->data['business_profiles'] = Business::where('customer_id',$this->data['auth']->id)->get();
+            $this->data['business_profiles'] = Business::where('customer_id',$this->data['auth']->id)->get();
 		}
 		return view('web.application.create',$this->data);
     }
 
 
     public function store(PageRequest $request){
+        $business_id = session()->get('selected_business_id');
 		// $auth = $request->user();
     	$application = Application::find($request->get('application_type'));
 		session()->put('application.current_progress',1);
 		session()->put('application.type',$application->permit_type);
 		session()->put('application_id',$application->id);
-		session()->put('application_name',$application->name);
+        session()->put('application_name',$application->name);
+
+        $application_business_permit = ApplicationBusinessPermit::where('business_id', $business_id)->where('status', 'pending')->first();
+        if($application_business_permit->status == 'pending'){
+            session()->flash('notification-status',"warning");
+            session()->flash('notification-msg',"You have a pending Application");
+            return redirect()->back();
+        }
 		switch($application->permit_type){
 			// case 'bnrs':
 			// case 'business_clearance':

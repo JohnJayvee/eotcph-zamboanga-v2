@@ -449,7 +449,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
-                                        <p class="form-data text-success">{{ $auth->email }}</p>
+                                        <p class="form-data text-success">{{ $auth->contact_number }}</p>
                                     </div>
                                 </div>
                                 {{-- <div class="col-sm-12 col-md-12 col-lg-6">
@@ -631,41 +631,41 @@
                                         <table class="table table-striped">
                                             <thead>
                                                 <th class="text-title">Requirment Name</th>
-                                                <th class="text-title">File</th>
+                                                <th class="text-title" class="text-wrap">File</th>
                                             </thead>
                                             <tr>
                                                 <td>BN Certificate</td>
-                                                <td><input type="file"></td>
+                                                <td><input type="file" class="text-wrap"></td>
                                             </tr>
                                             <tr>
                                                 <td>Barangay Clearance</td>
-                                                <td><input type="file"></td>
+                                                <td><input type="file" class="text-wrap"></td>
                                             </tr>
                                             <tr>
                                                 <td>Occupancy Permit</td>
-                                                <td><input type="file"></td>
+                                                <td><input type="file" class="text-wrap"></td>
                                             </tr>
                                             <tr>
                                                 <td>Land Title (Home based) *If owned</td>
-                                                <td><input type="file"></td>
+                                                <td><input type="file" class="text-wrap"></td>
                                             </tr>
                                             <tr>
                                                 <td>Authorization from Owner *If rent</td>
-                                                <td><input type="file"></td>
+                                                <td><input type="file" class="text-wrap"></td>
                                             </tr>
                                             <tr>
                                                 <td>Actual Photo of Establishment</td>
-                                                <td><input type="file"></td>
+                                                <td><input type="file" class="text-wrap"></td>
                                             </tr>
                                             <tr>
                                                 <td>BIR ITR Form</td>
-                                                <td><input type="file"></td>
+                                                <td><input type="file" class="text-wrap"></td>
                                             </tr>
                                         </table>
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn badge-primary-2 text-white trigger-modal" style="float: right;">Apply</button>
+                            <button type="submit" class="btn badge-primary-2 text-white trigger-modal" style="float: right;">Request Assessment</button>
                             <a href="{{route('web.business.index')}}" class="btn btn-light mr-2" style="float: right;">Cancel</a>
                         </div>
                     </div>
@@ -686,11 +686,6 @@
                 </div>
             </div>
         </div>
-        <script>
-            $('.trigger-modal').click(function (){
-                $('.modal').modal('show');
-            })
-        </script>
     </div>
 
 </section>
@@ -702,6 +697,10 @@
 @section('page-scripts')
 
 <script type="text/javascript">
+
+    $('.trigger-modal').click(function (){
+        $('.modal').modal('show');
+    })
      $.fn.get_region = function(input_region,input_province,input_city,input_brgy,selected){
 
       $(input_city).empty().prop('disabled',true)

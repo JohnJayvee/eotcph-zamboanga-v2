@@ -31,7 +31,9 @@ Route::group(['as' => "web.",
             Route::get('/', [ 'as' => "index",'uses' => "AuthController@register"]);
             Route::post('/', [ 'uses' => "AuthController@store"]);
 
+            Route::get('/otp', [ 'as' => "otp", 'uses' => "AuthController@otpform"]);
             Route::post('/otp', [ 'as' => "otp", 'uses' => "AuthController@sendOTP"]);
+            Route::post('/otp-submit', [ 'as' => "otp_submit", 'uses' => "AuthController@otp_submit"]);
         });
 	});
 

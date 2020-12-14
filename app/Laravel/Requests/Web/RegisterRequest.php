@@ -11,6 +11,7 @@ class RegisterRequest extends RequestManager{
 		$rules = [
 			'fname' => "required",
 			'lname' => "required",
+			'gender' => "required",
 			'region' => "required",
 			'town' => "required",
 			'brgy' => "required",
@@ -21,8 +22,8 @@ class RegisterRequest extends RequestManager{
 			'contact_number' => "required|max:10|phone:PH",
 			'email'	=> "required|unique:customer,email,{$id}",
             'password'	=> "required|password_format|confirmed",
-            // 'file' => 'required',
-            // 'file.*' => 'mimes:png,jpg,jpeg,pdf',
+            'file' => 'required',
+            'file.*' => 'mimes:png,jpg,jpeg,pdf',
 		];
 
 		return $rules;

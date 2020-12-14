@@ -49,6 +49,9 @@ class EventServiceProvider extends ServiceProvider
         'send-customer-registration-declined' => [
             'App\Laravel\Listeners\SendCustomerRegistrationDeclinedListener'
         ],
+        'send-business-permit-assessment-confirmation' => [
+            'App\Laravel\Listeners\SendBusinessPermitAssessmentConfirmation'
+        ],
         'send-sms-approved' => [
             'App\Laravel\Listeners\SendApprovedReferenceListener'
         ],

@@ -117,7 +117,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business TIN.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_tin') ? 'is-invalid': NULL  }}"  name="business_tin" value="{{old('business_tin', $business['TIN'] ?? '') }}">
+                                        <input type="number" class="form-control form-control-sm {{ $errors->first('business_tin') ? 'is-invalid': NULL  }}"  name="business_tin" value="{{old('business_tin', $business['TIN'] ?? '') }}">
                                         @if($errors->first('business_tin'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('business_tin')}}</small>
                                         @endif
@@ -215,7 +215,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">TIN</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('rep_tin') ? 'is-invalid': NULL  }}"  name="rep_tin" value="{{old('rep_tin') }}">
+                                        <input type="number" class="form-control form-control-sm {{ $errors->first('rep_tin') ? 'is-invalid': NULL  }}"  name="rep_tin" value="{{old('rep_tin') }}">
                                         @if($errors->first('rep_tin'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_tin')}}</small>
                                         @endif
@@ -225,17 +225,8 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Website URL</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('rep_tin') ? 'is-invalid': NULL  }}"  name="rep_tin" value="{{old('website_url', $business['URLAddress'] ?? '') }}">
-                                        @if($errors->first('rep_tin'))
-                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_tin')}}</small>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 col-md-12 col-lg-6">
-                                    <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business Area (Sq. m)</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_area') ? 'is-invalid': NULL  }}"  name="business_area" value="{{old('business_area', $business['BusArea'] ?? '') }}">
+                                        <input type="number" class="form-control form-control-sm {{ $errors->first('business_area') ? 'is-invalid': NULL  }}"  name="business_area" value="{{old('business_area', $business['BusArea'] ?? '') }}">
                                         @if($errors->first('business_area'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('business_area')}}</small>
                                         @endif
@@ -287,7 +278,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Capitalization</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('capitalization') ? 'is-invalid': NULL  }}"  name="capitalization" value="{{old('capitalization') }}">
+                                        <input type="number" class="form-control form-control-sm {{ $errors->first('capitalization') ? 'is-invalid': NULL  }}"  name="capitalization" value="{{old('capitalization') }}">
                                         @if($errors->first('capitalization'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('capitalization')}}</small>
                                         @endif
@@ -381,8 +372,14 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('mobile_no') ? 'is-invalid': NULL  }}"  name="mobile_no" value="{{old('mobile_no') }}">
+                                        <label class="text-form pb-2">Mobile Number</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
+                                            </div>
+                                            <input type="number" class="form-control {{ $errors->first('mobile_no') ? 'is-invalid': NULL  }} br-left-white" name="mobile_no" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" placeholder="Contact Number" value="{{old('mobile_no', session('register.mobile_no'))}}">
+
+                                        </div>
                                         @if($errors->first('mobile_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('mobile_no')}}</small>
                                         @endif
@@ -398,6 +395,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <input type="hidden" class="form-control" name="lessor_region_name" id="input_lessor_region_name" value="{{old('lessor_region_name', 'REGION IX (ZAMBOANGA PENINSULA)')}}">
+                            <input type="hidden" class="form-control" name="lessor_town_name" id="input_lessor_town_name" value="{{old('lessor_town_name', 'ZAMBOANGA DEL SUR - CITY OF ZAMBOANGA')}}">
+                            <input type="hidden" class="form-control" name="lessor_brgy_name" id="input_lessor_brgy_name" value="{{old('lessor_brgy_name')}}">
                             <h5 class="text-title text-uppercase">If place of Business is Rented (Lessor Detail)</h5>
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-6">
@@ -443,7 +443,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                     <label for="exampleInputEmail1" class="text-form pb-2">Region</label>
-                                        {!!Form::select('region',[],old('region'),['id' => "input_region",'class' => "form-control form-control-sm classic ".($errors->first('lessor_region') ? 'border-red' : NULL)])!!}
+                                        {!!Form::select('lessor_region',[],old('lessor_region'),['id' => "input_lessor_region",'class' => "form-control form-control-sm classic ".($errors->first('lessor_region') ? 'border-red' : NULL)])!!}
                                         @if($errors->first('lessor_region'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_region')}}</small>
                                         @endif
@@ -454,7 +454,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label class="text-form pb-2">City Municipality</label>
-                                        {!!Form::select('town',[],old('lessor_town'),['id' => "input_town",'class' => "form-control form-control-sm classic ".($errors->first('lessor_town') ? 'border-red' : NULL)])!!}
+                                        {!!Form::select('lessor_town',[],old('lessor_town'),['id' => "input_lessor_town",'class' => "form-control form-control-sm classic ".($errors->first('lessor_town') ? 'border-red' : NULL)])!!}
                                         @if($errors->first('lessor_town'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_town')}}</small>
                                         @endif
@@ -463,7 +463,7 @@
                                 <div class="col-sm-12 col-md-4 col-lg-4">
                                     <div class="form-group">
                                         <label class="text-form pb-2">Barangay</label>
-                                        {!!Form::select('brgy',[],old('lessor_brgy'),['id' => "input_brgy",'class' => "form-control form-control-sm classic ".($errors->first('lessor_brgy') ? 'border-red' : NULL)])!!}
+                                        {!!Form::select('lessor_brgy',[],old('lessor_brgy'),['id' => "input_lessor_brgy",'class' => "form-control form-control-sm classic ".($errors->first('lessor_brgy') ? 'border-red' : NULL)])!!}
                                         @if($errors->first('lessor_brgy'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_brgy')}}</small>
                                         @endif
@@ -472,7 +472,7 @@
                                 <div class="col-sm-12 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label for="input_zipcode" class="text-form pb-2">Zipcode</label>
-                                        <input type="text" id="input_zipcode" class="form-control form-control-sm  {{ $errors->first('lessor_zipcode') ? 'is-invalid': NULL  }}" name="lessor_zipcode" value="{{old('lessor_zipcode')}}" readonly="readonly">
+                                        <input type="text" id="input_lessor_zipcode" class="form-control form-control-sm  {{ $errors->first('lessor_zipcode') ? 'is-invalid': NULL  }}" name="lessor_zipcode" value="{{old('lessor_zipcode')}}" readonly="readonly">
                                         @if($errors->first('lessor_zipcode'))
                                         <p class="help-block text-danger">{{$errors->first('lessor_zipcode')}}</p>
                                         @endif
@@ -503,7 +503,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('lessor_email') ? 'is-invalid': NULL  }}"  name="lessor_email" value="{{old('lessor_email',$auth->email) }}">
+                                        <input type="email" class="form-control form-control-sm {{ $errors->first('lessor_email') ? 'is-invalid': NULL  }}"  name="lessor_email" value="{{old('lessor_email') }}">
                                         @if($errors->first('lessor_email'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_email')}}</small>
                                         @endif
@@ -513,8 +513,14 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('lessor_mobile_no') ? 'is-invalid': NULL  }}"  name="lessor_mobile_no" value="{{old('lessor_mobile_no',$auth->mobile_no) }}">
+                                        <label class="text-form pb-2">Mobile Number</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
+                                            </div>
+                                            <input type="number" class="form-control {{ $errors->first('lessor_mobile_no') ? 'is-invalid': NULL  }} br-left-white" name="lessor_mobile_no" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" placeholder="Contact Number" value="{{old('lessor_mobile_no')}}">
+
+                                        </div>
                                         @if($errors->first('lessor_mobile_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_mobile_no')}}</small>
                                         @endif
@@ -554,8 +560,14 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Mobile No.</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('emergency_contact_mobile_no') ? 'is-invalid': NULL  }}"  name="emergency_contact_mobile_no" value="{{old('emergency_contact_mobile_no',$auth->telephone_no) }}">
+                                        <label class="text-form pb-2">Mobile Number</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
+                                            </div>
+                                            <input type="number" class="form-control {{ $errors->first('emergency_contact_mobile_no') ? 'is-invalid': NULL  }} br-left-white" name="emergency_contact_mobile_no" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" placeholder="Contact Number" value="{{old('emergency_contact_mobile_no')}}">
+
+                                        </div>
                                         @if($errors->first('emergency_contact_mobile_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('emergency_contact_mobile_no')}}</small>
                                         @endif
@@ -671,100 +683,142 @@
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 
 <script type="text/javascript">
-     $.fn.get_region = function(input_region,input_province,input_city,input_brgy,selected){
+    $.fn.get_region = function (input_region, input_province, input_city, input_brgy, selected) {
 
-      $(input_city).empty().prop('disabled',true)
-      $(input_brgy).empty().prop('disabled',true)
+        $(input_city).empty().prop('disabled', true)
+        $(input_brgy).empty().prop('disabled', true)
 
-      $(input_region).append($('<option>', {
-                value: "",
-                text: "Loading Content..."
-            }));
-      $.getJSON("{{env('PSGC_REGION_URL')}}", function( response ) {
-          $(input_region).empty().prop('disabled',true)
-          $.each(response.data,function(index,value){
-            $(input_region).append($('<option>', {
-                value: index,
-                text: value
-            }));
-          })
-
-          $(input_region).prop('disabled',false)
-          $(input_region).prepend($('<option>',{value : "",text : "--Select Region--"}))
-          if(selected.length > 0){
-            $(input_region).val($(input_region+" option[value="+selected+"]").val());
-          }else{
-            $(input_region).val($(input_region+" option:first").val());
-          }
-      });
-      // return result;
-    };
-
-    $.fn.get_city = function(reg_code,input_city,input_brgy,selected){
-      $(input_brgy).empty().prop('disabled',true)
-      $(input_city).append($('<option>', {
+        $(input_region).append($('<option>', {
             value: "",
             text: "Loading Content..."
         }));
-      $.getJSON("{{env('PSGC_CITY_URL')}}?region_code="+reg_code, function( data ) {
-        console.log(data)
-          $(input_city).empty().prop('disabled',true)
-          $.each(data,function(index,value){
-              $(input_city).append($('<option>', {
-                  value: index,
-                  text: value
-              }));
-          })
+        $.getJSON("{{env('PSGC_REGION_URL')}}", function (response) {
+            $(input_region).empty().prop('disabled', true)
+            $.each(response.data, function (index, value) {
+                $(input_region).append($('<option>', {
+                    value: index,
+                    text: value
+                }));
+            })
 
-          $(input_city).prop('disabled',false)
-          $(input_city).prepend($('<option>',{value : "",text : "--SELECT MUNICIPALITY/CITY, PROVINCE--"}))
-          if(selected.length > 0){
-            $(input_city).val($(input_city+" option[value="+selected+"]").val());
-          }else{
-            $(input_city).val($(input_city+" option:first").val());
-          }
-      });
-      // return result;
+            $(input_region).prop('disabled', false)
+            $(input_region).prepend($('<option>', {
+                value: "",
+                text: "--Select Region--"
+            }))
+            if (selected.length > 0) {
+                $(input_region).val($(input_region + " option[value=" + selected + "]").val());
+            } else {
+                $(input_region).val($(input_region + " option:first").val());
+            }
+        });
+        // return result;
     };
 
-    $.fn.get_brgy = function(munc_code,input_brgy,selected){
-      $(input_brgy).empty().prop('disabled',true);
-      $(input_brgy).append($('<option>', {
+    $.fn.get_city = function (reg_code, input_city, input_brgy, selected) {
+        $(input_brgy).empty().prop('disabled', true)
+        $(input_city).append($('<option>', {
+            value: "",
+            text: "Loading Content..."
+        }));
+        $.getJSON("{{env('PSGC_CITY_URL')}}?region_code=" + reg_code, function (data) {
+            console.log(data)
+            $(input_city).empty().prop('disabled', true)
+            $.each(data, function (index, value) {
+                $(input_city).append($('<option>', {
+                    value: index,
+                    text: value
+                }));
+            })
+
+            $(input_city).prop('disabled', false)
+            $(input_city).prepend($('<option>', {
                 value: "",
-                text: "Loading Content..."
-            }));
-      $.getJSON("{{env('PSGC_BRGY_URL')}}?city_code="+munc_code, function( data ) {
-          $(input_brgy).empty().prop('disabled',true);
-
-          $.each(data,function(index,value){
-            $(input_brgy).append($('<option>', {
-                value: index,
-                text: value.desc,
-                "data-zip_code" : (value.zip_code).trim()
-            }));
-          })
-          $(input_brgy).prop('disabled',false)
-          $(input_brgy).prepend($('<option>',{value : "",text : "--SELECT BARANGAY--"}))
-
-          if(selected.length > 0){
-            $(input_brgy).val($(input_brgy+" option[value="+selected+"]").val());
-
-            if(typeof $(input_brgy+" option[value="+selected+"]").data('zip_code')  === undefined){
-              $(input_brgy.replace("brgy","zipcode")).val("")
-            }else{
-              $(input_brgy.replace("brgy","zipcode")).val($(input_brgy+" option[value="+selected+"]").data('zip_code'))
+                text: "--SELECT MUNICIPALITY/CITY, PROVINCE--"
+            }))
+            if (selected.length > 0) {
+                $(input_city).val($(input_city + " option[value=" + selected + "]").val());
+            } else {
+                $(input_city).val($(input_city + " option:first").val());
             }
+        });
+        // return result;
+    };
 
-          }else{
-            $(input_brgy).val($(input_brgy+" option:first").val());
-          }
-      });
+    $.fn.get_brgy = function (munc_code, input_brgy, selected) {
+        $(input_brgy).empty().prop('disabled', true);
+        $(input_brgy).append($('<option>', {
+            value: "",
+            text: "Loading Content..."
+        }));
+        $.getJSON("{{env('PSGC_BRGY_URL')}}?city_code=" + munc_code, function (data) {
+            $(input_brgy).empty().prop('disabled', true);
+
+            $.each(data, function (index, value) {
+                $(input_brgy).append($('<option>', {
+                    value: index,
+                    text: value.desc,
+                    "data-zip_code": (value.zip_code).trim()
+                }));
+            })
+            $(input_brgy).prop('disabled', false)
+            $(input_brgy).prepend($('<option>', {
+                value: "",
+                text: "--SELECT BARANGAY--"
+            }))
+
+            if (selected.length > 0) {
+                $(input_brgy).val($(input_brgy + " option[value=" + selected + "]").val());
+
+                if (typeof $(input_brgy + " option[value=" + selected + "]").data('zip_code') === undefined) {
+                    $(input_brgy.replace("brgy", "zipcode")).val("")
+                } else {
+                    $(input_brgy.replace("brgy", "zipcode")).val($(input_brgy + " option[value=" + selected + "]").data('zip_code'))
+                }
+
+            } else {
+                $(input_brgy).val($(input_brgy + " option:first").val());
+            }
+        });
     }
-     $(function(){
+
+    $.fn.get_region = function (input_region, input_province, input_city, input_brgy, selected) {
+
+        $(input_city).empty().prop('disabled', true)
+        $(input_brgy).empty().prop('disabled', true)
+
+        $(input_region).append($('<option>', {
+            value: "",
+            text: "Loading Content..."
+        }));
+        $.getJSON("{{env('PSGC_REGION_URL')}}", function (response) {
+            $(input_region).empty().prop('disabled', true)
+            $.each(response.data, function (index, value) {
+                $(input_region).append($('<option>', {
+                    value: index,
+                    text: value
+                }));
+            })
+
+            $(input_region).prop('disabled', false)
+            $(input_region).prepend($('<option>', {
+                value: "",
+                text: "--Select Region--"
+            }))
+            if (selected.length > 0) {
+                $(input_region).val($(input_region + " option[value=" + selected + "]").val());
+            } else {
+                $(input_region).val($(input_region + " option:first").val());
+            }
+        });
+        // return result;
+    };
+    $(function () {
         load_barangay();
-        $(this).get_region("#input_region","#input_province","#input_town","#input_brgy","{{old('region', '090000000')}}")
+        $(this).get_region("#input_region", "#input_province", "#input_town", "#input_brgy", "{{old('region', '090000000')}}")
         $(this).get_city("090000000", "#input_town", "#input_brgy", "{{old('town', '097332000')}}");
-        $("#input_region").on("change",function(){
+
+        $("#input_region").on("change", function () {
             var _val = $(this).val();
             var _text = $("#input_region option:selected").text();
             $(this).get_city($("#input_region").val(), "#input_town", "#input_brgy", "{{old('town')}}");
@@ -772,7 +826,7 @@
             $('#input_region_name').val(_text);
         });
 
-        $("#input_town").on("change",function(){
+        $("#input_town").on("change", function () {
             var _val = $(this).val();
             var _text = $("#input_town option:selected").text();
             $(this).get_brgy(_val, "#input_brgy", "");
@@ -789,17 +843,67 @@
         }
 
         @if(strlen(old('region')) > 0)
-            $(this).get_city("{{old('region')}}", "#input_town", "#input_brgy", "{{old('town')}}");
+        $(this).get_city("{{old('region')}}", "#input_town", "#input_brgy", "{{old('town')}}");
         @endif
 
         @if(strlen(old('town')) > 0)
-            $(this).get_brgy("{{old('town')}}", "#input_brgy", "{{old('brgy')}}");
+        $(this).get_brgy("{{old('town')}}", "#input_brgy", "{{old('brgy')}}");
         @endif
 
-        $("#input_brgy").on("change",function(){
+        $("#input_brgy").on("change", function () {
             $('#input_zipcode').val($(this).find(':selected').data('zip_code'))
             var _text = $("#input_brgy option:selected").text();
             $('#input_brgy_name').val(_text);
+        });
+
+    })
+
+    $(function(){
+
+        $('#buttonID').click(function(){
+            alert('click');
+        })
+        // Lessor
+        load_lessor_barangay();
+        $(this).get_region("#input_lessor_region", "#input_lessor_province", "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_region', '090000000')}}")
+        $(this).get_city("090000000", "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_town', '097332000')}}");
+
+        $("#input_lessor_region").on("change", function () {
+            var _val = $(this).val();
+            var _text = $("#input_lessor_region option:selected").text();
+            $(this).get_city($("#input_lessor_region").val(), "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_town')}}");
+            $('#input_zipcode').val('');
+            $('#input_region_name').val(_text);
+        });
+
+        $("#input_lessor_town").on("change", function () {
+            var _val = $(this).val();
+            var _text = $("#input_lessor_town option:selected").text();
+            $(this).get_brgy(_val, "#input_lessor_brgy", "");
+            $('#input_lessor_zipcode').val('');
+            $('#input_lessor_town_name').val(_text);
+        });
+
+        function load_lessor_barangay() {
+            var _val = "097332000";
+            var _text = "ZAMBOANGA DEL SUR - CITY OF ZAMBOANGA";
+            $(this).get_brgy(_val, "#input_lessor_brgy", "");
+            $('#input_lessor_zipcode').val('');
+            $('#input_lessor_town_name').val(_text);
+        }
+
+        @if(strlen(old('lessor_region')) > 0)
+        $(this).get_city("{{old('lessor_region')}}", "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_town')}}");
+        @endif
+
+        @if(strlen(old('lessor_town')) > 0)
+        $(this).get_brgy("{{old('lessor_town')}}", "#input_lessor_brgy", "{{old('lessor_brgy')}}");
+        @endif
+
+        $("#input_lessor_brgy").on("change", function () {
+            $('#input_lessor_zipcode').val($(this).find(':selected').data('zip_code'))
+            var _text = $("#input_lessor_brgy option:selected").text();
+            $('#input_lessor_brgy_name').val(_text);
         });
 
     })
