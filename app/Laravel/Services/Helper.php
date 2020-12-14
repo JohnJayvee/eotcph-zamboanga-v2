@@ -419,7 +419,7 @@ class Helper{
 	 * @return string
 	 */
 	public static function create_filename($extension, $exclude_extension = false){
-		return Str::lower(Str::random(10)) . (!$exclude_extension ? ".{$extension}"  : NULL) ;
+		return Str::lower(Str::random(10).date("mdYhs")) . (!$exclude_extension ? ".{$extension}"  : NULL) ;
 	}
 
 	/**
@@ -646,9 +646,9 @@ class Helper{
     {
 
         switch ($type) {
-            case "'gov_id_1'": return 'Government ID 1' ;  break;
-            case "'gov_id_2'": return 'Government ID 2' ;  break;
-            case "'business_permit'": return 'Business Permit' ;  break;
+            case "gov_id_1": return 'Government ID 1' ;  break;
+            case "gov_id_2": return 'Government ID 2' ;  break;
+            case "business_permit": return 'Business Permit' ;  break;
 
             default: return '';    break;
         }
