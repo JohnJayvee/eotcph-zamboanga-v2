@@ -101,8 +101,6 @@ class BusinessPermitController extends Controller{
             $new_business_transaction->save();
             $new_business_transaction->code = 'EOTC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_business_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
 
-            $new_business_transaction->processing_fee_code = 'BT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_business_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
-
             $new_business_transaction->document_reference_code = 'EOTC-DOC-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_business_transaction->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
             $new_business_transaction->save();
             foreach ($request->line_of_business as $key => $v) {

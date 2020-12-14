@@ -12,6 +12,7 @@ Route::group(['as' => "web.",
 	});
 	Route::get('type',['as' => "get_application_type",'uses' => "MainController@get_application_type"]);
 	Route::get('amount',['as' => "get_payment_fee",'uses' => "MainController@get_payment_fee"]);
+	Route::get('collection',['as' => "get_collection_fee",'uses' => "MainController@get_collection_fee"]);
 	Route::get('requirements',['as' => "get_requirements",'uses' => "MainController@get_requirements"]);
 	Route::get('requirements_two',['as' => "get_requirements_two",'uses' => "MainController@get_requirements_two"]);
 	Route::get('contact-us',['as' => "contact",'uses' => "MainController@contact"]);
@@ -80,15 +81,18 @@ Route::group(['as' => "web.",
                 Route::get('create',['as' => "create",'uses' => "ApplicationController@create"]);
                 Route::post('create',['uses' => "ApplicationController@store"]);
 
-
                 Route::group(['as' => "business_permit.",'prefix' => "business-permit"],function(){
                     Route::get('/',['as' => "create",'uses' => "BusinessPermitController@create"]);
                     Route::post('/',['uses' => "BusinessPermitController@store"]);
                 });
 
             });
+
 		});
 	});
+	Route::group(['prefix' => "business-payment", 'as' => "business_payment."], function () {
+        Route::get('/{id?}',['as' => "index",'uses' => "BusinessPaymentController@index"]);
+    });
 	Route::get('pay/{code?}',['as' => "pay", 'uses' => "CustomerTransactionController@pay"]);
 	Route::get('confirmation/{code?}',['as' => "confirmation",'uses' => "MainController@confirmation"]);
 	Route::get('upload/{code?}',['as' => "upload",'uses' => "CustomerTransactionController@upload"]);

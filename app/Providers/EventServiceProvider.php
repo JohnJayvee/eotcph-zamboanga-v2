@@ -79,6 +79,9 @@ class EventServiceProvider extends ServiceProvider
         'send-sms-tax' => [
             'App\Laravel\Listeners\SendTaxListener'
         ],
+        'send-email-business-approved' => [
+            'App\Laravel\Listeners\SendEmailBusinessApprovedListener'
+        ],
 
     ];
 

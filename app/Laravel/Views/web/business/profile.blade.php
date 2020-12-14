@@ -16,10 +16,17 @@
                 </div>
                 <div class="card">
                     <div class="card-body" style="padding: 3em">
-                        <h5 class="text-title text-uppercase">Business Information
-                        <a href="{{route('web.business.edit')}}" title=""><i class="fas fa-pencil-alt"></i></a>
-
-                        </h5>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h5 class="text-title text-uppercase">Business Information
+                                    <a href="{{route('web.business.edit')}}" title=""><i class="fas fa-pencil-alt"></i></a>
+                                </h5>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="{{route('web.business_payment.index',[$profile->id])}}" class="custom-btn badge-primary-2 text-white " style="float: right;">Business Payment</a>
+                            </div>
+                        </div>
+                        
                         <div class="row underline mb-2">
                             <div class="col-md-4 mb-2">
                                 <label class="text-uppercase">{{str_replace("_"," ",$profile->business_type)}}</label>

@@ -221,4 +221,6 @@ class BusinessController extends Controller
 			return redirect()->back();
 		}
 	}
+
+   
 }

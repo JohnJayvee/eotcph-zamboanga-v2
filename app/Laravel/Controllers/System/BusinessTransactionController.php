@@ -14,14 +14,8 @@ use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Applicatio
 use App\Laravel\Requests\System\BPLORequest;
 
 
-use App\Laravel\Events\SendApprovedReference;
-use App\Laravel\Events\SendDeclinedReference;
 
-use App\Laravel\Events\SendProcessorTransaction;
-use App\Laravel\Events\SendEmailProcessorTransaction;
-
-use App\Laravel\Events\SendDeclinedEmailReference;
-use App\Laravel\Events\SendApprovedEmailReference;
+use App\Laravel\Events\SendEmailApprovedBusiness;
 /* App Classes
  */
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader;
@@ -38,7 +32,7 @@ class BusinessTransactionController extends Controller
 		$this->data['regional_offices'] = ['' => "Choose Regional Offices"] + RegionalOffice::pluck('name', 'id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
-		
+		$this->data['fees'] =  ['' => "Choose Collection Fees"] + CollectionOfFees::pluck('collection_name','id')->toArray();
 
 		$this->per_page = env("DEFAULT_PER_PAGE",2);
 	}
@@ -231,12 +225,26 @@ class BusinessTransactionController extends Controller
 			$transaction = $request->get('business_transaction_data');
 
 			$transaction->status = $type;
-			$transaction->amount = $type == "APPROVED" ? Helper::money_format(Helper::total_breakdown($request->get('collection_id'))) : NULL;
+			$transaction->total_amount = $type == "APPROVED" ? Helper::money_format(Helper::total_breakdown($request->get('collection_id'))) : NULL;
 			$transaction->remarks = $type == "DECLINED" ? $request->get('remarks') : NULL;
 			$transaction->processor_user_id = Auth::user()->id;
 			$transaction->modified_at = Carbon::now();
 			$transaction->save();
+			if ($type == "APPROVED") {
 
+				$insert[] = [
+	            	'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,
+	            	'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
+	                'amount' => $transaction->total_amount,
+	                'ref_num' => $transaction->code,
+	                'full_name' => $transaction->owner ? $transaction->owner->full_name : $transaction->business_name,
+	                'application_name' => $transaction->application_name,
+	                'modified_at' => Helper::date_only($transaction->modified_at)
+            	];
+
+			    $notification_data_email = new SendEmailApprovedBusiness($insert);
+			    Event::dispatch('send-email-business-approved', $notification_data_email);
+			}
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Transaction has been successfully Processed.");

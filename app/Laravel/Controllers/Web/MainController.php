@@ -9,6 +9,8 @@ use App\Laravel\Requests\PageRequest;
 use App\Laravel\Models\Application;
 use App\Laravel\Models\Transaction;
 use App\Laravel\Models\OtherTransaction;
+use App\Laravel\Models\CollectionOfFees;
+
 use App\Laravel\Models\ApplicationRequirements;
 /*
  * Models
@@ -60,6 +62,17 @@ class MainController extends Controller{
 		$response['msg'] = "List of Application";
 		$response['status_code'] = "TYPE_LIST";
 		$response['data'] = [$payment_amount->processing_fee,$payment_amount->partial_amount];
+		callback:
+
+		return response()->json($response, 200);
+	}
+
+	public function get_collection_fee(PageRequest $request){
+		$id = $request->get('collection_id');
+		$collection = CollectionOfFees::find($id);
+		$response['msg'] = "List of Collection";
+		$response['status_code'] = "TYPE_LIST";
+		$response['data'] = $collection;
 		callback:
 
 		return response()->json($response, 200);
