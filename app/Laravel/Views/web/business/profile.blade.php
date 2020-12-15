@@ -26,7 +26,7 @@
                                 <a href="{{route('web.business_payment.index',[$profile->id])}}" class="custom-btn badge-primary-2 text-white " style="float: right;">Business Payment</a>
                             </div>
                         </div>
-                        
+
                         <div class="row underline mb-2">
                             <div class="col-md-4 mb-2">
                                 <label class="text-uppercase">{{str_replace("_"," ",$profile->business_type)}}</label>
@@ -37,7 +37,7 @@
                                 <p>Business Scope</p>
                             </div>
                             <div class="col-md-4">
-                                <label class="text-uppercase">{{$profile->bn_number}}</label>
+                                <label class="text-uppercase">{{$profile->dti_sec_cda_registration_no}}</label>
                                 <p>BN Number</p>
                             </div>
                         </div>
@@ -72,10 +72,6 @@
 
                         </div>
                         <div class="row underline mb-2">
-                            <div class="col-md-4">
-                                <label class="text-uppercase">{{$profile->business_line}}</label>
-                                <p>Line of Business</p>
-                            </div>
                             <div class="col-md-4">
                                 <label class="text-uppercase">{{$profile->capitalization}}</label>
                                 <p>Capitalization</p>

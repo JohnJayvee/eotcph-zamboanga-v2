@@ -86,7 +86,7 @@ class BusinessController extends Controller
             if($request->dti_sec_cda_registration_no || $request->business_name){
                 $request_body = [
                     'bnn' => $request->dti_sec_cda_registration_no,
-                    'business_name' => $request->business_name
+                    'business_name' => $request->business_name,
                 ];
                 $response = Curl::to(env('BNRS_BNN'))
                         ->withHeaders( [
@@ -99,8 +99,12 @@ class BusinessController extends Controller
                         ->post();
                 if($response->status == "200"){
                     $content = $response->content;
-                    session()->flash('notification-status', "success");
-                    session()->flash('notification-msg', "Business validated");
+                    $status_code = $content['status_code'];
+                    if($status_code == 'VALID_BUSINESS_NAME'){
+                        session()->flash('notification-status', "success");
+                        session()->flash('notification-msg', "BNN Valid");
+                        return redirect()->back();
+                    }
 
                 } else {
                     session()->flash('notification-status', "failed");
@@ -195,7 +199,7 @@ class BusinessController extends Controller
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
 			return redirect()->back();
 		}
 
@@ -256,5 +260,5 @@ class BusinessController extends Controller
 		}
 	}
 
-   
+
 }
