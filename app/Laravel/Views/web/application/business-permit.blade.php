@@ -179,7 +179,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business TIN.</label>
-                                        <p class="form-data text-success">{{ $business->ctc_date_issue }}</p>
+                                        <p class="form-data text-success">{{ $business->business_tin }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -621,7 +621,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                        <button class="btn btn-light btn-sm" id="repeater_add_activity" type="button"><i class="fa fa-plus mr-2"></i>Add New Business Line</button>
+                                        <button class="btn btn-light btn-sm" id="repeater_add_activity" type="button"><i class="fa fa-plus mr-2"></i>Add Line of Business</button>
                                     </div>
                                 </div>
                             </div>

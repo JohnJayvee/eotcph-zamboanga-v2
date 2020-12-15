@@ -28,6 +28,10 @@
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
                             <form class="create-form" method="POST" action="{{ route('web.business.create') }}" enctype="multipart/form-data">
                             {!!csrf_field()!!}
                             <input type="hidden" name="BusinessID" value="{{ $business['BusinessID'] ?? '' }}">
