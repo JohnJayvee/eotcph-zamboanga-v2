@@ -821,6 +821,11 @@
         $('#repeater_add_activity').on('click', function(){
             var repeat_item = $("#repeat_form").eq(0).prop('outerHTML');
             $("#businessline_tbody").append(repeat_item)
+            $('.new').show();
+            $('.renew').hide();
+            $(".application_type").prop('checked', false);
+            $('input[name=application_type][value=new]').prop('checked', true);
+
         });
     })
 </script>
