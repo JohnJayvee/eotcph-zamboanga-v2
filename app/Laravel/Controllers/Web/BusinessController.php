@@ -198,7 +198,7 @@ class BusinessController extends Controller
         } else {
             session()->flash('notification-status', "failed");
             session()->flash('notification-msg', "BNN not found");
-            return redirect()->route('web.business.create');
+            return redirect()->back();
         }
 
 	}
