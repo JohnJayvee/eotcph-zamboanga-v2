@@ -735,7 +735,7 @@
                 }));
             })
 
-            $(input_city).prop('disabled', false)
+            $(input_city).prop('disabled', true)
             $(input_city).prepend($('<option>', {
                 value: "",
                 text: "--SELECT MUNICIPALITY/CITY, PROVINCE--"
@@ -804,7 +804,7 @@
                 }));
             })
 
-            $(input_region).prop('disabled', false)
+            $(input_region).prop('disabled', true)
             $(input_region).prepend($('<option>', {
                 value: "",
                 text: "--Select Region--"

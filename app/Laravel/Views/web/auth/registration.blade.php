@@ -103,8 +103,8 @@
                         </div>
                     </div>
                     <input type="hidden" class="form-control" name="region_name" id="input_region_name" value="{{old('region_name', session('register.region_name', 'REGION IX (ZAMBOANGA PENINSULA)'))}}">
-                    <input type="hidden" class="form-control" name="town_name" id="input_town_name" value="{{old('town_name', session('register.town_name'))}}">
-                    <input type="hidden" class="form-control" name="brgy_name" id="input_brgy_name" value="{{old('brgy_name', session('register.brgy_name'))}}">
+                    <input type="hidden" class="form-control" name="town_name" id="input_town_name" value="{{old('town_name', 'ZAMBOANGA DEL SUR - CITY OF ZAMBOANGA')}}">
+                    <input type="hidden" class="form-control" name="brgy_name" id="input_brgy_name" value="{{old('brgy_name')}}">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -320,7 +320,7 @@
               }));
           })
 
-          $(input_city).prop('disabled',false)
+          $(input_city).prop('disabled',true)
           $(input_city).prepend($('<option>',{value : "",text : "--SELECT MUNICIPALITY/CITY, PROVINCE--"}))
           if(selected.length > 0){
             $(input_city).val($(input_city+" option[value="+selected+"]").val());
@@ -365,6 +365,7 @@
       });
     }
     $(function(){
+        load_barangay();
         $('.datepicker').datepicker({
           format : "yyyy-mm-dd",
           maxViewMode : 2,
@@ -381,12 +382,18 @@
             $('#input_zipcode').val('');
             $('#input_region_name').val(_text);
         });
-
+        function load_barangay() {
+            var _val = "097332000";
+            var _text = "ZAMBOANGA DEL SUR - CITY OF ZAMBOANGA";
+            $(this).get_brgy(_val, "#input_brgy", "");
+            $('#input_zipcode').val('');
+            $('#input_town_name').val(_text);
+        }
 
         $("#input_town").on("change",function(){
             var _val = $(this).val();
             var _text = $("#input_town option:selected").text();
-            $(this).get_brgy(_val, "#input_brgy", "");
+            $(this).get_brgy('097332000', "#input_brgy", "");
             $('#input_zipcode').val('');
             $('#input_town_name').val(_text);
         });
