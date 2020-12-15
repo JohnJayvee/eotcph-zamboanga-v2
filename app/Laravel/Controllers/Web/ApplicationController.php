@@ -50,12 +50,12 @@ class ApplicationController extends Controller{
 		session()->put('application_id',$application->id);
         session()->put('application_name',$application->name);
 
-        $application_business_permit = ApplicationBusinessPermit::where('business_id', $business_id)->where('status', 'pending')->first();
-        if($application_business_permit->status == 'pending'){
-            session()->flash('notification-status',"warning");
-            session()->flash('notification-msg',"You have a pending Application");
-            return redirect()->back();
-        }
+        // $application_business_permit = ApplicationBusinessPermit::where('business_id', $business_id)->where('status', 'pending')->first();
+        // if($application_business_permit->status == 'pending'){
+        //     session()->flash('notification-status',"warning");
+        //     session()->flash('notification-msg',"You have a pending Application");
+        //     return redirect()->back();
+        // }
 		switch($application->permit_type){
 			// case 'bnrs':
 			// case 'business_clearance':

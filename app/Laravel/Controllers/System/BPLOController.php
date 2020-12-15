@@ -23,6 +23,7 @@ use App\Laravel\Events\SendCustomerRegistractionActive;
 use App\Laravel\Events\SendCustomerRegistractionDecline;
 use App\Laravel\Events\SendCustomerRegistractionActiveEmail;
 use App\Laravel\Events\SendCustomerRegistractionDeclinedEmail;
+use App\Laravel\Models\CustomerFile;
 
 class BPLOController extends Controller
 {
@@ -69,6 +70,8 @@ class BPLOController extends Controller
 	public function  edit(PageRequest $request,$id = NULL){
 		$this->data['page_title'] .= " - Edit record";
         $this->data['customer'] = $customer = Customer::find(1);
+        $this->data['customer_file'] = $customer_file = CustomerFile::where('application_id', $customer->id)->get();
+        // dd($this->data);
 		return view('system.bplo.edit',$this->data);
 	}
 

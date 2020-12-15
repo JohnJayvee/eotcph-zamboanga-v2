@@ -148,21 +148,30 @@
                                         <tr>
                                             <td>Uploaded Document</td>
                                             <td>Type</td>
+                                            <td>Date Uploaded</td>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @forelse ($customer_file as $file)
                                         <tr>
-                                            <td>Government ID 1</td>
-                                            <td>image</td>
+                                            <td>
+                                                <div><strong>{{ strtoupper(str_replace('-', ' ', $file->type)) }}</strong></div>
+                                                <div><small>File: <strong><a href="{{"{$file->directory}/{$file->filename}"}}" target="_blank">{{$file->filename}}</a></strong></small></div>
+                                            </td>
+                                            <td>
+                                                {{ $file->source }}
+                                            </td>
+                                            <td>
+                                                {{ Helper::date_format($file->created_at)}}
+                                            </td>
                                         </tr>
+                                        @empty
                                         <tr>
-                                            <td>Government ID 2</td>
-                                            <td>image</td>
+                                            <td class="text-center">
+                                                <p>No Document Uploaded.</p>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td>Business Permit</td>
-                                            <td>pdf</td>
-                                        </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
