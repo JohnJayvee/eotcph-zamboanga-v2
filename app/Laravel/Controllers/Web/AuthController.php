@@ -164,7 +164,7 @@ class AuthController extends Controller{
                     $new_file->path = $file['path'];
                     $new_file->directory = $file['directory'];
                     $new_file->filename = $file['filename'];
-                    $new_file->application_id = 1;
+                    $new_file->application_id = $customer_id;
                     $new_file->type = $file_type;
                     $new_file->original_name = $value->getClientOriginalName();
                     $new_file->save();

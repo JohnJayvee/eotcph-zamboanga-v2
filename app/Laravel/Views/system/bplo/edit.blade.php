@@ -167,7 +167,7 @@
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td class="text-center">
+                                            <td class="text-center" colspan="3">
                                                 <p>No Document Uploaded.</p>
                                             </td>
                                         </tr>
