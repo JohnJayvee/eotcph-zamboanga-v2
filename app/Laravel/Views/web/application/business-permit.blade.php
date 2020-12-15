@@ -354,7 +354,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business Area (Sq. m)</label>
-                                        <p class="form-data text-success">{{ $business->business_name }}</p>
+                                        <p class="form-data text-success">{{ $business->business_area }}</p>
                                     </div>
                                 </div>
                             </div>
