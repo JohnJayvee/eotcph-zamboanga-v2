@@ -602,7 +602,7 @@
                                                 <th class="text-title text-uppercase new" style="display: none;">New (Capital Investment)</th>
                                                 <th class="text-title text-uppercase renew" style="display: none;">Renew (Gross Sales / Receipt)</th>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="businessline_tbody">
                                                 @foreach ($business_line as $key => $item)
                                                 <tr id="repeat_form">
                                                     <td>
@@ -826,7 +826,7 @@
 
         $('#repeater_add_activity').on('click', function(){
             var repeat_item = $("#repeat_form").eq(0).prop('outerHTML');
-            $("tbody").append(repeat_item)
+            $("#businessline_tbody").append(repeat_item)
         });
     })
 </script>
