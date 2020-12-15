@@ -45,7 +45,7 @@ class BusinessRequest extends RequestManager{
             "lessor_zipcode" => "required",
 
             // "emergency_contact_fullname" => "required",
-            "emergency_contact_mobile_no" => "required|max:10|phone:PH",
+            "emergency_contact_mobile_no" => "max:10|phone:PH",
             // "emergency_contact_tel_no" => "integer",
             "emergency_contact_email" => "email:rfc,dns",
             "no_male_employee" => "required|integer",
@@ -60,7 +60,7 @@ class BusinessRequest extends RequestManager{
             "street_address" => "required",
             "email" => "required|email:rfc,dns",
             "mobile_no" => "required|integer",
-            "telephone_no" => "required|integer",
+            // "telephone_no" => "required|integer",
             // "tin_no" => "integer",
             // "sss_no" => "integer",
             // "philhealth_no" => "integer",
