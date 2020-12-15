@@ -136,7 +136,6 @@ class AuthController extends Controller{
         }
     }
 	public function store(RegisterRequest $request){
-
         DB::beginTransaction();
         try{
             $new_customer = new Customer;

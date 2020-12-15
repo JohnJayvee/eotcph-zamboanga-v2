@@ -102,7 +102,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" class="form-control" name="region_name" id="input_region_name" value="{{old('region_name', session('register.region_name'))}}">
+                    <input type="hidden" class="form-control" name="region_name" id="input_region_name" value="{{old('region_name', session('register.region_name', 'REGION IX (ZAMBOANGA PENINSULA)'))}}">
                     <input type="hidden" class="form-control" name="town_name" id="input_town_name" value="{{old('town_name', session('register.town_name'))}}">
                     <input type="hidden" class="form-control" name="brgy_name" id="input_brgy_name" value="{{old('brgy_name', session('register.brgy_name'))}}">
                     <div class="row">
@@ -292,7 +292,7 @@
             }));
           })
 
-          $(input_region).prop('disabled',false)
+          $(input_region).prop('disabled',true)
           $(input_region).prepend($('<option>',{value : "",text : "--Select Region--"}))
             if(selected.length > 0){
                 $(input_region).val($(input_region+" option[value="+selected+"]").val());
@@ -372,9 +372,8 @@
           zIndexOffset: 9999
         });
 
-        $(this).get_region("#input_region","#input_province","#input_town","#input_brgy","{{old('region', session('register.region'))}}")
-        $(this).get_city("{{ session('register.region') }}", "#input_town", "#input_brgy", "{{old('town', session('register.town'))}}");
-        $(this).get_brgy("{{ session('register.town') }}", "#input_brgy", "{{old('brgy', session('register.barangay'))}}");
+        $(this).get_region("#input_region","#input_province","#input_town","#input_brgy", "{{old('region', '090000000')}}")
+        $(this).get_city("090000000", "#input_town", "#input_brgy", "{{old('town', '097332000')}}");
         $("#input_region").on("change", function(){
             var _val = $(this).val();
             var _text = $("#input_region option:selected").text();
