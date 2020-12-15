@@ -77,6 +77,15 @@
                                 <p>Capitalization</p>
                             </div>
                         </div>
+                        <h5 class="text-title text-uppercase mt-4">Line of Business</h5>
+                        <div class="row underline mb-2">
+                            @foreach ($business_line as $key => $item)
+                                <div class="col-md-4">
+                                    <label class="text-uppercase">{{ $item->name }}</label>
+                                    <p class="text-title">Business Line</p>
+                                </div>
+                            @endforeach
+                        </div>
                         <div class="row underline mb-2">
                             <div class="col-md-3">
                                 <label class="text-uppercase">{{$profile->no_of_male_employee}}</label>

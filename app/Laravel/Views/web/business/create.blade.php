@@ -19,7 +19,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1" class="text-form pb-2">Business ID No.</label>
-                                            <input type="text" class="form-control form-control-sm {{ $errors->first('business_id_no') ? 'is-invalid': NULL  }}"  name="business_id_no" value="{{old('business_id_no') }}">
+                                            <input type="number" class="form-control form-control-sm {{ $errors->first('business_id_no') ? 'is-invalid': NULL  }}"  name="business_id_no" value="{{old('business_id_no', $business['BusinessID'] ?? '') }}" required>
                                             @if($errors->first('business_id_no'))
                                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('business_id_no')}}</small>
                                             @endif

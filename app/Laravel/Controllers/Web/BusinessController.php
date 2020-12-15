@@ -78,7 +78,7 @@ class BusinessController extends Controller
 
     }
 
-	public function store(PageRequest $request){
+	public function store(BusinessRequest $request){
 		$auth = Auth::guard('customer')->user();
 
 		DB::beginTransaction();
@@ -100,9 +100,13 @@ class BusinessController extends Controller
                 if($response->status == "200"){
                     $content = $response->content;
                     $status_code = $content['status_code'];
-                    if($status_code == 'VALID_BUSINESS_NAME'){
+                    if(!empty($status_code == 'VALID_BUSINESS_NAME')){
                         session()->flash('notification-status', "success");
                         session()->flash('notification-msg', "BNN Valid");
+                        return redirect()->back();
+                    } else {
+                        session()->flash('notification-status', "warning");
+                        session()->flash('notification-msg', "Business not found");
                         return redirect()->back();
                     }
 
@@ -185,12 +189,14 @@ class BusinessController extends Controller
             $new_business->save();
 
 
-            foreach ($request->business_line as $key => $v) {
-                $data = [
-                    'business_id' => $new_business->id,
-                    'name' => $request->business_line[$key],
-                ];
-                BusinessLine::insert($data);
+            if(!empty(request()->business_line)){
+                foreach ($request->business_line as $key => $v) {
+                    $data = [
+                        'business_id' => $new_business->id,
+                        'name' => $request->business_line[$key],
+                    ];
+                    BusinessLine::insert($data);
+                }
             }
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -208,7 +214,9 @@ class BusinessController extends Controller
 
 		$this->data['page_title'] = "Create Business CV";
 
-		$this->data['profile'] = Business::find($id);
+        $this->data['profile'] = Business::find($id);
+        $this->data['business_line'] = BusinessLine::where('business_id', session()->get('selected_business_id'))->get();
+        // dd($this->data);
         session()->put('selected_business_id', $id);
 		return view('web.business.profile',$this->data);
     }
