@@ -48,8 +48,30 @@ class CollectionOfFeesController extends Controller
 	}
 	public function store(CollectionFeeRequest $request){
 		DB::beginTransaction();
+
 		try{
-            $new_collection = CollectionOfFees::create($request->all());
+            $new_collection = new CollectionOfFees();
+            $new_collection->collection_name = $request->get('collection_name');
+            $new_collection->permit_fee = Helper::money_format($request->get('permit_fee'));
+            $new_collection->electrical_fee = Helper::money_format($request->get('electrical_fee'));
+            $new_collection->plumbing_fee = Helper::money_format($request->get('plumbing_fee'));
+            $new_collection->mechanical_fee = Helper::money_format($request->get('mechanical_fee'));
+            $new_collection->signboard_fee = Helper::money_format($request->get('signboard_fee'));
+            $new_collection->zoning_fee = Helper::money_format($request->get('zoning_fee'));
+            $new_collection->certification_fee_cvo = Helper::money_format($request->get('certification_fee_cvo'));
+            $new_collection->health_certificate_fee = Helper::money_format($request->get('health_certificate_fee'));
+            $new_collection->certification_fee_tetuan = Helper::money_format($request->get('certification_fee_tetuan'));
+            $new_collection->garbage_fee = Helper::money_format($request->get('garbage_fee'));
+            $new_collection->inspection_fee = Helper::money_format($request->get('inspection_fee'));
+            $new_collection->sanitary_inspection_fee = Helper::money_format($request->get('sanitary_inspection_fee'));
+            $new_collection->sticker = Helper::money_format($request->get('sticker'));
+            $total = $new_collection->permit_fee +  $new_collection->electrical_fee +
+            +  $new_collection->plumbing_fee +  $new_collection->mechanical_fee +  $new_collection->signboard_fee
+            +  $new_collection->zoning_fee +  $new_collection->certification_fee_cvo +  $new_collection->health_certificate_fee
+            +  $new_collection->certification_fee_tetuan +  $new_collection->garbage_fee +  $new_collection->garbage_fee +  $new_collection->inspection_fee + $new_collection->sanitary_inspection_fee
+            +  $new_collection->sticker;
+            $new_collection->total_amount =  Helper::money_format($total);
+            $new_collection->save();
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "New Collection Fee has been added.");

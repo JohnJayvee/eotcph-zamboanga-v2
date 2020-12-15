@@ -24,6 +24,7 @@ class CreateBusinessTransactionTable extends Migration
             $table->string('document_reference_code')->nullable();
             $table->string('application_id')->nullable();
             $table->string('application_name')->nullable();
+            $table->string('collection_id')->nullable();
             $table->string('total_amount')->nullable();
 
             $table->string('processor_user_id')->nullable();

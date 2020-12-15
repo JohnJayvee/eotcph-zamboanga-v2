@@ -53,7 +53,7 @@ Route::group(['as' => "auth."], function(){
 			Route::get('show/{id?}',['as' => "show",'uses' => "BusinessTransactionController@show",'middleware' => "system.exist:business_transaction"]);
 			Route::get('process/{id?}',['as' => "process",'uses' => "BusinessTransactionController@process",'middleware' => "system.exist:business_transaction"]);
 			/*Route::post('bplo-approved/{id?}',['as' => "bplo_approved",'uses' => "BusinessTransactionController@bplo_approved"]);*/
-
+			Route::post('save-collection',['as' => "save_collection",'uses' => "BusinessTransactionController@save_collection"]);
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "BusinessTransactionController@destroy"]);
 		});
 

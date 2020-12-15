@@ -81,14 +81,14 @@
           <p class="mt-1 text-danger">{!!$errors->first('requirements_id')!!}</p>
           @endif
         </div>
-        <div class="form-group" id="collection_id_container">
+        <!-- <div class="form-group" id="collection_id_container">
           <label for="input_suffix">Define Collection Fee </label>
           {!!Form::select("collection_id", $collections, old('collection_id'), ['id' => "collection_id", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('collection_id') ? 'is-invalid' : NULL)])!!}
           @if($errors->first('collection_id'))
           <p class="mt-1 text-danger">{!!$errors->first('collection_id')!!}</p>
 
           @endif
-        </div>
+        </div> -->
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>
         <a href="{{route('system.application.index')}}" class="btn btn-light">Return to Application Type list</a>
       </form>
@@ -126,15 +126,12 @@
         if (val == "business") {
             $('#department_container').hide();
             $('#permit_type_container').show();
-            $('#collection_id_container').show();
         }else  if (val == "e_submission"){
             $('#department_container').show();
             $('#permit_type_container').hide();
-            $('#collection_id_container').hide();
         }else{
             $('#department_container').hide();
             $('#permit_type_container').hide();
-            $('#collection_id_container').hide();
         }
 
       }).change();

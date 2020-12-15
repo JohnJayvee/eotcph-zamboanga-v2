@@ -12,6 +12,8 @@ use App\Laravel\Requests\PageRequest;
  */
 use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application,ApplicationRequirements,TransactionRequirements,CollectionOfFees};
 use App\Laravel\Requests\System\BPLORequest;
+use App\Laravel\Requests\System\TransactionCollectionRequest;
+
 
 
 
@@ -223,7 +225,11 @@ class BusinessTransactionController extends Controller
 		
 		try{
 			$transaction = $request->get('business_transaction_data');
-
+			if ($transaction->collection_id == NULL) {
+				session()->flash('notification-status', "failed");
+				session()->flash('notification-msg', "System Error No Collection Fee Found");
+				return redirect()->back();
+			}
 			$transaction->status = $type;
 			$transaction->total_amount = $type == "APPROVED" ? Helper::money_format(Helper::total_breakdown($request->get('collection_id'))) : NULL;
 			$transaction->remarks = $type == "DECLINED" ? $request->get('remarks') : NULL;
@@ -249,6 +255,27 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Transaction has been successfully Processed.");
 			return redirect()->route('system.business_transaction.'.strtolower($type));
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
+	}
+
+	public function save_collection (TransactionCollectionRequest $request){
+		$transaction_id = $request->get('transaction_id');
+		DB::beginTransaction();
+		
+		try{
+			$business_transaction = BusinessTransaction::find($transaction_id);
+			$business_transaction->collection_id = $request->get('collection_id');
+			$business_transaction->save();
+
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "Collection Breakdown has been saved.");
+			return redirect()->route('system.business_transaction.show',[$transaction_id]);
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");

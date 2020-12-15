@@ -49,9 +49,9 @@
             <p class="text-title fw-500">Transaction Details:</p>
             <p class="text-title fw-500">Application : <span class="text-black">{{str::title($transaction->application_name)}}</span></p>
             <p class="text-title fw-500">Application Status: <span class="badge  badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::title($transaction->status)}}</span></p>
-            <p class="text-title fw-500">Transacation Status: <span class="badge  badge-{{Helper::status_badge($transaction->transaction_status)}} p-2">{{Str::title($transaction->transaction_status)}}</span></p>
+            <!-- <p class="text-title fw-500">Transacation Status: <span class="badge  badge-{{Helper::status_badge($transaction->transaction_status)}} p-2">{{Str::title($transaction->transaction_status)}}</span></p>
             <p class="fw-500" style="color: #DC3C3B;">Processing Fee: Php {{Helper::money_format($transaction->amount) ?: "0" }} [{{$transaction->processing_fee_code}}]</p>
-            <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p>
+            <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p> -->
           </div>
           <div class="col-md-6 mt-4">
             <p class="text-title fw-500">Owners Name: <span class="text-black">{{str::title($transaction->owner ? $transaction->owner->full_name : $transaction->customer_name)}}</span></p>
@@ -65,32 +65,65 @@
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
         <h5 class="text-title text-uppercase">Collection Breakdown</h5>
         @if($transaction->status == "PENDING")
-        <form action="" method="POST"  enctype="multipart/form-data">
+        <form action="{{route('system.business_transaction.save_collection')}}" method="POST"  enctype="multipart/form-data">
           {!!csrf_field()!!}
+          <input type="hidden" name="transaction_id" value="{{$transaction->id}}">
           <div class="row">
             <div class="col-md-12">
               <label for="input_title">Type of Fees</label>
               <div class="form-inline">
-                {!!Form::select('collection_id',$fees,old('collection_id'),['id' => "input_collection_id",'class' => "custom-select ".($errors->first('collection_id') ? 'border-red' : NULL)])!!}
-                @if($errors->first('collection_id'))
-                <p class="mt-1 text-danger">{!!$errors->first('collection_id')!!}</p>
-                @endif
+                {!!Form::select('collection_id',$fees,old('collection_id',$transaction->collection_id),['id' => "input_collection_id",'class' => "custom-select ".($errors->first('collection_id') ? 'border-red' : NULL)])!!}
                 <button class="btn btn-primary ml-2" type="submit">Save</button>
               </div>
+              @if($errors->first('collection_id'))
+                <p class="mt-1 text-danger">{!!$errors->first('collection_id')!!}</p>
+              @endif
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-3 p-1 pt-4" id="permit_fee_container">
+          <div class="row pt-3">
+            <div class="col-md-3" id="permit_fee_container">
               <p class="text-title fw-500">Permit Fee: <label class="text-black" id="permit_fee">  </label></p>
             </div>
-            <div class="col-md-3 p-1 pt-4" id="electrical_fee_container">
+            <div class="col-md-3" id="electrical_fee_container">
               <p class="text-title fw-500">Electrical Fee: <label class="text-black" id="electrical_fee">  </label></p>
             </div>
-            <div class="col-md-3 p-1 pt-4" id="plumbing_fee_container">
+            <div class="col-md-3" id="plumbing_fee_container">
               <p class="text-title fw-500">Plumbing Fee: <label class="text-black" id="plumbing_fee">  </label></p>
             </div>
-            <div class="col-md-3 p-1 pt-4" id="mechanical_fee_container">
+            <div class="col-md-3" id="mechanical_fee_container">
               <p class="text-title fw-500">Mechanical Fee: <label class="text-black" id="mechanical_fee">  </label></p>
+            </div>
+            <div class="col-md-3" id="signboard_fee_container">
+              <p class="text-title fw-500">Signboard Fee: <label class="text-black" id="signboard_fee">  </label></p>
+            </div>
+            <div class="col-md-3" id="zoning_fee_container">
+              <p class="text-title fw-500">Zoning Fee: <label class="text-black" id="zoning_fee">  </label></p>
+            </div>
+            <div class="col-md-3" id="certification_fee_cvo_container">
+              <p class="text-title fw-500">Certication Fee CVO: <label class="text-black" id="certification_fee_cvo">  </label></p>
+            </div>
+            <div class="col-md-3" id="health_certificate_fee_container">
+              <p class="text-title fw-500">Health Cetificate Fee: <label class="text-black" id="health_certificate_fee">  </label></p>
+            </div>
+            <div class="col-md-3" id="certification_fee_tetuan_container">
+              <p class="text-title fw-500">Certification Fee Tetuan: <label class="text-black" id="certification_fee_tetuan">  </label></p>
+            </div>
+            <div class="col-md-3" id="garbage_fee_container">
+              <p class="text-title fw-500">Garbage Fee: <label class="text-black" id="garbage_fee">  </label></p>
+            </div>
+            <div class="col-md-3" id="inspection_fee_container">
+              <p class="text-title fw-500">Inspection Fee: <label class="text-black" id="inspection_fee">  </label></p>
+            </div>
+            <div class="col-md-3" id="sanitary_inspection_fee_container">
+              <p class="text-title fw-500">Sanitary Inspection Fee: <label class="text-black" id="sanitary_inspection_fee">  </label></p>
+            </div>
+            <div class="col-md-3" id="sticker_container">
+              <p class="text-title fw-500">Sticker Fee: <label class="text-black" id="sticker">  </label></p>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6" id="total_amount_container">
+              <p class="text-title fw-500">Total Collection Breakdown <label class="text-black" id="total_amount">  </label></p>
             </div>
           </div>
         </form>
@@ -98,81 +131,81 @@
         @if(in_array($transaction->status, ['APPROVED', 'DECLINED']))
           <div class="row mt-4">
             @if($breakdown_collection->permit_fee > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Permit Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->permit_fee) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->electrical_fee > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Electrical Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->electrical_fee) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->plumbing_fee > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Plumbing Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->plumbing_fee) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->mechanical_fee > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Mechanical Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->mechanical_fee) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->signboard_fee > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Signboard Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->signboard_fee) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->zoning_fee > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Zoning Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->zoning_fee) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->certification_fee_cvo > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Certification Fee CVO: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->certification_fee_cvo) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->health_certificate_fee > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Health Certificate Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->health_certificate_fee) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->certification_fee_tetuan > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Certificate Fee Tetuan: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->certification_fee_tetuan) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->garbage_fee > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Garbage Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->garbage_fee) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->garbage_fee > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Inspection Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->inspection_fee) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->sanitary_inspection_fee > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Sanitary Inspection Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->sanitary_inspection_fee) ?:"0.00"}}</span></p>
             </div>
             @endif
             @if($breakdown_collection->sticker > 0)
-            <div class="col-md-3 p-1">
+            <div class="col-md-3">
               <p class="text-title fw-500">Sticker Fee: <span class="text-black"> PHP {{Helper::money_format($breakdown_collection->sticker) ?:"0.00"}}</span></p>
             </div>
             @endif
           </div>
-        <div class="row mt-2">
-          <div class="col-md-6 p-1">
-            <p class="text-title fw-500">Total Collection Breakdown <span class="text-black"> PHP {{ Helper::money_format(Helper::total_breakdown($breakdown_collection->id))}}</span></p>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <p class="text-title fw-500">Total Collection Breakdown <span class="text-black"> PHP {{ Helper::money_format(Helper::total_breakdown($breakdown_collection->id))}}</span></p>
+            </div>
           </div>
-        </div>
         @endif
       </div>
     </div>
     @if(in_array($transaction->status, ['PENDING', 'ONGOING']))
-      <a data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=approved&collection_id={{$breakdown_collection->id}}"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
+      <a data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=approved"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
       <a  data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=declined" class="btn btn-danger mt-4 btn-decline border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}""><i class="fa fa-times-circle"></i> Decline Transactions</a>
     @endif
   </div>
@@ -282,6 +315,16 @@
     $('#electrical_fee_container').hide();
     $('#plumbing_fee_container').hide();
     $('#mechanical_fee_container').hide();
+    $('#signboard_fee_container').hide();
+    $('#zoning_fee_container').hide();
+    $('#certification_fee_cvo_container').hide();
+    $('#health_certificate_fee_container').hide();
+    $('#certification_fee_tetuan_container').hide();
+    $('#garbage_fee_container').hide();
+    $('#inspection_fee_container').hide();
+    $('#sanitary_inspection_fee_container').hide();
+    $('#sticker_container').hide();
+    $('#total_amount_container').hide();
 
 
     $('#input_collection_id').change(function() {
@@ -302,6 +345,46 @@
           if (result.data['mechanical_fee'] > 0) {
             $("#mechanical_fee_container").show();
             $('#mechanical_fee').text("PHP " + result.data['mechanical_fee']);
+          }
+          if (result.data['signboard_fee'] > 0) {
+            $("#signboard_fee_container").show();
+            $('#signboard_fee').text("PHP " + result.data['signboard_fee']);
+          }
+          if (result.data['zoning_fee'] > 0) {
+            $("#zoning_fee_container").show();
+            $('#zoning_fee').text("PHP " + result.data['zoning_fee']);
+          }
+          if (result.data['certification_fee_cvo'] > 0) {
+            $("#certification_fee_cvo_container").show();
+            $('#certification_fee_cvo').text("PHP " + result.data['certification_fee_cvo']);
+          }
+          if (result.data['health_certificate_fee'] > 0) {
+            $("#health_certificate_fee_container").show();
+            $('#health_certificate_fee').text("PHP " + result.data['health_certificate_fee']);
+          }
+          if (result.data['certification_fee_tetuan'] > 0) {
+            $("#certification_fee_tetuan_container").show();
+            $('#certification_fee_tetuan').text("PHP " + result.data['certification_fee_tetuan']);
+          }
+          if (result.data['garbage_fee'] > 0) {
+            $("#garbage_fee_container").show();
+            $('#garbage_fee').text("PHP " + result.data['garbage_fee']);
+          }
+          if (result.data['inspection_fee'] > 0) {
+            $("#inspection_fee_container").show();
+            $('#inspection_fee').text("PHP " + result.data['inspection_fee']);
+          }
+          if (result.data['sanitary_inspection_fee'] > 0) {
+            $("#sanitary_inspection_fee_container").show();
+            $('#sanitary_inspection_fee').text("PHP " + result.data['sanitary_inspection_fee']);
+          }
+          if (result.data['sticker'] > 0) {
+            $("#sticker_container").show();
+            $('#sticker').text("PHP " + result.data['sticker']);
+          }
+          if (result.data['total_amount'] > 0) {
+            $("#total_amount_container").show();
+            $('#total_amount').text("PHP " + result.data['total_amount']);
           }
       });
     

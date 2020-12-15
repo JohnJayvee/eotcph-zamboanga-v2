@@ -29,106 +29,93 @@
 
         <div class="form-group">
             <label for="input_title">Permit Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="permit_fee" placeholder="Permit Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('permit_fee') ? 'is-invalid' : NULL}}" id="input_permit_fee" name="permit_fee" placeholder="Permit Fee" value="{{old('permit_fee')}}">
+            @if($errors->first('permit_fee'))
+            <p class="mt-1 text-danger">{!!$errors->first('permit_fee')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Electrical Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="electrical_fee" placeholder="Electrical Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('electrical_fee') ? 'is-invalid' : NULL}}" id="input_electrical_fee" name="electrical_fee" placeholder="Electrical Fee" value="{{old('name')}}">
+            @if($errors->first('electrical_fee'))
+            <p class="mt-1 text-danger">{!!$errors->first('electrical_fee')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Plumbing Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="plumbing_fee" placeholder="Plumbing Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('plumbing_fee') ? 'is-invalid' : NULL}}" id="input_plumbing_fee" name="plumbing_fee" placeholder="Plumbing Fee" value="{{old('plumbing_fee')}}">
+            @if($errors->first('plumbing_fee'))
+            <p class="mt-1 text-danger">{!!$errors->first('plumbing_fee')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Mechanical Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="mechanical_fee" placeholder="Mechanical Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('mechanical_fee') ? 'is-invalid' : NULL}}" id="input_mechanical_fee" name="mechanical_fee" placeholder="Mechanical Fee" value="{{old('mechanical_fee')}}">
+            @if($errors->first('mechanical_fee'))
+            <p class="mt-1 text-danger">{!!$errors->first('mechanical_fee')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Sign Board Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="signboard_fee" placeholder="Sign Board Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('signboard_fee') ? 'is-invalid' : NULL}}" id="input_signboard_fee" name="signboard_fee" placeholder="Sign Board Fee" value="{{old('signboard_fee')}}">
+            @if($errors->first('signboard_fee'))
+            <p class="mt-1 text-danger">{!!$errors->first('signboard_fee')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Zoning Fee / Loc. Clearance Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="zoning_fee" placeholder="Zoning Fee / Loc. Clearance Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('zoning_fee') ? 'is-invalid' : NULL}}" id="input_zoning_fee" name="zoning_fee" placeholder="Zoning Fee / Loc. Clearance Fee" value="{{old('zoning_fee')}}">
+            @if($errors->first('zoning_fee'))
+            <p class="mt-1 text-danger">{!!$errors->first('zoning_fee')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Certification Fee (CVO) Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="certification_fee_cvo" placeholder="Certification Fee (CVO) Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('certification_fee_cvo') ? 'is-invalid' : NULL}}" id="input_certification_fee_cvo" name="certification_fee_cvo" placeholder="Certification Fee (CVO) Fee" value="{{old('certification_fee_cvo')}}">
+            @if($errors->first('certification_fee_cvo'))
+            <p class="mt-1 text-danger">{!!$errors->first('certification_fee_cvo')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Health Certificate Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="health_certificate_fee" placeholder="Health Certificate Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('health_certificate_fee') ? 'is-invalid' : NULL}}" id="input_health_certificate_fee" name="health_certificate_fee" placeholder="Health Certificate Fee" value="{{old('health_certificate_fee')}}">
+            @if($errors->first('health_certificate_fee'))
+            <p class="mt-1 text-danger">{!!$errors->first('health_certificate_fee')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Certification Fee (tetuan)</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="certification_fee_tetuan" placeholder="Certification Fee (tetuan)" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('certification_fee_tetuan') ? 'is-invalid' : NULL}}" id="input_certification_fee_tetuan" name="certification_fee_tetuan" placeholder="Certification Fee (tetuan)" value="{{old('certification_fee_tetuan')}}">
+            @if($errors->first('certification_fee_tetuan'))
+            <p class="mt-1 text-danger">{!!$errors->first('certification_fee_tetuan')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Garbage Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="garbage_fee" placeholder="Garbage Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('garbage_fee') ? 'is-invalid' : NULL}}" id="input_garbage_fee" name="garbage_fee" placeholder="Garbage Fee" value="{{old('garbage_fee')}}">
+            @if($errors->first('garbage_fee'))
+            <p class="mt-1 text-danger">{!!$errors->first('garbage_fee')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Inspection Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="inspection_fee" placeholder="Inspection Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('inspection_fee') ? 'is-invalid' : NULL}}" id="input_inspection_fee" name="inspection_fee" placeholder="Inspection Fee" value="{{old('inspection_fee')}}">
+            @if($errors->first('inspection_fee'))
+            <p class="mt-1 text-danger">{!!$errors->first('inspection_fee')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Sanitary Inspection Fee</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="sanitary_inspection_fee" placeholder="Sanitary Inspection Fee" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('sanitary_inspection_fee') ? 'is-invalid' : NULL}}" id="input_sanitary_inspection_fee" name="sanitary_inspection_fee" placeholder="Sanitary Inspection Fee" value="{{old('sanitary_inspection_fee')}}">
+            @if($errors->first('sanitary_inspection_fee'))
+            <p class="mt-1 text-danger">{!!$errors->first('sanitary_inspection_fee')!!}</p>
             @endif
         </div>
         <div class="form-group">
             <label for="input_title">Sticker</label>
-            <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title"
-                name="sticker" placeholder="Sticker" value="{{old('name')}}">
-            @if($errors->first('name'))
-            <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
+            <input type="text" class="form-control {{$errors->first('sticker') ? 'is-invalid' : NULL}}" id="input_sticker" name="sticker" placeholder="Sticker" value="{{old('sticker')}}">
+            @if($errors->first('sticker'))
+            <p class="mt-1 text-danger">{!!$errors->first('sticker')!!}</p>
             @endif
         </div>
         <button type="submit" class="btn btn-primary mr-2">Create Record</button>

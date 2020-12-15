@@ -77,7 +77,7 @@ class ApplicationController extends Controller
 			$new_application->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			// $new_application->processing_days = $request->get('processing_days');
             // $new_application->requirements_id = implode(",", $request->get('requirements_id'));
-			$new_application->collection_id = $request->get('define_collection_fee');
+			//$new_application->collection_id = $request->get('define_collection_fee');
 			$new_application->save();
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -110,7 +110,7 @@ class ApplicationController extends Controller
 			$application->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			$application->processing_days = $request->get('processing_days');
 			$application->requirements_id = implode(",", $request->get('requirements_id'));
-			$application->collection_id = $request->get('collection_id');
+			//$application->collection_id = $request->get('collection_id');
 			$application->save();
 
 			DB::commit();
