@@ -99,9 +99,11 @@ class AuthController extends Controller{
 
         $new_customer_otp->save();
 
+        // Send OTP Code via SMS
         // $notification_data = new SendCustomerOTP($insert);
         // Event::dispatch('send-customer-otp', $notification_data);
 
+        // send OTP Code via Email
         $notification_data = new SendCustomerOTPEmail($insert);
         Event::dispatch('send-customer-otp-email', $notification_data);
 
@@ -117,12 +119,21 @@ class AuthController extends Controller{
 
         $account = CustomerOTP::where('otp',request('code'))->first();
 
-        CustomerOTP::where('id',$account->id)->delete();
-        session()->flash('notification-status', "success");
-        session()->flash('notification-msg','Successfully registered.');
-        session()->forget('register');
-        return redirect()->route('web.login');
+        $contact_number = session('register.contact_number');
+        $email = session('register.email');
 
+        if(!$account){
+            // incase of otp failure resend OTP code
+            $this->sendOTP($contact_number, $email);
+            return redirect()->back();
+        } else {
+            CustomerOTP::where('id',$account->id)->delete();
+            session()->flash('notification-status', "success");
+            session()->flash('notification-msg','Successfully registered.');
+            // OTP success forget all session
+            session()->forget('register');
+            return redirect()->route('web.login');
+        }
     }
 	public function store(RegisterRequest $request){
 
@@ -171,6 +182,11 @@ class AuthController extends Controller{
                 }
             }
 
+            // store contact number and email address to session incase of failure
+            session()->put('register.contact_number', $request->contact_number);
+            session()->put('register.email', $request->email);
+
+            // fire sendOTP function after above all success
             $this->sendOTP($request->contact_number, $request->email);
 
             DB::commit();
@@ -179,7 +195,7 @@ class AuthController extends Controller{
             session()->put('register.progress', 2);
             return redirect()->route('web.register.otp');
         }catch(\Exception $e){
-            dd($e->getMessage());
+            // dd($e->getMessage());
             DB::rollback();
             session()->flash('notification-status', "failed");
             return redirect()->back();
