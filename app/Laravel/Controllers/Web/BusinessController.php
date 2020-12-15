@@ -79,7 +79,7 @@ class BusinessController extends Controller
     }
 
 	public function store(BusinessRequest $request){
-		$auth = Auth::guard('customer')->user();
+        $auth = Auth::guard('customer')->user();
         $request_body = [
             'bnn' => $request->dti_sec_cda_registration_no,
             'business_name' => $request->business_name,
@@ -96,12 +96,10 @@ class BusinessController extends Controller
         if($response->status == "200"){
             $content = $response->content;
             $status_code = $content['status_code'];
-            if($status_code == 'VALID_BUSINESS_NAME'){
-                session()->flash('notification-status', "success");
-                session()->flash('notification-msg', "BNN Valid");
-                DB::beginTransaction();
+            session()->flash('notification-status', "success");
+            session()->flash('notification-msg', "VALID BUSINESS NAME");
+            DB::beginTransaction();
                 try{
-
                     $new_business = new Business;
                     $new_business->customer_id = $auth->id;
                     $new_business->business_scope = $request->get('business_scope');
@@ -192,15 +190,15 @@ class BusinessController extends Controller
                     DB::rollback();
                     session()->flash('notification-status', "failed");
                     session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
-                    return redirect()->back();
+                    return redirect()->route('web.business.create')->withInput();
                 }
-            }
+
         } else {
+            DB::rollBack();
             session()->flash('notification-status', "failed");
             session()->flash('notification-msg', "BNN not found");
-            return redirect()->back();
+            return redirect()->route('web.business.create')->withInput();
         }
-
 	}
 	public function business_profile(PageRequest $request , $id = NULL){
 
