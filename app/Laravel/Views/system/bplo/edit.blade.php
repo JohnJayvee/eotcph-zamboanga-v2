@@ -178,7 +178,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Create Record</button>
+                <button type="submit" class="btn btn-primary mr-2">Update Record</button>
             </div>
         </form>
     </div>
