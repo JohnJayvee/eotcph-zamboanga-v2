@@ -146,7 +146,7 @@ class ProcessorController extends Controller
 				
 			}
 			if ($new_processor->save()) {
-				$insert[] = [
+				/*$insert[] = [
 					'full_name' => $new_processor->fname ." " .$new_processor->lname,
 					'ref_id' => $new_processor->reference_id,
 	                'contact_number' => $new_processor->contact_number,
@@ -154,7 +154,7 @@ class ProcessorController extends Controller
 	                'type' => $new_processor->type
 	            ];	
 				$notification_data = new SendProcessorReference($insert);
-			    Event::dispatch('send-sms-processor', $notification_data);
+			    Event::dispatch('send-sms-processor', $notification_data);*/
 
 				DB::commit();
 				session()->flash('notification-status', "success");
