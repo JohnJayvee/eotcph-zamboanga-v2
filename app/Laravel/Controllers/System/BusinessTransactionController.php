@@ -222,12 +222,11 @@ class BusinessTransactionController extends Controller
 	public function process($id = NULL,PageRequest $request){
 		$type = strtoupper($request->get('status_type'));
 		DB::beginTransaction();
-		
 		try{
 			$transaction = $request->get('business_transaction_data');
-			if ($transaction->collection_id == NULL) {
+			if ($transaction->collection_id == NULL || $request->get('collection_id') == NULL) {
 				session()->flash('notification-status', "failed");
-				session()->flash('notification-msg', "System Error No Collection Fee Found");
+				session()->flash('notification-msg', "Please Define Collection of Fee for this transaction");
 				return redirect()->back();
 			}
 			$transaction->status = $type;
@@ -276,6 +275,37 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Collection Breakdown has been saved.");
 			return redirect()->route('system.business_transaction.show',[$transaction_id]);
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
+	}
+
+	public function remarks($id = NULL,PageRequest $request){
+		DB::beginTransaction();
+		
+		try{
+			$transaction = $request->get('business_transaction_data');
+			$auth = Auth::user();
+			$array_remarks = [];
+	 		$value = $request->get('value');
+	 		if ($transaction->department_remarks) {
+	 			array_push($array_remarks, ['processor_id' => $auth->id ,'id' => $auth->department_id , 'remarks' => $value]);
+	 			$existing = json_decode($transaction->department_remarks);
+	 			$final_value = array_merge($existing , $array_remarks);
+	 		}else{
+	 			 array_push($array_remarks, ['processor_id' => $auth->id,'id' => $auth->department_id , 'remarks' => $value]);
+	 			 $final_value = $array_remarks;
+	 		}
+			$transaction->department_remarks = json_encode($final_value);
+			$transaction->save();
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "Collection Breakdown has been saved.");
+			return redirect()->route('system.business_transaction.show',[$transaction->id]);
+
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");

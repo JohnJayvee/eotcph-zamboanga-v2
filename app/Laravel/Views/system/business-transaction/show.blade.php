@@ -25,6 +25,7 @@
             <p class="text-title fw-500 pl-3" style="padding-top: 15px;">|</p>
             <p class="text-title fw-500 pt-3 pl-3">Application Sent: <span class="text-black">{{ Helper::date_format($transaction->created_at)}}</span></p>
           </div>
+          
         </div> 
       </div>
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
@@ -61,7 +62,7 @@
         </div> 
       </div>
     </div>
-    <div class="card card-rounded shadow-sm">
+    <div class="card card-rounded shadow-sm mb-4">
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
         <h5 class="text-title text-uppercase">Collection Breakdown</h5>
         @if($transaction->status == "PENDING")
@@ -204,11 +205,49 @@
         @endif
       </div>
     </div>
+    <div class="card card-rounded shadow-sm mb-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 pt-2">
+            <h5 class="text-title text-uppercase">Department Remarks</h5>
+          </div>
+          <div class="col-md-6">
+            @if(Auth::user()->type == "processor")
+              <a data-url="{{route('system.business_transaction.remarks',[$transaction->id])}}"  class="btn btn-primary btn-remarks border-5 text-white float-right">Add Remarks</a>
+            @endif
+          </div>
+          <div class="table-responsive pt-2">
+            <table class="table table-striped table-wrap" style="table-layout: fixed;">
+              <thead>
+                <tr>
+                  <th class="text-title p-3">Processor Name</th>
+                  <th class="text-title p-3">Department Name</th>
+                  <th class="text-title p-3">Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if($transaction->department_remarks)
+                  @forelse(json_decode($transaction->department_remarks) as $value)
+                  <tr>
+                    <td>{{str::title(Helper::processor_name($value->processor_id))}}</td>
+                    <td>{{str::title(Helper::department_name($value->id))}}</td>
+                    <td>{{str::title($value->remarks)}}</td>
+                  </tr>
+                  @empty
+                  @endforelse
+                @endif
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
     @if(in_array($transaction->status, ['PENDING', 'ONGOING']))
-      <a data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=approved"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
+      <a data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=approved&collection_id={{$transaction->collection_id}}"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
       <a  data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=declined" class="btn btn-danger mt-4 btn-decline border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}""><i class="fa fa-times-circle"></i> Decline Transactions</a>
     @endif
   </div>
+  
 </div>
 @stop
 
@@ -273,17 +312,17 @@
         }
       });
     });
-    /*$(".btn-approved").on('click', function(){
+    $(".btn-remarks").on('click', function(){
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
-        title: "All the submitted requirements will be marked as approved. Are you sure you want to approve this application?",
+        title: "All the submitted requirements will be marked as declined. Are you sure you want to declined this application?",
         
-        icon: 'info',
+        icon: 'warning',
         input: 'text',
-        inputPlaceholder: "Put Amount",
+        inputPlaceholder: "Put remarks",
         showCancelButton: true,
-        confirmButtonText: 'Approved!',
+        confirmButtonText: 'Decline',
         cancelButtonColor: '#d33'
       }).then((result) => {
         if (result.value === "") {
@@ -291,10 +330,10 @@
           return false
         }
         if (result.value) {
-          window.location.href = url + "&amount="+result.value;
+          window.location.href = url + "?value="+result.value;
         }
       });
-    });*/
+    });
     $(".btn-approved").on('click', function(){
       var url = $(this).data('url');
       var self = $(this)

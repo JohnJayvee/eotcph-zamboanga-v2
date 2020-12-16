@@ -6,6 +6,8 @@ use App\Laravel\Models\TaxCertificate;
 use App\Laravel\Models\Violators;
 use App\Laravel\Models\CollectionOfFees;
 use App\Laravel\Models\Department;
+use App\Laravel\Models\User;
+
 
 use Route,Str,Carbon,Input,DB,DateTime,DateInterval,DatePeriod;
 
@@ -92,6 +94,12 @@ class Helper{
 		$department = Department::find($id);
 
 		return $department->name;
+	}
+
+	public static function processor_name($id = NULL){
+		$processor = User::find($id);
+
+		return $processor->full_name;
 	}
 	public static function total_breakdown($id = NULL){
 
