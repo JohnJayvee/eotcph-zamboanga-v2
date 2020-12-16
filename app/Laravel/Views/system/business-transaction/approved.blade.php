@@ -71,7 +71,7 @@
             <td>{{str::title($transaction->business_name)}} /<br>  {{str::title($transaction->owner->full_name)}}</td>
             <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
             <td>
-              <div>{{Helper::money_format($transaction->amount) ?: 0 }}</div>
+              <div>{{Helper::money_format($transaction->total_amount) ?: 0 }}</div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::upper($transaction->payment_status)}}</span></small></div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->transaction_status)}} p-2 mt-1">{{Str::upper($transaction->transaction_status)}}</span></small></div>
             </td>

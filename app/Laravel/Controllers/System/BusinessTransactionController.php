@@ -187,9 +187,10 @@ class BusinessTransactionController extends Controller
 		$this->data['transaction'] = $request->get('business_transaction_data');
 		$id = $this->data['transaction']->requirements_id;
 		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $id))->get();
-		$collection_id = Application::find($this->data['transaction']->application_id);
+		
+
 		$this->data['department'] =  Department::pluck('name','id')->toArray();
-		$this->data['breakdown_collection'] = CollectionOfFees::find($collection_id->collection_id);
+		$this->data['breakdown_collection'] = CollectionOfFees::find($this->data['transaction']->collection_id);
 		$this->data['page_title'] = "Transaction Details";
 		if (Auth::user()->type == "processor") {
 			return view('system.business-transaction.processor-show',$this->data);
