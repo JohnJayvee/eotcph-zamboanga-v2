@@ -32,7 +32,7 @@
           <tr>
             <td>{{ Helper::date_format($customers->created_at)}}</td>
             <td>{{ $customers->name}}</td>
-            <td><span class="badge badge-{{ Helper::status_badge($customers->status)}}">{{ $customers->status}}</span></th>
+            <td><span class="badge badge-{{ Helper::status_badge($customers->status)}}">{{ ucfirst($customers->status)}}</span></th>
             <td >
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">

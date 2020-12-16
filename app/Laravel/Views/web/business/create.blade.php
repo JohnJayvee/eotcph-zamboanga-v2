@@ -28,6 +28,10 @@
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
                             <form class="create-form" method="POST" action="{{ route('web.business.create') }}" enctype="multipart/form-data">
                             {!!csrf_field()!!}
                             <input type="hidden" name="BusinessID" value="{{ $business['BusinessID'] ?? '' }}">
@@ -66,7 +70,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business Name</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('dominant_name') ? 'is-invalid': NULL  }}"  name="business_name" value="{{old('business_name', $business['BusinessName'] ?? '') }}">
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_name') ? 'is-invalid': NULL  }}"  name="business_name" value="{{old('business_name', $business['BusinessName'] ?? '') }}">
                                         @if($errors->first('business_name'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('business_name')}}</small>
                                         @endif
@@ -235,18 +239,18 @@
                             </div>
                             <div class="row">
 								<div class="col-md-6">
-									<div class="form-group {{$errors->first('no_male_employee') ? 'text-danger' : NULL}}">
+									<div class="form-group">
 										<label for="input_no_male_employee" class="text-form pb-2">Total No. of Male Employees</label>
-										<input type="number" id="input_no_male_employee" class="form-control" name="no_male_employee" value="{{old('no_male_employee')}}">
+										<input type="number" id="input_no_male_employee" class="form-control {{ $errors->first('no_male_employee') ? 'is-invalid': NULL  }}" name="no_male_employee" value="{{old('no_male_employee')}}">
 										@if($errors->first('no_male_employee'))
 										<p class="help-block text-danger">{{$errors->first('no_male_employee')}}</p>
 										@endif
 									</div>
 								</div>
 								<div class="col-md-6">
-									<div class="form-group {{$errors->first('male_residing_in_city') ? 'text-danger' : NULL}}">
+									<div class="form-group">
 										<label for="input_male_residing_in_city" class="text-form pb-2">No. of Male Employees Residing In City</label>
-										<input type="number" id="input_male_residing_in_city" class="form-control" name="male_residing_in_city" value="{{old('male_residing_in_city')}}">
+										<input type="number" id="input_male_residing_in_city" class="form-control {{ $errors->first('male_residing_in_city') ? 'is-invalid': NULL  }}" name="male_residing_in_city" value="{{old('male_residing_in_city')}}">
 										@if($errors->first('male_residing_in_city'))
 										<p class="help-block text-danger">{{$errors->first('male_residing_in_city')}}</p>
 										@endif
@@ -256,18 +260,18 @@
 							</div>
 							<div class="row">
 								<div class="col-md-6">
-									<div class="form-group {{$errors->first('no_female_employee') ? 'text-danger' : NULL}}">
+									<div class="form-group">
 										<label for="input_no_female_employee" class="text-form pb-2">Total No. of Female Employees</label>
-										<input type="number" id="input_no_female_employee" class="form-control" name="no_female_employee" value="{{old('no_female_employee')}}">
+										<input type="number" id="input_no_female_employee" class="form-control {{ $errors->first('no_female_employee') ? 'is-invalid': NULL  }}" name="no_female_employee" value="{{old('no_female_employee')}}">
 										@if($errors->first('no_female_employee'))
 										<p class="help-block text-danger">{{$errors->first('no_female_employee')}}</p>
 										@endif
 									</div>
 								</div>
 								<div class="col-md-6">
-									<div class="form-group {{$errors->first('female_residing_in_city') ? 'text-danger' : NULL}}">
+									<div class="form-group">
 										<label for="input_female_residing_in_city" class="text-form pb-2">No. of Female Employees Residing In City</label>
-										<input type="number" id="input_female_residing_in_city" class="form-control" name="female_residing_in_city" value="{{old('female_residing_in_city')}}">
+										<input type="number" id="input_female_residing_in_city" class="form-control {{ $errors->first('female_residing_in_city') ? 'is-invalid': NULL  }}" name="female_residing_in_city" value="{{old('female_residing_in_city')}}">
 										@if($errors->first('female_residing_in_city'))
 										<p class="help-block text-danger">{{$errors->first('female_residing_in_city')}}</p>
 										@endif
@@ -377,7 +381,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
                                             </div>
-                                            <input type="number" class="form-control {{ $errors->first('mobile_no') ? 'is-invalid': NULL  }} br-left-white" name="mobile_no" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" placeholder="Contact Number" value="{{old('mobile_no', session('register.mobile_no'))}}">
+                                            <input type="number" class="form-control {{ $errors->first('mobile_no') ? 'is-invalid': NULL  }} br-left-white" name="mobile_no" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" placeholder="Contact Number" value="{{old('mobile_no', $business['BusTelNo'] ?? '')}}">
 
                                         </div>
                                         @if($errors->first('mobile_no'))
@@ -388,7 +392,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Telephone Number</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('telephone_no') ? 'is-invalid': NULL  }}"  name="telephone_no" value="{{old('telephone_no',$business['BusTelNo'] ?? '') }}">
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('telephone_no') ? 'is-invalid': NULL  }}"  name="telephone_no" value="{{old('telephone_no') }}">
                                         @if($errors->first('telephone_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('telephone_no')}}</small>
                                         @endif
@@ -731,7 +735,7 @@
                 }));
             })
 
-            $(input_city).prop('disabled', false)
+            $(input_city).prop('disabled', true)
             $(input_city).prepend($('<option>', {
                 value: "",
                 text: "--SELECT MUNICIPALITY/CITY, PROVINCE--"
@@ -800,7 +804,7 @@
                 }));
             })
 
-            $(input_region).prop('disabled', false)
+            $(input_region).prop('disabled', true)
             $(input_region).prepend($('<option>', {
                 value: "",
                 text: "--Select Region--"

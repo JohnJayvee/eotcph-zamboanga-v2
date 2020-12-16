@@ -79,136 +79,127 @@ class BusinessController extends Controller
     }
 
 	public function store(BusinessRequest $request){
-		$auth = Auth::guard('customer')->user();
+        $auth = Auth::guard('customer')->user();
+        // $request_body = [
+        //     'bnn' => $request->dti_sec_cda_registration_no,
+        //     'business_name' => $request->business_name,
+        // ];
+        // $response = Curl::to(env('BNRS_BNN'))
+        //         ->withHeaders( [
+        //             "X-BNRS-API-Code: ".env('BNRS_CODE'),
+        //             "X-BNRS-API-Secret: ".env("BNRS_SECRET")
+        //         ])
+        //         ->withData($request_body)
+        //         ->asJson( true )
+        //         ->returnResponseObject()
+        //         ->post();
+        // if($response->status == "200"){
+        //     $content = $response->content;
+        //     $status_code = $content['status_code'];
+        //     session()->flash('notification-status', "success");
+        //     session()->flash('notification-msg', "VALID BUSINESS NAME");
 
-		DB::beginTransaction();
-		try{
-            if($request->dti_sec_cda_registration_no || $request->business_name){
-                $request_body = [
-                    'bnn' => $request->dti_sec_cda_registration_no,
-                    'business_name' => $request->business_name,
-                ];
-                $response = Curl::to(env('BNRS_BNN'))
-                        ->withHeaders( [
-                            "X-BNRS-API-Code: ".env('BNRS_CODE'),
-                            "X-BNRS-API-Secret: ".env("BNRS_SECRET")
-                        ])
-                        ->withData($request_body)
-                        ->asJson( true )
-                        ->returnResponseObject()
-                        ->post();
-                if($response->status == "200"){
-                    $content = $response->content;
-                    $status_code = $content['status_code'];
-                    if(!empty($status_code == 'VALID_BUSINESS_NAME')){
-                        session()->flash('notification-status', "success");
-                        session()->flash('notification-msg', "BNN Valid");
-                        return redirect()->back();
-                    } else {
-                        session()->flash('notification-status', "warning");
-                        session()->flash('notification-msg', "Business not found");
-                        return redirect()->back();
+
+        // } else {
+        //     DB::rollBack();
+        //     session()->flash('notification-status', "failed");
+        //     session()->flash('notification-msg', "BNN not found");
+        //     return redirect()->route('web.business.create')->withInput();
+        // }
+        DB::beginTransaction();
+                try{
+                    $new_business = new Business;
+                    $new_business->customer_id = $auth->id;
+                    $new_business->business_scope = $request->get('business_scope');
+                    $new_business->business_type = $request->get('business_type');
+                    $new_business->dominant_name = $request->get('dominant_name');
+                    $new_business->business_name = $request->get('business_name');
+                    $new_business->tradename = $request->trade_name;
+                    $new_business->business_id_no = $request->get('BusinessID');
+
+                    $new_business->dti_sec_cda_registration_no = $request->dti_sec_cda_registration_no;
+                    $new_business->dti_sec_cda_registration_date = $request->dti_sec_cda_registration_date;
+                    $new_business->ctc_no = $request->ctc_no;
+                    $new_business->business_tin = $request->business_tin;
+                    $new_business->tax_incentive = $request->tax_incentive;
+
+                    $new_business->rep_lastname = $request->rep_lastname;
+                    $new_business->rep_firstname = $request->rep_firstname;
+                    $new_business->rep_middlename = $request->rep_middlename;
+                    $new_business->rep_gender = $request->rep_gender;
+                    $new_business->rep_position = $request->rep_position;
+                    $new_business->rep_tin = $request->rep_tin;
+
+                    $new_business->website_url = $request->website_url;
+                    $new_business->business_area = $request->business_area;
+
+                    $new_business->lessor_fullname = $request->lessor_fullname;
+                    $new_business->lessor_gender = $request->lessor_gender;
+                    $new_business->lessor_monthly_rental = $request->lessor_monthly_rental;
+                    $new_business->lessor_rental_date = $request->lessor_rental_date;
+                    $new_business->lessor_mobile_no = $request->lessor_mobile_no;
+                    $new_business->lessor_tel_no = $request->lessor_tel_no;
+                    $new_business->lessor_email = $request->lessor_email;
+                    $new_business->lessor_unit_no = $request->lessor_unit_no;
+                    $new_business->lessor_street_address = $request->lessor_street_address;
+                    $new_business->lessor_brgy = $request->lessor_brgy;
+                    $new_business->lessor_brgy_name = $request->lessor_brgy_name;
+                    $new_business->lessor_region = $request->lessor_region;
+                    $new_business->lessor_region_name = $request->lessor_region_name;
+                    $new_business->lessor_town = $request->lessor_town;
+                    $new_business->lessor_town_name = $request->lessor_town_name;
+                    $new_business->lessor_zipcode = $request->lessor_region;
+
+                    $new_business->emergency_contact_fullname = $request->emergency_contact_fullname;
+                    $new_business->emergency_contact_mobile_no = $request->emergency_contact_mobile_no;
+                    $new_business->emergency_contact_tel_no = $request->emergency_contact_tel_no;
+                    $new_business->emergency_contact_email = $request->emergency_contact_email;
+
+                    $new_business->no_of_male_employee = $request->get('no_male_employee');
+                    $new_business->no_of_female_employee = $request->get('no_female_employee');
+                    $new_business->male_residing_in_city = $request->get('male_residing_in_city');
+                    $new_business->female_residing_in_city = $request->get('female_residing_in_city');
+
+                    $new_business->capitalization = $request->get('capitalization');
+                    $new_business->region_name = $request->get('region_name');
+                    $new_business->town_name = $request->get('town_name');
+                    $new_business->region = $request->get('region');
+                    $new_business->town = $request->get('town');
+                    $new_business->brgy_name = $request->get('brgy_name');
+                    $new_business->brgy = $request->get('brgy');
+                    $new_business->zipcode = $request->get('zipcode');
+                    $new_business->unit_no = $request->get('unit_no');
+                    $new_business->street_address = $request->get('street_address');
+                    $new_business->email = $request->get('email');
+                    $new_business->mobile_no = $request->get('mobile_no');
+                    $new_business->telephone_no = $request->get('telephone_no');
+                    $new_business->tin_no = $request->get('tin_no');
+                    $new_business->sss_no = $request->get('sss_no');
+                    $new_business->philhealth_no = $request->get('philhealth_no');
+                    $new_business->pagibig_no = $request->get('pagibig_no');
+
+                    $new_business->save();
+
+
+                    if(!empty(request()->business_line)){
+                        foreach ($request->business_line as $key => $v) {
+                            $data = [
+                                'business_id' => $new_business->id,
+                                'name' => $request->business_line[$key],
+                            ];
+                            BusinessLine::insert($data);
+                        }
                     }
-
-                } else {
+                    DB::commit();
+                    session()->flash('notification-status', "success");
+                    session()->flash('notification-msg', "New Bureau/Office has been added.");
+                    return redirect()->route('web.business.index');
+                }catch(\Exception $e){
+                    DB::rollback();
                     session()->flash('notification-status', "failed");
-                    session()->flash('notification-msg', "Business not found");
+                    session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
+                    return redirect()->route('web.business.create')->withInput();
                 }
-            }
-
-			$new_business = new Business;
-			$new_business->customer_id = $auth->id;
-			$new_business->business_scope = $request->get('business_scope');
-			$new_business->business_type = $request->get('business_type');
-			$new_business->dominant_name = $request->get('dominant_name');
-			$new_business->business_name = $request->get('business_name');
-            $new_business->tradename = $request->trade_name;
-            $new_business->business_id_no = $request->get('BusinessID');
-
-            $new_business->dti_sec_cda_registration_no = $request->dti_sec_cda_registration_no;
-            $new_business->dti_sec_cda_registration_date = $request->dti_sec_cda_registration_date;
-            $new_business->ctc_no = $request->ctc_no;
-            $new_business->business_tin = $request->business_tin;
-            $new_business->tax_incentive = $request->tax_incentive;
-
-            $new_business->rep_lastname = $request->rep_lastname;
-            $new_business->rep_firstname = $request->rep_firstname;
-            $new_business->rep_middlename = $request->rep_middlename;
-            $new_business->rep_gender = $request->rep_gender;
-            $new_business->rep_position = $request->rep_position;
-            $new_business->rep_tin = $request->rep_tin;
-
-            $new_business->website_url = $request->website_url;
-            $new_business->business_area = $request->business_area;
-
-            $new_business->lessor_fullname = $request->lessor_fullname;
-            $new_business->lessor_gender = $request->lessor_gender;
-            $new_business->lessor_monthly_rental = $request->lessor_monthly_rental;
-            $new_business->lessor_rental_date = $request->lessor_rental_date;
-            $new_business->lessor_mobile_no = $request->lessor_mobile_no;
-            $new_business->lessor_tel_no = $request->lessor_tel_no;
-            $new_business->lessor_email = $request->lessor_email;
-            $new_business->lessor_unit_no = $request->lessor_unit_no;
-            $new_business->lessor_street_address = $request->lessor_street_address;
-            $new_business->lessor_brgy = $request->lessor_brgy;
-            $new_business->lessor_brgy_name = $request->lessor_brgy_name;
-            $new_business->lessor_region = $request->lessor_region;
-            $new_business->lessor_region_name = $request->lessor_region_name;
-			$new_business->lessor_town = $request->lessor_town;
-			$new_business->lessor_town_name = $request->lessor_town_name;
-            $new_business->lessor_zipcode = $request->lessor_region;
-
-            $new_business->emergency_contact_fullname = $request->emergency_contact_fullname;
-			$new_business->emergency_contact_mobile_no = $request->emergency_contact_mobile_no;
-			$new_business->emergency_contact_tel_no = $request->emergency_contact_tel_no;
-            $new_business->emergency_contact_email = $request->emergency_contact_email;
-
-            $new_business->no_of_male_employee = $request->get('no_male_employee');
-            $new_business->no_of_female_employee = $request->get('no_female_employee');
-            $new_business->male_residing_in_city = $request->get('male_residing_in_city');
-            $new_business->female_residing_in_city = $request->get('female_residing_in_city');
-
-			$new_business->capitalization = $request->get('capitalization');
-			$new_business->region_name = $request->get('region_name');
-			$new_business->town_name = $request->get('town_name');
-			$new_business->region = $request->get('region');
-			$new_business->town = $request->get('town');
-			$new_business->brgy_name = $request->get('brgy_name');
-			$new_business->brgy = $request->get('brgy');
-			$new_business->zipcode = $request->get('zipcode');
-			$new_business->unit_no = $request->get('unit_no');
-			$new_business->street_address = $request->get('street_address');
-			$new_business->email = $request->get('email');
-			$new_business->mobile_no = $request->get('mobile_no');
-			$new_business->telephone_no = $request->get('telephone_no');
-			$new_business->tin_no = $request->get('tin_no');
-			$new_business->sss_no = $request->get('sss_no');
-			$new_business->philhealth_no = $request->get('philhealth_no');
-            $new_business->pagibig_no = $request->get('pagibig_no');
-
-            $new_business->save();
-
-
-            if(!empty(request()->business_line)){
-                foreach ($request->business_line as $key => $v) {
-                    $data = [
-                        'business_id' => $new_business->id,
-                        'name' => $request->business_line[$key],
-                    ];
-                    BusinessLine::insert($data);
-                }
-            }
-			DB::commit();
-			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "New Bureau/Office has been added.");
-			return redirect()->route('web.business.index');
-		}catch(\Exception $e){
-			DB::rollback();
-			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
-			return redirect()->back();
-		}
-
 	}
 	public function business_profile(PageRequest $request , $id = NULL){
 

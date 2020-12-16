@@ -43,12 +43,16 @@ class ApplicationController extends Controller{
 
     public function store(PageRequest $request){
         $business_id = session()->get('selected_business_id');
-		// $auth = $request->user();
+        $application_id = ApplicationBusinessPermit::count() + 1;
+        $application_no = date('y').'-'.str_pad($application_id, 5, "0", STR_PAD_LEFT).'-e';
+
     	$application = Application::find($request->get('application_type'));
+        session()->put('application.transaction_type',$request->transaction_type);
 		session()->put('application.current_progress',1);
 		session()->put('application.type',$application->permit_type);
 		session()->put('application_id',$application->id);
         session()->put('application_name',$application->name);
+        session()->put('application_no',$application_no);
 
         // $application_business_permit = ApplicationBusinessPermit::where('business_id', $business_id)->where('status', 'pending')->first();
         // if($application_business_permit->status == 'pending'){

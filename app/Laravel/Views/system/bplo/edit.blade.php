@@ -167,7 +167,7 @@
                                         </tr>
                                         @empty
                                         <tr>
-                                            <td class="text-center">
+                                            <td class="text-center" colspan="3">
                                                 <p>No Document Uploaded.</p>
                                             </td>
                                         </tr>
@@ -178,7 +178,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mr-2">Create Record</button>
+                <button type="submit" class="btn btn-primary mr-2">Update Record</button>
             </div>
         </form>
     </div>

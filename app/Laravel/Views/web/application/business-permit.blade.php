@@ -19,7 +19,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Application No.</label>
-                                        <p class="form-data text-success">20-00001-e</p>
+                                        <p class="form-data text-success">{{ session('application_no') }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -35,22 +35,22 @@
                                         <label for="" class="text-form pb-2">Type of Application</label>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                              <input type="checkbox" class="form-check-input application_type" name="application_type" value="new" checked>New
+                                              <input type="checkbox" class="form-check-input application_type" name="application_type" disabled value="new" {{ session('application.transaction_type')=="new" ? "checked" : ""}}>New
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                              <input type="checkbox" class="form-check-input application_type" name="application_type" value="renew">Renew
+                                              <input type="checkbox" class="form-check-input application_type" name="application_type" disabled value="renew" {{ session('application.transaction_type')=="renew" ? "checked" : ""}}>Renew
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                              <input type="checkbox" class="form-check-input application_type" name="application_type" value="additional">Additional
+                                              <input type="checkbox" class="form-check-input application_type" name="application_type" disabled value="additional">Additional
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <label class="form-check-label">
-                                              <input type="checkbox" class="form-check-input application_type" name="application_type" value="transfer">Transafer
+                                              <input type="checkbox" class="form-check-input application_type" name="application_type" disabled value="transfer">Transafer
                                             </label>
                                         </div>
                                         <div id="transfer" style="display:none;">
@@ -76,26 +76,20 @@
                                     <script>
                                         $(function () {
                                             $(".application_type").change(function(){
-                                                $(".application_type").prop('checked',false);
-                                                $(this).prop('checked',true);
-                                                if($(this).val() == 'transfer'){
-                                                    $('#transfer').show();
-                                                } else {
-                                                    $('#transfer').hide();
-                                                }
+                                                var radioValue = $("input[name='application_type']:checked").val();
 
-                                                if($(this).val() == 'renew'){
+                                                if(radioValue == "renew"){
                                                     $('.renew').show();
                                                     $('.new').hide();
                                                 } else {
                                                     $('.renew').hide();
 
                                                 }
-                                                if($(this).val() == 'new'){
+                                                if(radioValue == "new"){
                                                     $('.new').show();
                                                     $('.renew').hide();
                                                 }
-                                            });
+                                            }).change();
 
                                             $(".transfer").change(function(){
                                                 $(".transfer").prop('checked',false);
@@ -179,7 +173,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business TIN.</label>
-                                        <p class="form-data text-success">{{ $business->ctc_date_issue }}</p>
+                                        <p class="form-data text-success">{{ $business->business_tin }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -360,7 +354,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business Area (Sq. m)</label>
-                                        <p class="form-data text-success">{{ $business->business_name }}</p>
+                                        <p class="form-data text-success">{{ $business->business_area }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -621,7 +615,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                        <button class="btn btn-light btn-sm" id="repeater_add_activity" type="button"><i class="fa fa-plus mr-2"></i>Add New Business Line</button>
+                                        <button class="btn btn-light btn-sm" id="repeater_add_activity" type="button"><i class="fa fa-plus mr-2"></i>Add Line of Business</button>
                                     </div>
                                 </div>
                             </div>
@@ -827,6 +821,11 @@
         $('#repeater_add_activity').on('click', function(){
             var repeat_item = $("#repeat_form").eq(0).prop('outerHTML');
             $("#businessline_tbody").append(repeat_item)
+            $('.new').show();
+            $('.renew').hide();
+            $(".application_type").prop('checked', false);
+            $('input[name=application_type][value=new]').prop('checked', true);
+
         });
     })
 </script>
