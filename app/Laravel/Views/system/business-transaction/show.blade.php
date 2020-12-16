@@ -316,7 +316,7 @@
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
-        title: "All the submitted requirements will be marked as declined. Are you sure you want to declined this application?",
+        title: "Put Department Remarks",
         
         icon: 'warning',
         input: 'text',
