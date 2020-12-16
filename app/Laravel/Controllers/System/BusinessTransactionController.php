@@ -192,9 +192,7 @@ class BusinessTransactionController extends Controller
 		$this->data['department'] =  Department::pluck('name','id')->toArray();
 		$this->data['breakdown_collection'] = CollectionOfFees::find($this->data['transaction']->collection_id);
 		$this->data['page_title'] = "Transaction Details";
-		if (Auth::user()->type == "processor") {
-			return view('system.business-transaction.processor-show',$this->data);
-		}
+		
 		return view('system.business-transaction.show',$this->data);
 	}
 
