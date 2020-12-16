@@ -664,7 +664,7 @@ class Helper{
             case "land_title": return 'Land Title' ;  break;
             case "authorization_owner": return 'Authorization of Owner' ;  break;
             case "photo_establishment": return 'Photo of Establishment' ;  break;
-            case "bir_itr_form": return 'BIR ITR Form' ;  break;
+            case "bir_itr_form": return 'BIR ITR Form Financial Statement' ;  break;
 
 
             default: return '';    break;

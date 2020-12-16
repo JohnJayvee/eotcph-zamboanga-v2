@@ -629,7 +629,7 @@
                                                 <th class="text-title">Requirment Name</th>
                                                 <th class="text-title" class="text-wrap">File</th>
                                             </thead>
-                                            <tr>
+                                            {{-- <tr>
                                                 <td>BN Certificate</td>
                                                 <td>
                                                     <input type="file" name="file[bn_certificate]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
@@ -673,7 +673,7 @@
                                                     <p class="help-block text-danger">{{$errors->first('file')}}</p>
                                                     @endif
                                                 </td>
-                                            </tr>
+                                            </tr> --}}
                                             <tr>
                                                 <td>Actual Photo of Establishment</td>
                                                 <td>
@@ -684,7 +684,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>BIR ITR Form</td>
+                                                <td>BIR ITR Form / Financial Statement</td>
                                                 <td>
                                                     <input type="file" name="file[bir_itr_form]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
                                                     @if($errors->first('file'))
