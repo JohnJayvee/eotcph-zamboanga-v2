@@ -37,8 +37,24 @@
             <p class="text-title fw-500">Business Type: <span class="text-black">{{str::title($transaction->business_info->business_type)}}</span></p>
             <p class="text-title fw-500">Business Scope: <span class="text-black">{{str::title($transaction->business_info->business_scope)}}</span></p>
             <p class="text-title fw-500">Business Mobile No.: <span class="text-black"> +63{{$transaction->business_info->mobile_no}}</span></p>
-            <p class="text-title fw-500">Business Mobile No.: <span class="text-black"> {{$transaction->business_info->telephone_no}}</span></p>
+            <p class="text-title fw-500">Business Tel No.: <span class="text-black"> {{$transaction->business_info->telephone_no}}</span></p>
             <p class="text-title fw-500">Business Email: <span class="text-black">{{$transaction->business_info->email}}</span></p>
+
+            <p class="text-title fw-500">Line of Business :</p>
+            <table class="table table-bordered">
+                <tbody>
+                    @forelse ($business_line as $item)
+                    <tr>
+                        <td>{{ $item->line_of_business }}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <tr>--</tr>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
           </div>
           <div class="col-md-6">
             <p class="text-title fw-500">Business Unit No / Street: <span class="text-black">{{$transaction->business_info->business_address}}</span></p>

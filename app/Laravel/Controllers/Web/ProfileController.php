@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-namespace App\Laravel\Controllers\Frontend;
+namespace App\Laravel\Controllers\Web;
 
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Requests\Frontend\{ProfileRequest, AvatarRequest};
@@ -15,7 +15,7 @@ use Carbon,Auth,DB,Curl,Str,Helper,Mail,ImageUploader;
 class ProfileController extends Controller{
 
 	protected $data;
-	
+
 	public function __construct(){
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
@@ -157,14 +157,14 @@ class ProfileController extends Controller{
 
 	public function verified($token = NULL){
 		$token = base64_decode($token);
-	
+
 		$user = User::where('email', Str::lower($token))->first();
 
 		if(!$user){
 			session()->flash('notification-status','warning');
 			session()->flash('notification-msg','Inavlid token.');
 			return redirect()->route('frontend.profile.index');
-		}	
+		}
 
 		if($user->email_verified_at){
 			session()->flash('notification-status',"failed");
@@ -199,4 +199,4 @@ class ProfileController extends Controller{
 		session()->flash('notification-msg',"Avatar was successfully updated.");
 		return redirect()->route('frontend.dashboard');
 	}
-}	
+}

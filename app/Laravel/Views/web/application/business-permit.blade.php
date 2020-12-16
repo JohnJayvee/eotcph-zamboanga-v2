@@ -20,6 +20,7 @@
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Application No.</label>
                                         <p class="form-data text-success text-uppercase text-uppercase">{{ session('application_no') }}</p>
+                                        <input type="hidden" name="application_no" value="{{ session('application_no') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -703,6 +704,7 @@
             </div>
         </div>
         <!-- Modal -->
+        @if (session('successmodal') == 1)
         <div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -710,12 +712,14 @@
                         <div class="text-center">
                             <h1 class="text-success text-uppercase">Success</h1>
                             <p style="font-weight: bold">This is to confirm that we have recieved your assessment request. We will process your request and will update you on the status. Thank you!</p>
-                            <a href="{{route('web.business.index')}}" class="btn btn-light text-success text-uppercase">Back to Home</a>
+                            <a href="{{route('web.business.index')}}" class="btn btn-light text-success text-uppercase session-forget">Back to Home</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        @else
+        @endif
     </div>
 
 </section>
@@ -727,9 +731,8 @@
 @section('page-scripts')
 
 <script type="text/javascript">
-
-    $('.trigger-modal').click(function (){
-        $('.modal').modal('show');
+    $('.session-forget').click(function (){
+        {{ session()->forget('successmodal') }}
     })
      $.fn.get_region = function(input_region,input_province,input_city,input_brgy,selected){
 
@@ -821,7 +824,7 @@
       });
     }
      $(function(){
-
+        $('.modal').modal('show');
         $(this).get_region("#input_region","#input_province","#input_town","#input_brgy","{{old('region')}}")
 
         $("#input_region").on("change",function(){

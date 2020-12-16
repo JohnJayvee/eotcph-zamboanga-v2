@@ -49,7 +49,8 @@ class BusinessPermitController extends Controller{
             $new_business_permit->customer_id = $auth->id;
             $new_business_permit->business_id = $business->id;
             $new_business_permit->status = 'pending';
-            $request->application_type;
+            $new_business_permit->application_no = $request->application_no;
+            $new_business_permit->type = $request->application_type;
             $new_business_permit->save();
 
             $new_business_transaction = new BusinessTransaction();
@@ -103,12 +104,13 @@ class BusinessPermitController extends Controller{
 
             $notification_data = new SendBusinessPermitConfirmation($insert);
             Event::dispatch('send-business-permit-assessment-confirmation', $notification_data);
-
-			session()->flash('notification-status', "success");
+            session()->put('successmodal', 1);
             session()->forget('application_id');
             session()->forget('application_name');
+			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Business Permit Added to this Business CV.");
-			return redirect()->route('web.business.index');
+            return redirect()->route('web.business.application.business_permit.create');
+
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");
