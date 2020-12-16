@@ -148,7 +148,7 @@ class BusinessController extends Controller
                     $new_business->lessor_region_name = $request->lessor_region_name;
                     $new_business->lessor_town = $request->lessor_town;
                     $new_business->lessor_town_name = $request->lessor_town_name;
-                    $new_business->lessor_zipcode = $request->lessor_region;
+                    $new_business->lessor_zipcode = $request->lessor_zipcode;
 
                     $new_business->emergency_contact_fullname = $request->emergency_contact_fullname;
                     $new_business->emergency_contact_mobile_no = $request->emergency_contact_mobile_no;

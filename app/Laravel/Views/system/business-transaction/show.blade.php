@@ -25,8 +25,8 @@
             <p class="text-title fw-500 pl-3" style="padding-top: 15px;">|</p>
             <p class="text-title fw-500 pt-3 pl-3">Application Sent: <span class="text-black">{{ Helper::date_format($transaction->created_at)}}</span></p>
           </div>
-          
-        </div> 
+
+        </div>
       </div>
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
         <div class="row">
@@ -59,8 +59,52 @@
             <p class="text-title fw-500">Owners Email: <span class="text-black">{{$transaction->owner->email}}</span></p>
             <p class="text-title fw-500">Owners Contact No.: <span class="text-black">{{$transaction->owner->contact_number}}</span></p>
           </div>
-        </div> 
+        </div>
       </div>
+    </div>
+    <div class="card card-rounded shadow-sm mb-4">
+        <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
+            <h5 class="text-title text-uppercase">Uploaded Documents</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td>Uploaded Document</td>
+                                        <td>Type</td>
+                                        <td>Date Uploaded</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($app_business_permit_file as $file)
+                                    <tr>
+                                        <td>
+                                            <div><strong>{{ strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file->type))) }}</strong></div>
+                                            <div><small>File: <strong><a href="{{"{$file->directory}/{$file->filename}"}}" target="_blank">{{$file->filename}}</a></strong></small></div>
+                                        </td>
+                                        <td>
+                                            {{ $file->source }}
+                                        </td>
+                                        <td>
+                                            {{ Helper::date_format($file->created_at)}}
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td class="text-center" colspan="3">
+                                            <p>No Document Uploaded.</p>
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="card card-rounded shadow-sm mb-4">
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
@@ -120,6 +164,14 @@
             </div>
             <div class="col-md-3" id="sticker_container">
               <p class="text-title fw-500">Sticker Fee: <label class="text-black" id="sticker">  </label></p>
+            </div>
+            <div class="col-md-3" id="garbage_tax_container" style="display: none;">
+                <label class="text-title fw-500" id="garbage">Garbage Tax</label>
+                <input type="number" class="form-control form-control-sm" id="garbage">
+            </div>
+            <div class="col-md-3" id="business_tax_container" style="display: none;">
+                <label class="text-title fw-500" id="garbage">Business Tax</label>
+                <input type="number" class="form-control form-control-sm" id="business_tax">
             </div>
           </div>
           <div class="row mt-2">
@@ -249,7 +301,7 @@
       @endif
     @endif
   </div>
-  
+
 </div>
 @stop
 
@@ -260,7 +312,7 @@
 <link rel="stylesheet" href="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('system/vendors/select2/select2.min.css')}}"/>
 <style type="text/css" >
-  .input-daterange input{ background: #fff!important; }  
+  .input-daterange input{ background: #fff!important; }
   .isDisabled{
     color: currentColor;
     display: inline-block;  /* For IE11/ MS Edge bug */
@@ -300,7 +352,7 @@
       var self = $(this)
       Swal.fire({
         title: "All the submitted requirements will be marked as declined. Are you sure you want to declined this application?",
-        
+
         icon: 'warning',
         input: 'text',
         inputPlaceholder: "Put remarks",
@@ -322,7 +374,7 @@
       var self = $(this)
       Swal.fire({
         title: "If you're one of the involved offices for this specific application, please place your remarks here.",
-        
+
         icon: 'warning',
         input: 'textarea',
         inputPlaceholder: "Put remarks",
@@ -369,11 +421,20 @@
     $('#sanitary_inspection_fee_container').hide();
     $('#sticker_container').hide();
     $('#total_amount_container').hide();
+    $('#garbage_tax_container').hide();
+    $('#business_tax_container').hide();
 
 
-    $('#input_collection_id').change(function() {
+
+
+    $('#input_department_id').select2({placeholder: "Select Department"});
+  })
+  $('#input_collection_id').change(function() {
+        $('#garbage_tax_container').show();
+            $('#business_tax_container').show();
       var _text = $("#input_application_id option:selected").text();
       $.getJSON('/collection?collection_id='+this.value, function(result){
+
           if (result.data['permit_fee'] > 0) {
             $("#permit_fee_container").show();
             $('#permit_fee').text("PHP " + result.data['permit_fee']);
@@ -399,6 +460,7 @@
             $('#zoning_fee').text("PHP " + result.data['zoning_fee']);
           }
           if (result.data['certification_fee_cvo'] > 0) {
+
             $("#certification_fee_cvo_container").show();
             $('#certification_fee_cvo').text("PHP " + result.data['certification_fee_cvo']);
           }
@@ -431,10 +493,7 @@
             $('#total_amount').text("PHP " + result.data['total_amount']);
           }
       });
-    
-    }).change();
 
-    $('#input_department_id').select2({placeholder: "Select Department"});
-  })
+    }).change();
 </script>
 @stop

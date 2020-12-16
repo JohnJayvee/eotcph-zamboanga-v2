@@ -504,7 +504,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
                                         <input type="email" class="form-control form-control-sm {{ $errors->first('lessor_email') ? 'is-invalid': NULL  }}"  name="lessor_email" value="{{old('lessor_email') }}">

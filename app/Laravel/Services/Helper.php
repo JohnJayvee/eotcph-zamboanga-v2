@@ -658,6 +658,15 @@ class Helper{
             case "gov_id_2": return 'Government ID 2' ;  break;
             case "business_permit": return 'Business Permit' ;  break;
 
+            case "bn_certificate": return 'BN Certificate' ;  break;
+            case "brgy_clearance": return 'Barangay Clearance' ;  break;
+            case "occupancy_permit": return 'Occupancy Permit' ;  break;
+            case "land_title": return 'Land Title' ;  break;
+            case "authorization_owner": return 'Authorization of Owner' ;  break;
+            case "photo_establishment": return 'Photo of Establishment' ;  break;
+            case "bir_itr_form": return 'BIR ITR Form' ;  break;
+
+
             default: return '';    break;
         }
     }
