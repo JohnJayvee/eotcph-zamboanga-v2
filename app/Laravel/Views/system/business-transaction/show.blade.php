@@ -276,6 +276,9 @@
   span.select2.select2-container{
     width: 100% !important;
   }
+  textarea.swal2-textarea {
+    width: 25em;
+  }
 </style>
 @stop
 
@@ -316,13 +319,13 @@
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
-        title: "Put Department Remarks",
+        title: "If you're one of the involved offices for this specific application, please place your remarks here.",
         
         icon: 'warning',
-        input: 'text',
+        input: 'textarea',
         inputPlaceholder: "Put remarks",
         showCancelButton: true,
-        confirmButtonText: 'Decline',
+        confirmButtonText: 'Add Remarks',
         cancelButtonColor: '#d33'
       }).then((result) => {
         if (result.value === "") {
