@@ -41,7 +41,8 @@
     <div class="table-responsive shadow-sm fs-15">
       <table class="table table-striped">
         <thead>
-          <tr>
+          <tr class="text-center">
+            <th width="25%" class="text-title p-3">Department Code</th>
             <th width="25%" class="text-title p-3">Name</th>
             <th width="25%" class="text-title p-3">Created At</th>
             <th width="10%" class="text-title p-3">Action</th>
@@ -49,7 +50,9 @@
         </thead>
         <tbody>
           @forelse($departments as $index => $department)
-          <tr>
+          <tr class="text-center">
+            <td>{{ $department->code}}</td>
+
             <td>{{ $department->name}}</td>
             <td>{{ Helper::date_format($department->created_at)}}</td>
             <td >

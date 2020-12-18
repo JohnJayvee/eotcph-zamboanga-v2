@@ -50,6 +50,7 @@
             <p class="text-title fw-500">Transaction Details:</p>
             <p class="text-title fw-500">Application : <span class="text-black">{{str::title($transaction->application_name)}}</span></p>
             <p class="text-title fw-500">Application Status: <span class="badge  badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::title($transaction->status)}}</span></p>
+            <p class="text-title fw-500">Validated By BPLO: <span>{{$transaction->is_validated == 1 ? "Yes" : "No"}}</span></p>
             <!-- <p class="text-title fw-500">Transacation Status: <span class="badge  badge-{{Helper::status_badge($transaction->transaction_status)}} p-2">{{Str::title($transaction->transaction_status)}}</span></p>
             <p class="fw-500" style="color: #DC3C3B;">Processing Fee: Php {{Helper::money_format($transaction->amount) ?: "0" }} [{{$transaction->processing_fee_code}}]</p>
             <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p> -->
@@ -62,7 +63,7 @@
         </div> 
       </div>
     </div>
-    <div class="card card-rounded shadow-sm mb-4">
+    <!-- <div class="card card-rounded shadow-sm mb-4">
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
         <h5 class="text-title text-uppercase">Collection Breakdown</h5>
         @if($transaction->status == "PENDING")
@@ -204,8 +205,8 @@
           </div>
         @endif
       </div>
-    </div>
-    <div class="card card-rounded shadow-sm mb-4">
+    </div> -->
+    <div class="card card-rounded shadow-sm mb-2">
       <div class="card-body">
         <div class="row">
           <div class="col-md-6 pt-2">
@@ -242,8 +243,11 @@
         </div>
       </div>
     </div>
-    @if(in_array(Auth::user()->type, ['admin', 'super_user']))
-      @if(in_array($transaction->status, ['PENDING', 'ONGOING']))
+    @if(in_array(Auth::user()->type, ['admin', 'super_user']) and in_array($transaction->status, ['PENDING', 'ONGOING']))
+      @if($transaction->is_validated == 0)
+        <a data-url="{{route('system.business_transaction.validate',[$transaction->id])}}"  class="btn btn-primary mt-4 btn-validate border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Validate Transactions</a>
+      @endif
+      @if($transaction->for_bplo_approval == 1)
         <a data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=approved&collection_id={{$transaction->collection_id}}"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
         <a  data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=declined" class="btn btn-danger mt-4 btn-decline border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}""><i class="fa fa-times-circle"></i> Decline Transactions</a>
       @endif
@@ -355,6 +359,30 @@
         }
       });
     });
+
+    $(".btn-validate").on('click', function(){
+      var url = $(this).data('url');
+      var self = $(this)
+      Swal.fire({
+        title: "Input Department Code ",
+        
+        icon: 'warning',
+        input: 'text',
+        inputPlaceholder: "Put Department Code",
+        showCancelButton: true,
+        confirmButtonText: 'Proceed',
+        cancelButtonColor: '#d33'
+      }).then((result) => {
+        if (result.value === "") {
+          alert("You need to write something")
+          return false
+        }
+        if (result.value) {
+          window.location.href = url + "?department_code="+result.value;
+        }
+      });
+    });
+
     $('#permit_fee_container').hide();
     $('#electrical_fee_container').hide();
     $('#plumbing_fee_container').hide();

@@ -8,7 +8,8 @@ class DepartmentRequest extends RequestManager{
 	public function rules(){
 
 		$rules = [
-			'name' => "required|unique:department,name,NULL,id,deleted_at,NULL"
+			'name' => "required|unique:department,name,NULL,id,deleted_at,NULL",
+			'code' => "required|unique:department,code,NULL,id,deleted_at,NULL"
 		];
 
 		return $rules;

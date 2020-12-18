@@ -84,6 +84,11 @@ class BusinessTransactionController extends Controller
 						return $query->where('payment_status',$this->data['selected_processing_fee_status']);
 					}
 				})
+				->where(function($query){
+					if ($this->data['auth']->type == "processor") {
+						return $query->where('is_validated',"1");
+					}
+				})
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
 				->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])
 				->orderBy('created_at',"DESC")->paginate($this->per_page);
@@ -223,11 +228,14 @@ class BusinessTransactionController extends Controller
 		DB::beginTransaction();
 		try{
 			$transaction = $request->get('business_transaction_data');
-			if ($transaction->collection_id == NULL || $request->get('collection_id') == NULL) {
-				session()->flash('notification-status', "failed");
-				session()->flash('notification-msg', "Please Define Collection of Fee for this transaction");
-				return redirect()->back();
+			if ($type == "APPROVED") {
+				if ($transaction->collection_id == NULL || $request->get('collection_id') == NULL) {
+					session()->flash('notification-status', "failed");
+					session()->flash('notification-msg', "Please Define Collection of Fee for this transaction");
+					return redirect()->back();
+				}
 			}
+			
 			$transaction->status = $type;
 			$transaction->total_amount = $type == "APPROVED" ? Helper::money_format(Helper::total_breakdown($request->get('collection_id'))) : NULL;
 			$transaction->remarks = $type == "DECLINED" ? $request->get('remarks') : NULL;
@@ -285,25 +293,88 @@ class BusinessTransactionController extends Controller
 	public function remarks($id = NULL,PageRequest $request){
 		DB::beginTransaction();
 		
-		try{
 			$transaction = $request->get('business_transaction_data');
 			$auth = Auth::user();
 			$array_remarks = [];
+			$dept_id = [];
 	 		$value = $request->get('value');
+
+
 	 		if ($transaction->department_remarks) {
-	 			array_push($array_remarks, ['processor_id' => $auth->id ,'id' => $auth->department_id , 'remarks' => $value]);
+	 			array_push($array_remarks, ['processor_id' => $auth->id ,'id' => $auth->department->code , 'remarks' => $value]);
 	 			$existing = json_decode($transaction->department_remarks);
+	 			$existing_id = json_decode($transaction->department_id);
+
+	 			if ($transaction->department_id) {
+	 				$a = array_search($auth->department->code, $existing_id);
+	 				if ($a !== false) {
+	 					$dept_id_final = $existing_id;
+		 			}else{
+		 				array_push($dept_id, $auth->department->code);
+		 				$dept_id_final = array_merge($existing_id , $dept_id);
+		 			}
+	 			}else{
+	 				array_push($dept_id, $auth->department->code);
+	 				$dept_id_final = $dept_id;
+	 			}
+	 			
+
 	 			$final_value = array_merge($existing , $array_remarks);
 	 		}else{
-	 			 array_push($array_remarks, ['processor_id' => $auth->id,'id' => $auth->department_id , 'remarks' => $value]);
+	 			 array_push($array_remarks, ['processor_id' => $auth->id,'id' => $auth->department->code , 'remarks' => $value]);
+
+	 			 array_push($dept_id, $auth->department->code);
+
+	 			 $dept_id_final = $dept_id;
 	 			 $final_value = $array_remarks;
 	 		}
+	 		$transaction->department_id = json_encode($dept_id_final);
 			$transaction->department_remarks = json_encode($final_value);
 			$transaction->save();
+
+			$it_1 = json_decode($transaction->department_involved, TRUE);
+		    $it_2 = json_decode($transaction->department_id, TRUE);
+		    $result_array = array_diff($it_1,$it_2);
+
+		    if(empty($result_array)){
+		    	$transaction->for_bplo_approval = 1;
+		    	$transaction->save();  
+		    }
+
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Collection Breakdown has been saved.");
+			session()->flash('notification-msg', "Application Remarks has been saved.");
 			return redirect()->route('system.business_transaction.show',[$transaction->id]);
+		
+
+		
+	}
+
+	public function bplo_validate($id = NULL , PageRequest $request){
+
+		DB::beginTransaction();
+		try{
+			$dept_code_array = explode(",", $request->get('department_code'));
+
+			foreach ($dept_code_array as $data) {
+				$department = Department::where('code',$data)->first();
+				if (!$department) {
+					session()->flash('notification-status', "failed");
+					session()->flash('notification-msg', "No Department Found.");
+					return redirect()->route('system.business_transaction.show',[$id]);
+				}
+			}
+
+			$transaction = $request->get('business_transaction_data');
+
+			$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
+			$transaction->is_validated = 1;
+			$transaction->save();
+
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "Application Remarks has been saved.");
+			return redirect()->route('system.business_transaction.pending');
 
 		}catch(\Exception $e){
 			DB::rollback();

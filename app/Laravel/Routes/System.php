@@ -56,6 +56,7 @@ Route::group(['as' => "auth."], function(){
 			Route::post('save-collection',['as' => "save_collection",'uses' => "BusinessTransactionController@save_collection"]);
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "BusinessTransactionController@destroy"]);
 			Route::get('remarks/{id?}',['as' => "remarks",'uses' => "BusinessTransactionController@remarks",'middleware' => "system.exist:business_transaction"]);
+			Route::get('validate/{id?}',['as' => "validate",'uses' => "BusinessTransactionController@bplo_validate",'middleware' => "system.exist:business_transaction"]);
 		});
 
 

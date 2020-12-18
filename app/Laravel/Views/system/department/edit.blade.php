@@ -25,6 +25,13 @@
           <p class="mt-1 text-danger">{!!$errors->first('name')!!}</p>
           @endif
         </div>
+        <div class="form-group">
+          <label for="input_title">Code</label>
+          <input type="text" class="form-control {{$errors->first('name') ? 'is-invalid' : NULL}}" id="input_title" name="code" placeholder="Department Code" value="{{old('code',$department->code)}}">
+          @if($errors->first('code'))
+          <p class="mt-1 text-danger">{!!$errors->first('code')!!}</p>
+          @endif
+        </div>
 
         <button type="submit" class="btn btn-primary mr-2">Edit Record</button>
         <a href="{{route('system.department.index')}}" class="btn btn-light">Return to Department list</a>

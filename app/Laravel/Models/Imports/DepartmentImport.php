@@ -23,10 +23,11 @@ class DepartmentImport implements ToCollection
             }
 
             $is_exist = Department::where('name',$row[0])->first();
-
-            if (!$is_exist) {
+            $code_exist = Department::where('code',$row[1])->first();
+            if (!$is_exist and !$code_exist) {
                  $department = Department::create([
                 'name' => $row[0],
+                'code' => $row[1],
                 
                 ]);
                

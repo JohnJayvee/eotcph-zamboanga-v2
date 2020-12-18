@@ -14,8 +14,14 @@ class UpdateTableBusinessTransactionAddFieldDepartmentRemarks extends Migration
     public function up()
     {
         Schema::table('business_transaction', function (Blueprint $table) {
-            $table->string('department_remarks')->nullable();
-           
+            $table->longtext('department_remarks')->nullable();
+            $table->string('department_id')->nullable();
+            $table->string('department_involved')->nullable();
+            $table->string('is_validated')->default(0)->nullable();
+            $table->string('for_bplo_approval')->default(0)->nullable();
+
+
+
         });
     }
 
@@ -26,8 +32,9 @@ class UpdateTableBusinessTransactionAddFieldDepartmentRemarks extends Migration
      */
     public function down()
     {
-        Schema::table('business_transaction', function (Blueprint $table) {
-            $table->string('department_remarks')->nullable();
+        Schema::table('business_transaction', function($table){
+            $table->dropColumn(['department_remarks','department_id','department_involved','is_validated','for_bplo_approval']);
         });
+
     }
 }
