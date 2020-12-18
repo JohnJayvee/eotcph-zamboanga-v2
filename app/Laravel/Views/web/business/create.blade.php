@@ -11,6 +11,9 @@
         <div class="row">
             <div class="col-md-12">
                     @include('system._components.notifications')
+                    @if($errors->first('valid_business'))
+                        <small class="form-text pl-1" style="color:red;">{{$errors->first('valid_business')}}</small>
+                    @endif
                     <div class="card">
                         <div class="card-body">
                             <form method="get" action="{{ route('web.business.create') }}">
@@ -35,6 +38,10 @@
                             <form class="create-form" method="POST" action="{{ route('web.business.create') }}" enctype="multipart/form-data">
                             {!!csrf_field()!!}
                             <input type="hidden" name="BusinessID" value="{{ $business['BusinessID'] ?? '' }}">
+                            <input type="hidden" name="valid_business" class="form-control form-control-sm {{ $errors->first('valid_business') ? 'is-invalid': NULL  }}" value="{{ session('status_code') ?? '' }}">
+                            @if($errors->first('valid_business'))
+                                <small class="form-text pl-1" style="color:red;">{{$errors->first('valid_business')}}</small>
+                            @endif
                             <h5 class="text-title text-uppercase">Business Information</h5>
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">

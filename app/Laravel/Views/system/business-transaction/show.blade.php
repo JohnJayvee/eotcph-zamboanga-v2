@@ -80,6 +80,49 @@
     </div>
     <div class="card card-rounded shadow-sm mb-4">
         <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
+            <h5 class="text-title text-uppercase">Business Permit</h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td>Permit</td>
+                                        <td>Status</td>
+                                        <td>Date Applied</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($app_business_permit as $file)
+                                    <tr>
+                                        <td>
+                                            {{ $file->application_no }}
+                                        </td>
+                                        <td>
+                                            {{ ucfirst($file->status)}}
+                                        </td>
+                                        <td>
+                                            {{ Helper::date_format($file->created_at)}}
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td class="text-center" colspan="3">
+                                            <p>No Document Uploaded.</p>
+                                        </td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-rounded shadow-sm mb-4">
+        <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
             <h5 class="text-title text-uppercase">Uploaded Documents</h5>
             <div class="row">
                 <div class="col-md-12">

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Laravel\Services;
 
@@ -20,46 +20,46 @@ class CustomValidator extends Validator {
 
         $application = Application::find($application_id);
         $requirements_count = ApplicationRequirements::whereIn('id', explode(",",$application->requirements_id))->where('is_required',"yes")->count();
-        
+
         if ($file < $requirements_count) {
             return FALSE;
         }
         return TRUE;
-            
+
     }
     public function validateMinimumAmount($attribute, $rule, $parameters){
 
         $value = $this->getValue($attribute);
-     
+
 
         if(is_array($parameters) AND isset($parameters[0])){ $application_id = Request::get($parameters[0]); }
         if(is_array($parameters) AND isset($parameters[0])){ $partial_amount = Request::get($parameters[1]); }
-       
+
 
         $application = Application::find($application_id);
         $amount = $application->partial_amount ?: 0;
-        
+
         if ($amount >= $partial_amount) {
             return TRUE;
         }
 
             return FALSE;
-       
+
     }
 
     protected function replaceMinimumAmount($message,$attribute, $rule, $parameters)
     {
-     
+
         if(is_array($parameters) AND isset($parameters[0])){ $application_id = Request::get($parameters[0]); }
         if(is_array($parameters) AND isset($parameters[0])){ $partial_amount = Request::get($parameters[1]); }
-       
+
         $application = Application::find($application_id);
         $amount = $application->partial_amount ?: 0;
         $custom_message = "The amount you entered exceeded the allowed partial amount. allowed Partial Amount is PHP ".$amount;
         if ($amount == 0) {
            $custom_message = "This Application doesn't allowed partial payment";
         }
-        
+
         return str_replace(':message', $custom_message, $message);
     }
 
@@ -100,7 +100,7 @@ class CustomValidator extends Validator {
         if(is_array($parameters) AND isset($parameters[0])){ $application_id = Request::get($parameters[0]); }
         if(is_array($parameters) AND isset($parameters[1])){ $file_count = $parameters[1]; }
         $application =  Application::where('id',$application_id)->first();
-        
+
         $requirements = ApplicationRequirements::whereIn('id',explode(",", $application->requirements_id))->where('is_required',"yes")->count();
 
         if ($file_count < $requirements) {
@@ -119,7 +119,7 @@ class CustomValidator extends Validator {
                         ->count() ? TRUE : FALSE;
     }
 
-    
+
 
     public function validateWithLeave($attribute,$value,$parameters){
         $employee_id = (is_array($parameters) AND isset($parameters[0]) ) ? $parameters[0] : "0";
@@ -200,13 +200,13 @@ class CustomValidator extends Validator {
                                 ->where('id','<>',$id)
                                 ->count() ? FALSE : TRUE;
             break;
-            
+
             default:
                 return  User::where('username',Str::lower($value))
                                 ->where('id','<>',$id)
                                 ->count() ? FALSE : TRUE;
         }
-        
+
     }
 
     public function validateUniqueEmail($attribute,$value,$parameters){
@@ -219,13 +219,13 @@ class CustomValidator extends Validator {
                                 ->where('id','<>',$id)
                                 ->count() ? FALSE : TRUE;
             break;
-            
+
             default:
                 return  User::where('email',Str::lower($value))
                                 ->where('id','<>',$id)
                                 ->count() ? FALSE : TRUE;
         }
-        
+
     }
 
 
@@ -249,7 +249,7 @@ class CustomValidator extends Validator {
     }
 
     public function validateOldPassword($attribute, $value, $parameters){
-        
+
         if($parameters){
             $user_id = $parameters[0];
             $user = User::find($user_id);
@@ -267,4 +267,8 @@ class CustomValidator extends Validator {
     	return preg_match(("/^(?=.*)[a-zA-Z\d][a-z\d._+]{6,20}$/"), $value);
     }
 
-} 
+    public function validateBnn($attribute,$value,$parameters){
+        return $value == 'NO_RECORD' ? false : true;
+    }
+
+}

@@ -21,7 +21,7 @@ use App\Laravel\Requests\System\TransactionCollectionRequest;
 /* App Classes
  */
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader;
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application,ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees};
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees};
 
 class BusinessTransactionController extends Controller
 {
@@ -187,7 +187,9 @@ class BusinessTransactionController extends Controller
 		$this->data['transaction'] = $request->get('business_transaction_data');
         $id = $this->data['transaction']->requirements_id;
         $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', $request->id)->get();
-		$this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
+        $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
+		$this->data['app_business_permit'] = ApplicationBusinessPermit::find($request->id)->get();
+
 		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $id))->get();
 
 
