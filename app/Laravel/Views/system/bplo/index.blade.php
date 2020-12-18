@@ -13,8 +13,41 @@
       </div>
     </div>
   </div>
-  <div class="col-md-12">
-    {{-- <a href="{{route('system.bplo.create')}}" class="btn btn-sm btn-primary float-right">Add New</a> --}}
+  <div class="col-12 ">
+    <form>
+      <div class="row">
+        <div class="col-md-3">
+          <label>Status</label>
+          <select name="status" id="" class="form-control mb-2 mr-sm-2">
+              <option value="all">All Status</option>
+              <option value="approved">Approved</option>
+              <option value="pending">Pending</option>
+              <option value="declined">Declined</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label>Keywords</label>
+          <div class="form-group has-search">
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{ $keyword }}" placeholder="Keyword">
+          </div>
+        </div>
+        <div class="col-md-4">
+            <label>Date Range</label>
+            <div class="input-group input-daterange d-flex align-items-center">
+                <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly"
+                    name="start_date">
+                <div class="input-group-addon mx-2">to</div>
+                <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly"
+                    name="end_date">
+            </div>
+        </div>
+        <div class="col-md-3 mt-4 p-1">
+          <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
+          <a href="{{route('system.bplo.index')}}" class="btn btn-primary btn-sm p-2">Clear</a>
+        </div>
+      </div>
+    </form>
   </div>
   <div class="col-md-12">
     <div class="shadow-sm fs-15 table-responsive ">
@@ -96,7 +129,9 @@
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
 <script type="text/javascript">
   $(function(){
-
+    $('.input-daterange').datepicker({
+      format : "yyyy-mm-dd"
+    });
     $(".action-delete").on("click",function(){
       var btn = $(this);
       $("#btn-confirm-delete").attr({"href" : btn.data('url')});

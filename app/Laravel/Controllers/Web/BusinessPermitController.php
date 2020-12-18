@@ -6,11 +6,13 @@ use App\Laravel\Models\Business;
 use App\Http\Controllers\Controller;
 use App\Laravel\Models\BusinessLine;
 use App\Laravel\Requests\PageRequest;
+use App\Laravel\Services\FileUploader;
 use App\Laravel\Models\BusinessActivity;
-use Carbon,Auth,Str,Curl,Helper, DB, Log,Event;
 use App\Laravel\Models\BusinessTransaction;
+use Carbon,Auth,Str,Curl,Helper, DB, Log,Event;
 use App\Laravel\Models\ApplicationBusinessPermit;
 use App\Laravel\Requests\Web\BusinessPermitRequest;
+use App\Laravel\Models\ApplicationBusinessPermitFile;
 use App\Laravel\Events\SendBusinessPermitConfirmation;
 
 class BusinessPermitController extends Controller{
@@ -47,49 +49,8 @@ class BusinessPermitController extends Controller{
             $new_business_permit->customer_id = $auth->id;
             $new_business_permit->business_id = $business->id;
             $new_business_permit->status = 'pending';
-            $new_business_permit->application_date = $request->application_date;
-            $new_business_permit->dti_sec_cda_registration_no = $request->dti_sec_cda_registration_no;
-            $new_business_permit->dti_sec_cda_registration_date = $request->dti_sec_cda_registration_date;
-            $new_business_permit->ctc_no = $request->ctc_no;
-            $new_business_permit->business_tin = $request->business_tin;
+            $new_business_permit->application_no = $request->application_no;
             $new_business_permit->type = $request->application_type;
-            $new_business_permit->frequency_of_payment = $request->frequency_of_payment;
-            $new_business_permit->amendments = $request->amendments;
-            $new_business_permit->tax_incentive = $request->tax_incentive;
-            $new_business_permit->tradename = $request->trade_name;
-
-            $new_business_permit->rep_lastname = $request->rep_lastname;
-            $new_business_permit->rep_firstname = $request->rep_firstname;
-            $new_business_permit->rep_middlename = $request->rep_middlename;
-            $new_business_permit->rep_gender = $request->rep_gender;
-            $new_business_permit->rep_position = $request->rep_position;
-            $new_business_permit->rep_tin = $request->rep_tin;
-
-            $new_business_permit->website_url = $request->business_website;
-            $new_business_permit->business_area = $request->business_area;
-
-            $new_business_permit->lessor_fullname = $request->lessor_fullname;
-            $new_business_permit->lessor_gender = $request->lessor_gender;
-            $new_business_permit->lessor_monthly_rental = $request->lessor_monthly_rental;
-            $new_business_permit->lessor_rental_date = $request->lessor_rental_date;
-            $new_business_permit->lessor_mobile_no = $request->lessor_mobile_no;
-            $new_business_permit->lessor_tel_no = $request->lessor_tel_no;
-            $new_business_permit->lessor_email = $request->lessor_email;
-            $new_business_permit->lessor_unit_no = $request->lessor_unit_no;
-            $new_business_permit->lessor_street_address = $request->street_address;
-            $new_business_permit->lessor_brgy = $request->lessor_brgy;
-            $new_business_permit->lessor_brgy_name = $request->lessor_brgy_name;
-            $new_business_permit->lessor_zipcode = $request->lessor_zipcode;
-            $new_business_permit->lessor_town = $request->lessor_town;
-            $new_business_permit->lessor_town_name = $request->lessor_town_name;
-            $new_business_permit->lessor_region = $request->lessor_region;
-            $new_business_permit->lessor_region_name = $request->lessor_region_name;
-
-            $new_business_permit->lessor_emergency_contact_fullname = $request->emergency_contact_fullname;
-            $new_business_permit->lessor_emergency_contact_tel_no = $request->emergency_contact_tel_no;
-            $new_business_permit->lessor_emergency_contact_mobile_no = $request->emergency_contact_mobile_no;
-            $new_business_permit->lessor_emergency_contact_email = $request->emergency_contact_email;
-
             $new_business_permit->save();
 
             $new_business_transaction = new BusinessTransaction();
@@ -116,6 +77,24 @@ class BusinessPermitController extends Controller{
 
                 BusinessActivity::insert($data);
             }
+
+            $permit_id = $new_business_transaction->id;
+            if(count(request('file')) > 0){
+                foreach (request('file') as $key => $value) {
+                    $new_file = new ApplicationBusinessPermitFile;
+                    $file_type = $key;
+                    $ext = $value->getClientOriginalExtension();
+                    $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($key)). "_" . 'Business Permit') . "." . $ext;
+                    $file = FileUploader::upload($value, "uploads/{$permit_id}/file", $filename);
+                    $new_file->path = $file['path'];
+                    $new_file->directory = $file['directory'];
+                    $new_file->filename = $file['filename'];
+                    $new_file->application_business_permit_id = $permit_id;
+                    $new_file->type = $file_type;
+                    $new_file->original_name = $value->getClientOriginalName();
+                    $new_file->save();
+                }
+            }
             DB::commit();
 
             $insert[] = [
@@ -125,12 +104,13 @@ class BusinessPermitController extends Controller{
 
             $notification_data = new SendBusinessPermitConfirmation($insert);
             Event::dispatch('send-business-permit-assessment-confirmation', $notification_data);
-
-			session()->flash('notification-status', "success");
+            session()->put('successmodal', 1);
             session()->forget('application_id');
             session()->forget('application_name');
+			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Business Permit Added to this Business CV.");
-			return redirect()->route('web.business.index');
+            return redirect()->route('web.business.application.business_permit.create');
+
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");

@@ -65,6 +65,7 @@ class BusinessRequest extends RequestManager{
             // "sss_no" => "integer",
             // "philhealth_no" => "integer",
             // "pagibig_no" => "integer",
+            "valid_business" => 'bnn',
 
 		];
 
@@ -77,6 +78,7 @@ class BusinessRequest extends RequestManager{
 		return [
 			'required'	=> "Field is required.",
             'integer' => "Invalid Data.",
+            'bnn' => "BNN not Found",
 		];
 
 	}

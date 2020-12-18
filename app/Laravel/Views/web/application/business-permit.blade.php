@@ -19,13 +19,14 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Application No.</label>
-                                        <p class="form-data text-success">{{ session('application_no') }}</p>
+                                        <p class="form-data text-success text-uppercase text-uppercase">{{ session('application_no') }}</p>
+                                        <input type="hidden" name="application_no" value="{{ session('application_no') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business ID. No.</label>
-                                        <p class="form-data text-success">{{ $business->business_id_no }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->business_id_no }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -33,6 +34,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="" class="text-form pb-2">Type of Application</label>
+                                        <input type="hidden" class="type_of_application" name="type_of_application">
                                         <div class="form-check">
                                             <label class="form-check-label">
                                               <input type="checkbox" class="form-check-input application_type" name="application_type" disabled value="new" {{ session('application.transaction_type')=="new" ? "checked" : ""}}>New
@@ -43,7 +45,7 @@
                                               <input type="checkbox" class="form-check-input application_type" name="application_type" disabled value="renew" {{ session('application.transaction_type')=="renew" ? "checked" : ""}}>Renew
                                             </label>
                                         </div>
-                                        <div class="form-check">
+                                        {{-- <div class="form-check">
                                             <label class="form-check-label">
                                               <input type="checkbox" class="form-check-input application_type" name="application_type" disabled value="additional">Additional
                                             </label>
@@ -71,7 +73,7 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     <script>
                                         $(function () {
@@ -145,7 +147,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Date of Application</label>
-                                        <p class="form-data text-success">{{ now() }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ now() }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -153,13 +155,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">DTI/SEC/CDA registration No.</label>
-                                        <p class="form-data text-success">{{ $business->dti_sec_cda_registration_no }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->dti_sec_cda_registration_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">DTI/SEC/CDA registration Date</label>
-                                        <p class="form-data text-success">{{ $business->dti_sec_cda_registration_date }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->dti_sec_cda_registration_date }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -167,13 +169,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">CTC No.</label>
-                                        <p class="form-data text-success">{{ $business->ctc_no }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->ctc_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business TIN.</label>
-                                        <p class="form-data text-success">{{ $business->business_tin }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->business_tin }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -181,7 +183,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Type of Ownership</label>
-                                        <p class="form-data text-success">{{ $business->business_type}}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->business_type}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +191,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="" class="text-form pb-2">Are you enjoying tax incentive from any Goverment Entity?</label>
-                                        <p class="form-data text-success">{{ $business->tax_incentive }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->tax_incentive }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -197,13 +199,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business Name</label>
-                                        <p class="form-data text-success">{{ $business->business_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->business_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Trade name / Franchise</label>
-                                        <p class="form-data text-success">{{ $business->tradename }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->tradename }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -212,13 +214,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
-                                        <p class="form-data text-success">{{ $auth->lname }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->lname }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
-                                        <p class="form-data text-success">{{ $auth->fname }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->fname }}</p>
 
                                     </div>
                                 </div>
@@ -227,13 +229,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
-                                        <p class="form-data text-success">{{ $auth->mname }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->mname }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
-                                        <p class="form-data text-success">{{ $auth->gender }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->gender }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -242,13 +244,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
-                                        <p class="form-data text-success">{{ $business->rep_lastname }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_lastname }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
-                                        <p class="form-data text-success">{{ $business->rep_firstname }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_firstname }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -256,13 +258,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
-                                        <p class="form-data text-success">{{ $business->rep_middlename }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_middlename }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
-                                        <p class="form-data text-success">{{ $business->rep_gender }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_gender }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -270,13 +272,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Position</label>
-                                        <p class="form-data text-success">{{ $business->rep_position }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_position }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">TIN</label>
-                                        <p class="form-data text-success">{{ $business->rep_tin }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_tin }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -284,7 +286,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <p class="form-data text-success">{{ $business->region_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->region_name }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -292,19 +294,19 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label class="text-form pb-2">City Municipality</label>
-                                        <p class="form-data text-success">{{ $business->town_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->town_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-4">
                                     <div class="form-group">
                                         <label class="text-form pb-2">Barangay</label>
-                                        <p class="form-data text-success">{{ $business->brgy_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->brgy_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label for="input_zipcode" class="text-form pb-2">Zipcode</label>
-                                        <p class="form-data text-success">{{ $business->zipcode }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->zipcode }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -312,13 +314,13 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No.</label>
-                                        <p class="form-data text-success">{{ $business->unit_no }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->unit_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Street Address</label>
-                                        <p class="form-data text-success">{{ $business->street_address }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->street_address }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -326,7 +328,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
-                                        <p class="form-data text-success">{{ $business->email }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -334,13 +336,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
-                                        <p class="form-data text-success">{{ $business->mobile_no }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->mobile_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Telephone Number</label>
-                                        <p class="form-data text-success">{{ $business->telephone_no }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->telephone_no }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -348,13 +350,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Website URL</label>
-                                        <p class="form-data text-success">{{ $business->website_url }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->website_url }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business Area (Sq. m)</label>
-                                        <p class="form-data text-success">{{ $business->business_area }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->business_area }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -363,13 +365,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Male</label>
-                                        <p class="form-data text-success">{{ $business->no_of_male_employee }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->no_of_male_employee }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Female</label>
-                                        <p class="form-data text-success">{{ $business->no_of_female_employee }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->no_of_female_employee }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -378,13 +380,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Male</label>
-                                        <p class="form-data text-success">{{ $business->male_residing_in_city }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->male_residing_in_city }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Female</label>
-                                        <p class="form-data text-success">{{ $business->female_residing_in_city }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->female_residing_in_city }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -393,7 +395,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Region</label>
-                                        <p class="form-data text-success">{{ $auth->region_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->region_name }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -401,19 +403,19 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label class="text-form pb-2">City Municipality</label>
-                                        <p class="form-data text-success">{{ $auth->town_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->town_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-4">
                                     <div class="form-group">
                                         <label class="text-form pb-2">Barangay</label>
-                                        <p class="form-data text-success">{{ $auth->barangay_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->barangay_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label for="input_zipcode" class="text-form pb-2">Zipcode</label>
-                                        <p class="form-data text-success">{{ $auth->zipcode }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->zipcode }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -421,13 +423,13 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No.</label>
-                                        <p class="form-data text-success">{{ $auth->unit_number }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->unit_number }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Street Address</label>
-                                        <p class="form-data text-success">{{ $auth->street_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->street_name }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -435,7 +437,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
-                                        <p class="form-data text-success">{{ $auth->email }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -443,13 +445,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
-                                        <p class="form-data text-success">{{ $auth->contact_number }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->contact_number }}</p>
                                     </div>
                                 </div>
                                 {{-- <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Telephone Number</label>
-                                        <p class="form-data text-success">{{ $auth->region_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->region_name }}</p>
                                     </div>
                                 </div> --}}
                             </div>
@@ -469,13 +471,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Monthly Rental</label>
-                                        <p class="form-data text-success">{{ $business->lessor_monthly_rental }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_monthly_rental }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Start Date of Rental (MM/DD/YYYY)</label>
-                                        <p class="form-data text-success">{{ $business->lessor_rental_date }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_rental_date }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -483,13 +485,13 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Name of Lessor / Corporation</label>
-                                        <p class="form-data text-success">{{ $business->lessor_fullname }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_fullname }}</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
-                                        <p class="form-data text-success">{{ $business->lessor_gender }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_gender }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -497,7 +499,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                     <label for="exampleInputEmail1" class="text-form pb-2">Region</label>
-                                    <p class="form-data text-success">{{ $business->lessor_region_name }}</p>
+                                    <p class="form-data text-success text-uppercase">{{ $business->lessor_region_name }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -505,19 +507,19 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label class="text-form pb-2">City Municipality</label>
-                                        <p class="form-data text-success">{{ $business->lessor_town_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_town_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-4">
                                     <div class="form-group">
                                         <label class="text-form pb-2">Barangay</label>
-                                        <p class="form-data text-success">{{ $business->lessor_brgy_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_brgy_name }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label for="input_zipcode" class="text-form pb-2">Zipcode</label>
-                                        <p class="form-data text-success">{{ $business->lessor_zipcode }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_zipcode }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -525,13 +527,13 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No.</label>
-                                        <p class="form-data text-success">{{ $business->lessor_unit_no }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_unit_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Street Address</label>
-                                        <p class="form-data text-success">{{ $business->lessor_street_address }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_street_address }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -539,7 +541,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
-                                        <p class="form-data text-success">{{ $business->lessor_email }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -547,13 +549,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
-                                        <p class="form-data text-success">{{ $business->lessor_mobile_no }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_mobile_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Telephone Number</label>
-                                        <p class="form-data text-success">{{ $business->lessor_tel_no }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->lessor_tel_no }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -562,13 +564,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Contact Person</label>
-                                        <p class="form-data text-success">{{ $business->emergency_contact_fullname }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->emergency_contact_fullname }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Tel. No</label>
-                                        <p class="form-data text-success">{{ $business->emergency_contact_tel_no }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->emergency_contact_tel_no }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -576,13 +578,13 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Mobile No.</label>
-                                        <p class="form-data text-success">{{ $business->emergency_contact_mobile_no}}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->emergency_contact_mobile_no}}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email Address</label>
-                                        <p class="form-data text-success">{{ $business->emergency_contact_email }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->emergency_contact_email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -600,16 +602,16 @@
                                                 @foreach ($business_line as $key => $item)
                                                 <tr id="repeat_form">
                                                     <td>
-                                                        <input type="text" class="form-control form-control-sm" name="line_of_business[]" value="{{ $item->name }}">
+                                                        <input type="text" class="form-control form-control-sm {{ $errors->has('line_of_business.*') ? 'is-invalid': NULL  }}" name="line_of_business[]" value="{{old('line_of_business[]', $item->name) }}">
                                                     </td>
                                                     <td>
-                                                        <input type="number" class="form-control form-control-sm" name="no_of_units[]">
+                                                        <input type="number" class="form-control form-control-sm {{ $errors->has('no_of_units.*') ? 'is-invalid': NULL  }}" name="no_of_units[]" value="{{ old('no_of_units[]') }}" placeholder="{{ $errors->first('no_of_units.*') }}">
                                                     </td>
-                                                    <td class="new"  style="display: none;">
-                                                        <input type="number" class="form-control form-control-sm" name="capitalization[]">
+                                                    <td class="new" style="display: none;">
+                                                        <input type="number" class="form-control form-control-sm {{ $errors->has('capitalization.*') ? 'is-invalid': NULL  }}" name="capitalization[]" value="{{ old('capitalization[]') }}" placeholder="{{ $errors->first('capitalization.*') }}">
                                                     </td>
-                                                    <td class="renew"  style="display: none;">
-                                                        <input type="number" class="form-control form-control-sm" name="renew[]">
+                                                    <td class="renew" style="display: none;">
+                                                        <input type="number" class="form-control form-control-sm {{ $errors->has('renew.*') ? 'is-invalid': NULL  }}" name="renew[]" value="{{ old('renew[]') }}" placeholder="{{ $errors->first('renew.*') }}">
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -627,33 +629,68 @@
                                                 <th class="text-title">Requirment Name</th>
                                                 <th class="text-title" class="text-wrap">File</th>
                                             </thead>
-                                            <tr>
+                                            {{-- <tr>
                                                 <td>BN Certificate</td>
-                                                <td><input type="file" class="text-wrap"></td>
+                                                <td>
+                                                    <input type="file" name="file[bn_certificate]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
+                                                    @if($errors->first('file'))
+                                                    <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                                    @endif
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Barangay Clearance</td>
-                                                <td><input type="file" class="text-wrap"></td>
+                                                <td>
+                                                    <input type="file" name="file[brgy_clearance]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
+                                                    @if($errors->first('file'))
+                                                    <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                                    @endif
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Occupancy Permit</td>
-                                                <td><input type="file" class="text-wrap"></td>
+                                                <td>
+                                                    <input type="file" name="file[occupancy_permit]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
+                                                    @if($errors->first('file'))
+                                                    <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                                    @endif
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Land Title (Home based) *If owned</td>
-                                                <td><input type="file" class="text-wrap"></td>
+                                                <td>
+                                                    <input type="file" name="file[land_title]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
+                                                    @if($errors->first('file'))
+                                                    <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                                    @endif
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Authorization from Owner *If rent</td>
-                                                <td><input type="file" class="text-wrap"></td>
-                                            </tr>
+                                                <td>
+                                                    <input type="file" name="file[authorization_owner]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
+                                                    @if($errors->first('file'))
+                                                    <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                                    @endif
+                                                </td>
+                                            </tr> --}}
                                             <tr>
                                                 <td>Actual Photo of Establishment</td>
-                                                <td><input type="file" class="text-wrap"></td>
+                                                <td>
+                                                    <input type="file" name="file[photo_establishment]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg">
+                                                    @if($errors->first('file'))
+                                                    <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                                    @endif
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td>BIR ITR Form</td>
-                                                <td><input type="file" class="text-wrap"></td>
+                                                <td>BIR ITR Form / Financial Statement</td>
+                                                <td>
+                                                    <input type="file" name="file[bir_itr_form]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
+                                                    @if($errors->first('file'))
+                                                    <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -667,19 +704,22 @@
             </div>
         </div>
         <!-- Modal -->
+        @if (session('successmodal') == 1)
         <div class="modal" tabindex="-1" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="text-center">
-                            <h1 class="text-success">Success</h1>
+                            <h1 class="text-success text-uppercase">Success</h1>
                             <p style="font-weight: bold">This is to confirm that we have recieved your assessment request. We will process your request and will update you on the status. Thank you!</p>
-                            <a href="{{route('web.business.index')}}" class="btn btn-light text-success">Back to Home</a>
+                            <a href="{{route('web.business.index')}}" class="btn btn-light text-success text-uppercase session-forget">Back to Home</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        @else
+        @endif
     </div>
 
 </section>
@@ -691,9 +731,8 @@
 @section('page-scripts')
 
 <script type="text/javascript">
-
-    $('.trigger-modal').click(function (){
-        $('.modal').modal('show');
+    $('.session-forget').click(function (){
+        {{ session()->forget('successmodal') }}
     })
      $.fn.get_region = function(input_region,input_province,input_city,input_brgy,selected){
 
@@ -785,7 +824,7 @@
       });
     }
      $(function(){
-
+        $('.modal').modal('show');
         $(this).get_region("#input_region","#input_province","#input_town","#input_brgy","{{old('region')}}")
 
         $("#input_region").on("change",function(){
@@ -817,6 +856,7 @@
             var _text = $("#input_brgy option:selected").text();
             $('#input_brgy_name').val(_text);
         });
+        $('.type_of_application').val('{{ session('application.transaction_type') }}');
 
         $('#repeater_add_activity').on('click', function(){
             var repeat_item = $("#repeat_form").eq(0).prop('outerHTML');
@@ -825,6 +865,7 @@
             $('.renew').hide();
             $(".application_type").prop('checked', false);
             $('input[name=application_type][value=new]').prop('checked', true);
+            $('.type_of_application').val($('.application_type').val());
 
         });
     })

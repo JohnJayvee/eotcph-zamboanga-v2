@@ -29,7 +29,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2"> Type</label>
-                                        {!!Form::select("transaction_type", ['new' => 'New', 'renew' => 'Renew'], old('transaction_type'), ['id' => "input_transaction_type", 'class' => "form-control form-control-sm classic ".($errors->first('transaction_type') ? 'border-red' : NULL)])!!}
+                                        {!!Form::select("transaction_type", ['renew' => 'Renew'], old('transaction_type'), ['id' => "input_transaction_type", 'class' => "form-control form-control-sm classic ".($errors->first('transaction_type') ? 'border-red' : NULL)])!!}
                                         @if($errors->first('transaction_type'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('transaction_type')}}</small>
                                         @endif

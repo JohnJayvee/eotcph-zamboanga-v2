@@ -28,7 +28,7 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="form-group">
                             <label class="text-title pb-2">Account Status</label>
-                            <select name="status" class="form-control">
+                            <select name="status" class="form-control" id="status">
                                 <option value="approved">Approved</option>
                                 <option value="declined">Declined</option>
                             </select>
@@ -180,6 +180,23 @@
                 </div>
                 <button type="submit" class="btn btn-primary mr-2">Update Record</button>
             </div>
+            <div class="modal modal-remark" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p class="text-form">Why Decline this registrant?</p>
+                            <textarea name="remark" id="" class="form-control {{$errors->has('remark') ? 'is-invalid' : NULL}}" cols="30" rows="5"></textarea>
+                            @if($errors->first('remark'))
+                                <p class="mt-1 text-danger">{!!$errors->first('remark')!!}</p>
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
 </div>
@@ -201,7 +218,17 @@
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-      $('#input_requirements_id').select2({placeholder: "Select Requirements"});
+        @if(Session::has('errors'))
+        $('.modal-remark').modal({show: true});
+        @endif
+
+        $("#status").change(function(){
+            if($(this).val() == 'declined'){
+                $(".modal-remark").modal('show');
+            } else {
+                $('.modal-remark').modal('hide');
+            }
+        })
     });//document ready
 </script>
 @endsection

@@ -10,27 +10,28 @@ use App\Laravel\Requests\PageRequest;
 /*
  * Models
  */
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application,ApplicationRequirements,TransactionRequirements,CollectionOfFees};
 use App\Laravel\Requests\System\BPLORequest;
-use App\Laravel\Requests\System\TransactionCollectionRequest;
-
-
-
-
 use App\Laravel\Events\SendEmailApprovedBusiness;
+use App\Laravel\Models\ApplicationBusinessPermitFile;
+
+
+
+
+use App\Laravel\Requests\System\TransactionCollectionRequest;
 /* App Classes
  */
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader;
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees};
 
 class BusinessTransactionController extends Controller
 {
     protected $data;
 	protected $per_page;
-	
+
 	public function __construct(){
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
-		
+
 		$this->data['regional_offices'] = ['' => "Choose Regional Offices"] + RegionalOffice::pluck('name', 'id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
@@ -41,7 +42,7 @@ class BusinessTransactionController extends Controller
 
 	public function  index(PageRequest $request){
 		$this->data['page_title'] = "Business Transactions";
-		$this->data['business_transactions'] = BusinessTransaction::orderBy('created_at',"DESC")->get(); 
+		$this->data['business_transactions'] = BusinessTransaction::orderBy('created_at',"DESC")->get();
 		return view('system.business-transaction.index',$this->data);
 	}
 
@@ -64,7 +65,6 @@ class BusinessTransactionController extends Controller
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
-		
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
 
 		$this->data['transactions'] = BusinessTransaction::where('status',"PENDING")->where('is_resent',0)->where(function($query){
@@ -77,7 +77,7 @@ class BusinessTransactionController extends Controller
 					if(strlen($this->data['selected_application_id']) > 0){
 						return $query->where('application_id',$this->data['selected_application_id']);
 					}
-					
+
 				})
 				->where(function($query){
 					if(strlen($this->data['selected_processing_fee_status']) > 0){
@@ -115,7 +115,7 @@ class BusinessTransactionController extends Controller
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
-		
+
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
 
 		$this->data['transactions'] = BusinessTransaction::where('status',"APPROVED")->where(function($query){
@@ -128,7 +128,7 @@ class BusinessTransactionController extends Controller
 					if(strlen($this->data['selected_application_id']) > 0){
 						return $query->where('application_id',$this->data['selected_application_id']);
 					}
-					
+
 				})
 				->where(function($query){
 					if(strlen($this->data['selected_processing_fee_status']) > 0){
@@ -160,7 +160,7 @@ class BusinessTransactionController extends Controller
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
-		
+
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
 
 		$this->data['transactions'] = BusinessTransaction::where('status',"DECLINED")->where(function($query){
@@ -173,7 +173,7 @@ class BusinessTransactionController extends Controller
 					if(strlen($this->data['selected_application_id']) > 0){
 						return $query->where('application_id',$this->data['selected_application_id']);
 					}
-					
+
 				})
 				->where(function($query){
 					if(strlen($this->data['selected_processing_fee_status']) > 0){
@@ -190,14 +190,17 @@ class BusinessTransactionController extends Controller
 		$this->data['count_file'] = TransactionRequirements::where('transaction_id',$id)->count();
 		$this->data['attachments'] = TransactionRequirements::where('transaction_id',$id)->get();
 		$this->data['transaction'] = $request->get('business_transaction_data');
-		$id = $this->data['transaction']->requirements_id;
+        $id = $this->data['transaction']->requirements_id;
+        $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', $request->id)->get();
+        $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
+		$this->data['app_business_permit'] = ApplicationBusinessPermit::find($request->id)->get();
+
 		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $id))->get();
-		
+
 
 		$this->data['department'] =  Department::pluck('name','id')->toArray();
 		$this->data['breakdown_collection'] = CollectionOfFees::find($this->data['transaction']->collection_id);
 		$this->data['page_title'] = "Transaction Details";
-		
 		return view('system.business-transaction.show',$this->data);
 	}
 
@@ -272,7 +275,7 @@ class BusinessTransactionController extends Controller
 	public function save_collection (TransactionCollectionRequest $request){
 		$transaction_id = $request->get('transaction_id');
 		DB::beginTransaction();
-		
+
 		try{
 			$business_transaction = BusinessTransaction::find($transaction_id);
 			$business_transaction->collection_id = $request->get('collection_id');
@@ -292,7 +295,7 @@ class BusinessTransactionController extends Controller
 
 	public function remarks($id = NULL,PageRequest $request){
 		DB::beginTransaction();
-		
+		try{
 			$transaction = $request->get('business_transaction_data');
 			$auth = Auth::user();
 			$array_remarks = [];
@@ -346,7 +349,12 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Application Remarks has been saved.");
 			return redirect()->route('system.business_transaction.show',[$transaction->id]);
 		
-
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
 		
 	}
 
