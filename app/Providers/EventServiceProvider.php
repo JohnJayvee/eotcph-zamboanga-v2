@@ -85,6 +85,9 @@ class EventServiceProvider extends ServiceProvider
         'send-email-business-approved' => [
             'App\Laravel\Listeners\SendEmailBusinessApprovedListener'
         ],
+        'send-email-reference' => [
+            'App\Laravel\Listeners\SendEmailProcessorReferenceListener'
+        ],
 
     ];
 
