@@ -93,7 +93,11 @@ class Helper{
 	public static function department_name($id = NULL){
 		$department = Department::find($id);
 
-		return $department->name;
+		if ($department) {
+			return $department->name;
+		}else{
+			return "N/A";
+		}
 	}
 
 	public static function processor_name($id = NULL){
