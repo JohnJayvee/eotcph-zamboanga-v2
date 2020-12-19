@@ -231,13 +231,13 @@ class BusinessTransactionController extends Controller
 		DB::beginTransaction();
 		try{
 			$transaction = $request->get('business_transaction_data');
-			if ($type == "APPROVED") {
+			/*if ($type == "APPROVED") {
 				if ($transaction->collection_id == NULL || $request->get('collection_id') == NULL) {
 					session()->flash('notification-status', "failed");
 					session()->flash('notification-msg', "Please Define Collection of Fee for this transaction");
 					return redirect()->back();
 				}
-			}
+			}*/
 			
 			$transaction->status = $type;
 			$transaction->total_amount = $type == "APPROVED" ? Helper::money_format(Helper::total_breakdown($request->get('collection_id'))) : NULL;
