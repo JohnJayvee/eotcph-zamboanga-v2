@@ -240,7 +240,7 @@ class BusinessTransactionController extends Controller
 			}*/
 			
 			$transaction->status = $type;
-			$transaction->total_amount = $type == "APPROVED" ? Helper::money_format(Helper::total_breakdown($request->get('collection_id'))) : NULL;
+			$transaction->total_amount = $type == "APPROVED" ;
 			$transaction->remarks = $type == "DECLINED" ? $request->get('remarks') : NULL;
 			$transaction->processor_user_id = Auth::user()->id;
 			$transaction->modified_at = Carbon::now();
