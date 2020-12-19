@@ -19,6 +19,7 @@ use App\Laravel\Models\Application;
  */
 
 use App\Laravel\Events\SendProcessorReference;
+use App\Laravel\Events\SendEmailProcessorReference;
 
 use Carbon,Auth,DB,Str,Hash,ImageUploader,Event;
 
