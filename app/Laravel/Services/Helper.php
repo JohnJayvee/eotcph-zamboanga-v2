@@ -91,7 +91,7 @@ class Helper{
 
 	}
 	public static function department_name($id = NULL){
-		$department = Department::find($id);
+		$department = Department::where('code',$id)->first();
 
 		if ($department) {
 			return $department->name;
