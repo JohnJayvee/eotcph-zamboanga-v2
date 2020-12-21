@@ -295,7 +295,6 @@ class BusinessTransactionController extends Controller
 
 	public function remarks($id = NULL,PageRequest $request){
 		DB::beginTransaction();
-		try{
 			$transaction = $request->get('business_transaction_data');
 			$auth = Auth::user();
 			$array_remarks = [];
@@ -349,12 +348,7 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Application Remarks has been saved.");
 			return redirect()->route('system.business_transaction.show',[$transaction->id]);
 		
-		}catch(\Exception $e){
-			DB::rollback();
-			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
-			return redirect()->back();
-		}
+		
 		
 	}
 
