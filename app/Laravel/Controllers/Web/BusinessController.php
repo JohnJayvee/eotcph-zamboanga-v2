@@ -70,7 +70,9 @@ class BusinessController extends Controller
                         $this->data['lob'][] = $value['Particulars'];
                     }
                 }
-            } else {
+            } elseif ($response->status == "400") {
+                session()->put('negativelist', 1);
+            }else {
                 session()->flash('notification-status', "failed");
                 session()->flash('notification-msg', "Business not found");
             }
@@ -192,6 +194,7 @@ class BusinessController extends Controller
                     session()->flash('notification-status', "success");
                     session()->flash('notification-msg', "New Bureau/Office has been added.");
                     session()->forget('status_code');
+                    session()->forget('negativelist');
                     return redirect()->route('web.business.index');
                 }catch(\Exception $e){
                     DB::rollback();

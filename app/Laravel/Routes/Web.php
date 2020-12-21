@@ -35,6 +35,12 @@ Route::group(['as' => "web.",
             Route::post('/otp', [ 'as' => "otp", 'uses' => "AuthController@sendOTP"]);
             Route::post('/otp-submit', [ 'as' => "otp_submit", 'uses' => "AuthController@otp_submit"]);
         });
+        Route::group(['prefix'=> "password",'as' => 'password.' ],function(){
+            Route::get('email', ['as' => 'sendEmail', 'uses' => "AuthController@reset_mail_form"]);
+            Route::post('reset-link', ['uses' => "AuthController@reset_email"]);
+            Route::get('reset', ['uses' => "AuthController@reset_password_form"]);
+            Route::post('reset', [ 'as' => "reset_password",'uses' => "AuthController@reset_password"]);
+        });
 	});
 
 	Route::group(['middleware' => ["web","portal.auth"]], function(){

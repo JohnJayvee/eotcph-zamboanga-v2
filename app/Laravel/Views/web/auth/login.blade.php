@@ -44,6 +44,9 @@
                             	<p class="fw-600 text-black mb-0">Don't have an account?</p>
                             	<a href="{{route('web.register.index')}}" class="fw-600 sign-up">Sign Up</a>
                             </div>
+                            <div class="text-center">
+                            	<a href="{{route('web.password.sendEmail')}}" class="fw-600 sign-up">Forgot Password</a>
+                            </div>
                         </div>
 
                     </div>
