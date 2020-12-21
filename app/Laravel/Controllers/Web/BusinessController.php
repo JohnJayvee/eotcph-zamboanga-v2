@@ -98,12 +98,12 @@ class BusinessController extends Controller
         $status_code = $content['status_code'];
         session()->put('status_code', $status_code);
         switch ($status_code) {
-            /*case 'NO_RECORD':
+            case 'NO_RECORD':
                 session()->forget('status_code');
                 session()->flash('notification-status', "failed");
                 session()->flash('notification-msg', "BNN not Found");
                 return redirect()->route('web.business.create')->withInput();
-                break;*/
+                break;
             default:
                 DB::beginTransaction();
                 try{
@@ -226,27 +226,78 @@ class BusinessController extends Controller
 		return view('web.business.edit',$this->data);
 	}
 
-	public function business_update(EditBusinessRequest $request){
+	public function business_update(PageRequest $request){
 
         DB::beginTransaction();
 		try{
 			$business = Business::find(session()->get('selected_business_id'));
+            // $business->business_scope = $request->get('business_scope');
+            // $business->business_type = $request->get('business_type');
+            // $business->dominant_name = $request->get('dominant_name');
+            // $business->business_name = $request->get('business_name');
+            // $business->business_id_no = $request->get('BusinessID');
+            $business->tradename = $request->trade_name;
+            $business->dti_sec_cda_registration_no = $request->dti_sec_cda_registration_no;
+            $business->dti_sec_cda_registration_date = $request->dti_sec_cda_registration_date;
+            $business->ctc_no = $request->ctc_no;
+            $business->business_tin = $request->business_tin;
+            $business->tax_incentive = $request->tax_incentive;
+
+            $business->rep_lastname = $request->rep_lastname;
+            $business->rep_firstname = $request->rep_firstname;
+            $business->rep_middlename = $request->rep_middlename;
+            $business->rep_gender = $request->rep_gender;
+            $business->rep_position = $request->rep_position;
+            $business->rep_tin = $request->rep_tin;
+
+            $business->website_url = $request->website_url;
+            $business->business_area = $request->business_area;
+
+            $business->lessor_fullname = $request->lessor_fullname;
+            $business->lessor_gender = $request->lessor_gender;
+            $business->lessor_monthly_rental = $request->lessor_monthly_rental;
+            $business->lessor_rental_date = $request->lessor_rental_date;
+            $business->lessor_mobile_no = $request->lessor_mobile_no;
+            $business->lessor_tel_no = $request->lessor_tel_no;
+            $business->lessor_email = $request->lessor_email;
+            $business->lessor_unit_no = $request->lessor_unit_no;
+            $business->lessor_street_address = $request->lessor_street_address;
+            $business->lessor_brgy = $request->lessor_brgy;
+            $business->lessor_brgy_name = $request->lessor_brgy_name;
+            $business->lessor_region = $request->lessor_region;
+            $business->lessor_region_name = $request->lessor_region_name;
+            $business->lessor_town = $request->lessor_town;
+            $business->lessor_town_name = $request->lessor_town_name;
+            $business->lessor_zipcode = $request->lessor_zipcode;
+
+            $business->emergency_contact_fullname = $request->emergency_contact_fullname;
+            $business->emergency_contact_mobile_no = $request->emergency_contact_mobile_no;
+            $business->emergency_contact_tel_no = $request->emergency_contact_tel_no;
+            $business->emergency_contact_email = $request->emergency_contact_email;
 
             $business->no_of_male_employee = $request->get('no_male_employee');
             $business->no_of_female_employee = $request->get('no_female_employee');
             $business->male_residing_in_city = $request->get('male_residing_in_city');
             $business->female_residing_in_city = $request->get('female_residing_in_city');
-            $business->business_line = $request->get('business_line');
+
             $business->capitalization = $request->get('capitalization');
-            $business->website_url = $request->get('website_url');
+            $business->region_name = $request->get('region_name');
+            $business->town_name = $request->get('town_name');
+            $business->region = $request->get('region');
+            $business->town = $request->get('town');
+            $business->brgy_name = $request->get('brgy_name');
+            $business->brgy = $request->get('brgy');
+            $business->zipcode = $request->get('zipcode');
+            $business->unit_no = $request->get('unit_no');
+            $business->street_address = $request->get('street_address');
             $business->email = $request->get('email');
             $business->mobile_no = $request->get('mobile_no');
             $business->telephone_no = $request->get('telephone_no');
             $business->tin_no = $request->get('tin_no');
-			$business->sss_no = $request->get('sss_no');
-			$business->philhealth_no = $request->get('philhealth_no');
+            $business->sss_no = $request->get('sss_no');
+            $business->philhealth_no = $request->get('philhealth_no');
             $business->pagibig_no = $request->get('pagibig_no');
-
+            dd($business);
             $business->save();
 
 			DB::commit();

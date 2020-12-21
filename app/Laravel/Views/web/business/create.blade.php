@@ -882,9 +882,9 @@
         $("#input_lessor_region").on("change", function () {
             var _val = $(this).val();
             var _text = $("#input_lessor_region option:selected").text();
-            $(this).get_city($("#input_lessor_region").val(), "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_town')}}");
-            $('#input_zipcode').val('');
-            $('#input_region_name').val(_text);
+            $(this).get_city('090000000', "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_town')}}");
+            $('#input_lessor_zipcode').val('');
+            $('#input_lessor_region_name').val(_text);
         });
 
         $("#input_lessor_town").on("change", function () {
