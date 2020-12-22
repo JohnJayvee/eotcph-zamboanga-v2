@@ -45,13 +45,13 @@ class BusinessPaymentController extends Controller
 
         switch ($this->data['payment_type']) {
         	case 'annually':
-        		$this->data['total_amount'] = $transaction->total_amount ?: 0;
+        		$this->data['total_amount'] = $transaction ? $transaction->total_amount : 0;
         		break;
         	case 'semi_annually':
-        		$this->data['total_amount'] = $transaction->total_amount ? $transaction->total_amount / 2 : 0;
+        		$this->data['total_amount'] = $transaction ? $transaction->total_amount / 2 : 0;
         		break;
         	case 'quarterly':
-        		$this->data['total_amount'] = $transaction->total_amount ? $transaction->total_amount / 4 : 0;
+        		$this->data['total_amount'] = $transaction ? $transaction->total_amount / 4 : 0;
         		break;
         	default:
         		break;
