@@ -77,11 +77,11 @@
 				<th style="text-align: left;padding: 10px;">Date:</th>
 				<th style="text-align: right;">{{Str::title($modified_at)}}</th>
 			</tr>
-			<!-- <tr class="text-blue">
+			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Total Amount:</th>
 				<th style="text-align: right;">{{Str::title($amount)}}</th>
 			</tr>
-			<tr class="text-blue">
+			<!-- <tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Reference Number:</th>
 				<th style="text-align: right;">{{Str::title($ref_num)}}</th>
 			</tr> -->
