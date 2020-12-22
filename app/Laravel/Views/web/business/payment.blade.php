@@ -46,7 +46,7 @@
 				                    					<td>Yearly</td>
 				                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
 				                    					<td>UNPAID</td>
-				                    					<td><button class="btn-sm btn-primary">PAY NOW</button></td>
+				                    					<td><a href="{{route('web.business_payment.payment',[$id])}}?type=annually&amount={{$total_amount}}" class="btn-sm btn-primary">PAY NOW</a></td>
 			                    					</tr>
 			                    				@endforeach
 			                    			@else
@@ -75,7 +75,7 @@
 				                    					<td>Q {{$index}}</td>
 				                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
 				                    					<td>UNPAID</td>
-				                    					<td><button class="btn-sm btn-primary">PAY NOW</button></td>
+				                    					<td><a href="{{route('web.business_payment.payment',[$id])}}?type=semi_annually&amount={{$total_amount}}" class="btn-sm btn-primary">PAY NOW</a></td>
 			                    					</tr>
 			                    				@endforeach
 		                    				@else
