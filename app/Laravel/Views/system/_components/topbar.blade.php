@@ -8,26 +8,27 @@
     <i class="fa fa-calendar-alt header-datetime" style="color: #C74A4F"> <span id="current_date" class="text-roboto"></span></i>
     <i class="fa fa-hourglass-half pl-3 header-datetime" style="color: #C74A4F"> <span id="current_time" class="text-roboto"></span></i>
     <ul class="navbar-nav navbar-nav-right">
-      <li class="nav-item nav-profile dropdown navbar-nav-right" style="width: 300px;">
-        <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="">
-          <i class="fas fa-bell fa-lg ml-2">
-            <span class="badge badge-danger">{{ $new_business_cv_count }}</span>
-          </i>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-          @forelse ($new_business_cv as $item)
-          <a href="#" class="dropdown-item">
-            {{str::title($item->business_name)}} /<br>  {{str::title($item->rep_firstname.' '. $item->rep_middle_name.' '. $item->rep_lastname)}}
-          </a>
-          @empty
-          <a href="#" class="dropdown-item">
-              No notification
-          </a>
-          @endforelse
-        </div>
-      </li>
+
     </ul>
     <ul class="navbar-nav navbar-nav-right">
+        <li class="nav-item nav-profile dropdown navbar-nav-right float-right" style="width: 300px;">
+            <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="">
+              <i class="fas fa-bell fa-lg ml-2">
+                <span class="badge badge-danger">{{ $new_business_cv_count }}</span>
+              </i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              @forelse ($new_business_cv as $item)
+              <a href="#" class="dropdown-item">
+                {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->rep_firstname.' '. $item->rep_middle_name.' '. $item->rep_lastname)}}
+              </a>
+              @empty
+              <a href="#" class="dropdown-item">
+                  No notification
+              </a>
+              @endforelse
+            </div>
+          </li>
         <li class="nav-item nav-profile dropdown navbar-nav-right" style="width: 300px;">
           <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="profileDropdown">
             <img src="{{strlen($auth->filename) > 0 ? "{$auth->directory}/resized/{$auth->filename}" : asset('placeholder/user.png')}}" alt="profile"/>
