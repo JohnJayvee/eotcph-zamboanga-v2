@@ -247,7 +247,7 @@ class BusinessTransactionController extends Controller
 			}*/
 			
 			$transaction->status = $type;
-			$transaction->total_amount = $type == "APPROVED" ? $request->get('amount') : NULL ;
+			$transaction->total_amount = $type == "APPROVED" ? Helper::db_amount($request->get('amount')) : NULL ;
 			$transaction->remarks = $type == "DECLINED" ? $request->get('remarks') : NULL;
 			$transaction->processor_user_id = Auth::user()->id;
 			$transaction->status = $type;

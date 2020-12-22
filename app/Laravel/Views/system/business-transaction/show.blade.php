@@ -113,6 +113,50 @@
         </div>
       </div>
     </div>
+    <div class="card card-rounded shadow-sm mb-4">
+      <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
+          <h5 class="text-title text-uppercase">Uploaded Documents</h5>
+          <div class="row">
+              <div class="col-md-12">
+                  <div class="form-group">
+                      <div class="table-responsive">
+                          <table class="table table-bordered">
+                              <thead>
+                                  <tr>
+                                      <td>Uploaded Document</td>
+                                      <td>Type</td>
+                                      <td>Date Uploaded</td>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  @forelse ($app_business_permit_file as $file)
+                                  <tr>
+                                      <td>
+                                          <div><strong>{{ strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file->type))) }}</strong></div>
+                                          <div><small>File: <strong><a href="{{"{$file->directory}/{$file->filename}"}}" target="_blank">{{$file->filename}}</a></strong></small></div>
+                                      </td>
+                                      <td>
+                                          {{ $file->source }}
+                                      </td>
+                                      <td>
+                                          {{ Helper::date_format($file->created_at)}}
+                                      </td>
+                                  </tr>
+                                  @empty
+                                  <tr>
+                                      <td class="text-center" colspan="3">
+                                          <p>No Document Uploaded.</p>
+                                      </td>
+                                  </tr>
+                                  @endforelse
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
     <div class="card card-rounded shadow-sm mb-2">
       <div class="card-body">
         <div class="row">
