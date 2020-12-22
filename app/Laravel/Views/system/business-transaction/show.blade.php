@@ -253,7 +253,7 @@
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
-        title: "All the submitted requirements will be marked as approved. Are you sure you want to approve this application?",
+        title: "Please place the TOTAL AMOUNT in the field below. Are you sure you want to approve this application? You can't undo this action.?",
         
         icon: 'info',
         input: 'text',
