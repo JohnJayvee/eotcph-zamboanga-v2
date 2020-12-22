@@ -88,6 +88,9 @@ class EventServiceProvider extends ServiceProvider
         'send-email-reference' => [
             'App\Laravel\Listeners\SendEmailProcessorReferenceListener'
         ],
+        'send-reset-password' => [
+            'App\Laravel\Listeners\SendResetPasswordListener'
+        ],
 
     ];
 

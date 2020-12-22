@@ -21,8 +21,9 @@ use Illuminate\Contracts\Auth\Guard;
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Events\SendCustomerOTP;
 use App\Laravel\Events\SendCustomerOTPEmail;
+use App\Laravel\Events\SendResetPasswordLink;
 use App\Laravel\Requests\Web\RegisterRequest;
-use Carbon,Auth,DB,Str,FileUploader,Event,Session,Helper;
+use Carbon,Auth,DB,Str,FileUploader,Event,Session,Helper,Validator;
 
 class AuthController extends Controller{
 
@@ -204,7 +205,106 @@ class AuthController extends Controller{
 		$this->data['page_title'] = " :: Verify Account";
 		return view('web.auth.verify',$this->data);
 
-	}
+    }
+
+    public function reset_mail_form(){
+		$this->data['page_title'] = " :: Reset Password";
+		return view('web.auth.reset.enter_email',$this->data);
+
+    }
+    public function reset_email(PageRequest $request){
+        $this->data['page_title'] = " :: Reset Password";
+
+        $user = Customer::where('email', $request->email)->first();
+        if (!$user) {
+            return redirect()->back()->withErrors(['email' => trans('User does not exist')]);
+        }
+
+        DB::table('password_resets')->insert([
+            'email' => $request->email,
+            'token' => Str::random(60),
+            'created_at' => Carbon::now()
+        ]);
+
+        $tokenData = DB::table('password_resets')
+            ->where('email', $request->email)->first();
+
+        if ($this->sendResetEmail($request->email, $tokenData->token)) {
+            $this->data['page_title'] = " :: Email Sent!";
+            return view('web.auth.reset.email_confirm',$this->data);
+        } else {
+            return redirect()->back()->withErrors(['error' => trans('A Network Error occurred. Please try again.')]);
+        }
+
+    }
+
+    private function sendResetEmail($email, $token)
+    {
+        $user = Customer::where('email', $email)->select('fname', 'mname', 'lname', 'email')->first();
+        $link = url()->to('/') . '/password/reset?token=' . $token . '&email=' . urlencode($user->email);
+
+        try {
+        $insert[] = [
+            'email' => $email,
+            'link' => $link,
+            'name' => $user->name,
+        ];
+        $notification_data = new SendResetPasswordLink($insert);
+        Event::dispatch('send-reset-password', $notification_data);
+
+        return true;
+        } catch (\Exception $e) {
+            dd($e);
+            return false;
+        }
+    }
+    public function reset_password_form($token = null){
+		$this->data['page_title'] = " :: Reset Password";
+		return view('web.auth.reset.enter_password',$this->data);
+    }
+
+    public function reset_password()
+    {
+        //Validate input
+        $validator = Validator::make(request()->all(), [
+            'password' => 'required|confirmed',
+            'token' => 'required']);
+
+        //check if payload is valid before moving on
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors(['password' => 'Please complete the form']);
+        }
+
+        $password = request()->password;
+        // Validate the token
+        $tokenData = DB::table('password_resets')
+        ->where('token', request()->token)->first();
+        // Redirect the user back to the password reset request form if the token is invalid
+        if (!$tokenData) return view('web.auth.reset.enter_email');
+
+        $user = Customer::where('email', $tokenData->email)->first();
+        // Redirect the user back if the email is invalid
+        if (!$user) return redirect()->back()->withErrors(['email' => 'Email not found']);
+        //Hash and update the new password
+        $user->password = \Hash::make($password);
+        $user->update(); //or $user->save();
+
+        //login the user immediately they change password successfully
+        // Auth::login($user);
+
+        //Delete the token
+        DB::table('password_resets')->where('email', $user->email)
+        ->delete();
+
+        //Send Email Reset Success Email
+		return redirect()->route('web.login');
+        // if ($this->sendSuccessEmail($tokenData->email)) {
+        //     return view('web.auth.reset.enter_password',$this->data);
+        // } else {
+        //     return redirect()->back()->withErrors(['email' => trans('A Network Error occurred. Please try again.')]);
+        // }
+
+    }
 
 	public function verified($id = NULL , PageRequest $request){
 

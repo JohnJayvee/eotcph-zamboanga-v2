@@ -27,6 +27,27 @@
                                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('business_id_no')}}</small>
                                             @endif
                                         </div>
+
+                                        @if (session('negativelist') == 1)
+                                        <div class="modal modal_negative">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-body d-flex flex-column">
+                                                        <div class="row mx-auto">
+                                                            <i class="fas fa-exclamation-triangle fa-5x text-danger text-center"></i>
+                                                            <br>
+                                                        </div>
+                                                        <h3>Oops, sorry! Your Business ID is in our Negative List. Please contact the BPLO Office for further concerns.</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
+                                        <script>
+                                            $(function() {
+                                                $('.modal_negative').modal('show');
+                                            })
+                                        </script>
                                         <button type="submit" class="btn badge-primary-2 text-white mr-2" style="float: right;">Validate</button>
                                     </div>
                                 </div>
