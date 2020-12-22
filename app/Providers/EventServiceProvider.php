@@ -91,6 +91,12 @@ class EventServiceProvider extends ServiceProvider
         'send-reset-password' => [
             'App\Laravel\Listeners\SendResetPasswordListener'
         ],
+        'send-new-business_cv-email' => [
+            'App\Laravel\Listeners\SendNewBusinessCVEmailListener'
+        ],
+        'send-new-business_cv' => [
+            'App\Laravel\Listeners\SendNewBusinessCVListener'
+        ],
 
     ];
 

@@ -9,29 +9,49 @@
     <i class="fa fa-hourglass-half pl-3 header-datetime" style="color: #C74A4F"> <span id="current_time" class="text-roboto"></span></i>
     <ul class="navbar-nav navbar-nav-right">
       <li class="nav-item nav-profile dropdown navbar-nav-right" style="width: 300px;">
-        <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="profileDropdown">
-          <img src="{{strlen($auth->filename) > 0 ? "{$auth->directory}/resized/{$auth->filename}" : asset('placeholder/user.png')}}" alt="profile"/>
-           <span class="profile-details">&nbsp; Welcome, {{Auth::user()->fullname}}</span>
-          <i class="fas fa-caret-down ml-2"></i>
+        <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="">
+          <i class="fas fa-bell fa-lg ml-2">
+            <span class="badge badge-danger">{{ $new_business_cv_count }}</span>
+          </i>
         </a>
-
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-          <a class="dropdown-item disabled">Welcome {{$auth->name}}!</a>
-          <a href="{{route('system.profile.index')}}" class="dropdown-item">
-            <i class="mdi mdi-settings "></i>
-            My Profile
+          @forelse ($new_business_cv as $item)
+          <a href="#" class="dropdown-item">
+            {{str::title($item->business_name)}} /<br>  {{str::title($item->rep_firstname.' '. $item->rep_middle_name.' '. $item->rep_lastname)}}
           </a>
-          <a href="{{route('system.profile.password.edit')}}" class="dropdown-item">
-            <i class="mdi mdi-key"></i>
-            Change Password
+          @empty
+          <a href="#" class="dropdown-item">
+              No notification
           </a>
-          <a href="{{route('system.auth.logout')}}" class="dropdown-item">
-            <i class="mdi mdi-logout"></i>
-            Logout
-          </a>
+          @endforelse
         </div>
       </li>
     </ul>
+    <ul class="navbar-nav navbar-nav-right">
+        <li class="nav-item nav-profile dropdown navbar-nav-right" style="width: 300px;">
+          <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="profileDropdown">
+            <img src="{{strlen($auth->filename) > 0 ? "{$auth->directory}/resized/{$auth->filename}" : asset('placeholder/user.png')}}" alt="profile"/>
+             <span class="profile-details">&nbsp; Welcome, {{Auth::user()->fullname}}</span>
+            <i class="fas fa-caret-down ml-2"></i>
+          </a>
+
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+            <a class="dropdown-item disabled">Welcome {{$auth->name}}!</a>
+            <a href="{{route('system.profile.index')}}" class="dropdown-item">
+              <i class="mdi mdi-settings "></i>
+              My Profile
+            </a>
+            <a href="{{route('system.profile.password.edit')}}" class="dropdown-item">
+              <i class="mdi mdi-key"></i>
+              Change Password
+            </a>
+            <a href="{{route('system.auth.logout')}}" class="dropdown-item">
+              <i class="mdi mdi-logout"></i>
+              Logout
+            </a>
+          </div>
+        </li>
+      </ul>
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
       <span class="mdi mdi-menu"></span>
     </button>

@@ -6,7 +6,7 @@ use App\Laravel\Controllers\Controller as BaseController;
 
 use Auth, Session,Carbon, Helper,Route, Request,Str;
 
-use  App\Laravel\Models\{AttendanceOvertime,AttendanceLeave,Transaction};
+use  App\Laravel\Models\{AttendanceOvertime,AttendanceLeave, Business, Transaction};
 
 class Controller extends BaseController{
 
@@ -18,6 +18,8 @@ class Controller extends BaseController{
 		self::set_current_route();
 		self::set_badges();
 		self::set_auth();
+		self::get_new_cv_count();
+		self::get_new_cv();
 
 	}
 
@@ -56,7 +58,7 @@ class Controller extends BaseController{
 
 			// $this->data['counter']['all_pending'] = $this->data['counter']['all_pending_overtime']+$this->data['counter']['all_pending_leave'];
 		}
-		
+
 	}
 
 	public function set_suffixes(){
@@ -72,8 +74,16 @@ class Controller extends BaseController{
 
 	public function set_date_today(){
 		$this->data['date_today'] = Helper::date_db(Carbon::now());
-	}
+    }
+
+    public function get_new_cv_count(){
+        $this->data['new_business_cv_count'] = Business::where('isNew', '1')->count();
+    }
+
+    public function get_new_cv(){
+        $this->data['new_business_cv'] = Business::where('isNew', '1')->get();
+    }
 
 
-	
+
 }
