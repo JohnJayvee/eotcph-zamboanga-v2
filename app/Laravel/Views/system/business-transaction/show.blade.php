@@ -79,7 +79,6 @@
         </div>
       </div>
     </div>
-    
     <div class="card card-rounded shadow-sm mb-2">
       <div class="card-body">
         <div class="row">
@@ -200,7 +199,6 @@
       var self = $(this)
       Swal.fire({
         title: "If you're one of the involved offices for this specific application, please place your remarks here.",
-
         icon: 'warning',
         input: 'textarea',
         inputPlaceholder: "Put remarks",
@@ -221,15 +219,21 @@
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
-        title: 'Are you sure you want to approved this application ?',
-        text: "You will not be able to undo this action, proceed?",
-        showDenyButton: true,
+        title: "All the submitted requirements will be marked as approved. Are you sure you want to approve this application?",
+        
+        icon: 'info',
+        input: 'text',
+        inputPlaceholder: "Put Amount",
         showCancelButton: true,
-        confirmButtonText: `Proceed`,
+        confirmButtonText: 'Approved!',
+        cancelButtonColor: '#d33'
       }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          window.location.href = url
+        if (result.value === "") {
+          alert("You need to write something")
+          return false
+        }
+        if (result.value) {
+          window.location.href = url + "&amount="+result.value;
         }
       });
     });
@@ -239,7 +243,6 @@
       var self = $(this)
       Swal.fire({
         title: "Input Department Code ",
-        
         icon: 'warning',
         input: 'text',
         inputPlaceholder: "Put Department Code",
@@ -256,94 +259,7 @@
         }
       });
     });
-
-    $('#permit_fee_container').hide();
-    $('#electrical_fee_container').hide();
-    $('#plumbing_fee_container').hide();
-    $('#mechanical_fee_container').hide();
-    $('#signboard_fee_container').hide();
-    $('#zoning_fee_container').hide();
-    $('#certification_fee_cvo_container').hide();
-    $('#health_certificate_fee_container').hide();
-    $('#certification_fee_tetuan_container').hide();
-    $('#garbage_fee_container').hide();
-    $('#inspection_fee_container').hide();
-    $('#sanitary_inspection_fee_container').hide();
-    $('#sticker_container').hide();
-    $('#total_amount_container').hide();
-    $('#garbage_tax_container').hide();
-    $('#business_tax_container').hide();
-
-
-
-
-    $('#input_department_id').select2({placeholder: "Select Department"});
-  })
-  $('#input_collection_id').change(function() {
-        $('#garbage_tax_container').show();
-            $('#business_tax_container').show();
-      var _text = $("#input_application_id option:selected").text();
-      $.getJSON('/collection?collection_id='+this.value, function(result){
-
-          if (result.data['permit_fee'] > 0) {
-            $("#permit_fee_container").show();
-            $('#permit_fee').text("PHP " + result.data['permit_fee']);
-          }
-          if (result.data['electrical_fee'] > 0) {
-            $("#electrical_fee_container").show();
-            $('#electrical_fee').text("PHP " + result.data['electrical_fee']);
-          }
-          if (result.data['plumbing_fee'] > 0) {
-            $("#plumbing_fee_container").show();
-            $('#plumbing_fee').text("PHP " + result.data['plumbing_fee']);
-          }
-          if (result.data['mechanical_fee'] > 0) {
-            $("#mechanical_fee_container").show();
-            $('#mechanical_fee').text("PHP " + result.data['mechanical_fee']);
-          }
-          if (result.data['signboard_fee'] > 0) {
-            $("#signboard_fee_container").show();
-            $('#signboard_fee').text("PHP " + result.data['signboard_fee']);
-          }
-          if (result.data['zoning_fee'] > 0) {
-            $("#zoning_fee_container").show();
-            $('#zoning_fee').text("PHP " + result.data['zoning_fee']);
-          }
-          if (result.data['certification_fee_cvo'] > 0) {
-
-            $("#certification_fee_cvo_container").show();
-            $('#certification_fee_cvo').text("PHP " + result.data['certification_fee_cvo']);
-          }
-          if (result.data['health_certificate_fee'] > 0) {
-            $("#health_certificate_fee_container").show();
-            $('#health_certificate_fee').text("PHP " + result.data['health_certificate_fee']);
-          }
-          if (result.data['certification_fee_tetuan'] > 0) {
-            $("#certification_fee_tetuan_container").show();
-            $('#certification_fee_tetuan').text("PHP " + result.data['certification_fee_tetuan']);
-          }
-          if (result.data['garbage_fee'] > 0) {
-            $("#garbage_fee_container").show();
-            $('#garbage_fee').text("PHP " + result.data['garbage_fee']);
-          }
-          if (result.data['inspection_fee'] > 0) {
-            $("#inspection_fee_container").show();
-            $('#inspection_fee').text("PHP " + result.data['inspection_fee']);
-          }
-          if (result.data['sanitary_inspection_fee'] > 0) {
-            $("#sanitary_inspection_fee_container").show();
-            $('#sanitary_inspection_fee').text("PHP " + result.data['sanitary_inspection_fee']);
-          }
-          if (result.data['sticker'] > 0) {
-            $("#sticker_container").show();
-            $('#sticker').text("PHP " + result.data['sticker']);
-          }
-          if (result.data['total_amount'] > 0) {
-            $("#total_amount_container").show();
-            $('#total_amount').text("PHP " + result.data['total_amount']);
-          }
-      });
-
-    }).change();
+  });
+    
 </script>
 @stop

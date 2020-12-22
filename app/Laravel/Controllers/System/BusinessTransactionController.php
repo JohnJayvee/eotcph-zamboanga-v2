@@ -35,6 +35,7 @@ class BusinessTransactionController extends Controller
 		$this->data['regional_offices'] = ['' => "Choose Regional Offices"] + RegionalOffice::pluck('name', 'id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
+		$this->data['approval'] = ['' => "Choose Approval Type",'1' => "Yes" , '0' => "No"];
 		$this->data['fees'] =  ['' => "Choose Collection Fees"] + CollectionOfFees::pluck('collection_name','id')->toArray();
 
 		$this->per_page = env("DEFAULT_PER_PAGE",2);
@@ -63,6 +64,7 @@ class BusinessTransactionController extends Controller
 
 
 		$this->data['selected_application_id'] = $request->get('application_id');
+		$this->data['selected_bplo_approval'] = $request->get('bplo_approval');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
@@ -82,6 +84,11 @@ class BusinessTransactionController extends Controller
 				->where(function($query){
 					if(strlen($this->data['selected_processing_fee_status']) > 0){
 						return $query->where('payment_status',$this->data['selected_processing_fee_status']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_bplo_approval']) > 0){
+						return $query->where('for_bplo_approval',$this->data['selected_bplo_approval']);
 					}
 				})
 				->where(function($query){
@@ -240,9 +247,10 @@ class BusinessTransactionController extends Controller
 			}*/
 			
 			$transaction->status = $type;
-			$transaction->total_amount = $type == "APPROVED" ;
+			$transaction->total_amount = $type == "APPROVED" ? $request->get('amount') : NULL ;
 			$transaction->remarks = $type == "DECLINED" ? $request->get('remarks') : NULL;
 			$transaction->processor_user_id = Auth::user()->id;
+			$transaction->status = $type;
 			$transaction->modified_at = Carbon::now();
 			$transaction->save();
 			if ($type == "APPROVED") {

@@ -10,6 +10,7 @@ use App\Laravel\Requests\Web\TransactionRequest;
 use App\Laravel\Requests\Web\UploadRequest;
 use App\Laravel\Requests\Web\BusinessRequest;
 use App\Laravel\Models\Business;
+use App\Laravel\Models\BusinessTransaction;
 use App\Laravel\Models\BusinessLine;
 use App\Laravel\Requests\Web\BusinessPermitRequest;
 use App\Laravel\Requests\Web\EditBusinessRequest;
@@ -22,7 +23,7 @@ use Carbon,Auth,DB,Str,ImageUploader,Event,FileUploader,PDF,QrCode,Helper,Curl,L
 
 class BusinessController extends Controller
 {
-     protected $data;
+    protected $data;
 	protected $per_page;
 
 	public function __construct(){
@@ -312,5 +313,13 @@ class BusinessController extends Controller
 		}
 	}
 
+    public function history(PageRequest $request,$id = NULL){
+        $this->data['page_title'] = "Business Profile";
+        $this->data['auth'] = Auth::guard('customer')->user();
+
+        $this->data['business_history'] =  BusinessTransaction::where('business_id', $id)->orderBy('created_at',"DESC")->get();
+
+        return view('web.business.history',$this->data);
+    }
 
 }

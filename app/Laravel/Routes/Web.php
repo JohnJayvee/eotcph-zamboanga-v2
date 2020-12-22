@@ -76,9 +76,8 @@ Route::group(['as' => "web.",
             Route::get('profile/{id?}',['as' => "profile",'uses' => "BusinessController@business_profile"]);
             Route::get('edit',['as' => "edit",'uses' => "BusinessController@business_edit"]);
 			Route::post('edit',['as' => "update",'uses' => "BusinessController@business_update"]);
-
+			Route::get('history/{id?}',['as' => "history",'uses' => "BusinessController@history"]);
             Route::get('application',['as' => "application",'uses' => "BusinessController@application"]);
-
             Route::group(['prefix' => "application", 'as' => "application."], function () {
                 Route::get('create',['as' => "create",'uses' => "ApplicationController@create"]);
                 Route::post('create',['uses' => "ApplicationController@store"]);
@@ -94,6 +93,8 @@ Route::group(['as' => "web.",
 	});
 	Route::group(['prefix' => "business-payment", 'as' => "business_payment."], function () {
         Route::get('/{id?}',['as' => "index",'uses' => "BusinessPaymentController@index"]);
+        Route::get('/{id?}',['as' => "index",'uses' => "BusinessPaymentController@index"]);
+        Route::get('payment/{id?}',['as' => "payment", 'uses' => "BusinessPaymentController@payment"]);
     });
 	Route::get('pay/{code?}',['as' => "pay", 'uses' => "CustomerTransactionController@pay"]);
 	Route::get('confirmation/{code?}',['as' => "confirmation",'uses' => "MainController@confirmation"]);

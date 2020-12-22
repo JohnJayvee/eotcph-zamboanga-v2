@@ -18,12 +18,13 @@
                     <div class="card-body" style="padding: 3em">
                         <div class="row mb-4">
                             <div class="col-md-6">
-                                <h5 class="text-title text-uppercase">Business Information
+                                <h5 class="text-title text-uppercase mt-3">Business Information
                                     <a href="{{route('web.business.edit')}}" title=""><i class="fas fa-pencil-alt"></i></a>
                                 </h5>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{route('web.business_payment.index',[$profile->id])}}" class="custom-btn badge-primary-2 text-white " style="float: right;">Business Payment</a>
+                                <a href="{{route('web.business.history',[$profile->id])}}" class="custom-btn badge-primary-2 text-white " style="float: right;">Applicaton History</a>
+                                <a href="{{route('web.business_payment.index',[$profile->id])}}" class="mr-2 custom-btn badge-primary-2 text-white " style="float: right;">Business Payment</a>
                             </div>
                         </div>
 

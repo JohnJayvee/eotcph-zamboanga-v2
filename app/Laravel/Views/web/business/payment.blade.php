@@ -31,7 +31,7 @@
                     			@if($payment_type == "annually")
 		                    		<table class="table table-striped table-wrap" style="table-layout: fixed;">
 		                    			<thead>
-		                    				<tr>
+		                    				<tr class="text-center">
 		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Payment</th>
 		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Amount</th>
 		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Status</th>
@@ -40,19 +40,21 @@
 		                    				</tr>
 		                    			</thead>
 		                    			<tbody>
-		                    				<tr>
-		                    					<td>Yearly</td>
-		                    					<td>2000</td>
-		                    					<td>UNPAID</td>
-		                    					<td><button class="btn btn-primary">PAY NOW</button></td>
-		                    				</tr>
+		                    				@foreach(range(1,1) as $index)
+		                    					<tr class="text-center">
+			                    					<td>Yearly</td>
+			                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
+			                    					<td>UNPAID</td>
+			                    					<td><button class="btn-sm btn-primary">PAY NOW</button></td>
+		                    					</tr>
+		                    				@endforeach
 		                    			</tbody>
 		                    		</table>
 	                    		@endif
 	                    		@if($payment_type == "semi_annually")
 		                    		<table class="table table-striped table-wrap" style="table-layout: fixed;">
 		                    			<thead>
-		                    				<tr>
+		                    				<tr class="text-center">
 		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Payment</th>
 		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Amount</th>
 		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Status</th>
@@ -61,25 +63,21 @@
 		                    				</tr>
 		                    			</thead>
 		                    			<tbody>
-		                    				<tr>
-		                    					<td>Q1</td>
-		                    					<td>1000</td>
-		                    					<td>UNPAID</td>
-		                    					<td><button>PAY NOW</button></td>
-		                    				</tr>
-		                    				<tr>
-		                    					<td>Q2</td>
-		                    					<td>1000</td>
-		                    					<td>UNPAID</td>
-		                    					<td><button class="btn btn-primary">PAY NOW</button></td>
-		                    				</tr>
+		                    				@foreach(range(1,2) as $index)
+		                    					<tr class="text-center">
+			                    					<td>Q {{$index}}</td>
+			                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
+			                    					<td>UNPAID</td>
+			                    					<td><button class="btn-sm btn-primary">PAY NOW</button></td>
+		                    					</tr>
+		                    				@endforeach
 		                    			</tbody>
 		                    		</table>
 	                    		@endif
 	                    		@if($payment_type == "quarterly")
 		                    		<table class="table table-striped table-wrap" style="table-layout: fixed;">
 		                    			<thead>
-		                    				<tr>
+		                    				<tr class="text-center">
 		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Payment</th>
 		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Amount</th>
 		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Status</th>
@@ -88,30 +86,14 @@
 		                    				</tr>
 		                    			</thead>
 		                    			<tbody>
-		                    				<tr>
-		                    					<td>Quarter 1</td>
-		                    					<td>500</td>
-		                    					<td>UNPAID</td>
-		                    					<td><button class="btn btn-primary">PAY NOW</button></td>
-		                    				</tr>
-		                    				<tr>
-		                    					<td>Quarter 2</td>
-		                    					<td>500</td>
-		                    					<td>UNPAID</td>
-		                    					<td><button class="btn btn-primary">PAY NOW</button></td>
-		                    				</tr>
-		                    				<tr>
-		                    					<td>Quarter 3</td>
-		                    					<td>500</td>
-		                    					<td>UNPAID</td>
-		                    					<td><button class="btn btn-primary">PAY NOW</button></td>
-		                    				</tr>
-		                    				<tr>
-		                    					<td>Quarter 4</td>
-		                    					<td>500</td>
-		                    					<td>UNPAID</td>
-		                    					<td><button class="btn btn-primary">PAY NOW</button></td>
-		                    				</tr>
+		                    				@foreach(range(1,4) as $index)
+		                    					<tr class="text-center">
+			                    					<td>Q {{$index}}</td>
+			                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
+			                    					<td>UNPAID</td>
+			                    					<td><a href="{{route('web.business_payment.payment',[$id])}}?type=quarterly&amount={{$total_amount}}" class="btn-sm btn-primary">PAY NOW</a></td>
+		                    					</tr>
+		                    				@endforeach
 		                    			</tbody>
 		                    		</table>
 	                    		@endif

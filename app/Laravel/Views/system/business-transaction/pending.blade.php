@@ -28,16 +28,18 @@
           {!!Form::select("processing_fee_status", $status, $selected_processing_fee_status, ['id' => "input_processing_fee_status", 'class' => "custom-select"])!!}
         </div>
         <div class="col-md-4">
-          <label>Date Range</label>
+          <label>For BPLO Approval</label>
+          {!!Form::select("bplo_approval", $approval, $selected_bplo_approval, ['id' => "input_bplo_approval", 'class' => "custom-select"])!!}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 p-2">
           <div class="input-group input-daterange d-flex align-items-center">
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly" name="start_date">
             <div class="input-group-addon mx-2">to</div>
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly" name="end_date">
           </div>
         </div>
-      </div>
-      <div class="row">
-        
         <div class="col-md-4 p-2">
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
@@ -46,7 +48,7 @@
         </div>
         <div class="col-md-4 p-2">
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
-          <a href="{{route('system.transaction.pending')}}" class="btn btn-primary btn-sm p-2">Clear</a>
+          <a href="{{route('system.business_transaction.pending')}}" class="btn btn-primary btn-sm p-2">Clear</a>
         </div>
       </div>
     </form>
@@ -60,6 +62,7 @@
             <th class="text-title p-3" width="15%">Business Name/Owner</th>
             <th class="text-title p-3" width="30%">Application Type</th>
             <th class="text-title p-3" width="10%">Amount</th>
+            <th class="text-title p-3" width="10%">For BPLO Approval</th>
             <th class="text-title p-3" width="10%">Processor/Status</th>
             <th class="text-title p-3" width="10%">Action</th>
           </tr>
@@ -75,6 +78,7 @@
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->application_payment_status)}} p-2">{{Str::upper($transaction->application_payment_status)}}</span></small></div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->application_transaction_status)}} p-2 mt-1">{{Str::upper($transaction->application_transaction_status)}}</span></small></div>
             </td>
+            <td>{{ $transaction->for_bplo_approval == 1 ? "Yes" : "No" }}</td>
             <td>
               <div>
                 <span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::upper($transaction->status)}}</span>
