@@ -40,14 +40,20 @@
 		                    				</tr>
 		                    			</thead>
 		                    			<tbody>
-		                    				@foreach(range(1,1) as $index)
-		                    					<tr class="text-center">
-			                    					<td>Yearly</td>
-			                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
-			                    					<td>UNPAID</td>
-			                    					<td><button class="btn-sm btn-primary">PAY NOW</button></td>
-		                    					</tr>
-		                    				@endforeach
+		                    				@if($total_amount > 0)
+			                    				@foreach(range(1,1) as $index)
+			                    					<tr class="text-center">
+				                    					<td>Yearly</td>
+				                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
+				                    					<td>UNPAID</td>
+				                    					<td><button class="btn-sm btn-primary">PAY NOW</button></td>
+			                    					</tr>
+			                    				@endforeach
+			                    			@else
+			                    				<tr>
+			                    					<td colspan="4">No Record Found</td>
+			                    				</tr>
+			                    			@endif
 		                    			</tbody>
 		                    		</table>
 	                    		@endif
@@ -63,14 +69,20 @@
 		                    				</tr>
 		                    			</thead>
 		                    			<tbody>
-		                    				@foreach(range(1,2) as $index)
-		                    					<tr class="text-center">
-			                    					<td>Q {{$index}}</td>
-			                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
-			                    					<td>UNPAID</td>
-			                    					<td><button class="btn-sm btn-primary">PAY NOW</button></td>
-		                    					</tr>
-		                    				@endforeach
+		                    				@if($total_amount > 0)
+			                    				@foreach(range(1,2) as $index)
+			                    					<tr class="text-center">
+				                    					<td>Q {{$index}}</td>
+				                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
+				                    					<td>UNPAID</td>
+				                    					<td><button class="btn-sm btn-primary">PAY NOW</button></td>
+			                    					</tr>
+			                    				@endforeach
+		                    				@else
+			                    				<tr>
+			                    					<td colspan="4">No Record Found</td>
+			                    				</tr>
+			                    			@endif
 		                    			</tbody>
 		                    		</table>
 	                    		@endif
@@ -86,14 +98,20 @@
 		                    				</tr>
 		                    			</thead>
 		                    			<tbody>
-		                    				@foreach(range(1,4) as $index)
-		                    					<tr class="text-center">
-			                    					<td>Q {{$index}}</td>
-			                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
-			                    					<td>UNPAID</td>
-			                    					<td><a href="{{route('web.business_payment.payment',[$id])}}?type=quarterly&amount={{$total_amount}}" class="btn-sm btn-primary">PAY NOW</a></td>
-		                    					</tr>
-		                    				@endforeach
+		                    				@if($total_amount > 0)
+			                    				@foreach(range(1,4) as $index)
+			                    					<tr class="text-center">
+				                    					<td>Q {{$index}}</td>
+				                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
+				                    					<td>UNPAID</td>
+				                    					<td><a href="{{route('web.business_payment.payment',[$id])}}?type=quarterly&amount={{$total_amount}}" class="btn-sm btn-primary">PAY NOW</a></td>
+			                    					</tr>
+			                    				@endforeach
+		                    				@else
+			                    				<tr>
+			                    					<td colspan="4">No Record Found</td>
+			                    				</tr>
+			                    			@endif
 		                    			</tbody>
 		                    		</table>
 	                    		@endif

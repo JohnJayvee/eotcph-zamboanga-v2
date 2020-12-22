@@ -355,9 +355,6 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Application Remarks has been saved.");
 			return redirect()->route('system.business_transaction.show',[$transaction->id]);
-		
-		
-		
 	}
 
 	public function bplo_validate($id = NULL , PageRequest $request){
@@ -383,7 +380,7 @@ class BusinessTransactionController extends Controller
 
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Application Remarks has been saved.");
+			session()->flash('notification-msg', "Office Code has been saved.");
 			return redirect()->route('system.business_transaction.pending');
 
 		}catch(\Exception $e){
