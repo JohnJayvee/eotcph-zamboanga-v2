@@ -68,7 +68,7 @@ class Business extends Model{
     }
 
     public function owner(){
-        return $this->BelongsTo("App\Laravel\Models\customer",'customer_id','id');
+        return $this->BelongsTo("App\Laravel\Models\Customer",'customer_id','id');
     }
 
 }

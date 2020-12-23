@@ -15,7 +15,7 @@ class BusinessPermitRequest extends RequestManager{
             'no_of_units.*' => 'required|integer',
             'file' => 'required',
             'file.*' => 'mimes:png,jpg,jpeg,pdf',
-            'agree' => 'required',
+            // 'agree' => 'required',
         ];
 
         if ($this->get('type_of_application') == "new") {
