@@ -104,27 +104,30 @@
                                     <div class="form-group">
                                         <label for="" class="text-form pb-2 col-md-6">Are you enjoying tax incentive from any Goverment Entity?</label>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-control form-control-sm" type="checkbox" name="checkbox" value="yes" style="width: 30px; height: 30px;">
+                                            <input class="form-control form-control-sm tax_entity" type="checkbox" name="checkbox" value="yes" style="width: 30px; height: 30px;" {{ $business->tax_incentive ? '' : 'checked' }}>
                                             <label class="my-2 mx-1" for="inlineCheckbox1">YES</label>
                                             {{-- <small class="my-2" for="inlineCheckbox3">Please Specify entity:</small> --}}
                                         </div>
                                         <script>
                                             $(function(){
-                                                $('input[name="checkbox"]').on('change', function () {
-                                                    $('input[name="checkbox"]').not(this).prop('checked', false);
-                                                    if($(this).val() == 'yes'){
-                                                        $('input[name="tax_incentive"]').val('');
-                                                        $('#checkYes').show();
-                                                    }
-                                                    if($(this).val() == 'no'){
+                                                $('.tax_entity').on('change', function () {
+                                                    $('.tax_entity').not(this).prop('checked', false);
+                                                    var radioValue = $("input[name='checkbox']:checked").val();
+                                                    if(radioValue){
+                                                            $('input[name="tax_incentive"]').val('{{ $business->tax_incentive }}');
+                                                            $('#checkYes').show();
+                                                        } else {
+                                                            $('#checkYes').hide();
+                                                        }
+                                                    if(radioValue == 'no'){
                                                         $('#checkYes').hide();
                                                         $('input[name="tax_incentive"]').val('no');
                                                     }
-                                                });
+                                                }).change();
                                             })
                                         </script>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-control form-control-sm" type="checkbox" name="checkbox" value="no" style="width: 30px; height: 30px;">
+                                            <input class="form-control form-control-sm" type="checkbox" name="checkbox" value="no" style="width: 30px; height: 30px;" {{ $business->tax_incentive == 'no' ? 'checked' : '' }}>
                                             <label class="my-2 mx-1" for="inlineCheckbox3">NO</label>
                                         </div>
                                     </div>
@@ -594,10 +597,10 @@
                                         <input type="text"
                                             class="form-control form-control-sm {{ $errors->first('emergency_contact_email') ? 'is-invalid': NULL  }}"
                                             name="emergency_contact_email"
-                                            value="{{old('emergency_contact_email',$auth->telephone_no) }}">
+                                            value="{{old('emergency_contact_email',$business->emergency_contact_email) }}">
                                         @if($errors->first('emergency_contact_email'))
                                         <small class="form-text pl-1"
-                                            style="color:red;">{{$errors->first('emergency_contact_email', $business->emergency_contact_email)}}</small>
+                                            style="color:red;">{{$errors->first('emergency_contact_email')}}</small>
                                         @endif
                                     </div>
                                 </div>
@@ -768,41 +771,11 @@
         });
     }
 
-    $.fn.get_region = function (input_region, input_province, input_city, input_brgy, selected) {
-
-        $(input_city).empty().prop('disabled', true)
-        $(input_brgy).empty().prop('disabled', true)
-
-        $(input_region).append($('<option>', {
-            value: "",
-            text: "Loading Content..."
-        }));
-        $.getJSON("{{env('PSGC_REGION_URL')}}", function (response) {
-            $(input_region).empty().prop('disabled', true)
-            $.each(response.data, function (index, value) {
-                $(input_region).append($('<option>', {
-                    value: index,
-                    text: value
-                }));
-            })
-
-            $(input_region).prop('disabled', true)
-            $(input_region).prepend($('<option>', {
-                value: "",
-                text: "--Select Region--"
-            }))
-            if (selected.length > 0) {
-                $(input_region).val($(input_region + " option[value=" + selected + "]").val());
-            } else {
-                $(input_region).val($(input_region + " option:first").val());
-            }
-        });
-        // return result;
-    };
     $(function () {
         load_barangay();
         $(this).get_region("#input_region", "#input_province", "#input_town", "#input_brgy", "{{old('region', '090000000')}}")
         $(this).get_city("090000000", "#input_town", "#input_brgy", "{{old('town', '097332000')}}");
+        $(this).get_brgy('097332000', "#input_brgy", "{{ $business->brgy }}");
 
         $("#input_region").on("change", function () {
             var _val = $(this).val();
@@ -853,7 +826,7 @@
         load_lessor_barangay();
         $(this).get_region("#input_lessor_region", "#input_lessor_province", "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_region', '090000000')}}")
         $(this).get_city("090000000", "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_town', '097332000')}}");
-
+        $(this).get_brgy('097332000', "#input_lessor_brgy", "{{ $business->lessor_brgy }}");
         $("#input_lessor_region").on("change", function () {
             var _val = $(this).val();
             var _text = $("#input_lessor_region option:selected").text();

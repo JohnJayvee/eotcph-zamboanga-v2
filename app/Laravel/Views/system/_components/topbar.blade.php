@@ -20,7 +20,7 @@
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               @forelse ($new_business_cv as $item)
               <a href="#" class="dropdown-item">
-                {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->rep_firstname.' '. $item->rep_middle_name.' '. $item->rep_lastname)}}
+                <a class="dropdown-item" href="{{ route('system.business_cv.show', ['id' => $item->id]) }}">{{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}}</a>
               </a>
               @empty
               <a href="#" class="dropdown-item">

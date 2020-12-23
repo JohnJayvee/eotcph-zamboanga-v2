@@ -24,7 +24,7 @@
                         </a>
                         <ul class="sub-menu">
                             <li><a href="{{route('web.profile.edit')}}">Edit Profile</a></li>
-                            <li><a href="{{route('web.profile.password')}}">Change Password</a></li>
+                            <li><a href="{{route('web.profile.password.edit')}}">Change Password</a></li>
                         </ul>
                     </li>
                     <li>

@@ -9,7 +9,7 @@ use App\Laravel\Models\Department;
 use App\Laravel\Models\User;
 
 
-use Route,Str,Carbon,Input,DB,DateTime,DateInterval,DatePeriod;
+use Route,Str,Carbon,Input,DB,DateTime,DateInterval,DatePeriod,Curl;
 
 class Helper{
 
@@ -672,6 +672,25 @@ class Helper{
 
 
             default: return '';    break;
+        }
+    }
+
+    public static function send_sms($contact_number, $msg_body = "Hello!"){
+		try{
+			$response = Curl::to("https://api.movider.co/v1/sms")
+                ->withData([
+                    'api_key' => "1lUaKlOlltVWqDAu0FgUlUQBLPz",
+                    'api_secret' => "gT3ZqvZPq6R0bA5rfj3wNaGY6QnDoZsuwhNDFyUf",
+                    'message' => $msg_body,
+                    'from' => "oBOSS",
+                    'to' => $contact_number
+                ])
+                ->returnResponseObject()
+                ->post();
+			    $code = $response->status;
+			    return $code >= 200 AND $code <= 299 ? TRUE : FALSE;
+		}catch(Exception $e){
+			return FALSE;
         }
     }
 }

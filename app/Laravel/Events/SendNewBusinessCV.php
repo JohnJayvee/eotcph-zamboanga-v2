@@ -31,7 +31,11 @@ class SendNewBusinessCV extends Event {
 				'to' => '+63'.(int)$phone,
 				'from' => 'EOTCPH' ,
 				'text' => "Hello BPLO Admin! ".$businessOwner." has added a new Business CV.",
-			]);
+            ]);
+
+            // $phone = '63'.(int)$phone;
+			// $businessOwner = $value['businessOwner'];
+            // $sms = Helper::send_sms($phone,"Hello BPLO Admin! ".$businessOwner." has added a new Business CV.");
 
 		}
 

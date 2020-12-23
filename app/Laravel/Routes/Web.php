@@ -45,24 +45,14 @@ Route::group(['as' => "web.",
 
 	Route::group(['middleware' => ["web","portal.auth"]], function(){
 
-		Route::group(['prefix' => "profile",'as' => "profile."],function(){
-			Route::get('/',['as' => 'index' ,'uses' => "ProfileController@index"]);
-			Route::get('password',['as' => 'password' ,'uses' => "ProfileController@password"]);
-			Route::post('password',['as' => 'update_password' ,'uses' => "ProfileController@update_password"]);
-			Route::get('edit',['as' => 'edit' ,'uses' => "ProfileController@edit"]);
-			Route::post('edit',['as' => 'update' ,'uses' => "ProfileController@update"]);
-
-			Route::get('edit-address',['as' => 'edit_address' ,'uses' => "ProfileController@edit_address"]);
-			Route::post('edit-address',['as' => 'update_address' ,'uses' => "ProfileController@update_address"]);
-			Route::get('edit-employment',['as' => 'edit_employment' ,'uses' => "ProfileController@edit_employment"]);
-			Route::post('edit-employment',['as' => 'update_employment' ,'uses' => "ProfileController@update_employment"]);
-
-			Route::get('verify',['as' => "verify",'uses' => "ProfileController@verify"]);
-			Route::get('verified/{token?}',['as' => "verified",'uses' => "ProfileController@verified"]);
-
-			Route::get('edit-avatar',['as' => 'edit_avatar' ,'uses' => "ProfileController@edit_avatar"]);
-			Route::post('edit-avatar',['as' => 'update_avatar' ,'uses' => "ProfileController@update_avatar"]);
-        });
+		Route::group(['as' => "profile.",'prefix' => "profile"], function(){
+			Route::get('/',['as' => "index",'uses' => "ProfileController@index"]);
+			Route::get('edit',['as' => "edit",'uses' => "ProfileController@edit"]);
+			Route::post('edit',['uses' => "ProfileController@update"]);
+			Route::post('image',['as' => "image.edit",'uses' => "ProfileController@update_image"]);
+			Route::get('password',['as' => "password.edit",'uses' => "ProfileController@edit_password"]);
+			Route::post('password',['uses' => "ProfileController@update_password"]);
+		});
 
 		Route::group(['prefix' => "transaction", 'as' => "transaction."], function () {
 			Route::get('history',['as' => "history", 'uses' => "CustomerTransactionController@history"]);

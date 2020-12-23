@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Laravel\Models;
 
@@ -8,9 +8,9 @@ use App\Laravel\Traits\DateFormatter;
 use Str;
 
 class Business extends Model{
-    
+
     use SoftDeletes,DateFormatter;
-    
+
     /**
      * The database table used by the model.
      *
@@ -65,6 +65,10 @@ class Business extends Model{
 
     public function getBusinessAddressAttribute(){
         return Str::title("{$this->unit_no} {$this->street_address} ");
+    }
+
+    public function owner(){
+        return $this->BelongsTo("App\Laravel\Models\customer",'customer_id','id');
     }
 
 }
