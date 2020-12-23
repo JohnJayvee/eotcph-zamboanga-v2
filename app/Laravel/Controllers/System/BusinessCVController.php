@@ -62,7 +62,9 @@ class BusinessCVController extends Controller
 	}
 
 	public function  edit(PageRequest $request,$id = NULL){
-		$this->data['page_title'] .= " - Edit record";
+        $this->data['page_title'] .= "Edit Business CV";
+		$this->data['auth'] = Auth::guard('customer')->user();
+        $this->data['business'] = Business::find(session()->get('selected_business_id'));
 
 		return view('system.business-cv.edit',$this->data);
 	}
