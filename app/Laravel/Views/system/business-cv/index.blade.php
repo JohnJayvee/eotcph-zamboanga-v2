@@ -38,7 +38,6 @@
             <td >
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
-                <a class="dropdown-item" href="{{route('system.business_cv.edit',[$business_cv->id])}}">Edit Application</a>
                 <a class="dropdown-item action-delete"  data-url="{{route('system.business_cv.destroy',[$business_cv->id])}}" data-toggle="modal" data-target="#confirm-delete">Remove Record</a>
               </div>
             </td>
