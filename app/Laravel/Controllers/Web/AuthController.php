@@ -136,7 +136,7 @@ class AuthController extends Controller{
             return redirect()->route('web.login');
         }
     }
-	public function store(RegisterRequest $request){
+	public function store(PageRequest $request){
         DB::beginTransaction();
         try{
             $new_customer = new Customer;
@@ -148,9 +148,9 @@ class AuthController extends Controller{
             $new_customer->gender = $request->gender;
             $new_customer->contact_number = $request->contact_number;
 
-            $new_customer->region = $request->region;
+            $new_customer->region = '090000000';
             $new_customer->region_name = $request->region_name;
-            $new_customer->town = $request->town;
+            $new_customer->town = '097332000';
             $new_customer->town_name = $request->town_name;
             $new_customer->barangay = $request->brgy;
             $new_customer->barangay_name = $request->brgy_name;
@@ -162,6 +162,7 @@ class AuthController extends Controller{
             $new_customer->sss_no = $request->sss_no;
             $new_customer->phic_no = $request->phic_no;
             $new_customer->password = bcrypt($request->get('password'));
+            dd($new_customer);
             $new_customer->save();
 
             $customer_id = $new_customer->id;
