@@ -178,6 +178,17 @@ Route::group(['as' => "auth."], function(){
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "ProcessorController@destroy",'middleware' => "system.exist:processor"]);
 			Route::get('list',['as' => "list",'uses' => "ProcessorController@list"]);
 			Route::get('show/{id?}',['as' => "show",'uses' => "ProcessorController@show"]);
+        });
+
+        Route::group(['as' => "business_cv.",'prefix' => "business-cv"], function(){
+			Route::get('/',['as' => "index",'uses' => "BusinessCVController@index"]);
+            Route::get('create',['as' => "create",'uses' => "BusinessCVController@create"]);
+            Route::post('create',['uses' => "BusinessCVController@store"]);
+            Route::get('update-status/{id}',['as'=> 'update_status', 'uses' => "BusinessCVController@update_status"]);
+            Route::get('show/{id}',['as'=> 'show', 'uses' => "BusinessCVController@show"]);
+            Route::get('edit/{id?}',['as' => "edit",'uses' => "BusinessCVController@edit"]);
+			Route::post('edit/{id?}',['uses' => "BusinessCVController@update"]);
+			Route::any('delete/{id?}',['as' => "destroy",'uses' => "BusinessCVController@destroy"]);
 		});
 	});
 

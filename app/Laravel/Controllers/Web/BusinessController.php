@@ -5,20 +5,23 @@ namespace App\Laravel\Controllers\Web;
 /*
  * Request Validator
  */
+use App\Laravel\Models\User;
+use App\Laravel\Models\Business;
+use App\Laravel\Models\BusinessLine;
 use App\Laravel\Requests\PageRequest;
-use App\Laravel\Requests\Web\TransactionRequest;
+use App\Laravel\Events\SendNewBusinessCV;
+use App\Laravel\Models\BusinessTransaction;
 use App\Laravel\Requests\Web\UploadRequest;
 use App\Laravel\Requests\Web\BusinessRequest;
-use App\Laravel\Models\Business;
-use App\Laravel\Models\BusinessTransaction;
-use App\Laravel\Models\BusinessLine;
-use App\Laravel\Requests\Web\BusinessPermitRequest;
-use App\Laravel\Requests\Web\EditBusinessRequest;
+use App\Laravel\Events\SendNewBusinessCVEmail;
 /*
  * Models
  */
 
 
+use App\Laravel\Requests\Web\TransactionRequest;
+use App\Laravel\Requests\Web\EditBusinessRequest;
+use App\Laravel\Requests\Web\BusinessPermitRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Event,FileUploader,PDF,QrCode,Helper,Curl,Log;
 
 class BusinessController extends Controller
@@ -64,7 +67,7 @@ class BusinessController extends Controller
 
                 session()->flash('notification-status', "success");
                 session()->flash('notification-msg', "Business validated");
-
+                session()->forget('negativelist');
                 $this->data['business'] = $response->content['data'];
                 foreach ($this->data['business']['LineOfBusiness'] as $key => $value) {
                     if(!empty($value['Particulars'])){
@@ -112,6 +115,7 @@ class BusinessController extends Controller
                 try{
                     $new_business = new Business;
                     $new_business->customer_id = $auth->id;
+                    $new_business->isNew = 1;
                     $new_business->business_scope = $request->get('business_scope');
                     $new_business->business_type = $request->get('business_type');
                     $new_business->dominant_name = $request->get('dominant_name');
@@ -191,7 +195,21 @@ class BusinessController extends Controller
                             BusinessLine::insert($data);
                         }
                     }
+                    $bplo = User::where('type', 'admin')->first();
                     DB::commit();
+                    $insert[] = [
+                        'email' => $bplo->email,
+                        'contact_number' => $bplo->contact_number,
+                        'businessOwner' => Auth::guard('customer')->user()->name,
+                    ];
+                    // send Email
+                    $notification_data = new SendNewBusinessCVEmail($insert);
+                    Event::dispatch('send-new-business_cv-email', $notification_data);
+
+                    // send SMS
+                    // $notification_data = new SendNewBusinessCV($insert);
+                    // Event::dispatch('send-new-business_cv', $notification_data);
+
                     session()->flash('notification-status', "success");
                     session()->flash('notification-msg', "New Bureau/Office has been added.");
                     session()->forget('status_code');
@@ -226,7 +244,8 @@ class BusinessController extends Controller
 			session()->flash('notification-status',"warning");
 			session()->flash('notification-msg',"No CV has been selected");
 			return redirect()->route('frontend.business.index');
-		}
+        }
+        // dd($this->data);
 		return view('web.business.edit',$this->data);
 	}
 
@@ -301,7 +320,6 @@ class BusinessController extends Controller
             $business->sss_no = $request->get('sss_no');
             $business->philhealth_no = $request->get('philhealth_no');
             $business->pagibig_no = $request->get('pagibig_no');
-            dd($business);
             $business->save();
 
 			DB::commit();

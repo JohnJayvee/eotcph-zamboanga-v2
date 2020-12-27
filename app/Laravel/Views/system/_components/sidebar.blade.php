@@ -30,7 +30,7 @@
         </ul>
         <ul class="nav flex-column sub-menu">
           <li class="nav-item"> <a class="nav-link" href="{{route('system.transaction.approved')}}">Approved
-            
+
           </a></li>
         </ul>
         <ul class="nav flex-column sub-menu">
@@ -76,6 +76,12 @@
 
       </div>
     </li>
+    <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.business_cv.index', 'system.business_cv.create', 'system.business_cv.show')) ? 'active' : ''}}">
+        <a class="nav-link" href="{{route('system.business_cv.index')}}">
+          <i class="fa fa-check-circle menu-icon"></i>
+          <span class="menu-title">Business CV</span>
+        </a>
+    </li>
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.other_customer.index','system.other_customer.create','system.other_transaction.index','system.other_transaction.show','system.other_customer.show','system.other_transaction.create')) ? 'active' : ''}}">
       <a class="nav-link" href="{{route('system.other_customer.index')}}">
         <i class="fa fa-file menu-icon"></i>
@@ -89,14 +95,14 @@
             <i class="fa fa-bookmark menu-icon"></i>
             <span class="menu-title">Applications</span>
           </a>
-        </li>
-        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.collection_fees.index')) ? 'active' : ''}}">
+        </li> 
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.collection_fees.index', 'system.collection_fees.create', 'system.collection_fees.edit')) ? 'active' : ''}}">
             <a class="nav-link" href="{{route('system.collection_fees.index')}}">
               <i class="fa fa-check-circle menu-icon"></i>
               <span class="menu-title">Collection of Fees</span>
             </a>
         </li>
-        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.bplo.index')) ? 'active' : ''}}">
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.bplo.index', 'system.bplo.edit', 'system.bplo.create')) ? 'active' : ''}}">
             <a class="nav-link" href="{{route('system.bplo.index')}}">
               <i class="fa fa-user menu-icon"></i>
               <span class="menu-title">Registrants</span>

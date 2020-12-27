@@ -600,7 +600,7 @@
                                             </thead>
                                             <tbody id="businessline_tbody">
                                                 @foreach ($business_line as $key => $item)
-                                                <tr id="repeat_form">
+                                                <tr id="repeat_form" class="activity">
                                                     <td>
                                                         <input type="text" class="form-control form-control-sm {{ $errors->has('line_of_business.*') ? 'is-invalid': NULL  }}" name="line_of_business[]" value="{{old('line_of_business[]', $item->name) }}">
                                                     </td>
@@ -612,6 +612,9 @@
                                                     </td>
                                                     <td class="renew" style="display: none;">
                                                         <input type="number" class="form-control form-control-sm {{ $errors->has('renew.*') ? 'is-invalid': NULL  }}" name="renew[]" value="{{ old('renew[]') }}" placeholder="{{ $errors->first('renew.*') }}">
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger bt-primary btn-remove">Remove</button>
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -693,6 +696,18 @@
                                                 </td>
                                             </tr>
                                         </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="agree" class="form-check-input {{ $errors->has('agree') ? 'is-invalid': NULL  }}" value="{{ old('agree') }}">
+                                        <label class="form-check-label">I AGREE UNDER PENALTY OF PERJUARY that the foregoing Information
+                                            are based on my personal knowledge and authentic records.Further, I agree to comply with the regulatory requirements and other
+                                            deficiencies within 30 days from release of the Business Permit. FAILURE TO COMPLY WITH ALL THE REQUIREMENTS WILL AUTOMATICALLY REVOKE
+                                            THE PERMIT
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -860,13 +875,18 @@
 
         $('#repeater_add_activity').on('click', function(){
             var repeat_item = $("#repeat_form").eq(0).prop('outerHTML');
-            $("#businessline_tbody").append(repeat_item)
+            $("#businessline_tbody").append(repeat_item);
             $('.new').show();
             $('.renew').hide();
             $(".application_type").prop('checked', false);
             $('input[name=application_type][value=new]').prop('checked', true);
             $('.type_of_application').val($('.application_type').val());
 
+        });
+
+        $("#businessline_tbody").delegate(".btn-remove","click",function(){
+            var parent_div = $(this).parents(".activity");
+            parent_div.remove();
         });
     })
 </script>

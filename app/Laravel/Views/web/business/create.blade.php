@@ -814,37 +814,6 @@
         });
     }
 
-    $.fn.get_region = function (input_region, input_province, input_city, input_brgy, selected) {
-
-        $(input_city).empty().prop('disabled', true)
-        $(input_brgy).empty().prop('disabled', true)
-
-        $(input_region).append($('<option>', {
-            value: "",
-            text: "Loading Content..."
-        }));
-        $.getJSON("{{env('PSGC_REGION_URL')}}", function (response) {
-            $(input_region).empty().prop('disabled', true)
-            $.each(response.data, function (index, value) {
-                $(input_region).append($('<option>', {
-                    value: index,
-                    text: value
-                }));
-            })
-
-            $(input_region).prop('disabled', true)
-            $(input_region).prepend($('<option>', {
-                value: "",
-                text: "--Select Region--"
-            }))
-            if (selected.length > 0) {
-                $(input_region).val($(input_region + " option[value=" + selected + "]").val());
-            } else {
-                $(input_region).val($(input_region + " option:first").val());
-            }
-        });
-        // return result;
-    };
     $(function () {
         load_barangay();
         $(this).get_region("#input_region", "#input_province", "#input_town", "#input_brgy", "{{old('region', '090000000')}}")
