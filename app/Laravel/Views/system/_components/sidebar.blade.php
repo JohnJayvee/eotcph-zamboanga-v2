@@ -84,12 +84,12 @@
     </li>
     @if(in_array($auth->type,['super_user','admin','office_head']))
       @if(in_array($auth->type,['super_user','admin']))
-        <!-- <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.application.index','system.application.create','system.application.edit')) ? 'active' : ''}}">
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.application.index','system.application.create','system.application.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.application.index')}}">
             <i class="fa fa-bookmark menu-icon"></i>
             <span class="menu-title">Applications</span>
           </a>
-        </li> -->
+        </li>
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.collection_fees.index')) ? 'active' : ''}}">
             <a class="nav-link" href="{{route('system.collection_fees.index')}}">
               <i class="fa fa-check-circle menu-icon"></i>
@@ -109,12 +109,12 @@
           </a>
         </li>
 
-        <!-- <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.application_requirements.index','system.application_requirements.create','system.application_requirements.edit')) ? 'active' : ''}}">
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.application_requirements.index','system.application_requirements.create','system.application_requirements.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.application_requirements.index')}}">
             <i class="fa fa-check-circle menu-icon"></i>
             <span class="menu-title">Application Requirements</span>
           </a>
-        </li> -->
+        </li>
       @endif
         <!-- <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.regional_office.index','system.regional_office.create','system.regional_office.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.regional_office.index')}}">
@@ -127,6 +127,12 @@
           <a class="nav-link" href="{{route('system.report.index')}}">
             <i class="fa fa-chart-line menu-icon"></i>
             <span class="menu-title">Reporting</span>
+          </a>
+        </li>
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.holiday.index','system.holiday.create','system.holiday.edit')) ? 'active' : ''}}">
+          <a class="nav-link" href="{{route('system.holiday.index')}}">
+            <i class="fa fa-calendar-check menu-icon"></i>
+            <span class="menu-title">Holiday</span>
           </a>
         </li>
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.processor.index','system.processor.create','system.processor.edit','system.processor.reset')) ? 'active' : ''}}">

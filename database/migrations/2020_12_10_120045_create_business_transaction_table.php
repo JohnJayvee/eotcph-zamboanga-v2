@@ -17,6 +17,7 @@ class CreateBusinessTransactionTable extends Migration
             $table->bigIncrements('id');
             $table->string('owners_id')->nullable();
             $table->string('business_id')->nullable();
+            $table->string('business_permit_id')->nullable();
             $table->string('business_name')->nullable();
             $table->string('email')->nullable();
             $table->string('contact_number')->nullable();

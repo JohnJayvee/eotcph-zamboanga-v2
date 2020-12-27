@@ -1,15 +1,68 @@
-<?php
+<?php 
 
 namespace App\Laravel\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Laravel\Traits\DateFormatter;
+use Str;
 
-class BusinessLine extends Model
-{
+class BusinessLine extends Model{
+    
+    use SoftDeletes,DateFormatter;
+    
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
     protected $table = "business_line";
 
+    /**
+     * The database connection used by the model.
+     *
+     * @var string
+     */
+    protected $connection = "master_db";
 
-    protected $fillable = ['business_id','name'];
+    /**
+     * Enable soft delete in table
+     * @var boolean
+     */
+    protected $softDelete = true;
 
-    public $timestamps = true;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+     protected $fillable = ['business_id','name'];
+
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = [];
+
+    /**
+     * The attributes that created within the model.
+     *
+     * @var array
+     */
+    protected $appends = [];
+
+    protected $dates = [];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+    ];
+
+  
+
 }

@@ -158,6 +158,15 @@ Route::group(['as' => "auth."], function(){
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "BPLOController@destroy"]);
 		});
 
+		Route::group(['as' => "holiday.",'prefix' => "holiday"], function(){
+			Route::get('/',['as' => "index",'uses' => "HolidayController@index"]);
+            Route::get('create',['as' => "create",'uses' => "HolidayController@create"]);
+            Route::post('create',['uses' => "HolidayController@store"]);
+            Route::get('edit/{id?}',['as' => "edit",'uses' => "HolidayController@edit",'middleware' => "system.exist:holiday"]);
+			Route::post('edit/{id?}',['uses' => "HolidayController@update",'middleware' => "system.exist:holiday"]);
+			Route::any('delete/{id?}',['as' => "destroy",'uses' => "HolidayController@destroy",'middleware' => "system.exist:holiday"]);
+		});
+
 		Route::group(['as' => "processor.",'prefix' => "processor"], function(){
 			Route::get('/',['as' => "index",'uses' => "ProcessorController@index"]);
 			Route::get('create',['as' => "create",'uses' => "ProcessorController@create"]);

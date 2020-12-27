@@ -198,7 +198,8 @@ class BusinessTransactionController extends Controller
 		$this->data['attachments'] = TransactionRequirements::where('transaction_id',$id)->get();
 		$this->data['transaction'] = $request->get('business_transaction_data');
         $id = $this->data['transaction']->requirements_id;
-        $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', $request->id)->get();
+
+        $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', $this->data['transaction']->business_permit_id)->get();
         $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
 		$this->data['app_business_permit'] = ApplicationBusinessPermit::find($request->id)->get();
 

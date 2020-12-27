@@ -23,6 +23,7 @@ class CreateBusinessActivitiesTable extends Migration
             $table->string('gross_sales')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

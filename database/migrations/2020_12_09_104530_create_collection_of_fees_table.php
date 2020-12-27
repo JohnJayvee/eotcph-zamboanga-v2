@@ -30,6 +30,7 @@ class CreateCollectionOfFeesTable extends Migration
             $table->string('sanitary_inspection_fee')->nullable();
             $table->string('sticker')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

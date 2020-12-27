@@ -23,6 +23,7 @@ class CreateApplicationBusinessPermitFilesTable extends Migration
             $table->string('original_name')->nullable();
             $table->string('source')->default("file")->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

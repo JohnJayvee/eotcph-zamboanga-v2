@@ -19,7 +19,7 @@ class UpdateTableBusinessTransactionAddFieldDepartmentRemarks extends Migration
             $table->string('department_involved')->nullable();
             $table->string('is_validated')->default(0)->nullable();
             $table->string('for_bplo_approval')->default(0)->nullable();
-
+            $table->string('payment_status')->default("UNPAID")->after('total_amount')->nullable();
 
 
         });
@@ -33,7 +33,7 @@ class UpdateTableBusinessTransactionAddFieldDepartmentRemarks extends Migration
     public function down()
     {
         Schema::table('business_transaction', function($table){
-            $table->dropColumn(['department_remarks','department_id','department_involved','is_validated','for_bplo_approval']);
+            $table->dropColumn(['department_remarks','department_id','department_involved','is_validated','for_bplo_approval','payment_status']);
         });
 
     }

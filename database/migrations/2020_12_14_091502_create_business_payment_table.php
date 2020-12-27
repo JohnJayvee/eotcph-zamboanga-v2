@@ -29,6 +29,7 @@ class CreateBusinessPaymentTable extends Migration
             $table->date('payment_date')->nullable();
             $table->text('eor_url')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

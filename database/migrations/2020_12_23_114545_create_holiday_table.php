@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCustomerOTPSTable extends Migration
+class CreateHolidayTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateCustomerOTPSTable extends Migration
      */
     public function up()
     {
-        Schema::create('customer_o_t_p_s', function (Blueprint $table) {
+        Schema::create('holiday', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('customer_id')->nullable();
-            $table->string('customer_mobile_no')->nullable();
-            $table->string('otp')->nullable();
+            $table->string('name')->nullable();
+            $table->date('date')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +29,6 @@ class CreateCustomerOTPSTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customer_o_t_p_s');
+        Schema::dropIfExists('holiday');
     }
 }

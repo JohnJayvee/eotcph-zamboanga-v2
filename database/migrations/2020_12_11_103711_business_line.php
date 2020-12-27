@@ -17,7 +17,7 @@ class BusinessLine extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('business_id')->nullable();
             $table->string('name')->nullable();
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

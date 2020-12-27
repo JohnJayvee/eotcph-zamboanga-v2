@@ -20,7 +20,7 @@
                                     <tr class="text-center">
                                         <th class="text-title fs-15 fs-500 p-3">Application Date</th>
                                         <th class="text-title fs-15 fs-500 p-3">Application Type</th>
-                                        <th class="text-title fs-15 fs-500 p-3">Amount</th>
+                                        <th class="text-title fs-15 fs-500 p-3">Amount/Status</th>
                                         <th class="text-title fs-15 fs-500 p-3">Processor/Status</th>
                                     </tr>
                                 </thead>
@@ -29,7 +29,11 @@
                                         <tr class="text-center">
                                             <td>{{$history->created_at}}</td>
                                             <td>{{$history->application_name}} <br> {{$history->code}}</td>
-                                            <td>{{$history->total_amount}}</td>
+                                            <td>{{$history->total_amount}}<br>
+                                                <div>
+                                                    <span class="badge badge-pill badge-{{Helper::status_badge($history->payment_status)}} p-2">{{Str::upper($history->payment_status)}}</span>
+                                                </div>
+                                            </td>
                                             <td>
                                                 <div>
                                                     <span class="badge badge-pill badge-{{Helper::status_badge($history->status)}} p-2">{{Str::upper($history->status)}}</span>
