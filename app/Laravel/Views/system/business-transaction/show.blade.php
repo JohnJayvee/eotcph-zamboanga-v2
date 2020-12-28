@@ -157,6 +157,51 @@
           </div>
       </div>
     </div>
+    <div class="card card-rounded shadow-sm mb-4">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 pt-2">
+            <h5 class="text-title text-uppercase">Assessment Details</h5>
+          </div>
+          <div class="col-md-6">
+              <a href="{{route('system.business_transaction.assessment',[$transaction->id])}}"  class="btn btn-primary border-5 text-white float-right">Get Assessment Details</a>
+          </div>
+          <div class="table-responsive pt-2">
+            <table class="table table-bordered table-wrap" style="table-layout: fixed;">
+              <thead>
+                <tr class="text-center">
+                  <th class="text-title" rowspan="2" style="vertical-align: middle;">Department Name</th>
+                  <th class="text-title" rowspan="2" style="vertical-align: middle;">Total Amount</th>
+                  <th class="text-title p-3" colspan="2">Breakdown</th>
+                </tr>
+                <tr class="text-center">
+                  <th class="text-title p-3">Account Name</th>
+                  <th class="text-title p-3">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                @forelse($regulatory_fee as $fee)
+                  <tr class="text-center">
+                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
+                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->total_amount)}} </td>
+                  </tr>
+                  @foreach(json_decode($fee->collection_of_fees) as $collection)
+                    <tr >
+                      <td style="font-size: 12px;" class="p-2">{{$collection->BusinessID}}</td>
+                      <td style="font-size: 12px;" class="p-2">PHP {{Helper::money_format($collection->Amount)}}</td>
+                    </tr>
+                  @endforeach
+
+                @empty
+
+                @endforelse
+                 
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="card card-rounded shadow-sm mb-2">
       <div class="card-body">
         <div class="row">
@@ -179,15 +224,19 @@
               </thead>
               <tbody>
                 @if($transaction->department_remarks)
-                  @forelse(json_decode($transaction->department_remarks) as $value)
+                  @foreach(json_decode($transaction->department_remarks) as $value)
                   <tr>
                     <td>{{str::title(Helper::processor_name($value->processor_id))}}</td>
                     <td>{{str::title(Helper::department_name($value->id))}}</td>
                     <td>{{str::title($value->remarks)}}</td>
                   </tr>
-                  @empty
-                  @endforelse
+                  @endforeach
+                @else
+                  <tr class="text-center">
+                    <td colspan="3">No Remarks Records Available</td>
+                  </tr>
                 @endif
+
               </tbody>
             </table>
           </div>
@@ -315,7 +364,6 @@
         }
       });
     });
-
     $(".btn-validate").on('click', function(){
       var url = $(this).data('url');
       var self = $(this)
@@ -337,6 +385,8 @@
         }
       });
     });
+
+
   });
 
 </script>

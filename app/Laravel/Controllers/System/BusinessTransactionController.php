@@ -12,7 +12,7 @@ use App\Laravel\Requests\PageRequest;
  */
 use App\Laravel\Requests\System\BPLORequest;
 use App\Laravel\Events\SendEmailApprovedBusiness;
-use App\Laravel\Models\ApplicationBusinessPermitFile;
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,RegulatoryFee};
 
 
 
@@ -20,8 +20,7 @@ use App\Laravel\Models\ApplicationBusinessPermitFile;
 use App\Laravel\Requests\System\TransactionCollectionRequest;
 /* App Classes
  */
-use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader;
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees};
+use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl;
 
 class BusinessTransactionController extends Controller
 {
@@ -37,7 +36,6 @@ class BusinessTransactionController extends Controller
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
 		$this->data['approval'] = ['' => "Choose Approval Type",'1' => "Yes" , '0' => "No"];
 		$this->data['fees'] =  ['' => "Choose Collection Fees"] + CollectionOfFees::pluck('collection_name','id')->toArray();
-
 		$this->per_page = env("DEFAULT_PER_PAGE",2);
 	}
 
@@ -197,17 +195,17 @@ class BusinessTransactionController extends Controller
 		$this->data['count_file'] = TransactionRequirements::where('transaction_id',$id)->count();
 		$this->data['attachments'] = TransactionRequirements::where('transaction_id',$id)->get();
 		$this->data['transaction'] = $request->get('business_transaction_data');
-        $id = $this->data['transaction']->requirements_id;
+        $requirements_id = $this->data['transaction']->requirements_id;
 
         $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', $this->data['transaction']->business_permit_id)->get();
         $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
 		$this->data['app_business_permit'] = ApplicationBusinessPermit::find($request->id)->get();
 
-		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $id))->get();
-
+		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $requirements_id))->get();
 
 		$this->data['department'] =  Department::pluck('name','id')->toArray();
-		$this->data['breakdown_collection'] = CollectionOfFees::find($this->data['transaction']->collection_id);
+		$this->data['regulatory_fee'] = RegulatoryFee::where('transaction_id',$id)->get();
+		
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.business-transaction.show',$this->data);
 	}
@@ -384,6 +382,93 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Office Code has been saved.");
 			return redirect()->route('system.business_transaction.pending');
 
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
+	}
+
+	public function assessment (PageRequest $request , $id = NULL){
+		$auth = Auth::user();
+		$this->data['page_title'] .= " - Assesment Details";
+		$this->data['transaction'] = BusinessTransaction::find($id);
+		
+		$this->data['regulatory_fee'] = RegulatoryFee::where('transaction_id',$id)->where('office_code',$auth->department->code)->first();
+		if ($this->data['regulatory_fee']) {
+			$this->data['breakdown_collection'] = json_decode($this->data['regulatory_fee']->collection_of_fees);
+		}
+		return view('system.business-transaction.assessment',$this->data);
+	}
+
+	public function get_assessment(PageRequest $request , $id = NULL){
+		DB::beginTransaction();
+		try{
+			$auth = Auth::user();
+			$this->data['transaction'] = BusinessTransaction::find($id);
+			$request_body = [
+				'business_id' => "1752361",
+				'ebriu_application_no' => "21-00002-E",
+				'year' => "2021", 
+				'office_code' => "02",
+				
+			];
+			$response = Curl::to(env('ZAMBOANGA_URL'))
+			         ->withData($request_body)
+			         ->asJson( true )
+			         ->returnResponseObject()
+			         ->post();	
+			if ($response->content['data'] == NULL) {
+				session()->flash('notification-status', "failed");
+				session()->flash('notification-msg', "No Assesment Found.");
+				return redirect()->route('system.business_transaction.assessment',[$id]);
+			}
+			$total_amount = 0 ;
+			foreach ($response->content['data'] as $key => $value) {
+				$total_amount += $value['Amount'];
+			}
+
+			$existing = RegulatoryFee::where('transaction_id' ,$this->data['transaction']->id)->where('office_code',$request->get('office_code'))->first();
+
+			if ($existing) {
+				$existing->collection_of_fees = json_encode($response->content['data']);
+				$existing->total_amount = Helper::money_format($total_amount);
+				$existing->save();
+			}else{
+				$new_regulatory_fee = new RegulatoryFee();
+				$new_regulatory_fee->business_id = $this->data['transaction']->business_id;
+				$new_regulatory_fee->transaction_id =$this->data['transaction']->id;
+				$new_regulatory_fee->collection_of_fees = json_encode($response->content['data']);
+				$new_regulatory_fee->total_amount = Helper::money_format($total_amount);
+				$new_regulatory_fee->status = "PENDING";
+				$new_regulatory_fee->office_code = $request->get('office_code');
+				$new_regulatory_fee->save(); 
+			}
+
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "Record Found.");
+			return redirect()->route('system.business_transaction.assessment',$id);
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
+	}
+
+	public function approved_assessment(PageRequest $request , $id = NULL){
+		DB::beginTransaction();
+		try{
+			$auth = Auth::user();
+			$regulatory_fee = RegulatoryFee::where('transaction_id',$id)->where('office_code',$auth->department->code)->first();
+			$regulatory_fee->status = "APPROVED";
+			$regulatory_fee->save();
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "Assesment has been successfully approved.");
+			return redirect()->route('system.business_transaction.assessment',$id);
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");

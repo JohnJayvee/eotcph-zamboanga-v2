@@ -57,6 +57,9 @@ Route::group(['as' => "auth."], function(){
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "BusinessTransactionController@destroy"]);
 			Route::get('remarks/{id?}',['as' => "remarks",'uses' => "BusinessTransactionController@remarks",'middleware' => "system.exist:business_transaction"]);
 			Route::get('validate/{id?}',['as' => "validate",'uses' => "BusinessTransactionController@bplo_validate",'middleware' => "system.exist:business_transaction"]);
+			Route::get('assessment/{id?}',['as' => "assessment",'uses' => "BusinessTransactionController@assessment"]);
+			Route::post('assessment/{id?}',['uses' => "BusinessTransactionController@get_assessment"]);
+			Route::get('approved-assessment/{id?}',['as' => "approved_assessment",'uses' => "BusinessTransactionController@approved_assessment"]);
 		});
 
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Laravel\Models;
 
@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Laravel\Traits\DateFormatter;
 use Str;
 
-class BusinessTransaction extends Model{
-    
+class RegulatoryFee extends Model{
+
     use SoftDeletes,DateFormatter;
-    
+
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = "business_transaction";
+    protected $table = "regulatory_fee";
 
     /**
      * The database connection used by the model.
@@ -63,26 +63,8 @@ class BusinessTransaction extends Model{
     protected $casts = [
     ];
 
-    public function owner(){
-        return $this->BelongsTo("App\Laravel\Models\Customer",'owners_id','id');
-    }
-
-    public function business_info(){
-        return $this->BelongsTo("App\Laravel\Models\Business",'business_id','id');
-    }
-     public function application_permit(){
-        return $this->BelongsTo("App\Laravel\Models\ApplicationBusinessPermit",'business_id','id');
-    }
-    public function type(){
-        return $this->BelongsTo("App\Laravel\Models\Application",'application_id','id');
-    }
-
     public function department(){
-        return $this->belongsToMany('App\Laravel\Models\Department');
+        return $this->BelongsTo("App\Laravel\Models\Department",'office_code','code');
     }
-     public function admin(){
-        return $this->BelongsTo("App\Laravel\Models\User",'processor_user_id','id');
-    }
-
 
 }
