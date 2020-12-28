@@ -71,4 +71,10 @@ class Business extends Model{
         return $this->BelongsTo("App\Laravel\Models\Customer",'customer_id','id');
     }
 
+    public function scopeKeyword($query,$keyword = NULL){
+        if($keyword){
+            return $query->whereRaw("LOWER(business_name) LIKE '%{$keyword}%'");
+        }
+    }
+
 }

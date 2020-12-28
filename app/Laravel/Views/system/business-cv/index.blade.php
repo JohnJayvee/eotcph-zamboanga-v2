@@ -13,15 +13,40 @@
       </div>
     </div>
   </div>
-  <div class="col-md-12">
-    {{-- <a href="{{route('system.business_cv.create')}}" class="btn btn-sm btn-primary float-right">Add New</a> --}}
-  </div>
+    <div class="col-md-12">
+        <form>
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Keywords</label>
+                    <div class="form-group has-search">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{ $keyword }}" placeholder="Keyword">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label>Date Range</label>
+                    <div class="input-group input-daterange d-flex align-items-center">
+                        <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly"
+                            name="start_date">
+                        <div class="input-group-addon mx-2">to</div>
+                        <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly"
+                            name="end_date">
+                    </div>
+                </div>
+                <div class="col-md-3 mt-4 p-1">
+                    <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
+                    <a href="{{route('system.business_cv.index')}}" class="btn btn-primary btn-sm p-2">Clear</a>
+                </div>
+            </div>
+        </form>
+    </div>
   <div class="col-md-12">
     <div class="shadow-sm fs-15 table-responsive ">
       <table class="table table-striped table-wrap" style="table-layout: fixed;">
         <thead>
           <tr>
             <th width="25%" class="text-title p-3">Business Name</th>
+            <th width="25%" class="text-title p-3">Business Owner</th>
             <th width="25%" class="text-title p-3">Created At</th>
           </tr>
         </thead>
@@ -29,10 +54,11 @@
           @forelse($business as $business_cv)
           <tr>
               @if ($business_cv->isNew == 1)
-                <td><a href="{{ route('system.business_cv.show', ['id' => $business_cv->id]) }}">{{ $business_cv->business_name .' / '. $business_cv->owner->name}}</a></a> <span class="ml-2 badge badge-success">New</span></td>
+                <td><a href="{{ route('system.business_cv.show', ['id' => $business_cv->id]) }}">{{ $business_cv->business_name }}</a></a> <span class="ml-2 badge badge-success">New</span></td>
               @else
-                <td><a href="{{ route('system.business_cv.show', ['id' => $business_cv->id]) }}">{{ $business_cv->business_name .' / '. $business_cv->owner->name}}</a></td>
+                <td><a href="{{ route('system.business_cv.show', ['id' => $business_cv->id]) }}">{{ $business_cv->business_name }}</a></td>
               @endif
+            <td>{{ $business_cv->owner->name }}</td>
             <td>{{ Helper::date_format($business_cv->created_at)}}</th>
           </tr>
           @empty

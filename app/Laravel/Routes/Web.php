@@ -9,7 +9,8 @@ Route::group(['as' => "web.",
 
 	Route::group(['prefix'=> "/",'as' => 'main.' ],function(){
 		Route::get('/', [ 'as' => "index",'uses' => "MainController@index"]);
-	});
+    });
+	Route::get('coming-soon',['as' => "coming_soon",'uses' => "MainController@soon"]);
 	Route::get('type',['as' => "get_application_type",'uses' => "MainController@get_application_type"]);
 	Route::get('amount',['as' => "get_payment_fee",'uses' => "MainController@get_payment_fee"]);
 	Route::get('collection',['as' => "get_collection_fee",'uses' => "MainController@get_collection_fee"]);

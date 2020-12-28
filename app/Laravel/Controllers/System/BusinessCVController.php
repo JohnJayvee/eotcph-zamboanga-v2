@@ -32,7 +32,33 @@ class BusinessCVController extends Controller
 		$this->data['page_title'] = "Business CV";
 		$auth = Auth::user();
 
-        $this->data['business'] = Business::orderBy('created_at',"DESC")->paginate($this->per_page);
+        $first_record = Business::orderBy('created_at','ASC')->first();
+		$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
+
+		if($first_record){
+			$start_date = $request->get('start_date',$first_record->created_at->format("Y-m-d"));
+        }
+        $this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
+		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
+        $this->data['selected_status'] = $request->status;
+		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
+		$this->data['keyword'] = Str::lower($request->keyword);
+
+        $this->data['business'] = Business::with(['owner'])
+        ->whereHas('owner',function($query){
+            if(strlen($this->data['keyword']) > 0){
+                return $query->WhereRaw("CONCAT(fname, ' ', mname, '', lname)  LIKE  '%{$this->data['keyword']}%'");
+            }
+        })
+        ->orwhere(function($query){
+            if(strlen($this->data['keyword']) > 0){
+                return $query->where('business_name', 'like', "%{$this->data['keyword']}%");
+            }
+        })
+        ->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
+        ->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])
+        ->orderBy('created_at',"DESC")->paginate($this->per_page);
+        // dd($this->data);
 		return view('system.business-cv.index',$this->data);
     }
 

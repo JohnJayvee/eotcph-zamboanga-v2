@@ -139,6 +139,10 @@ class MainController extends Controller{
 		session()->flash('notification-msg',"Transaction already completed. No more action is needed.");
 		return redirect()->route('web.main.index');
 
-	}
+    }
+
+    public function soon(){
+        return view('web.coming-soon');
+    }
 
 }

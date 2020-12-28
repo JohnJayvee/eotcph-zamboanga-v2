@@ -33,7 +33,7 @@
                         </form>
                     </div>
 
-                    <div class="col-lg-12">
+                    {{-- <div class="col-lg-12">
                          <div class="col-lg-12 pt-4">
                             <h5 style="letter-spacing: 3px;"><i class="fa fa-calculator"></i> E<span class="font-weight-lighter">PAYMENT</span></h5>
                         </div>
@@ -45,7 +45,7 @@
                                <button class="btn btn-white" type="submit"><i class="fa fa-money-bill"></i> Pay</button>
                             </div>
                         </form>
-                    </div>
+                    </div> --}}
 
                     <div class="col-lg-12">
                         <div class="col-lg-12 pt-4">
