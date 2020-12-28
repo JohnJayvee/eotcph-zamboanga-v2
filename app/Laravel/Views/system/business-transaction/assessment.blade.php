@@ -36,7 +36,7 @@
           </div>
           <div class="form-group">
             <label for="input_title">Office Code</label>
-          <input type="text" class="form-control {{$errors->first('office_code') ? 'is-invalid' : NULL}}" id="input_title" name="office_code" value="{{old('office_code',Auth::user()->department_id)}}" readonly>
+          <input type="text" class="form-control {{$errors->first('office_code') ? 'is-invalid' : NULL}}" id="input_title" name="office_code" value="{{old('office_code',Auth::user()->department->code)}}" readonly>
             @if($errors->first('office_code'))
             <p class="mt-1 text-danger">{!!$errors->first('office_code')!!}</p>
             @endif

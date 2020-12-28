@@ -21,6 +21,7 @@ class CreateRegulatoryFeeTable extends Migration
             $table->longText('collection_of_fees')->nullable();
             $table->string('total_amount')->nullable();
             $table->string('status')->nullable();
+            $table->string('fee_type')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

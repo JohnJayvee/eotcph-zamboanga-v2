@@ -236,24 +236,16 @@ class BusinessTransactionController extends Controller
 		$type = strtoupper($request->get('status_type'));
 		DB::beginTransaction();
 		try{
+			$total_amount = RegulatoryFee::where('transaction_id',$id)->sum('total_amount');
 			$transaction = $request->get('business_transaction_data');
-			/*if ($type == "APPROVED") {
-				if ($transaction->collection_id == NULL || $request->get('collection_id') == NULL) {
-					session()->flash('notification-status', "failed");
-					session()->flash('notification-msg', "Please Define Collection of Fee for this transaction");
-					return redirect()->back();
-				}
-			}*/
-			
 			$transaction->status = $type;
-			$transaction->total_amount = $type == "APPROVED" ? Helper::db_amount($request->get('amount')) : NULL ;
 			$transaction->remarks = $type == "DECLINED" ? $request->get('remarks') : NULL;
 			$transaction->processor_user_id = Auth::user()->id;
 			$transaction->status = $type;
 			$transaction->modified_at = Carbon::now();
+			$transaction->total_amount = $total_amount;
 			$transaction->save();
 			if ($type == "APPROVED") {
-
 				$insert[] = [
 	            	'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,
 	            	'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
@@ -263,7 +255,6 @@ class BusinessTransactionController extends Controller
 	                'application_name' => $transaction->application_name,
 	                'modified_at' => Helper::date_only($transaction->modified_at)
             	];
-
 			    $notification_data_email = new SendEmailApprovedBusiness($insert);
 			    Event::dispatch('send-email-business-approved', $notification_data_email);
 			}
@@ -407,12 +398,12 @@ class BusinessTransactionController extends Controller
 		try{
 			$auth = Auth::user();
 			$this->data['transaction'] = BusinessTransaction::find($id);
+
 			$request_body = [
-				'business_id' => "1752361",
-				'ebriu_application_no' => "21-00002-E",
+				'business_id' => $request->get('business_id'),
+				'ebriu_application_no' => $request->get('application_no'),
 				'year' => "2021", 
-				'office_code' => "02",
-				
+				'office_code' => $request->get('office_code'),
 			];
 			$response = Curl::to(env('ZAMBOANGA_URL'))
 			         ->withData($request_body)

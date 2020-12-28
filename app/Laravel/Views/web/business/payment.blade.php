@@ -15,109 +15,45 @@
                     @include('system._components.notifications')
                 </div>
                 <div class="card">
-                    <div class="card-body" style="padding: 3em">
-                    	<div class="row">
-                    		<div class="col-md-6">
-                        		<h5 class="pt-3">Payment Method for {{str::title($profile->business_name)}}</h5>
-                    		</div>
-                    		<div class="col-md-6">
-                    			<div class="btn-group float-right" role="group" aria-label="Basic example">
-									<a href="{{route('web.business_payment.index',[$profile->id])}}?type=annually" class="btn btn-primary btn-sm {{$payment_type == "anually" ? "active" :""}}">Annually</a>
-									<a href="{{route('web.business_payment.index',[$profile->id])}}?type=semi_annually" class="btn btn-primary btn-sm {{$payment_type == "semi_annually" ? "active" :""}}">Semi Annually</a>
-									<a href="{{route('web.business_payment.index',[$profile->id])}}?type=quarterly" class="btn btn-primary btn-sm {{$payment_type == "quarterly" ? "active" :""}}">Quarterly</a>
-								</div>
-                    		</div>
-                    		<div class="table-responsive mt-2">
-                    			@if($payment_type == "annually")
-		                    		<table class="table table-striped table-wrap" style="table-layout: fixed;">
-		                    			<thead>
-		                    				<tr class="text-center">
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Payment</th>
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Amount</th>
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Status</th>
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Action</th>
-
-		                    				</tr>
-		                    			</thead>
-		                    			<tbody>
-		                    				@if($total_amount > 0)
-			                    				@foreach(range(1,1) as $index)
-			                    					<tr class="text-center">
-				                    					<td>Yearly</td>
-				                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
-				                    					<td>UNPAID</td>
-				                    					<td><a href="{{route('web.business_payment.payment',[$id])}}?type=annually&amount={{$total_amount}}" class="btn-sm btn-primary">PAY NOW</a></td>
-			                    					</tr>
-			                    				@endforeach
-			                    			@else
-			                    				<tr>
-			                    					<td colspan="4">No Record Found</td>
-			                    				</tr>
-			                    			@endif
-		                    			</tbody>
-		                    		</table>
-	                    		@endif
-	                    		@if($payment_type == "semi_annually")
-		                    		<table class="table table-striped table-wrap" style="table-layout: fixed;">
-		                    			<thead>
-		                    				<tr class="text-center">
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Payment</th>
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Amount</th>
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Status</th>
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Action</th>
-
-		                    				</tr>
-		                    			</thead>
-		                    			<tbody>
-		                    				@if($total_amount > 0)
-			                    				@foreach(range(1,2) as $index)
-			                    					<tr class="text-center">
-				                    					<td>Q {{$index}}</td>
-				                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
-				                    					<td>UNPAID</td>
-				                    					<td><a href="{{route('web.business_payment.payment',[$id])}}?type=semi_annually&amount={{$total_amount}}" class="btn-sm btn-primary">PAY NOW</a></td>
-			                    					</tr>
-			                    				@endforeach
-		                    				@else
-			                    				<tr>
-			                    					<td colspan="4">No Record Found</td>
-			                    				</tr>
-			                    			@endif
-		                    			</tbody>
-		                    		</table>
-	                    		@endif
-	                    		@if($payment_type == "quarterly")
-		                    		<table class="table table-striped table-wrap" style="table-layout: fixed;">
-		                    			<thead>
-		                    				<tr class="text-center">
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Payment</th>
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Amount</th>
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Status</th>
-		                    					<th class="text-title fs-15 fs-500 p-3" width="25%">Action</th>
-
-		                    				</tr>
-		                    			</thead>
-		                    			<tbody>
-		                    				@if($total_amount > 0)
-			                    				@foreach(range(1,4) as $index)
-			                    					<tr class="text-center">
-				                    					<td>Q {{$index}}</td>
-				                    					<td>PHP {{Helper::money_format($total_amount)}}</td>
-				                    					<td>UNPAID</td>
-				                    					<td><a href="{{route('web.business_payment.payment',[$id])}}?type=quarterly&amount={{$total_amount}}" class="btn-sm btn-primary">PAY NOW</a></td>
-			                    					</tr>
-			                    				@endforeach
-		                    				@else
-			                    				<tr>
-			                    					<td colspan="4">No Record Found</td>
-			                    				</tr>
-			                    			@endif
-		                    			</tbody>
-		                    		</table>
-	                    		@endif
-                    		</div>
-                    	</div>
+                    <div class="card-body">
                     	
+                    	
+                        		<h5 class="">Payment Method for {{str::title($profile->business_name)}}</h5>
+                    	
+                    	<div class="table-responsive pt-2">
+            <table class="table table-bordered table-wrap" style="table-layout: fixed;">
+              <thead>
+                <tr class="text-center">
+                  <th class="text-title" rowspan="2" style="vertical-align: middle;">Department Name</th>
+                  <th class="text-title" rowspan="2" style="vertical-align: middle;">Total Amount</th>
+                  <th class="text-title p-3" colspan="2">Breakdown</th>
+                </tr>
+                <tr class="text-center">
+                  <th class="text-title p-3">Account Name</th>
+                  <th class="text-title p-3">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                @forelse($regulatory_fee as $fee)
+                  <tr class="text-center">
+                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
+                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->total_amount)}} </td>
+                  </tr>
+                  @foreach(json_decode($fee->collection_of_fees) as $collection)
+                    <tr >
+                      <td style="font-size: 12px;" class="p-2">{{$collection->BusinessID}}</td>
+                      <td style="font-size: 12px;" class="p-2">PHP {{Helper::money_format($collection->Amount)}}</td>
+                    </tr>
+                  @endforeach
+                @empty
+                  <tr>
+                    <td colspan="4" class="text-center"> No Assessment Records Available </td>
+                  </tr>
+                @endforelse
+                 
+              </tbody>
+            </table>
+          </div>
                         
                     </div>
 

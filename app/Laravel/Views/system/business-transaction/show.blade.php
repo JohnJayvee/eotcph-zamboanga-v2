@@ -164,7 +164,11 @@
             <h5 class="text-title text-uppercase">Assessment Details</h5>
           </div>
           <div class="col-md-6">
-              <a href="{{route('system.business_transaction.assessment',[$transaction->id])}}"  class="btn btn-primary border-5 text-white float-right">Get Assessment Details</a>
+            @if(Auth::user()->type == "processor")
+              @if(in_array(Auth::user()->department->code, json_decode($transaction->department_involved)))
+                <a href="{{route('system.business_transaction.assessment',[$transaction->id])}}"  class="btn btn-primary border-5 text-white float-right">Get Assessment Details</a>
+              @endif
+            @endif
           </div>
           <div class="table-responsive pt-2">
             <table class="table table-bordered table-wrap" style="table-layout: fixed;">
@@ -191,9 +195,10 @@
                       <td style="font-size: 12px;" class="p-2">PHP {{Helper::money_format($collection->Amount)}}</td>
                     </tr>
                   @endforeach
-
                 @empty
-
+                  <tr>
+                    <td colspan="4" class="text-center"> No Assessment Records Available </td>
+                  </tr>
                 @endforelse
                  
               </tbody>
@@ -210,11 +215,13 @@
           </div>
           <div class="col-md-6">
             @if(Auth::user()->type == "processor")
-              <a data-url="{{route('system.business_transaction.remarks',[$transaction->id])}}"  class="btn btn-primary btn-remarks border-5 text-white float-right">Add Remarks</a>
+              @if(in_array(Auth::user()->department->code, json_decode($transaction->department_involved)))
+                <a data-url="{{route('system.business_transaction.remarks',[$transaction->id])}}"  class="btn btn-primary btn-remarks border-5 text-white float-right">Add Remarks</a>
+              @endif
             @endif
           </div>
           <div class="table-responsive pt-2">
-            <table class="table table-striped table-wrap" style="table-layout: fixed;">
+            <table class="table table-bordered table-wrap" style="table-layout: fixed;">
               <thead>
                 <tr>
                   <th class="text-title p-3">Processor Name</th>
@@ -303,8 +310,7 @@
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
-        title: "Please place the TOTAL AMOUNT in the field below. Are you sure you want to approve this application? You can't undo this action.?",
-
+        title: "Please put Remarks in the field below. Are you sure you want to approve this application? You can't undo this action.?",
         icon: 'warning',
         input: 'text',
         inputPlaceholder: "Put remarks",
@@ -344,25 +350,20 @@
     });
     $(".btn-approved").on('click', function(){
       var url = $(this).data('url');
-      var self = $(this)
+      var btn = $(this)
       Swal.fire({
-        title: "Please place the TOTAL AMOUNT in the field below. Are you sure you want to approve this application? You can't undo this action.?",
-
+        title: 'Are you sure you want to approve this application?',
+        text: "You will not be able to undo this action, proceed?",
         icon: 'info',
-        input: 'text',
-        inputPlaceholder: "Put Amount",
         showCancelButton: true,
-        confirmButtonText: 'Approved!',
-        cancelButtonColor: '#d33'
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Proceed!'
       }).then((result) => {
-        if (result.value === "") {
-          alert("You need to write something")
-          return false
+        if (result.isConfirmed) {
+          window.location.href = url;
         }
-        if (result.value) {
-          window.location.href = url + "&amount="+result.value;
-        }
-      });
+      })
     });
     $(".btn-validate").on('click', function(){
       var url = $(this).data('url');
@@ -385,8 +386,6 @@
         }
       });
     });
-
-
   });
 
 </script>

@@ -9,7 +9,7 @@ use App\Laravel\Requests\PageRequest;
 use App\Laravel\Requests\Web\TransactionRequest;
 use App\Laravel\Requests\Web\UploadRequest;
 use App\Laravel\Requests\Web\BusinessRequest;
-use App\Laravel\Models\{BusinessTransaction,Business,BusinessLine};
+use App\Laravel\Models\{BusinessTransaction,Business,BusinessLine,RegulatoryFee};
 use App\Laravel\Requests\Web\EditBusinessRequest;
 /*
  * Models
@@ -34,28 +34,11 @@ class BusinessPaymentController extends Controller
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
 	}
     public function index(PageRequest $request , $id = NULL){
-
-
         $this->data['page_title'] = "Business Payment Method";
         $this->data['auth'] = Auth::guard('customer')->user();
         $this->data['profile'] = Business::find($id);
-        $this->data['payment_type'] = $request->get('type') ?:"annually";
-        $transaction = BusinessTransaction::where('business_id',$id)->first();
-        $this->data['id'] = $id;
 
-        switch ($this->data['payment_type']) {
-        	case 'annually':
-        		$this->data['total_amount'] = $transaction ? $transaction->total_amount : 0;
-        		break;
-        	case 'semi_annually':
-        		$this->data['total_amount'] = $transaction ? $transaction->total_amount / 2 : 0;
-        		break;
-        	case 'quarterly':
-        		$this->data['total_amount'] = $transaction ? $transaction->total_amount / 4 : 0;
-        		break;
-        	default:
-        		break;
-        }
+        $this->data['regulatory_fee'] = RegulatoryFee::where('business_id', $id)->get();
         return view('web.business.payment',$this->data);
     }
 
