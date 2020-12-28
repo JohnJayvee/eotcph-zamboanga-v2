@@ -733,7 +733,7 @@
                 }));
             })
 
-            $(input_region).prop('disabled', false)
+            $(input_region).prop('disabled', true)
             $(input_region).prepend($('<option>', {
                 value: "",
                 text: "--Select Region--"

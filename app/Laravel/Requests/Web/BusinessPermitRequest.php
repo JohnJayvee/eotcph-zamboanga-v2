@@ -15,7 +15,7 @@ class BusinessPermitRequest extends RequestManager{
             'no_of_units.*' => 'required|integer',
             'file' => 'required',
             'file.*' => 'mimes:png,jpg,jpeg,pdf',
-            // 'agree' => 'required',
+            'agree' => 'accepted',
         ];
 
         if ($this->get('type_of_application') == "new") {
@@ -35,6 +35,7 @@ class BusinessPermitRequest extends RequestManager{
             'no_of_units.*' => "No. of Unit is required",
             'capitalization.*' => "Capitalization is required",
             'renew.*' => "Gross is required",
+            'agree.accepted' => "Please Agree Under Penalty Of Perjuary "
 		];
 
 	}
