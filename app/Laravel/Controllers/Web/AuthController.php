@@ -162,7 +162,6 @@ class AuthController extends Controller{
             $new_customer->sss_no = $request->sss_no;
             $new_customer->phic_no = $request->phic_no;
             $new_customer->password = bcrypt($request->get('password'));
-            dd($new_customer);
             $new_customer->save();
 
             $customer_id = $new_customer->id;
