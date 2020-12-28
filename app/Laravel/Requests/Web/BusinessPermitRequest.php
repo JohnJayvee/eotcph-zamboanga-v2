@@ -14,16 +14,10 @@ class BusinessPermitRequest extends RequestManager{
             'line_of_business.*' => 'required',
             'no_of_units.*' => 'required|integer',
             'file' => 'required',
-            'file.*' => 'mimes:png,jpg,jpeg,pdf',
+			'file.*' => 'mimes:png,jpg,jpeg,pdf',
+			'amount.*' => 'required|integer',
             // 'agree' => 'required',
         ];
-
-        if ($this->get('type_of_application') == "new") {
-			$rules['capitalization.*'] = "required|integer";
-		}
-		if ($this->get('type_of_application') == "renew") {
-            $rules['renew.*'] = "required|integer";
-		}
 		return $rules;
 
 	}
@@ -33,8 +27,7 @@ class BusinessPermitRequest extends RequestManager{
             'file.*'	=> "Field is required.",
             'file.mimes' => "Invalid File",
             'no_of_units.*' => "No. of Unit is required",
-            'capitalization.*' => "Capitalization is required",
-            'renew.*' => "Gross is required",
+            'amount.*' => $this->get('type_of_application') == "renew" ? "Gross sales is required":"Capitalization is required",
 		];
 
 	}

@@ -596,25 +596,25 @@
                                                 <th class="text-title text-uppercase">Line of Business</th>
                                                 <th class="text-title text-uppercase">No. Units</th>
                                                 <th class="text-title text-uppercase new" style="display: none;">New (Capital Investment)</th>
-                                                <th class="text-title text-uppercase renew" style="display: none;">Renew (Gross Sales / Receipt)</th>
+                                                <th class="text-title text-uppercase renew" style="display: none;">Renew (Gross Sales / Capital)</th>
+                                                <th class="text-title text-uppercase">Action</th>
                                             </thead>
                                             <tbody id="businessline_tbody">
                                                 @foreach ($business_line as $key => $item)
                                                 <tr id="repeat_form" class="activity">
                                                     <td>
-                                                        <input type="text" class="form-control form-control-sm {{ $errors->has('line_of_business.*') ? 'is-invalid': NULL  }}" name="line_of_business[]" value="{{old('line_of_business[]', $item->name) }}">
+                                                        <input type="text" readonly class="form-control form-control-sm {{ $errors->has('line_of_business.*') ? 'is-invalid': NULL  }}" name="line_of_business[]" value="{{old('line_of_business[]', $item->name) }}">
+                                                        <input type="hidden" readonly class="form-control form-control-sm {{ $errors->has('account_code.*') ? 'is-invalid': NULL  }}" name="account_code[]" value="{{old('class[]', $item->name."---".$item->reference_code."---".$item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class : 0))."---".$item->account_code }}">
+                                                        <input type="hidden" class="form-control form-control-sm" name="is_new[]" value="0">
                                                     </td>
                                                     <td>
                                                         <input type="number" class="form-control form-control-sm {{ $errors->has('no_of_units.*') ? 'is-invalid': NULL  }}" name="no_of_units[]" value="{{ old('no_of_units[]') }}" placeholder="{{ $errors->first('no_of_units.*') }}">
                                                     </td>
-                                                    <td class="new" style="display: none;">
-                                                        <input type="number" class="form-control form-control-sm {{ $errors->has('capitalization.*') ? 'is-invalid': NULL  }}" name="capitalization[]" value="{{ old('capitalization[]') }}" placeholder="{{ $errors->first('capitalization.*') }}">
-                                                    </td>
-                                                    <td class="renew" style="display: none;">
-                                                        <input type="number" class="form-control form-control-sm {{ $errors->has('renew.*') ? 'is-invalid': NULL  }}" name="renew[]" value="{{ old('renew[]') }}" placeholder="{{ $errors->first('renew.*') }}">
+                                                    <td>
+                                                        <input type="number" class="form-control form-control-sm {{ $errors->has('amount.*') ? 'is-invalid': NULL  }}" name="amount[]" value="{{ old('amount[]', $item->gross_sales) }}" placeholder="{{ $errors->first('amount.*') }}">
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger bt-primary btn-remove">Remove</button>
+                                                        {{-- <button type="button" class="btn btn-danger bt-primary btn-remove">Remove</button> --}}
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -742,10 +742,33 @@
 
 
 @stop
+@section('page-styles')
+<link rel="stylesheet" type="text/css" href="{{asset('system/vendors/select2/select2.min.css')}}"/>
+<style type="text/css">
+    .is-invalid{
+        border: solid 2px;
+    }
+    .select2-container .select2-selection--single {
+      height: 47px !important;
+    }
+    span.select2.select2-container{
+        width: 100% !important;
+    }
+    span.select2-selection__rendered{
+        padding: 10px !important;
+    }
+    span.select2-selection__arrow{
+        top:10px !important;
+    }
+</style>
+@endsection
 
 @section('page-scripts')
+<script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 
 <script type="text/javascript">
+    var line_of_businesses = null;
+    
     $('.session-forget').click(function (){
         {{ session()->forget('successmodal') }}
     })
@@ -838,7 +861,14 @@
           }
       });
     }
+
+    $.fn.get_line_of_business = function(){
+      $.get("{{env('OBOSS_GET_LINE_OF_BUSINESS')}}", function( data ) {
+        line_of_businesses = data.data;
+      });
+    }
      $(function(){
+        $(this).get_line_of_business();
         $('.modal').modal('show');
         $(this).get_region("#input_region","#input_province","#input_town","#input_brgy","{{old('region')}}")
 
@@ -874,14 +904,31 @@
         $('.type_of_application').val('{{ session('application.transaction_type') }}');
 
         $('#repeater_add_activity').on('click', function(){
-            var repeat_item = $("#repeat_form").eq(0).prop('outerHTML');
+            var list_of_lob = '<option>Select Line of Business</option>';
+            $.each(line_of_businesses,function(index,value){
+                var code = value.Class+"---"+value.RefCode+'---'+value.BClass+"---"+value.SClass+"---"+(value.XClass ? value.XClass:"0")+"---"+value.AcctCode;
+                list_of_lob += `<option value="${code}">${value.Class}</option>`;
+            })
+            var repeat_item = `<tr id="repeat_form" class="activity">
+                                    <td>
+                                        <select class="select-line-of-business form-control form-control-sm classic {{ $errors->has('account_code.*') ? 'is-invalid': NULL  }}" name="account_code[]" value="{{ old('account_code[]') }}" placeholder="{{ $errors->first('account_code.*') }}">
+                                            ${list_of_lob}
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm mt-3" name="line_of_business[]" placeholder="Enter Particular">
+                                        <input type="hidden" class="form-control form-control-sm" name="is_new[]" value="1">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm {{ $errors->has('no_of_units.*') ? 'is-invalid': NULL  }}" name="no_of_units[]" value="0" placeholder="{{ $errors->first('no_of_units.*') }}">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control form-control-sm {{ $errors->has('amount.*') ? 'is-invalid': NULL  }}" name="amount[]" value="{{ old('amount[]') }}" placeholder="{{ $errors->first('amount.*') }}">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger bt-primary btn-remove">Remove</button>
+                                    </td>
+                                </tr>`;
             $("#businessline_tbody").append(repeat_item);
-            $('.new').show();
-            $('.renew').hide();
-            $(".application_type").prop('checked', false);
-            $('input[name=application_type][value=new]').prop('checked', true);
-            $('.type_of_application').val($('.application_type').val());
-
+            $('.select-line-of-business').select2();
         });
 
         $("#businessline_tbody").delegate(".btn-remove","click",function(){

@@ -62,6 +62,7 @@ class BusinessController extends Controller
                          ->asJson( true )
                          ->returnResponseObject()
                          ->post();
+                         
             if($response->status == "200"){
                 $content = $response->content;
 
@@ -70,10 +71,12 @@ class BusinessController extends Controller
                 session()->forget('negativelist');
                 $this->data['business'] = $response->content['data'];
                 foreach ($this->data['business']['LineOfBusiness'] as $key => $value) {
-                    if(!empty($value['Particulars'])){
-                        $this->data['lob'][] = $value['Particulars'];
+                    if(!empty($value['Class'])){
+                        $particulars = !empty($value['Particulars']) ? " (".$value['Particulars'].")" : "";
+                        $this->data['lob'][] = $value['Class'].$particulars;
                     }
                 }
+                session()->put('line_of_business', $this->data['business']['LineOfBusiness']);
             } elseif ($response->status == "400") {
                 session()->put('negativelist', 1);
             }else {
@@ -186,11 +189,21 @@ class BusinessController extends Controller
 
                     $new_business->save();
 
-                    if(!empty(request()->business_line)){
-                        foreach ($request->business_line as $key => $v) {
+                    $line_of_businesses = session()->get("line_of_business");
+                    session()->forget("line_of_business");
+
+                    if(!empty($line_of_businesses)){
+                        foreach ($line_of_businesses as $line_of_business) {
+                            $particulars = !empty($line_of_business['Particulars']) ? " (".$line_of_business['Particulars'].")" : "";
                             $data = [
                                 'business_id' => $new_business->id,
-                                'name' => $request->business_line[$key],
+                                'name' => $line_of_business['Class'].$particulars,
+                                'account_code' => $line_of_business['AcctCode'],
+                                'b_class' => $line_of_business['BClass'],
+                                's_class' => $line_of_business['SClass'],
+                                'x_class' => $line_of_business['XClass'],
+                                'reference_code' => $line_of_business['RefCode'],
+                                'gross_sales' => $line_of_business['GrossSales'],
                             ];
                             BusinessLine::insert($data);
                         }
