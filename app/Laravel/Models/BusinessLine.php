@@ -36,7 +36,7 @@ class BusinessLine extends Model{
      *
      * @var array
      */
-     protected $fillable = ['business_id','name'];
+     protected $fillable = ['business_id','name','gross_sales', 'capitalization', 'b_class', 's_class', 'x_class', 'reference_code'];
 
 
     /**

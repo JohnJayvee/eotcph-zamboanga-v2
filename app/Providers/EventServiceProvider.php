@@ -97,6 +97,9 @@ class EventServiceProvider extends ServiceProvider
         'send-new-business_cv' => [
             'App\Laravel\Listeners\SendNewBusinessCVListener'
         ],
+        'upload-line-of-business-to-local' => [
+            'App\Laravel\Listeners\UploadLineOfBusinessToLocalListener'
+        ],
 
     ];
 
