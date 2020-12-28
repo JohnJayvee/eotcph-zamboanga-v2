@@ -702,12 +702,15 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-check">
-                                        <input type="checkbox" name="agree" class="form-check-input {{ $errors->has('agree') ? 'is-invalid': NULL  }}" value="{{ old('agree') }}">
-                                        <label class="form-check-label">I AGREE UNDER PENALTY OF PERJUARY that the foregoing Information
+                                        <input type="checkbox" name="agree" class="form-check-input" value="{{ old('agree') }}" id="agree">
+                                        <label for="checkbox" class="form-check-label">I AGREE UNDER PENALTY OF PERJUARY that the foregoing Information
                                             are based on my personal knowledge and authentic records.Further, I agree to comply with the regulatory requirements and other
                                             deficiencies within 30 days from release of the Business Permit. FAILURE TO COMPLY WITH ALL THE REQUIREMENTS WILL AUTOMATICALLY REVOKE
                                             THE PERMIT
                                         </label>
+                                        @if($errors->first('agree'))
+                                            <p class="help-block text-danger">{{$errors->first('agree')}}</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -935,6 +938,10 @@
             var parent_div = $(this).parents(".activity");
             parent_div.remove();
         });
+
+        $('#agree').click(function () {
+            $(this).val(1);
+        })
     })
 </script>
 @endsection
