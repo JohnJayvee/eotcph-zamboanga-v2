@@ -131,7 +131,7 @@ class DigipepController extends Controller
 					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
 				}
 			}
-			if(isset($response->payment) AND Str::upper($response->payment->status) == "PAID" AND $transaction->transaction_status != "COMPLETED" AND $prefix == "OT"){
+			if(isset($response->payment) AND Str::upper($response->payment->status) == "PAID" AND $transaction->transaction_status != "COMPLETED" AND $prefix == "RF"){
 
 				DB::beginTransaction();
 				try{
