@@ -13,7 +13,7 @@
 @section('content')
 <div class="row">
   
-  <div class="col-md-6 grid-margin stretch-card">
+  <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Assessment Form</h4>
@@ -41,29 +41,47 @@
             <p class="mt-1 text-danger">{!!$errors->first('office_code')!!}</p>
             @endif
           </div>
-          <button type="submit" class="btn btn-primary mr-2">Send Assesment Request</button>
+          <button type="submit" class="btn btn-primary mr-2">Proceed</button>
           <a href="{{route('system.business_transaction.show',[$transaction->id])}}" class="btn btn-light">Return </a>
         </form>
       </div>
     </div>
   </div>
-  <div class="col-md-6 grid-margin stretch-card">
+  
+</div>
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Assessment Details</h4>
         <div class="table-responsive shadow-sm fs-15 mb-3">
-          <table class="table table-striped">
+          <table class="table table-bordered">
             <thead>
-              <th class="text-title p-2">Account Name</th>
-              <th class="text-title p-2">Amount</th>
+              <tr class="text-center">
+                  <th class="text-title" rowspan="2" style="vertical-align: middle;"></th>
+                  <th class="text-title" rowspan="2" style="vertical-align: middle;">Fee Type</th>
+                  <th class="text-title" rowspan="2" style="vertical-align: middle;">Status</th>
+                  <th class="text-title p-3" colspan="2">Breakdown</th>
+                </tr>
+                <tr class="text-center">
+                  <th class="text-title p-3">Account Name</th>
+                  <th class="text-title p-3">Amount</th>
+                </tr>
             </thead>
             <tbody>
-              @if($regulatory_fee)
-              @foreach($breakdown_collection as $collection)
+              @if($business_fees)
+              @foreach($business_fees as $business_fee)
                 <tr>
-                  <td>{{$collection->BusinessID}}</td>
-                  <td>{{$collection->Amount}}</td>
-                </tr>
+                  <td rowspan="{{count(json_decode($business_fee->collection_of_fees)) + 1}}"><a href="{{route('system.business_transaction.approved_assessment',[$business_fee->id])}}" class="btn btn-primary btn-assessment">Approve</a></td>
+                  <td rowspan="{{count(json_decode($business_fee->collection_of_fees)) + 1}}">{{
+                    $business_fee->fee_type == 1 ? "Business Tax" : "Regulatory Fee"}}</td>
+                  <td rowspan="{{count(json_decode($business_fee->collection_of_fees)) + 1}}">{{$business_fee->status}}</td>
+                @foreach(json_decode($business_fee->collection_of_fees) as $collection)
+                  <tr>
+                    <td>{{$collection->BusinessID}}</td>
+                    <td>{{$collection->Amount}}</td>
+                  </tr>
+                @endforeach
               @endforeach
               @else
                 <tr>
@@ -73,18 +91,6 @@
             </tbody>
           </table>
         </div>
-        <div class="form-group">
-          <label for="input_title">Total Amount</label>
-          <input type="text" class="form-control" id="input_business_id" name="total_amount" value="{{old('total_amount',$regulatory_fee ? $regulatory_fee->total_amount : 0 )}}" readonly>
-        </div>
-        @if($regulatory_fee)
-          <div class="form-group">
-            <p class="text-title fw-500">Assessment Status: <span class="badge  badge-{{Helper::status_badge($regulatory_fee->status)}} p-2">{{Str::title($regulatory_fee->status)}}</span></p>
-          </div>
-          @if($regulatory_fee->status == "PENDING")
-            <a href="{{route('system.business_transaction.approved_assessment',[$transaction->id])}}" class="btn btn-primary" type="button">Approve</a>
-          @endif
-        @endif
         
       </div>
     </div>
@@ -92,3 +98,13 @@
 </div>
 @stop
 
+@section('page-styles')
+<style type="text/css">
+  .btn-assessment{
+    height: 10px;
+    line-height: 1px;
+    text-decoration: none;
+    font-size: 12px;
+  }
+</style>
+@endsection

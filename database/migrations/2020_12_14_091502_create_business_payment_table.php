@@ -15,10 +15,9 @@ class CreateBusinessPaymentTable extends Migration
     {
         Schema::create('business_payment', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('business_id')->nullable();
-            $table->string('reference_code')->nullable();
-            $table->string('processing_fee_code')->nullable();
-            $table->string('processing_fee')->nullable();
+            $table->string('transaction_id')->nullable();
+            $table->string('business_fee_id')->nullable();
+            $table->string('transaction_code')->nullable();
             $table->string('payment_reference')->nullable();
             $table->string('payment_type')->nullable();
             $table->string('payment_option')->nullable();
@@ -28,6 +27,7 @@ class CreateBusinessPaymentTable extends Migration
             $table->string('convenience_fee')->nullable();
             $table->date('payment_date')->nullable();
             $table->text('eor_url')->nullable();
+            $table->text('total_amount')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
