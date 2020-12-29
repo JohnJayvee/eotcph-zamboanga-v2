@@ -8,6 +8,8 @@ use App\Laravel\Requests\PageRequest;
 
 use App\Laravel\Models\Transaction;
 use App\Laravel\Models\OtherTransaction;
+use App\Laravel\Models\RegulatoryPayment;
+
 
 use Helper, Carbon, Session, Str, DB,Input,Event,Signature,Curl,Log,PDF,Mail,Storage,File, Auth;
 

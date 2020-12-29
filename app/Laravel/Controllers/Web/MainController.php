@@ -10,6 +10,7 @@ use App\Laravel\Models\Application;
 use App\Laravel\Models\Transaction;
 use App\Laravel\Models\OtherTransaction;
 use App\Laravel\Models\CollectionOfFees;
+use App\Laravel\Models\RegulatoryPayment;
 
 use App\Laravel\Models\ApplicationRequirements;
 /*
