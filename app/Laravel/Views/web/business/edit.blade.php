@@ -29,7 +29,7 @@
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Business Type</label>
-                                        <h4 class="form-data text-success">{{ Str::upper($business->business_type) }}</h4>
+                                        <h4 class="form-data text-success">{{str_replace("_"," ",Str::upper($business->business_type))}}</h4>
                                     </div>
                                 </div>
                             </div>

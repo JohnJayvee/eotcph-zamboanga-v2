@@ -59,7 +59,7 @@ class BusinessRequest extends RequestManager{
             "unit_no" => "required",
             "street_address" => "required",
             "email" => "required|email:rfc,dns",
-            "mobile_no" => "required|integer",
+            "mobile_no" => "required|max:10|phone:PH",
             // "telephone_no" => "required|integer",
             // "tin_no" => "integer",
             // "sss_no" => "integer",

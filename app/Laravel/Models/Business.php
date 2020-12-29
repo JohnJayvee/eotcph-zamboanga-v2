@@ -77,4 +77,8 @@ class Business extends Model{
         }
     }
 
+    public function getRepFullNameAttribute(){
+        return Str::title("{$this->rep_firstname} {$this->rep_middlename} {$this->rep_lastname} ");
+    }
+
 }
