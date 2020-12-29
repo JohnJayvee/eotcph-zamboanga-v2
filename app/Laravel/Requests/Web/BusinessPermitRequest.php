@@ -12,9 +12,11 @@ class BusinessPermitRequest extends RequestManager{
 
 		$rules = [
             'line_of_business.*' => 'required',
-            'no_of_units.*' => 'required|integer',
+            'no_of_units' => 'required',
+            'no_of_units.*' => 'integer',
             'file' => 'required',
-            'amount.*' => 'required|integer',
+            'amount' => 'required',
+            'amount.*' => 'integer',
             'file.*' => 'mimes:png,jpg,jpeg,pdf',
             'agree' => 'accepted',
 
@@ -28,7 +30,7 @@ class BusinessPermitRequest extends RequestManager{
             'file.*'	=> "Field is required.",
             'file.mimes' => "Invalid File",
             'no_of_units.*' => "No. of Unit is required",
-            'amount.*' => $this->get('type_of_application') == "renew" ? "Gross sales is required":"Capitalization is required",
+            'amount.*' => "Gross sales is required",
             'capitalization.*' => "Capitalization is required",
             'renew.*' => "Gross is required",
             'agree.accepted' => "Please Agree Under Penalty Of Perjuary "
