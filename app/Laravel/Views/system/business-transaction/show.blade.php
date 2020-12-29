@@ -33,7 +33,7 @@
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
         <div class="row">
           <div class="col-md-6">
-            <p class="text-title fw-500">Application Number: <span class="text-black">{{str::title($transaction->application_permit->application_no)}}</span></p>
+            <p class="text-title fw-500" style="font-size: 1.2rem;">Application Number: <span class="text-black">{{str::title($transaction->application_permit->application_no)}}</span></p>
             <p class="text-title fw-500">Business Name: <span class="text-black">{{str::title($transaction->business_name)}}</span></p>
             <p class="text-title fw-500">Business ID Number: <span class="text-black">{{str::title($transaction->business_info->business_id_no)}}</span></p>
             <p class="text-title fw-500">Dominant Name: <span class="text-black">{{str::title($transaction->business_info->dominant_name)}}</span></p>
