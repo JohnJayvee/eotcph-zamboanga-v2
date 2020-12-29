@@ -299,6 +299,9 @@ class BusinessTransactionController extends Controller
                         'remarks' =>  $value->remarks
                     ];
                 }
+
+                $notification_data_email = new SendEmailDeclinedBusiness($insert);
+                Event::dispatch('send-email-business-declined', $notification_data_email);
             }
 			DB::commit();
 			session()->flash('notification-status', "success");
