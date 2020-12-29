@@ -5,21 +5,15 @@ namespace App\Laravel\Controllers\System;
 /*
  * Request Validator
  */
-use App\Laravel\Models\User;
 
 /*
  * Models
  */
-use App\Laravel\Requests\System\BPLORequest;
-use App\Laravel\Events\SendEmailApprovedBusiness;
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment};
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment,User};
+
+
 use App\Laravel\Requests\PageRequest;
-use App\Laravel\Events\NotifyDepartmentSMS;
-use App\Laravel\Events\NotifyBPLOAdminEmail;
-
-
-
-
+use App\Laravel\Requests\System\TransactionCollectionRequest;
 use App\Laravel\Requests\System\BPLORequest;
 /* App Classes
  */
@@ -27,9 +21,12 @@ use App\Laravel\Events\NotifyDepartmentEmail;
 use App\Laravel\Events\SendEmailApprovedBusiness;
 use App\Laravel\Events\SendEmailDeclinedBusiness;
 use App\Laravel\Events\SendDeclinedEmailReference;
-use App\Laravel\Requests\System\TransactionCollectionRequest;
+use App\Laravel\Events\NotifyDepartmentSMS;
+use App\Laravel\Events\NotifyBPLOAdminEmail;
+
+
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl;
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,RegulatoryFee};
+
 
 class BusinessTransactionController extends Controller
 {
