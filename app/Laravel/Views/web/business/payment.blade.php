@@ -50,7 +50,9 @@
                   </tbody>
                 </table>
               </div>
-              <a href="{{route('web.business_payment.regulatory_payment',[$transaction->id])}}" class="btn btn-primary ">Proceed to Payment</a >
+              @if($transaction)
+                <a href="{{route('web.business_payment.regulatory_payment',[$transaction->id])}}" class="btn btn-primary ">Proceed to Payment</a >
+              @endif
             </div>
         </div>
       </div>
