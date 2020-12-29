@@ -14,14 +14,21 @@
         <li class="nav-item nav-profile dropdown navbar-nav-right float-right" style="width: 300px;">
             <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="">
               <i class="fas fa-bell fa-lg ml-2">
-                <span class="badge badge-danger">{{ $new_business_cv_count }}</span>
+                <span class="badge badge-danger">{{ $new_notification_count }}</span>
               </i>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               @forelse ($new_business_cv as $item)
-              <a href="#" class="dropdown-item">
-                <a class="dropdown-item" href="{{ route('system.business_cv.show', ['id' => $item->id]) }}">{{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}}</a>
-              </a>
+                @if (get_class($item) == 'App\Laravel\Models\BusinessTransaction')
+                    <a class="dropdown-item" href="{{route('system.business_transaction.show',[$item->id])}}">
+                        New Business Transaction Added {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}}
+                    </a>
+                @endif
+                @if (get_class($item) == 'App\Laravel\Models\Business')
+                    <a class="dropdown-item" href="{{ route('system.business_cv.show', ['id' => $item->id]) }}">
+                        New Business CV Addded {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}}
+                    </a>
+                @endif
               @empty
               <a href="#" class="dropdown-item">
                   No notification

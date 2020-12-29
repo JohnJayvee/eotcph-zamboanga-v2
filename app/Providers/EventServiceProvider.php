@@ -85,6 +85,9 @@ class EventServiceProvider extends ServiceProvider
         'send-email-business-approved' => [
             'App\Laravel\Listeners\SendEmailBusinessApprovedListener'
         ],
+        'send-email-business-declined' => [
+            'App\Laravel\Listeners\SendEmailBusinessDeclineListener'
+        ],
         'send-email-reference' => [
             'App\Laravel\Listeners\SendEmailProcessorReferenceListener'
         ],
@@ -99,6 +102,18 @@ class EventServiceProvider extends ServiceProvider
         ],
         'upload-line-of-business-to-local' => [
             'App\Laravel\Listeners\UploadLineOfBusinessToLocalListener'
+        ],
+        'notify-departments-sms' => [
+            'App\Laravel\Listeners\NotifyDepartmentSMSListener'
+        ],
+        'notify-departments-email' => [
+            'App\Laravel\Listeners\NotifyDepartmentEmailListener'
+        ],
+        'notify-bplo-admin-sms' => [
+            'App\Laravel\Listeners\NotifyBPLOAdminSMSListener'
+        ],
+        'notify-bplo-admin-email' => [
+            'App\Laravel\Listeners\NotifyBPLOAdminEmailListener'
         ],
 
     ];

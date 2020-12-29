@@ -2,11 +2,10 @@
 
 namespace App\Laravel\Controllers\System;
 
-use App\Laravel\Controllers\Controller as BaseController;
-
 use Auth, Session,Carbon, Helper,Route, Request,Str;
 
-use  App\Laravel\Models\{AttendanceOvertime,AttendanceLeave, Business, Transaction};
+use App\Laravel\Controllers\Controller as BaseController;
+use  App\Laravel\Models\{AttendanceOvertime,AttendanceLeave, Business, BusinessTransaction, Transaction};
 
 class Controller extends BaseController{
 
@@ -20,6 +19,8 @@ class Controller extends BaseController{
 		self::set_auth();
 		self::get_new_cv_count();
 		self::get_new_cv();
+		self::get_business_permit_count();
+		self::get_business_permit_cv();
 
 	}
 
@@ -77,11 +78,28 @@ class Controller extends BaseController{
     }
 
     public function get_new_cv_count(){
-        $this->data['new_business_cv_count'] = Business::where('isNew', '1')->count();
+        $business = Business::where('isNew', '1')->count();
+        $business_transaction = BusinessTransaction::where('isNew', '1')->count();
+
+        $notifications = $business + $business_transaction;
+        $this->data['new_notification_count'] = $notifications;
+
     }
 
     public function get_new_cv(){
-        $this->data['new_business_cv'] = Business::where('isNew', '1')->get();
+        $business = Business::where('isNew', '1')->get();
+        $business_transaction = BusinessTransaction::where('isNew', '1')->get();
+        $notifications = $business->merge($business_transaction)->sortByDesc('created_at');
+        $this->data['new_business_cv'] = $notifications;
+        // dd($this->data);
+    }
+
+    public function get_business_permit_count(){
+        $this->data['new_business_permit_cv_count'] = BusinessTransaction::where('isNew', '1')->count();
+    }
+
+    public function get_business_permit_cv(){
+        $this->data['new_business_permit_cv'] = BusinessTransaction::where('isNew', '1')->get();
     }
 
 
