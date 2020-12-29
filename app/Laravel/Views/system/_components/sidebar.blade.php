@@ -76,12 +76,6 @@
 
       </div>
     </li>
-    <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.business_cv.index', 'system.business_cv.create', 'system.business_cv.show')) ? 'active' : ''}}">
-        <a class="nav-link" href="{{route('system.business_cv.index')}}">
-          <i class="fa fa-check-circle menu-icon"></i>
-          <span class="menu-title">Business CV</span>
-        </a>
-    </li>
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.other_customer.index','system.other_customer.create','system.other_transaction.index','system.other_transaction.show','system.other_customer.show','system.other_transaction.create')) ? 'active' : ''}}">
       <a class="nav-link" href="{{route('system.other_customer.index')}}">
         <i class="fa fa-file menu-icon"></i>
@@ -90,12 +84,18 @@
     </li>
     @if(in_array($auth->type,['super_user','admin','office_head']))
       @if(in_array($auth->type,['super_user','admin']))
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.business_cv.index', 'system.business_cv.create', 'system.business_cv.show')) ? 'active' : ''}}">
+            <a class="nav-link" href="{{route('system.business_cv.index')}}">
+            <i class="fa fa-check-circle menu-icon"></i>
+            <span class="menu-title">Business CV</span>
+            </a>
+        </li>
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.application.index','system.application.create','system.application.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.application.index')}}">
             <i class="fa fa-bookmark menu-icon"></i>
             <span class="menu-title">Applications</span>
           </a>
-        </li> 
+        </li>
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.collection_fees.index', 'system.collection_fees.create', 'system.collection_fees.edit')) ? 'active' : ''}}">
             <a class="nav-link" href="{{route('system.collection_fees.index')}}">
               <i class="fa fa-check-circle menu-icon"></i>

@@ -28,7 +28,7 @@ class NotifyDepartmentEmail extends Event {
 
 		foreach($this->data as $index =>$value){
 			$mailname = "oBOSS Business Transaction";
-            $user_email =  $value['email'];
+            $user_email = $value['email'];
             $this->data['department_name'] = $value['department_name'];
             $this->data['application_no'] = $value['application_no'];
 

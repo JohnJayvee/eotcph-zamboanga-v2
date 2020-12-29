@@ -22,6 +22,8 @@ use App\Laravel\Requests\System\BPLORequest;
  */
 use App\Laravel\Events\NotifyDepartmentEmail;
 use App\Laravel\Events\SendEmailApprovedBusiness;
+use App\Laravel\Events\SendEmailDeclinedBusiness;
+use App\Laravel\Events\SendDeclinedEmailReference;
 use App\Laravel\Requests\System\TransactionCollectionRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl;
 use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,RegulatoryFee};
@@ -269,12 +271,30 @@ class BusinessTransactionController extends Controller
             	];
 			    $notification_data_email = new SendEmailApprovedBusiness($insert);
 			    Event::dispatch('send-email-business-approved', $notification_data_email);
-			}
+            }
+            $insert = [];
+            foreach(json_decode($transaction->department_remarks) as $value) {
+                $insert[] = [
+                    'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,
+                    'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
+                    'amount' => $transaction->total_amount,
+                    'ref_num' => $transaction->code,
+                    'full_name' => $transaction->owner ? $transaction->owner->full_name : $transaction->business_name,
+                    'application_name' => $transaction->application_name,
+                    'modified_at' => Helper::date_only($transaction->modified_at),
+                    'department_name' => Helper::department_name($value->id),
+                    'remarks' =>  $value->remarks
+                ];
+            }
+
+            $notification_data_email = new SendEmailDeclinedBusiness($insert);
+            Event::dispatch('send-email-business-declined', $notification_data_email);
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Transaction has been successfully Processed.");
 			return redirect()->route('system.business_transaction.'.strtolower($type));
 		}catch(\Exception $e){
+            throw $e;
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
