@@ -389,12 +389,12 @@ class BusinessTransactionController extends Controller
                 ];
             }
             // Send via SMS
-            // $notification_data = new NotifyBPLOAdminSMS($insert);
-            // Event::dispatch('notify-bplo-admin-sms', $notification_data);
+            // $notification_data = new NotifyDepartmentSMS($insert);
+            // Event::dispatch('notify-departments-sms', $notification_data);
 
             // send via Email
-            $notification_data = new NotifyBPLOAdminEmail($insert);
-            Event::dispatch('notify-bplo-admin-email', $notification_data);
+            $notification_data = new NotifyDepartmentEmail($insert);
+            Event::dispatch('notify-departments-email', $notification_data);
 
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -402,6 +402,7 @@ class BusinessTransactionController extends Controller
 			return redirect()->route('system.business_transaction.pending');
 
 		}catch(\Exception $e){
+            throw $e;
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
@@ -413,9 +414,9 @@ class BusinessTransactionController extends Controller
 		$auth = Auth::user();
 		$this->data['page_title'] .= " - Assesment Details";
 		$this->data['transaction'] = BusinessTransaction::find($id);
-		
+
 		$this->data['business_fees'] = RegulatoryFee::where('transaction_id',$id)->where('office_code',$auth->department->code)->get();
-	
+
 
 		return view('system.business-transaction.assessment',$this->data);
 	}
@@ -442,10 +443,10 @@ class BusinessTransactionController extends Controller
 				session()->flash('notification-msg', "No Assesment Found.");
 				return redirect()->route('system.business_transaction.assessment',[$id]);
 			}
-			
+
 			$array1 = [];
 			$array2 = [];
-			
+
 			foreach ($response->content['data'] as $key => $value) {
 				if ($value['FeeType'] == 0 ) {
 					array_push($array1, $value);
@@ -473,7 +474,7 @@ class BusinessTransactionController extends Controller
 					$new_regulatory_fee->status = "PENDING";
 					$new_regulatory_fee->office_code = $request->get('office_code');
 					$new_regulatory_fee->fee_type = 0;
-					$new_regulatory_fee->save(); 
+					$new_regulatory_fee->save();
 				}
 			}
 
@@ -496,7 +497,7 @@ class BusinessTransactionController extends Controller
 					$new_regulatory_fee->status = "PENDING";
 					$new_regulatory_fee->office_code = $request->get('office_code');
 					$new_regulatory_fee->fee_type = 1;
-					$new_regulatory_fee->save(); 
+					$new_regulatory_fee->save();
 				}
 
 			}
