@@ -730,7 +730,7 @@
                         <div class="text-center">
                             <h1 class="text-success text-uppercase">Success</h1>
                             <p style="font-weight: bold">This is to confirm that we have recieved your assessment request. We will process your request and will update you on the status. Thank you!</p>
-                            <a href="{{route('web.business.index')}}" class="btn btn-light text-success text-uppercase session-forget">Back to Home</a>
+                            <a href="{{route('web.business.history',[$business->id])}}" class="btn btn-light text-success text-uppercase session-forget">Return</a>
                         </div>
                     </div>
                 </div>

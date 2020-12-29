@@ -5,22 +5,26 @@ namespace App\Laravel\Controllers\System;
 /*
  * Request Validator
  */
-use App\Laravel\Requests\PageRequest;
+use App\Laravel\Models\User;
 
 /*
  * Models
  */
+use App\Laravel\Requests\PageRequest;
+use App\Laravel\Events\NotifyDepartmentSMS;
+use App\Laravel\Events\NotifyBPLOAdminEmail;
+
+
+
+
 use App\Laravel\Requests\System\BPLORequest;
-use App\Laravel\Events\SendEmailApprovedBusiness;
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,RegulatoryFee};
-
-
-
-
-use App\Laravel\Requests\System\TransactionCollectionRequest;
 /* App Classes
  */
+use App\Laravel\Events\NotifyDepartmentEmail;
+use App\Laravel\Events\SendEmailApprovedBusiness;
+use App\Laravel\Requests\System\TransactionCollectionRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl;
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,RegulatoryFee};
 
 class BusinessTransactionController extends Controller
 {
@@ -205,11 +209,18 @@ class BusinessTransactionController extends Controller
 		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $requirements_id))->get();
 
 		$this->data['department'] =  Department::pluck('name','id')->toArray();
-		$this->data['regulatory_fee'] = RegulatoryFee::where('transaction_id',$id)->get();
-
+        $this->data['regulatory_fee'] = RegulatoryFee::where('transaction_id',$id)->get();
+        $this->update_status($id);
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.business-transaction.show',$this->data);
-	}
+    }
+
+    public function update_status($id = null)
+    {
+        $business_transaction = BusinessTransaction::find($id);
+        $business_transaction->isNew = null;
+        $business_transaction->save();
+    }
 
 	/*public function bplo_approved (BPLORequest $request ){
 		DB::beginTransaction();
@@ -365,9 +376,25 @@ class BusinessTransactionController extends Controller
 
 			$transaction = $request->get('business_transaction_data');
 
-			$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
+            $transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
 			$transaction->is_validated = 1;
-			$transaction->save();
+            $transaction->save();
+            $department = User::whereIn('department_id', explode(",",$request->get('department_code')))->get();
+            foreach ($department as $departments ) {
+                $insert[] = [
+                    'contact_number' => $departments->contact_number,
+                    'email' => $departments->email,
+                    'department_name' => $departments->department->name,
+                    'application_no' => $transaction->application_permit->application_no,
+                ];
+            }
+            // Send via SMS
+            // $notification_data = new NotifyBPLOAdminSMS($insert);
+            // Event::dispatch('notify-bplo-admin-sms', $notification_data);
+
+            // send via Email
+            $notification_data = new NotifyBPLOAdminEmail($insert);
+            Event::dispatch('notify-bplo-admin-email', $notification_data);
 
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -377,7 +404,7 @@ class BusinessTransactionController extends Controller
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
 			return redirect()->back();
 		}
 	}

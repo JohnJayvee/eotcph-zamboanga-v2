@@ -2,20 +2,25 @@
 
 namespace App\Laravel\Controllers\Web;
 
+use App\Laravel\Models\User;
 use App\Laravel\Models\Business;
+use Carbon\Carbon as CarbonCarbon;
 use App\Http\Controllers\Controller;
 use App\Laravel\Models\BusinessLine;
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Services\FileUploader;
 use App\Laravel\Models\BusinessActivity;
+use App\Laravel\Events\NotifyBPLOAdminSMS;
+use App\Laravel\Events\NotifyDepartmentSMS;
 use App\Laravel\Models\BusinessTransaction;
+use App\Laravel\Events\NotifyBPLOAdminEmail;
+use App\Laravel\Events\NotifyDepartmentEmail;
 use Carbon,Auth,Str,Curl,Helper, DB, Log,Event;
 use App\Laravel\Models\ApplicationBusinessPermit;
+use App\Laravel\Events\UploadLineOfBusinessToLocal;
 use App\Laravel\Requests\Web\BusinessPermitRequest;
 use App\Laravel\Models\ApplicationBusinessPermitFile;
 use App\Laravel\Events\SendBusinessPermitConfirmation;
-use App\Laravel\Events\UploadLineOfBusinessToLocal;
-use Carbon\Carbon as CarbonCarbon;
 
 class BusinessPermitController extends Controller{
 
@@ -44,7 +49,7 @@ class BusinessPermitController extends Controller{
         $auth = Auth::guard('customer')->user();
         $business = Business::find(session()->get('selected_business_id'));
         $this->data['business'] = $business;
-        
+
 		DB::beginTransaction();
 		try{
 			$new_business_permit = new ApplicationBusinessPermit();
@@ -56,6 +61,7 @@ class BusinessPermitController extends Controller{
             $new_business_permit->save();
 
             $new_business_transaction = new BusinessTransaction();
+            $new_business_transaction->isNew = 1;
             $new_business_transaction->owners_id = $auth->id;
             $new_business_transaction->business_id = $business->id;
             $new_business_transaction->business_name = $business->business_name;
@@ -74,7 +80,7 @@ class BusinessPermitController extends Controller{
             $list_of_line_of_business_save_to_local = array();
             foreach ($request->line_of_business as $key => $v) {
                 $account_code = explode("---", $request->account_code [$key]);
-               
+
                 /**
                  * 0 = line of business name + particular
                  * 1 = reference code
@@ -99,7 +105,7 @@ class BusinessPermitController extends Controller{
                 $data = array_merge($data, array("particulars"=>$request->line_of_business [$key]));
                 array_push($list_of_line_of_business_save_to_local, $data);
             }
-            
+
             $permit_id = $new_business_transaction->id;
             if(count(request('file')) > 0){
                 foreach (request('file') as $key => $value) {
@@ -123,19 +129,37 @@ class BusinessPermitController extends Controller{
                 'email' => $auth->email,
                 'name' => $auth->name
             ];
- 
+
             $request_body = [
                 'business_id' => $business->business_id_no,
                 'ebriu_application_no' =>  $new_business_permit->application_no,
                 'year' => Carbon::now()->year,
                 'line_of_business' => $list_of_line_of_business_save_to_local
             ];
-            
+
+            $bplo = User::where('type', 'admin')->first();
+            $insert_department[] = [
+                'email' => $bplo->email,
+                'contact_number' => $bplo->contact_number,
+                'business_owner' => Auth::guard('customer')->user()->name,
+                'application_no' => $request->application_no,
+            ];
+
             $line_of_business_data = new UploadLineOfBusinessToLocal($request_body);
             Event::dispatch('upload-line-of-business-to-local', $line_of_business_data);
-            
+
             $notification_data = new SendBusinessPermitConfirmation($insert);
             Event::dispatch('send-business-permit-assessment-confirmation', $notification_data);
+
+            // Send event to BPLO Admin
+
+            // Send via SMS
+            // $notification_data = new NotifyBPLOAdminSMS($insert_department);
+            // Event::dispatch('notify-bplo-admin-sms', $notification_data);
+
+            // send via Email
+            $notification_data = new NotifyBPLOAdminEmail($insert_department);
+            Event::dispatch('notify-bplo-admin-email', $notification_data);
             session()->put('successmodal', 1);
             session()->forget('application_id');
             session()->forget('application_name');

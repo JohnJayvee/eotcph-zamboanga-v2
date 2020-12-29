@@ -100,6 +100,18 @@ class EventServiceProvider extends ServiceProvider
         'upload-line-of-business-to-local' => [
             'App\Laravel\Listeners\UploadLineOfBusinessToLocalListener'
         ],
+        'notify-departments-sms' => [
+            'App\Laravel\Listeners\NotifyDepartmentSMSListener'
+        ],
+        'notify-departments-email' => [
+            'App\Laravel\Listeners\NotifyDepartmentEmailListener'
+        ],
+        'notify-bplo-admin-sms' => [
+            'App\Laravel\Listeners\NotifyBPLOAdminSMSListener'
+        ],
+        'notify-bplo-admin-email' => [
+            'App\Laravel\Listeners\NotifyBPLOAdminEmailListener'
+        ],
 
     ];
 
