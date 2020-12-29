@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRegulatoryFeeTable extends Migration
+class CreateBusinessFeeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRegulatoryFeeTable extends Migration
      */
     public function up()
     {
-        Schema::create('regulatory_fee', function (Blueprint $table) {
+        Schema::create('business_fee', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('transaction_id')->nullable();
             $table->string('business_id')->nullable();
@@ -34,6 +34,6 @@ class CreateRegulatoryFeeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('regulatory_fee');
+        Schema::dropIfExists('business_fee');
     }
 }

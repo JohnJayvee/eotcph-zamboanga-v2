@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Laravel\Traits\DateFormatter;
 use Str;
 
-class RegulatoryFee extends Model{
+class RegulatoryPayment extends Model{
 
     use SoftDeletes,DateFormatter;
 
@@ -16,7 +16,7 @@ class RegulatoryFee extends Model{
      *
      * @var string
      */
-    protected $table = "regulatory_fee";
+    protected $table = "regulatory_payment";
 
     /**
      * The database connection used by the model.

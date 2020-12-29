@@ -9,7 +9,7 @@ use App\Laravel\Requests\PageRequest;
 use App\Laravel\Requests\Web\TransactionRequest;
 use App\Laravel\Requests\Web\UploadRequest;
 use App\Laravel\Requests\Web\BusinessRequest;
-use App\Laravel\Models\{BusinessTransaction,Business,BusinessLine,RegulatoryFee};
+use App\Laravel\Models\{BusinessTransaction,Business,BusinessLine,BusinessFee,RegulatoryPayment};
 use App\Laravel\Requests\Web\EditBusinessRequest;
 /*
  * Models
@@ -38,32 +38,50 @@ class BusinessPaymentController extends Controller
         $this->data['auth'] = Auth::guard('customer')->user();
         $this->data['profile'] = Business::find($id);
 
-        $this->data['regulatory_fee'] = RegulatoryFee::where('business_id', $id)->get();
+        $this->data['transaction'] = BusinessTransaction::where('business_id',$id)->first();
+        $this->data['regulatory_fee'] = BusinessFee::where('business_id', $id)->where('fee_type' , 0)->get();
         return view('web.business.payment',$this->data);
     }
 
-    public function payment(PageRequest $request,$id = NULL){
-    	try{
-			
-    		$code = 'PF-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
-    		$business = BusinessTransaction::where('business_id', $id)->first();
+
+    public function regulatory_payment(PageRequest $request, $id = null){
+    	$transaction_data = BusinessTransaction::find($id);
+		$transaction = RegulatoryPayment::where('transaction_id' , $id)->first();
+		$prefix = explode('-', $transaction->transaction_code)[0];
+		$code = $transaction->transaction_code;
+		$amount = $transaction->amount;
+		$prefix = strtoupper($prefix);
+
+		if(!$transaction){
+			session()->flash('notification-status',"failed");
+			session()->flash('notification-msg',"Record not found");
+			return redirect()->back();
+		}
+		if($prefix == "RF" AND $transaction->transaction_status != "PENDING") {
+			session()->flash('notification-status',"warning");
+			session()->flash('notification-msg', "Transaction can not be modified anymore. No more action needed.");
+			return redirect()->back();
+		}
+		try{
+			session()->put('transaction.code', $code);
+
 			$request_body = Helper::digipep_transaction([
-				'title' => "Business Permit",
+				'title' => $transaction_data->application_name,
 				'trans_token' => $code,
 				'transaction_type' => "", 
-				'amount' => $request->get('amount'),
+				'amount' => $amount,
 				'penalty_fee' => 0,
 				'dst_fee' => 0,
-				'particular_fee' => $request->get('amount'),
+				'particular_fee' => $amount,
 				'success_url' => route('web.digipep.success',[$code]),
 				'cancel_url' => route('web.digipep.cancel',[$code]),
 				'return_url' => route('web.confirmation',[$code]),
 				'failed_url' => route('web.digipep.failed',[$code]),
-				'first_name' => $business->business_name,
-				'middle_name' => $business->business_name,
-				'last_name' => $business->business_name,
-				'contact_number' => $business->contact_number,
-				'email' => $business->email
+				'first_name' => $transaction->business_name,
+				'middle_name' => $transaction_data->business_name,
+				'last_name' => $transaction_data->business_name,
+				'contact_number' => $transaction_data->contact_number,
+				'email' => $transaction_data->email
 			]);  
 			$response = Curl::to(env('DIGIPEP_CHECKOUT_URL'))
 			 		->withHeaders( [
@@ -79,7 +97,6 @@ class BusinessPaymentController extends Controller
 				$content = $response->content;
 
 				return redirect()->away($content['checkoutUrl']);
-
 			}else{
 				Log::alert("DIGIPEP Request System Error ($code): ", array($response));
 				session()->flash('notification-status',"failed");
@@ -94,6 +111,5 @@ class BusinessPaymentController extends Controller
 			session()->flash('notification-msg',"Server Error. Please try again.".$e->getMessage());
 			return redirect()->back();
 		}
-    }
-
+	}
 }

@@ -36,6 +36,9 @@ class DigipepController extends Controller
 				case 'OT':
 					$transaction = OtherTransaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
 					break;
+				case 'RF':
+					$transaction = RegulatoryPayment::whereRaw("LOWER(transaction_code)  LIKE  '%{$code}%'")->first();
+					break;
 				default:
 					$transaction = Transaction::whereRaw("LOWER(processing_fee_code)  LIKE  '%{$code}%'")->first();
 					break;
@@ -128,7 +131,31 @@ class DigipepController extends Controller
 					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
 				}
 			}
-			
+			if(isset($response->payment) AND Str::upper($response->payment->status) == "PAID" AND $transaction->transaction_status != "COMPLETED" AND $prefix == "OT"){
+
+				DB::beginTransaction();
+				try{
+					$transaction->payment_reference = $response->transactionCode;
+					$transaction->payment_method  = $response->payment->paymentMethod;
+					$transaction->payment_type  = $response->payment->paymentType;
+
+					$transaction->payment_option  = "DIGIPEP";
+
+					$transaction->payment_date = Carbon::now();
+					$transaction->payment_status  = "PAID";
+					$transaction->transaction_status  = "COMPLETED";
+					$transaction->eor_url = $response->eorUrl;
+					$convenience_fee = $response->payment->convenienceFee;
+					$transaction->convenience_fee = $convenience_fee; 
+					$transaction->total_amount = $transaction->amount + $convenience_fee;
+					$transaction->save();
+					DB::commit();
+
+				}catch(\Exception $e){
+					DB::rollBack();
+					Log::alert("Digipep Error : "."Server Error. Please try again.".$e->getLine());
+				}
+			}
 		}
 
 		end:

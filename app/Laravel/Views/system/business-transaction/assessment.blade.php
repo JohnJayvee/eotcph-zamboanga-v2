@@ -55,7 +55,7 @@
       <div class="card-body">
         <h4 class="card-title">Assessment Details</h4>
         <div class="table-responsive shadow-sm fs-15 mb-3">
-          <table class="table table-bordered">
+           <table class="table table-bordered table-wrap" style="table-layout: fixed;">
             <thead>
               <tr class="text-center">
                   <th class="text-title" rowspan="2" style="vertical-align: middle;"></th>
@@ -78,8 +78,8 @@
                   <td rowspan="{{count(json_decode($business_fee->collection_of_fees)) + 1}}">{{$business_fee->status}}</td>
                 @foreach(json_decode($business_fee->collection_of_fees) as $collection)
                   <tr>
-                    <td>{{$collection->BusinessID}}</td>
-                    <td>{{$collection->Amount}}</td>
+                    <td style="font-size: 12px">{{$collection->BusinessID}}</td>
+                    <td style="font-size: 12px">{{$collection->Amount}}</td>
                   </tr>
                 @endforeach
               @endforeach
