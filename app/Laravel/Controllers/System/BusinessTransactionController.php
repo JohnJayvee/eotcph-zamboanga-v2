@@ -380,6 +380,7 @@ class BusinessTransactionController extends Controller
 			$transaction->is_validated = 1;
             $transaction->save();
             $department = User::whereIn('department_id', explode(",",$request->get('department_code')))->get();
+            $insert = [];
             foreach ($department as $departments ) {
                 $insert[] = [
                     'contact_number' => $departments->contact_number,
@@ -402,7 +403,6 @@ class BusinessTransactionController extends Controller
 			return redirect()->route('system.business_transaction.pending');
 
 		}catch(\Exception $e){
-            throw $e;
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
