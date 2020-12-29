@@ -608,7 +608,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email Address</label>
-                                        <input type="text" class="form-control form-control-sm {{ $errors->first('emergency_contact_email') ? 'is-invalid': NULL  }}"  name="emergency_contact_email" value="{{old('emergency_contact_email',$auth->telephone_no) }}">
+                                        <input type="email" class="form-control form-control-sm {{ $errors->first('emergency_contact_email') ? 'is-invalid': NULL  }}"  name="emergency_contact_email" value="{{old('emergency_contact_email',$auth->telephone_no) }}" required>
                                         @if($errors->first('emergency_contact_email'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('emergency_contact_email')}}</small>
                                         @endif

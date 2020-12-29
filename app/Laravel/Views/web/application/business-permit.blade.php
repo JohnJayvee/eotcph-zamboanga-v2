@@ -604,7 +604,7 @@
                                                 <tr id="repeat_form" class="activity">
                                                     <td>
                                                         <input type="text" readonly class="form-control form-control-sm {{ $errors->has('line_of_business.*') ? 'is-invalid': NULL  }}" name="line_of_business[]" value="{{old('line_of_business[]', $item->name) }}">
-                                                        <input type="hidden" readonly class="form-control form-control-sm {{ $errors->has('account_code.*') ? 'is-invalid': NULL  }}" name="account_code[]" value="{{old('class[]', $item->name."---".$item->reference_code."---".$item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class : 0))."---".$item->account_code }}">
+                                                        <input type="hidden" readonly class="form-control form-control-sm {{ $errors->has('account_code.*') ? 'is-invalid': NULL  }}" name="account_code[]" value="{{old('account_code[]', $item->name."---".$item->reference_code."---".$item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class : 0))."---".$item->account_code }}">
                                                         <input type="hidden" class="form-control form-control-sm" name="is_new[]" value="0">
                                                     </td>
                                                     <td>
@@ -771,7 +771,7 @@
 
 <script type="text/javascript">
     var line_of_businesses = null;
-    
+
     $('.session-forget').click(function (){
         {{ session()->forget('successmodal') }}
     })

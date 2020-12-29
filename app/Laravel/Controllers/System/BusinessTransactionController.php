@@ -67,10 +67,11 @@ class BusinessTransactionController extends Controller
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
 
-		$this->data['transactions'] = BusinessTransaction::where('status',"PENDING")->where('is_resent',0)->where(function($query){
+		$this->data['transactions'] = BusinessTransaction::with('application_permit')->where('status',"PENDING")->where('is_resent',0)->whereHas('application_permit',function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(business_name)  LIKE  '%{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(code) LIKE  '%{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(code) LIKE  '%{$this->data['keyword']}%'")
+							->orWhereRaw("LOWER(application_no) LIKE  '%{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
@@ -205,7 +206,7 @@ class BusinessTransactionController extends Controller
 
 		$this->data['department'] =  Department::pluck('name','id')->toArray();
 		$this->data['regulatory_fee'] = RegulatoryFee::where('transaction_id',$id)->get();
-		
+
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.business-transaction.show',$this->data);
 	}
@@ -317,7 +318,7 @@ class BusinessTransactionController extends Controller
 	 				array_push($dept_id, $auth->department->code);
 	 				$dept_id_final = $dept_id;
 	 			}
-	 			
+
 
 	 			$final_value = array_merge($existing , $array_remarks);
 	 		}else{
@@ -338,7 +339,7 @@ class BusinessTransactionController extends Controller
 
 		    if(empty($result_array)){
 		    	$transaction->for_bplo_approval = 1;
-		    	$transaction->save();  
+		    	$transaction->save();
 		    }
 
 			DB::commit();
@@ -387,7 +388,8 @@ class BusinessTransactionController extends Controller
 		$this->data['transaction'] = BusinessTransaction::find($id);
 		
 		$this->data['business_fees'] = RegulatoryFee::where('transaction_id',$id)->where('office_code',$auth->department->code)->get();
-		
+	
+
 		return view('system.business-transaction.assessment',$this->data);
 	}
 
@@ -400,14 +402,14 @@ class BusinessTransactionController extends Controller
 			$request_body = [
 				'business_id' => $request->get('business_id'),
 				'ebriu_application_no' => $request->get('application_no'),
-				'year' => "2021", 
+				'year' => "2021",
 				'office_code' => $request->get('office_code'),
 			];
 			$response = Curl::to(env('ZAMBOANGA_URL'))
 			         ->withData($request_body)
 			         ->asJson( true )
 			         ->returnResponseObject()
-			         ->post();	
+			         ->post();
 			if ($response->content['data'] == NULL) {
 				session()->flash('notification-status', "failed");
 				session()->flash('notification-msg', "No Assesment Found.");
@@ -469,6 +471,7 @@ class BusinessTransactionController extends Controller
 					$new_regulatory_fee->fee_type = 1;
 					$new_regulatory_fee->save(); 
 				}
+
 			}
 
 			DB::commit();

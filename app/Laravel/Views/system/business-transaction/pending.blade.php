@@ -12,13 +12,13 @@
         <p class="text-dim  float-right">EOR-PHP Processor Portal / Transactions</p>
       </div>
     </div>
-  
+
   </div>
 
   <div class="col-12 ">
     <form>
       <div class="row pb-2">
-        
+
         <div class="col-md-4">
           <label>Application Type</label>
          {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
@@ -60,6 +60,7 @@
           <tr class="text-center ">
             <th class="text-title p-3" width="15%">Transaction Date</th>
             <th class="text-title p-3" width="15%">Business Name/Owner</th>
+            <th class="text-title p-3" width="15%">Application Number</th>
             <th class="text-title p-3" width="30%">Application Type</th>
             <th class="text-title p-3" width="10%">Amount</th>
             <th class="text-title p-3" width="10%">For BPLO Approval</th>
@@ -72,6 +73,7 @@
           <tr class="text-center">
             <td>{{ Helper::date_format($transaction->created_at)}}</td>
             <td>{{str::title($transaction->business_name)}} /<br>  {{str::title($transaction->owner->full_name)}}</td>
+            <td>{{str::title($transaction->application_permit->application_no)}}</td>
             <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
             <td>
               <div>{{Helper::money_format($transaction->amount) ?: '---'}}</div>
@@ -100,8 +102,8 @@
            <td colspan="8" class="text-center"><i>No Transaction Records Available.</i></td>
           </tr>
           @endforelse
-         
-          
+
+
         </tbody>
       </table>
     </div>
@@ -120,7 +122,7 @@
 @section('page-styles')
 <link rel="stylesheet" href="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
 <style type="text/css" >
-  .input-daterange input{ background: #fff!important; }  
+  .input-daterange input{ background: #fff!important; }
   .btn-sm{
     border-radius: 10px;
   }

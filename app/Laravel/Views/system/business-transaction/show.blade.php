@@ -20,18 +20,22 @@
           <div class="col-md-1 text-center">
             <img src="{{asset('system/images/default.jpg')}}" class="rounded-circle" width="100%">
           </div>
-          <div class="col-md-11 d-flex">
+          <div class="col-md-9 d-flex">
             <p class="text-title fw-500 pt-3">Application by: <span class="text-black">{{Str::title($transaction->customer ? $transaction->customer->full_name : $transaction->customer_name)}}</span></p>
             <p class="text-title fw-500 pl-3" style="padding-top: 15px;">|</p>
             <p class="text-title fw-500 pt-3 pl-3">Application Sent: <span class="text-black">{{ Helper::date_format($transaction->created_at)}}</span></p>
           </div>
-
+          <div class="col-md-2 d-flex align-items-end flex-column">
+            <p class="pull-right badge badge-danger">Checked the I Agree Checkbox</p>
+          </div>
         </div>
       </div>
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
         <div class="row">
           <div class="col-md-6">
+            <p class="text-title fw-500" style="font-size: 1.2rem;">Application Number: <span class="text-black">{{str::title($transaction->application_permit->application_no)}}</span></p>
             <p class="text-title fw-500">Business Name: <span class="text-black">{{str::title($transaction->business_name)}}</span></p>
+            <p class="text-title fw-500">Business ID Number: <span class="text-black">{{str::title($transaction->business_info->business_id_no)}}</span></p>
             <p class="text-title fw-500">Dominant Name: <span class="text-black">{{str::title($transaction->business_info->dominant_name)}}</span></p>
             <p class="text-title fw-500">Business Number: <span class="text-black">{{$transaction->business_info->dti_sec_cda_registration_no ?: "-"}}</span></p>
             <p class="text-title fw-500">Business Type: <span class="text-black">{{str::title($transaction->business_info->business_type)}}</span></p>
@@ -204,7 +208,7 @@
                     <td colspan="4" class="text-center"> No Assessment Records Available </td>
                   </tr>
                 @endforelse
-                 
+
               </tbody>
             </table>
           </div>

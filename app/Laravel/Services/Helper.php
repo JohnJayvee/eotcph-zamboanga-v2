@@ -679,8 +679,8 @@ class Helper{
 		try{
 			$response = Curl::to("https://api.movider.co/v1/sms")
                 ->withData([
-                    'api_key' => "1lUaKlOlltVWqDAu0FgUlUQBLPz",
-                    'api_secret' => "gT3ZqvZPq6R0bA5rfj3wNaGY6QnDoZsuwhNDFyUf",
+                    'api_key' => "1m2wwrOS0zkVozrx4HMH1is4XXa",
+                    'api_secret' => "kgFegmoWP6oaQ625xHTxfrVYe0jGUqg8X95AG6qm",
                     'message' => $msg_body,
                     'from' => "oBOSS",
                     'to' => $contact_number
