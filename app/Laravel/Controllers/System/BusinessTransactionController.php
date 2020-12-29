@@ -5,7 +5,7 @@ namespace App\Laravel\Controllers\System;
 /*
  * Request Validator
  */
-use App\Laravel\Models\User;
+use App\Laravel\Requests\PageRequest;
 
 /*
  * Models
@@ -13,23 +13,14 @@ use App\Laravel\Models\User;
 use App\Laravel\Requests\System\BPLORequest;
 use App\Laravel\Events\SendEmailApprovedBusiness;
 use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment};
-use App\Laravel\Requests\PageRequest;
-use App\Laravel\Events\NotifyDepartmentSMS;
-use App\Laravel\Events\NotifyBPLOAdminEmail;
 
 
 
 
-use App\Laravel\Requests\System\BPLORequest;
+use App\Laravel\Requests\System\TransactionCollectionRequest;
 /* App Classes
  */
-use App\Laravel\Events\NotifyDepartmentEmail;
-use App\Laravel\Events\SendEmailApprovedBusiness;
-use App\Laravel\Events\SendEmailDeclinedBusiness;
-use App\Laravel\Events\SendDeclinedEmailReference;
-use App\Laravel\Requests\System\TransactionCollectionRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl;
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,RegulatoryFee};
 
 class BusinessTransactionController extends Controller
 {
@@ -214,19 +205,11 @@ class BusinessTransactionController extends Controller
 		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $requirements_id))->get();
 
 		$this->data['department'] =  Department::pluck('name','id')->toArray();
+		$this->data['regulatory_fee'] = BusinessFee::where('transaction_id',$id)->get();
 
-        $this->data['regulatory_fee'] = RegulatoryFee::where('transaction_id',$id)->get();
-        $this->update_status($id);
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.business-transaction.show',$this->data);
-    }
-
-    public function update_status($id = null)
-    {
-        $business_transaction = BusinessTransaction::find($id);
-        $business_transaction->isNew = null;
-        $business_transaction->save();
-    }
+	}
 
 	/*public function bplo_approved (BPLORequest $request ){
 		DB::beginTransaction();
@@ -274,7 +257,6 @@ class BusinessTransactionController extends Controller
 			    $notification_data_email = new SendEmailApprovedBusiness($insert);
 			    Event::dispatch('send-email-business-approved', $notification_data_email);
 
-
 			    $regulatory_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 0)->get();
 
 			    if ($regulatory_fee) {
@@ -283,7 +265,7 @@ class BusinessTransactionController extends Controller
 			    	foreach ($regulatory_fee as $key => $value) {
 			    		array_push($business_fee_id, $value->id);
 			    		$total_amount += Helper::db_amount($value->amount);
-			    		
+
 			    	}
 			    	$new_regulatory_payment = new RegulatoryPayment();
 			    	$new_regulatory_payment->business_fee_id = implode(",", $business_fee_id);
@@ -293,32 +275,29 @@ class BusinessTransactionController extends Controller
 			    	$new_regulatory_payment->transaction_code = 'RF-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_regulatory_payment->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
 			    	$new_regulatory_payment->save();
 			    }
-			}
 
-            $insert = [];
-            foreach(json_decode($transaction->department_remarks) as $value) {
-                $insert[] = [
-                    'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,
-                    'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
-                    'amount' => $transaction->total_amount,
-                    'ref_num' => $transaction->code,
-                    'full_name' => $transaction->owner ? $transaction->owner->full_name : $transaction->business_name,
-                    'application_name' => $transaction->application_name,
-                    'modified_at' => Helper::date_only($transaction->modified_at),
-                    'department_name' => Helper::department_name($value->id),
-                    'remarks' =>  $value->remarks
-                ];
+
+			} else {
+                $insert = [];
+                foreach(json_decode($transaction->department_remarks) as $value) {
+                    $insert[] = [
+                        'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,
+                        'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
+                        'amount' => $transaction->total_amount,
+                        'ref_num' => $transaction->code,
+                        'full_name' => $transaction->owner ? $transaction->owner->full_name : $transaction->business_name,
+                        'application_name' => $transaction->application_name,
+                        'modified_at' => Helper::date_only($transaction->modified_at),
+                        'department_name' => Helper::department_name($value->id),
+                        'remarks' =>  $value->remarks
+                    ];
+                }
             }
-
-            $notification_data_email = new SendEmailDeclinedBusiness($insert);
-            Event::dispatch('send-email-business-declined', $notification_data_email);
-
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Transaction has been successfully Processed.");
 			return redirect()->route('system.business_transaction.'.strtolower($type));
 		}catch(\Exception $e){
-            throw $e;
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
@@ -420,26 +399,9 @@ class BusinessTransactionController extends Controller
 
 			$transaction = $request->get('business_transaction_data');
 
-            $transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
+			$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
 			$transaction->is_validated = 1;
-            $transaction->save();
-            $department = User::whereIn('department_id', explode(",",$request->get('department_code')))->get();
-            $insert = [];
-            foreach ($department as $departments ) {
-                $insert[] = [
-                    'contact_number' => $departments->contact_number,
-                    'email' => $departments->email,
-                    'department_name' => $departments->department->name,
-                    'application_no' => $transaction->application_permit->application_no,
-                ];
-            }
-            // Send via SMS
-            // $notification_data = new NotifyDepartmentSMS($insert);
-            // Event::dispatch('notify-departments-sms', $notification_data);
-
-            // send via Email
-            $notification_data = new NotifyDepartmentEmail($insert);
-            Event::dispatch('notify-departments-email', $notification_data);
+			$transaction->save();
 
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -449,7 +411,7 @@ class BusinessTransactionController extends Controller
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
 		}
 	}
@@ -458,7 +420,7 @@ class BusinessTransactionController extends Controller
 		$auth = Auth::user();
 		$this->data['page_title'] .= " - Assesment Details";
 		$this->data['transaction'] = BusinessTransaction::find($id);
-		
+
 		$this->data['business_fees'] = BusinessFee::where('transaction_id',$id)->where('office_code',$auth->department->code)->get();
 
 		return view('system.business-transaction.assessment',$this->data);
@@ -509,7 +471,6 @@ class BusinessTransactionController extends Controller
 					$existing->amount = Helper::db_amount($total_amount);
 					$existing->save();
 				}else{
-
 					$new_business_fee = new BusinessFee();
 					$new_business_fee->business_id = $this->data['transaction']->business_id;
 					$new_business_fee->transaction_id =$this->data['transaction']->id;
@@ -518,8 +479,7 @@ class BusinessTransactionController extends Controller
 					$new_business_fee->status = "PENDING";
 					$new_business_fee->office_code = $request->get('office_code');
 					$new_business_fee->fee_type = 0;
-					$new_business_fee->save(); 
-
+					$new_business_fee->save();
 				}
 			}
 
@@ -542,7 +502,7 @@ class BusinessTransactionController extends Controller
 					$new_business_fee->status = "PENDING";
 					$new_business_fee->office_code = $request->get('office_code');
 					$new_business_fee->fee_type = 1;
-					$new_business_fee->save(); 
+					$new_business_fee->save();
 				}
 
 			}
