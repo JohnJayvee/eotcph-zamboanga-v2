@@ -51,7 +51,7 @@ class BusinessPermitController extends Controller{
             $new_business_permit->customer_id = $auth->id;
             $new_business_permit->business_id = $business->id;
             $new_business_permit->status = 'pending';
-            $new_business_permit->application_no = $request->application_no;
+            $new_business_permit->application_no = strtoupper($request->application_no);
             $new_business_permit->type = $request->type_of_application;
             $new_business_permit->save();
 
@@ -73,18 +73,18 @@ class BusinessPermitController extends Controller{
             $list_of_line_of_business_save_to_local = array();
             foreach ($request->line_of_business as $key => $v) {
                 $account_code = explode("---", $request->account_code [$key]);
-               
                 /**
-                 * 0 = line of business name + particular
+                 * 0 = line of business name
                  * 1 = reference code
                  * 2 = b class
                  * 3 = s class
                  * 4 = x class
                  * 5 = account code
+                 * 6 = particular
                  */
                 $data = [
                     'application_business_permit_id' => $new_business_permit->id,
-                    'line_of_business' => $new_business_permit->type == "renew" && !$request->is_new [$key] ? $request->line_of_business [$key] : $account_code[0].(!empty($request->line_of_business [$key]) ? " (".$request->line_of_business [$key].")":""),
+                    'line_of_business' => $new_business_permit->type == "renew" && !$request->is_new [$key] ? $account_code[0] : $request->line_of_business [$key],
                     'no_of_unit' => $request->no_of_units [$key],
                     'capitalization' => $new_business_permit->type == "new" ? $request->amount [$key] : ($request->is_new [$key] ? $request->amount [$key] : 0),
                     'gross_sales' => $new_business_permit->type == "renew" && !$request->is_new [$key] ? $request->amount [$key] : 0,
@@ -92,8 +92,10 @@ class BusinessPermitController extends Controller{
                     'b_class' => $account_code [2],
                     's_class' => $account_code [3],
                     'x_class' => $account_code [4],
-                    'account_code' => $account_code [5]
+                    'account_code' => $account_code [5],
+                    'particulars' => $account_code [6]
                 ];
+
                 BusinessActivity::insert($data);
                 $data = array_merge($data, array("particulars"=>$request->line_of_business [$key]));
                 array_push($list_of_line_of_business_save_to_local, $data);
