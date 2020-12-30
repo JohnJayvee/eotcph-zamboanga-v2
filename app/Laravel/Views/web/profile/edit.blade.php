@@ -60,6 +60,15 @@
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-md-6 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="text-form pb-2">Email Address</label>
+                                            <input type="email" class="form-control {{$errors->first('email') ? 'is-invalid' : NULL}}" id="input_contact_number" name="email" placeholder="" value="{{old('email',$account->email)}}">
+                                            @if($errors->first('email'))
+                                                <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
+                                            @endif
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1" class="text-form pb-2 {{ $errors->first('gender') ? 'is-invalid': NULL  }} ">Gender</label>
