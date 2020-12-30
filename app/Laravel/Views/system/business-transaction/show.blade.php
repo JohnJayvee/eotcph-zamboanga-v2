@@ -168,13 +168,6 @@
             <div class="col-md-6 pt-2">
               <h5 class="text-title text-uppercase">Involved Departments</h5>
             </div>
-            <div class="col-md-6">
-              @if(Auth::user()->type == "processor")
-                @if(in_array(Auth::user()->department->code, json_decode($transaction->department_involved)))
-                  <a data-url="{{route('system.business_transaction.remarks',[$transaction->id])}}"  class="btn btn-primary btn-remarks border-5 text-white float-right">Add Remarks</a>
-                @endif
-              @endif
-            </div>
             <div class="table-responsive pt-2">
               <table class="table table-bordered table-wrap" style="table-layout: fixed;">
                 <thead>
@@ -306,7 +299,7 @@
           <div class="col-md-6">
             @if(Auth::user()->type == "processor")
               @if(in_array(Auth::user()->department->code, json_decode($transaction->department_involved)))
-                {{-- <a data-url="{{route('system.business_transaction.remarks',[$transaction->id])}}"  class="btn btn-primary btn-remarks border-5 text-white float-right">Add Remarks</a> --}}
+                <a data-url="{{route('system.business_transaction.remarks',[$transaction->id])}}"  class="btn btn-primary btn-remarks border-5 text-white float-right">Add Remarks</a>
               @endif
             @endif
           </div>

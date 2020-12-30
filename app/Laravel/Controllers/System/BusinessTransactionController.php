@@ -438,7 +438,24 @@ class BusinessTransactionController extends Controller
 			$transaction = $request->get('business_transaction_data');
 
 			$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
-			$transaction->is_validated = 1;
+            $transaction->is_validated = 1;
+            $department = User::whereIn('department_id', explode(",",$request->get('department_code')))->get();
+            $insert = [];
+            foreach ($department as $departments ) {
+                $insert[] = [
+                    'contact_number' => $departments->contact_number,
+                    'email' => $departments->email,
+                    'department_name' => $departments->department->name,
+                    'application_no' => $transaction->application_permit->application_no,
+                ];
+            }
+            // Send via SMS
+            // $notification_data = new NotifyDepartmentSMS($insert);
+            // Event::dispatch('notify-departments-sms', $notification_data);
+
+            // send via Email
+            $notification_data = new NotifyDepartmentEmail($insert);
+            Event::dispatch('notify-departments-email', $notification_data);
 			$transaction->save();
 
 			DB::commit();
