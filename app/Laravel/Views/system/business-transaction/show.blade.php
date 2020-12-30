@@ -177,11 +177,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @if($transaction->department_remarks)
-                    @foreach(json_decode($transaction->department_remarks) as $value)
+                  @if($transaction->department_involved)
+                    @foreach(json_decode($transaction->department_involved) as $value)
                     <tr>
-                      <td>{{str::title($value->processor_id)}}</td>
-                      <td>{{str::title(Helper::department_name($value->id))}}</td>
+                      <td>{{str::title($value)}}</td>
+                      <td>{{str::title(Helper::department_name($value))}}</td>
                     </tr>
                     @endforeach
                   @else
