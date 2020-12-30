@@ -19,7 +19,7 @@ use App\Laravel\Requests\Web\EditBusinessRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Event,FileUploader,PDF,QrCode,Helper,Curl,Log;
 
 class BusinessPaymentController extends Controller
-{	
+{
 	protected $data;
 	protected $per_page;
 
@@ -83,7 +83,7 @@ class BusinessPaymentController extends Controller
 			$request_body = Helper::digipep_transaction([
 				'title' => $transaction_data->application_name,
 				'trans_token' => $code,
-				'transaction_type' => "", 
+				'transaction_type' => "",
 				'amount' => $amount,
 				'penalty_fee' => 0,
 				'dst_fee' => 0,
@@ -97,7 +97,7 @@ class BusinessPaymentController extends Controller
 				'last_name' => $transaction_data->business_name,
 				'contact_number' => $transaction_data->contact_number,
 				'email' => $transaction_data->email
-			]);  
+			]);
 			$response = Curl::to(env('DIGIPEP_CHECKOUT_URL'))
 			 		->withHeaders( [
 			 			"X-token: ".env('DIGIPEP_TOKEN'),
@@ -106,8 +106,8 @@ class BusinessPaymentController extends Controller
 			         ->withData($request_body)
 			         ->asJson( true )
 			         ->returnResponseObject()
-			         ->post();	
-			 
+			         ->post();
+
 			if($response->status == "200"){
 				$content = $response->content;
 
@@ -121,7 +121,7 @@ class BusinessPaymentController extends Controller
 
 		}catch(\Exception $e){
 			DB::rollBack();
-			
+
 			session()->flash('notification-status',"failed");
 			session()->flash('notification-msg',"Server Error. Please try again.".$e->getMessage());
 			return redirect()->back();

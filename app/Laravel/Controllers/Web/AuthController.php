@@ -53,8 +53,13 @@ class AuthController extends Controller{
                     session()->put('auth_id', Auth::guard('customer')->user()->id);
                     session()->flash('notification-status','success');
                     session()->flash('notification-msg',"Welcome to EOTC Portal, {$user->full_name}!");
-
-                    return redirect()->route('web.business.index');
+                    $redirect_s = session('link');
+                    if($redirect_s){
+                        return redirect()->intended($redirect_s);
+                        session()->forget('link');
+                    } else {
+                        return redirect()->route('web.business.index');
+                    }
                 } else if (Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'declined'])){
                     session()->flash('notification-status','error');
                     session()->flash('notification-msg','Your Account has been Declined.');

@@ -42,6 +42,7 @@ class BusinessTransactionController extends Controller
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
 		$this->data['approval'] = ['' => "Choose Approval Type",'1' => "Yes" , '0' => "No"];
+		$this->data['processor'] = ['' => "Choose Validation",'1' => "Validated" , '0' => "Not Yet"];
 		$this->data['fees'] =  ['' => "Choose Collection Fees"] + CollectionOfFees::pluck('collection_name','id')->toArray();
 		$this->per_page = env("DEFAULT_PER_PAGE",2);
 	}
@@ -70,6 +71,7 @@ class BusinessTransactionController extends Controller
 
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_bplo_approval'] = $request->get('bplo_approval');
+		$this->data['selected_processor'] = $request->get('processor');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
@@ -98,8 +100,8 @@ class BusinessTransactionController extends Controller
 					}
 				})
 				->where(function($query){
-					if ($this->data['auth']->type == "processor") {
-						return $query->where('is_validated',"1");
+					if(strlen($this->data['selected_processor']) > 0){
+						return $query->where('is_validated',$this->data['selected_processor']);
 					}
 				})
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
@@ -214,11 +216,18 @@ class BusinessTransactionController extends Controller
 		$this->data['department'] =  Department::pluck('name','id')->toArray();
 
 		$this->data['regulatory_fee'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 0)->get();
-		$this->data['business_tax'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 1)->get();
-
+        $this->data['business_tax'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 1)->get();
+        $this->update_status($id);
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.business-transaction.show',$this->data);
-	}
+    }
+
+    public function update_status($id = null)
+    {
+        $business_transaction = BusinessTransaction::find($id);
+        $business_transaction->isNew = null;
+        $business_transaction->save();
+    }
 
 	/*public function bplo_approved (BPLORequest $request ){
 		DB::beginTransaction();
@@ -298,7 +307,7 @@ class BusinessTransactionController extends Controller
                         'application_name' => $transaction->application_name,
                         'modified_at' => Helper::date_only($transaction->modified_at),
                         'department_name' => Helper::department_name($value->id),
-                        'remarks' =>  $value->remarks
+                        'remarks' =>  $transaction->remarks,
                     ];
                 }
 
@@ -310,12 +319,21 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Transaction has been successfully Processed.");
 			return redirect()->route('system.business_transaction.'.strtolower($type));
 		}catch(\Exception $e){
+            throw $e;
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
 		}
-	}
+    }
+
+    public function digital_cerficate(){
+        // $insert[] = [
+
+        // ];
+        // $notification_data_email = new SendEmailDigitalCertificateListener($insert);
+        // Event::dispatch('send-digital-business-permit', $notification_data_email);
+    }
 
 	public function save_collection (TransactionCollectionRequest $request){
 		$transaction_id = $request->get('transaction_id');

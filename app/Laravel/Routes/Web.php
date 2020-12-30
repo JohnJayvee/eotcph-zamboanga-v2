@@ -8,7 +8,10 @@ Route::group(['as' => "web.",
 
 
 	Route::group(['prefix'=> "/",'as' => 'main.' ],function(){
-		Route::get('/', [ 'as' => "index",'uses' => "MainController@index"]);
+        Route::get('/', [ 'as' => "index",'uses' => "MainController@index"]);
+        // route::get('/pdf', function(){
+        //     return view('pdf.business-permit');
+        // });
     });
 	Route::get('coming-soon',['as' => "coming_soon",'uses' => "MainController@soon"]);
 	Route::get('type',['as' => "get_application_type",'uses' => "MainController@get_application_type"]);
@@ -86,14 +89,12 @@ Route::group(['as' => "web.",
 
             });
 
-		});
+        });
+        Route::group(['prefix' => "business-payment", 'as' => "business_payment."], function () {
+            Route::get('/{id?}',['as' => "index",'uses' => "BusinessPaymentController@index"]);
+            Route::get('regulatory-payment/{id?}',['as' => "regulatory_payment", 'uses' => "BusinessPaymentController@regulatory_payment"]);
+        });
 	});
-	Route::group(['prefix' => "business-payment", 'as' => "business_payment."], function () {
-        Route::get('/{id?}',['as' => "index",'uses' => "BusinessPaymentController@index"]);
-        Route::get('/{id?}',['as' => "index",'uses' => "BusinessPaymentController@index"]);
-        Route::get('regulatory-payment/{id?}',['as' => "regulatory_payment", 'uses' => "BusinessPaymentController@regulatory_payment"]);
-
-    });
 	Route::get('pay/{code?}',['as' => "pay", 'uses' => "CustomerTransactionController@pay"]);
 	Route::get('confirmation/{code?}',['as' => "confirmation",'uses' => "MainController@confirmation"]);
 	Route::get('upload/{code?}',['as' => "upload",'uses' => "CustomerTransactionController@upload"]);

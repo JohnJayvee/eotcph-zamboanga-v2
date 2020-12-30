@@ -19,17 +19,21 @@
     <form>
       <div class="row pb-2">
 
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label>Application Type</label>
          {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label>Payment Status</label>
           {!!Form::select("processing_fee_status", $status, $selected_processing_fee_status, ['id' => "input_processing_fee_status", 'class' => "custom-select"])!!}
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <label>For BPLO Approval</label>
           {!!Form::select("bplo_approval", $approval, $selected_bplo_approval, ['id' => "input_bplo_approval", 'class' => "custom-select"])!!}
+        </div>
+        <div class="col-md-3">
+            <label>Validation</label>
+            {!!Form::select("processor", $processor, $selected_processor, ['id' => "input_processor", 'class' => "custom-select"])!!}
         </div>
       </div>
       <div class="row">
@@ -63,6 +67,7 @@
             <th class="text-title p-3" width="15%">Application Number</th>
             <th class="text-title p-3" width="30%">Application Type</th>
             <th class="text-title p-3" width="10%">Amount</th>
+            <th class="text-title p-3" width="10%">Validation</th>
             <th class="text-title p-3" width="10%">For BPLO Approval</th>
             <th class="text-title p-3" width="10%">Processor/Status</th>
             <th class="text-title p-3" width="10%">Action</th>
@@ -79,6 +84,11 @@
               <div>{{Helper::money_format($transaction->amount) ?: '---'}}</div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->application_payment_status)}} p-2">{{Str::upper($transaction->application_payment_status)}}</span></small></div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->application_transaction_status)}} p-2 mt-1">{{Str::upper($transaction->application_transaction_status)}}</span></small></div>
+            </td>
+            <td>
+            <div>
+                <span class="badge badge-pill badge-{{Helper::status_badge($transaction->is_validated == 1 ? "approved" : "pending")}} p-2">{{Str::upper($transaction->is_validated == 1 ? "validated" : 'pending')}}</span>
+            </div>
             </td>
             <td>{{ $transaction->for_bplo_approval == 1 ? "Yes" : "No" }}</td>
             <td>

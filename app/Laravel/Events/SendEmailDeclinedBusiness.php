@@ -2,7 +2,7 @@
 namespace App\Laravel\Events;
 
 use Illuminate\Queue\SerializesModels;
-use Mail,Str,Helper,Carbon;
+use Mail,Str,Helper,Carbon,PDF;
 
 class SendEmailDeclinedBusiness extends Event {
 
@@ -35,11 +35,13 @@ class SendEmailDeclinedBusiness extends Event {
 			$this->data['modified_at'] = $value['modified_at'];
 			$this->data['amount'] = $value['amount'];
 			$this->data['department_name'] = $value['department_name'];
-			$this->data['remarks'] = $value['remarks'];
-			Mail::send('emails.business-declined', $this->data, function($message) use ($mailname,$user_email){
+            $this->data['remarks'] = $value['remarks'];
+            $pdf = PDF::loadView('pdf.business-declined', $this->data);
+			Mail::send('emails.business-declined', $this->data, function($message) use ($mailname,$user_email,$pdf){
 				$message->from('eotcph-noreply@ziaplex.biz');
 				$message->to($user_email);
-				$message->subject("Business Application Details");
+                $message->subject("Business Application Details");
+                $message->attachData($pdf->output(), "Document Reference Number.pdf");
 			});
 		}
 

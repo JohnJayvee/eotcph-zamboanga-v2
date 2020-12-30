@@ -30,6 +30,7 @@
                     <li>
                         <li><a  href="#"><i class="fa fa-handshake"></i> Services <i class="fas fa-caret-down"></i></a>
                         <ul class="sub-menu">
+                            <li><a  href="http://staging.eor.ziapay.ph/validate" target="_blank"><i ></i> EOR Authenticity</a></li>
                             <li><a href="{{route('web.coming_soon')}}">New Registration</a></li>
                             <li><a href="{{route('web.business.index')}}">Renewal</a></li>
                             <li><a href="{{route('web.coming_soon')}}">Taxes , Fees and Dues</a></li>
@@ -63,7 +64,8 @@
             <div class="collapse navbar-collapse h-auto " id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto menu" >
                     {{-- <li><a  href="about-us.html">About Us</a></li> --}}
-                    <li><a  href="{{route('web.main.index')}}"><i class="fa fa-home" ></i> Home</a></li>
+                    {{-- <li><a  href="{{route('web.main.index')}}"><i class="fa fa-home" ></i> Home</a></li> --}}
+                    <li><a  href="http://staging.eor.ziapay.ph/validate" target="_blank"><i ></i> EOR Authenticity</a></li>
                     <li>
                         <li><a  href="#"><i class="fa fa-handshake"></i> Services <i class="fas fa-caret-down"></i></a>
                         <ul class="sub-menu">
