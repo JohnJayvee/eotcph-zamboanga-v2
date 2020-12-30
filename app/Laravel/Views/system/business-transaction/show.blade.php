@@ -27,7 +27,7 @@
           </div>
           <div class="col-md-2 d-flex align-items-end flex-column">
             <p class="pull-right badge badge-danger">Checked the I Agree Checkbox</p>
-            {{-- <a href="/pdf" class="badge badge-info" target="_blank">Release Digital Certificate</a> --}}
+            {{-- <a href="{{ route('system.business_transaction.digital_cerficate') }}" class="badge badge-info" target="_blank">Release Digital Certificate</a> --}}
           </div>
         </div>
       </div>
@@ -306,7 +306,7 @@
           <div class="col-md-6">
             @if(Auth::user()->type == "processor")
               @if(in_array(Auth::user()->department->code, json_decode($transaction->department_involved)))
-                <a data-url="{{route('system.business_transaction.remarks',[$transaction->id])}}"  class="btn btn-primary btn-remarks border-5 text-white float-right">Add Remarks</a>
+                {{-- <a data-url="{{route('system.business_transaction.remarks',[$transaction->id])}}"  class="btn btn-primary btn-remarks border-5 text-white float-right">Add Remarks</a> --}}
               @endif
             @endif
           </div>
