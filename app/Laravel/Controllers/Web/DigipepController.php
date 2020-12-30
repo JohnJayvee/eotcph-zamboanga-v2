@@ -157,7 +157,7 @@ class DigipepController extends Controller
 
 					foreach ($transaction_id as $key => $value) {
 						$business_fee = BusinessFee::find($id);
-						$business_fee->status = "COMPLETED";
+						$business_fee->payment_status = "COMPLETED";
 						$business_fee->save();
 					}
 
