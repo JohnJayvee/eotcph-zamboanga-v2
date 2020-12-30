@@ -7,6 +7,8 @@ use App\Laravel\Models\Violators;
 use App\Laravel\Models\CollectionOfFees;
 use App\Laravel\Models\Department;
 use App\Laravel\Models\User;
+use App\Laravel\Models\RegulatoryPayment;
+
 
 
 use Route,Str,Carbon,Input,DB,DateTime,DateInterval,DatePeriod,Curl;
@@ -82,6 +84,12 @@ class Helper{
 		return $request;
 	}
 
+	public static function check_regulatory($id = NULL){
+		$regulatory_fee = RegulatoryPayment::where('transaction_id',$id)->first();
+
+		return $regulatory_fee ? $regulatory_fee->payment_status : "";
+
+	}
 	public static function barcode_length($barcode = NULL){
 		$length = strlen($barcode);
 		if($length < 4) return 1.6;

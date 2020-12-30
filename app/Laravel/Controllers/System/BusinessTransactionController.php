@@ -212,7 +212,9 @@ class BusinessTransactionController extends Controller
 		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $requirements_id))->get();
 
 		$this->data['department'] =  Department::pluck('name','id')->toArray();
-		$this->data['regulatory_fee'] = BusinessFee::where('transaction_id',$id)->get();
+
+		$this->data['regulatory_fee'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 0)->get();
+		$this->data['business_tax'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 1)->get();
 
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.business-transaction.show',$this->data);

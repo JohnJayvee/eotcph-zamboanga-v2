@@ -22,6 +22,7 @@ class CreateBusinessFeeTable extends Migration
             $table->string('amount')->nullable();
             $table->string('status')->nullable();
             $table->string('fee_type')->nullable();
+            $table->string('payment_status')->default("PENDING")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

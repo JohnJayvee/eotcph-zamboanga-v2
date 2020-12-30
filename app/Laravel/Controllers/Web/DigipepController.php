@@ -9,6 +9,7 @@ use App\Laravel\Requests\PageRequest;
 use App\Laravel\Models\Transaction;
 use App\Laravel\Models\OtherTransaction;
 use App\Laravel\Models\RegulatoryPayment;
+use App\Laravel\Models\BusinessFee;
 
 
 use Helper, Carbon, Session, Str, DB,Input,Event,Signature,Curl,Log,PDF,Mail,Storage,File, Auth;
@@ -151,6 +152,15 @@ class DigipepController extends Controller
 					$transaction->convenience_fee = $convenience_fee; 
 					$transaction->total_amount = $transaction->amount + $convenience_fee;
 					$transaction->save();
+
+					$transaction_id = explode(",", $transaction->business_fee_id);
+
+					foreach ($transaction_id as $key => $value) {
+						$business_fee = BusinessFee::find($id);
+						$business_fee->status = "COMPLETED";
+						$business_fee->save();
+					}
+
 					DB::commit();
 
 				}catch(\Exception $e){

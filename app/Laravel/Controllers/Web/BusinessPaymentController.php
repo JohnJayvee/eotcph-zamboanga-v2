@@ -39,7 +39,22 @@ class BusinessPaymentController extends Controller
         $this->data['profile'] = Business::find($id);
 
         $this->data['transaction'] = BusinessTransaction::where('business_id',$id)->first();
-        $this->data['regulatory_fee'] = BusinessFee::where('business_id', $id)->where('fee_type' , 0)->get();
+
+        $this->data['payment_type'] = $request->get('type') ?:"regulatory_fee";
+        
+
+        switch ($this->data['payment_type']) {
+        	case 'regulatory_fee':
+        		$this->data['regulatory_fee'] = BusinessFee::where('business_id', $id)->where('fee_type' , 0)->get();
+        		break;
+        	case 'business_tax':
+       			$this->data['business_tax'] = BusinessFee::where('business_id', $id)->where('fee_type' , 1)->get();
+        		break;
+        	default:
+        		# code...
+        		break;
+        }
+
         return view('web.business.payment',$this->data);
     }
 
