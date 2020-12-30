@@ -60,6 +60,7 @@ Route::group(['as' => "auth."], function(){
 			Route::get('assessment/{id?}',['as' => "assessment",'uses' => "BusinessTransactionController@assessment"]);
 			Route::post('assessment/{id?}',['uses' => "BusinessTransactionController@get_assessment"]);
 			Route::get('approved-assessment/{id?}',['as' => "approved_assessment",'uses' => "BusinessTransactionController@approved_assessment"]);
+			Route::get('certificate/{id?}',['as' => "digital_cerficate",'uses' => "BusinessTransactionController@digital_cerficate"]);
 		});
 
 

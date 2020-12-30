@@ -10,11 +10,11 @@ namespace App\Laravel\Controllers\System;
  * Models
  */
 
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment,User};
-
-
 use App\Laravel\Requests\PageRequest;
-use App\Laravel\Requests\System\TransactionCollectionRequest;
+
+
+use App\Laravel\Events\NotifyDepartmentSMS;
+use App\Laravel\Events\NotifyBPLOAdminEmail;
 use App\Laravel\Requests\System\BPLORequest;
 /* App Classes
  */
@@ -22,11 +22,12 @@ use App\Laravel\Events\NotifyDepartmentEmail;
 use App\Laravel\Events\SendEmailApprovedBusiness;
 use App\Laravel\Events\SendEmailDeclinedBusiness;
 use App\Laravel\Events\SendDeclinedEmailReference;
-use App\Laravel\Events\NotifyDepartmentSMS;
-use App\Laravel\Events\NotifyBPLOAdminEmail;
+use App\Laravel\Events\SendEmailDigitalCertificate;
+use App\Laravel\Requests\System\TransactionCollectionRequest;
 
 
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl;
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment,User};
 
 
 class BusinessTransactionController extends Controller
@@ -270,7 +271,8 @@ class BusinessTransactionController extends Controller
 	                'ref_num' => $transaction->code,
 	                'full_name' => $transaction->owner ? $transaction->owner->full_name : $transaction->business_name,
 	                'application_name' => $transaction->application_name,
-	                'modified_at' => Helper::date_only($transaction->modified_at)
+                    'modified_at' => Helper::date_only($transaction->modified_at),
+                    'business_id' => $transaction->business_id,
             	];
 			    $notification_data_email = new SendEmailApprovedBusiness($insert);
 			    Event::dispatch('send-email-business-approved', $notification_data_email);
@@ -327,12 +329,18 @@ class BusinessTransactionController extends Controller
 		}
     }
 
-    public function digital_cerficate(){
-        // $insert[] = [
+    public function digital_cerficate(PageRequest $request,$id=NULL){
 
-        // ];
-        // $notification_data_email = new SendEmailDigitalCertificateListener($insert);
-        // Event::dispatch('send-digital-business-permit', $notification_data_email);
+        $this->data['transaction'] = $request->get('business_transaction_data');
+        $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', $this->data['transaction']->business_permit_id)->get();
+        $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
+        $this->data['app_business_permit'] = ApplicationBusinessPermit::find($request->id)->get();
+        dd($this->data);
+        $insert[] = [
+            'transaction' => $this->data['transaction']
+        ];
+        $notification_data_email = new SendEmailDigitalCertificate($insert);
+        Event::dispatch('send-digital-business-permit', $notification_data_email);
     }
 
 	public function save_collection (TransactionCollectionRequest $request){
