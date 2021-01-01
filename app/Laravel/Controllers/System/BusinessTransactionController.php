@@ -28,7 +28,6 @@ use App\Laravel\Events\SendEmailDigitalCertificate;
 
 use App\Laravel\Requests\System\TransactionCollectionRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF;
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment,User};
 
 
 class BusinessTransactionController extends Controller
