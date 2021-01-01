@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Laravel\Models;
 
@@ -8,9 +8,9 @@ use App\Laravel\Traits\DateFormatter;
 use Str;
 
 class BusinessTransaction extends Model{
-    
+
     use SoftDeletes,DateFormatter;
-    
+
     /**
      * The database table used by the model.
      *
@@ -71,7 +71,7 @@ class BusinessTransaction extends Model{
         return $this->BelongsTo("App\Laravel\Models\Business",'business_id','id');
     }
      public function application_permit(){
-        return $this->BelongsTo("App\Laravel\Models\ApplicationBusinessPermit",'business_id','id');
+        return $this->BelongsTo("App\Laravel\Models\ApplicationBusinessPermit",'business_permit_id','id');
     }
     public function type(){
         return $this->BelongsTo("App\Laravel\Models\Application",'application_id','id');

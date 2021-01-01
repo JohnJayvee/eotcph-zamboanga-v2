@@ -152,7 +152,11 @@
                         <div class="row underline mb-2">
                             @foreach ($business_line as $key => $item)
                                 <div class="col-md-4">
-                                    <label class="text-uppercase">{{ $item->name }}</label>
+                                    <label class="text-uppercase">{{ $item->name }}
+                                        @if(!empty($item->particulars) && $item->particulars != "") 
+                                            <small>({{ $item->particulars }})</small>
+                                        @endif
+                                    </label>
                                     <p class="text-title">Business Line</p>
                                 </div>
                             @endforeach

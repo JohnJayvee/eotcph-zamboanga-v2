@@ -27,6 +27,7 @@
           </div>
           <div class="col-md-2 d-flex align-items-end flex-column">
             <p class="pull-right badge badge-danger">Checked the I Agree Checkbox</p>
+            <a href="{{ route('system.business_transaction.digital_cerficate', ['id' => $transaction->id]) }}" class="badge badge-info" target="_blank">Release Digital Certificate</a>
           </div>
         </div>
       </div>
@@ -161,6 +162,40 @@
           </div>
       </div>
     </div>
+    <div class="card card-rounded shadow-sm mb-2">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 pt-2">
+              <h5 class="text-title text-uppercase">Involved Departments</h5>
+            </div>
+            <div class="table-responsive pt-2">
+              <table class="table table-bordered table-wrap" style="table-layout: fixed;">
+                <thead>
+                  <tr>
+                    <th class="text-title p-3">Department ID</th>
+                    <th class="text-title p-3">Department Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if($transaction->department_involved)
+                    @foreach(json_decode($transaction->department_involved) as $value)
+                    <tr>
+                      <td>{{str::title($value)}}</td>
+                      <td>{{str::title(Helper::department_name($value))}}</td>
+                    </tr>
+                    @endforeach
+                  @else
+                    <tr class="text-center">
+                      <td colspan="2">No Remarks Records Available</td>
+                    </tr>
+                  @endif
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     <div class="card card-rounded shadow-sm mb-4">
       <div class="card-body">
         <div class="row">
@@ -193,7 +228,7 @@
               <tbody>
                 @forelse($regulatory_fee as $fee)
                   <tr class="text-center">
-                    
+
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->amount)}} </td>
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{ Helper::fee_type($fee->fee_type)}} </td>
@@ -232,7 +267,7 @@
               <tbody>
                 @forelse($business_tax as $fee)
                   <tr class="text-center">
-                    
+
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->amount)}} </td>
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{ Helper::fee_type($fee->fee_type)}} </td>

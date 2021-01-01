@@ -15,72 +15,73 @@
             @include('system._components.notifications')
         </div>
         <div class="card">
-            <div class="card-body">
-              <div class="row">              
-                <div class="col-md-6">
-                  <h5 class="pt-3">Payment Method for {{str::title($profile->business_name)}}</h5>
-                </div>
-                <div class="col-md-6">
-                  <div class="btn-group float-right" role="group" aria-label="Basic example">
-                    <a href="{{route('web.business_payment.index',[$transaction->id])}}?type=0" class="btn btn-primary {{$payment_type == "0" ? "active" :""}}" style="line-height: 1">Regulatory Fee</a>
-                    <a href="{{route('web.business_payment.index',[$transaction->id])}}?type=1" class="btn btn-primary {{$payment_type == "1" ? "active" :""}}" style="line-height: 1">Business Tax</a>
-                    <a href="{{route('web.business_payment.index',[$transaction->id])}}?type=2" class="btn btn-primary {{$payment_type == "2" ? "active" :""}}" style="line-height: 1">Garbage Fee</a>       
-                  </div>                      
-                </div>
+          <div class="card-body">
+            <div class="row">              
+              <div class="col-md-6">
+                <h5 class="pt-3">Payment Method for {{str::title($profile->business_name)}}</h5>
               </div>
-              @if($payment_type == 1)
-                <div class="btn-group" role="group" aria-label="Basic example">
-                  <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=1" class="btn btn-primary btn-quarter">1st Quarter</a>
-                  <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=2" class="btn btn-primary btn-quarter">2nd Quarter</a>
-                  <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=3" class="btn btn-primary btn-quarter">3rd Quarter</a>
-                  <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=4" class="btn btn-primary btn-quarter">4th Quarter</a>       
-                </div>
-              @endif          
-              <div class="table-responsive pt-2">
-                <table class="table table-bordered table-wrap" style="table-layout: fixed;font-size: 12px;">
-                  <thead>
-                    <tr class="text-center">
-                      <th class="text-title" rowspan="2" style="vertical-align: middle;">Department Name</th>
-                      <th class="text-title" rowspan="2" style="vertical-align: middle;">Total Amount</th>
-                      <th class="text-title p-3" colspan="2">Breakdown</th>
-                    </tr>
-                    <tr class="text-center">
-                      <th class="text-title p-3">Account Name</th>
-                      <th class="text-title p-3">Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @forelse($business_fee as $fee)
-                      <tr class="text-center">
-                        <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
-                        <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->amount)}} </td>
-                      </tr>
-                      @foreach(json_decode($fee->collection_of_fees) as $collection)
-                        <tr >
-                          <td style="font-size: 12px;" class="p-2">{{$collection->BusinessID}}</td>
-                          <td style="font-size: 12px;" class="p-2">PHP {{Helper::money_format($collection->Amount)}}</td>
-                        </tr>
-                      @endforeach
-                    @empty
-                      <tr>
-                        <td colspan="4" class="text-center"> No Assessment Records Available </td>
-                      </tr>
-                    @endforelse
-                  </tbody>
-                </table>
+              <div class="col-md-6">
+                <div class="btn-group float-right" role="group" aria-label="Basic example">
+                  <a href="{{route('web.business_payment.index',[$transaction->id])}}?type=0" class="btn btn-primary {{$payment_type == "0" ? "active" :""}}" style="line-height: 1">Regulatory Fee</a>
+                  <a href="{{route('web.business_payment.index',[$transaction->id])}}?type=1" class="btn btn-primary {{$payment_type == "1" ? "active" :""}}" style="line-height: 1">Business Tax</a>
+                  <a href="{{route('web.business_payment.index',[$transaction->id])}}?type=2" class="btn btn-primary {{$payment_type == "2" ? "active" :""}}" style="line-height: 1">Garbage Fee</a>       
+                </div>                      
               </div>
-                @if(count($business_fee) > 0 and $payment_type == 0)
-                  <a href="{{route('web.business_payment.regulatory_payment',[$transaction->id])}}" class="btn btn-primary ">Proceed to Payment</a >
-                @endif
             </div>
+            @if($payment_type == 1)
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=1" class="btn btn-primary btn-quarter">1st Quarter</a>
+                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=2" class="btn btn-primary btn-quarter">2nd Quarter</a>
+                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=3" class="btn btn-primary btn-quarter">3rd Quarter</a>
+                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=4" class="btn btn-primary btn-quarter">4th Quarter</a>       
+              </div>
+            @endif          
+            <div class="table-responsive pt-2">
+              <table class="table table-bordered table-wrap" style="table-layout: fixed;font-size: 12px;">
+                <thead>
+                  <tr class="text-center">
+                    <th class="text-title" rowspan="2" style="vertical-align: middle;">Department Name</th>
+                    <th class="text-title" rowspan="2" style="vertical-align: middle;">Total Amount</th>
+                    <th class="text-title p-3" colspan="2">Breakdown</th>
+                  </tr>
+                  <tr class="text-center">
+                    <th class="text-title p-3">Account Name</th>
+                    <th class="text-title p-3">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @forelse($business_fee as $fee)
+                    <tr class="text-center">
+                      <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
+                      <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->amount)}} </td>
+                    </tr>
+                    @foreach(json_decode($fee->collection_of_fees) as $collection)
+                      <tr >
+                        <td style="font-size: 12px;" class="p-2">{{$collection->BusinessID}}</td>
+                        <td style="font-size: 12px;" class="p-2">PHP {{Helper::money_format($collection->Amount)}}</td>
+                      </tr>
+                    @endforeach
+                  @empty
+                    <tr>
+                      <td colspan="4" class="text-center"> No Assessment Records Available </td>
+                    </tr>
+                  @endforelse
+                </tbody>
+              </table>
+            </div>
+            @if(count($business_fee) > 0 and $payment_type == 0)
+              <a href="{{route('web.business_payment.regulatory_payment',[$transaction->id])}}" class="btn btn-primary ">Proceed to Payment</a >
+              <div class="float-right">
+                <a href="{{ route('system.business_transaction.download_assessment', ['id' => $profile->id]) }}" class="btn btn-danger ">Download Assessment Details</a >
+              </div>
+            @endif
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 <!--team section end-->
-
-
 @stop
 
 @section('page-styles')

@@ -10,23 +10,25 @@ namespace App\Laravel\Controllers\System;
  * Models
  */
 
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment,User,BusinessTaxPayment};
 
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment,User,BusinessTaxPayment,BusinessLine};
 
 use App\Laravel\Requests\PageRequest;
-use App\Laravel\Requests\System\TransactionCollectionRequest;
-use App\Laravel\Requests\System\BPLORequest;
+use App\Laravel\Events\NotifyDepartmentSMS;
+use App\Laravel\Events\NotifyBPLOAdminEmail;
 /* App Classes
  */
+use App\Laravel\Requests\System\BPLORequest;
 use App\Laravel\Events\NotifyDepartmentEmail;
 use App\Laravel\Events\SendEmailApprovedBusiness;
 use App\Laravel\Events\SendEmailDeclinedBusiness;
 use App\Laravel\Events\SendDeclinedEmailReference;
-use App\Laravel\Events\NotifyDepartmentSMS;
-use App\Laravel\Events\NotifyBPLOAdminEmail;
+use App\Laravel\Events\SendEmailDigitalCertificate;
 
 
-use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl;
+use App\Laravel\Requests\System\TransactionCollectionRequest;
+use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF;
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment,User};
 
 
 class BusinessTransactionController extends Controller
@@ -42,6 +44,7 @@ class BusinessTransactionController extends Controller
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
 		$this->data['approval'] = ['' => "Choose Approval Type",'1' => "Yes" , '0' => "No"];
+		$this->data['processor'] = ['' => "Choose Validation",'1' => "Validated" , '0' => "Not Yet"];
 		$this->data['fees'] =  ['' => "Choose Collection Fees"] + CollectionOfFees::pluck('collection_name','id')->toArray();
 		$this->per_page = env("DEFAULT_PER_PAGE",2);
 	}
@@ -70,6 +73,7 @@ class BusinessTransactionController extends Controller
 
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_bplo_approval'] = $request->get('bplo_approval');
+		$this->data['selected_processor'] = $request->get('processor');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
@@ -98,8 +102,8 @@ class BusinessTransactionController extends Controller
 					}
 				})
 				->where(function($query){
-					if ($this->data['auth']->type == "processor") {
-						return $query->where('is_validated',"1");
+					if(strlen($this->data['selected_processor']) > 0){
+						return $query->where('is_validated',$this->data['selected_processor']);
 					}
 				})
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
@@ -214,12 +218,19 @@ class BusinessTransactionController extends Controller
 		$this->data['department'] =  Department::pluck('name','id')->toArray();
 
 		$this->data['regulatory_fee'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 0)->get();
-		$this->data['business_tax'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 1)->get();
 		$this->data['garbage_fee'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 2)->get();
-
+        $this->data['business_tax'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 1)->get();
+        $this->update_status($id);
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.business-transaction.show',$this->data);
-	}
+    }
+
+    public function update_status($id = null)
+    {
+        $business_transaction = BusinessTransaction::find($id);
+        $business_transaction->isNew = null;
+        $business_transaction->save();
+    }
 
 	/*public function bplo_approved (BPLORequest $request ){
 		DB::beginTransaction();
@@ -267,7 +278,8 @@ class BusinessTransactionController extends Controller
 	                'ref_num' => $transaction->code,
 	                'full_name' => $transaction->owner ? $transaction->owner->full_name : $transaction->business_name,
 	                'application_name' => $transaction->application_name,
-	                'modified_at' => Helper::date_only($transaction->modified_at)
+                    'modified_at' => Helper::date_only($transaction->modified_at),
+                    'business_id' => $transaction->business_id,
             	];
 			    $notification_data_email = new SendEmailApprovedBusiness($insert);
 			    Event::dispatch('send-email-business-approved', $notification_data_email);
@@ -337,7 +349,7 @@ class BusinessTransactionController extends Controller
                         'application_name' => $transaction->application_name,
                         'modified_at' => Helper::date_only($transaction->modified_at),
                         'department_name' => Helper::department_name($value->id),
-                        'remarks' =>  $value->remarks
+                        'remarks' =>  $transaction->remarks,
                     ];
                 }
 
@@ -349,12 +361,52 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Transaction has been successfully Processed.");
 			return redirect()->route('system.business_transaction.'.strtolower($type));
 		}catch(\Exception $e){
+            throw $e;
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
 		}
-	}
+    }
+
+    public function digital_cerficate(PageRequest $request,$id=NULL){
+        $this->data['transaction'] = BusinessTransaction::find($id);
+        $transaction = BusinessTransaction::find($id);
+        $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', 1)->get();
+        $this->data['regulatory_fee'] = BusinessFee::where('transaction_id',1)->where('fee_type' , 0)->get();
+        $this->data['business_tax'] = BusinessFee::where('transaction_id',1)->where('fee_type' , 1)->get();
+        $insert[] = [
+            'data' => $this->data,
+            'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
+        ];
+        $notification_data_email = new SendEmailDigitalCertificate($insert);
+        Event::dispatch('send-digital-business-permit', $notification_data_email);
+    }
+
+    public function download_assessment(PageRequest $request,$id=NULL){
+
+        $this->data['transaction'] = BusinessTransaction::find($id);
+        $transaction = BusinessTransaction::find($id);
+        $this->data['business_activity'] = DB::table('business_activities as activity')
+                                        ->leftjoin('business_line', 'activity.application_business_permit_id', '=', 'business_line.business_id')
+                                        ->select('business_line.name as bLine', 'business_line.gross_sales as bGross' ,'activity.*')
+                                        ->where('activity.application_business_permit_id', $transaction->business_id)
+                                        ->groupBy('application_business_permit_id')
+                                        ->get();
+        // $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
+        // $this->data['app_business_permit'] = ApplicationBusinessPermit::find($request->id)->get();
+        // dd($this->data);
+        // $insert[] = [
+        //     'business_line' => $business_line
+        // ];
+        // dd($this->data);
+        $pdf = PDF::loadView('pdf.business-permit-assessment-details', $this->data);
+        $pdf->setPaper('A4', 'landscape');
+        // return $pdf->download('Business Permit Assessment Details.pdf');
+        return view('pdf.business-permit-assessment-details', $this->data);
+        // $notification_data_email = new SendEmailDigitalCertificate($insert);
+        // Event::dispatch('send-digital-business-permit', $notification_data_email);
+    }
 
 	public function save_collection (TransactionCollectionRequest $request){
 		$transaction_id = $request->get('transaction_id');
@@ -451,7 +503,24 @@ class BusinessTransactionController extends Controller
 			$transaction = $request->get('business_transaction_data');
 
 			$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
-			$transaction->is_validated = 1;
+            $transaction->is_validated = 1;
+            $department = User::whereIn('department_id', explode(",",$request->get('department_code')))->get();
+            $insert = [];
+            foreach ($department as $departments ) {
+                $insert[] = [
+                    'contact_number' => $departments->contact_number,
+                    'email' => $departments->email,
+                    'department_name' => $departments->department->name,
+                    'application_no' => $transaction->application_permit->application_no,
+                ];
+            }
+            // Send via SMS
+            // $notification_data = new NotifyDepartmentSMS($insert);
+            // Event::dispatch('notify-departments-sms', $notification_data);
+
+            // send via Email
+            $notification_data = new NotifyDepartmentEmail($insert);
+            Event::dispatch('notify-departments-email', $notification_data);
 			$transaction->save();
 
 			DB::commit();

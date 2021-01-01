@@ -80,8 +80,9 @@ class Controller extends BaseController{
     public function get_new_cv_count(){
         $business = Business::where('isNew', '1')->count();
         $business_transaction = BusinessTransaction::where('isNew', '1')->count();
+        $for_approval = BusinessTransaction::where('for_bplo_approval', '1')->count();
 
-        $notifications = $business + $business_transaction;
+        $notifications = $business + $business_transaction + $for_approval;
         $this->data['new_notification_count'] = $notifications;
 
     }
@@ -89,7 +90,9 @@ class Controller extends BaseController{
     public function get_new_cv(){
         $business = Business::where('isNew', '1')->get();
         $business_transaction = BusinessTransaction::where('isNew', '1')->get();
-        $notifications = $business->merge($business_transaction)->sortByDesc('created_at');
+        $for_approval = BusinessTransaction::where('for_bplo_approval', '1')->get();
+
+        $notifications = $business->merge($business_transaction)->merge($for_approval)->sortByDesc('created_at');
         $this->data['new_business_cv'] = $notifications;
         // dd($this->data);
     }

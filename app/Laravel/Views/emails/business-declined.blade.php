@@ -87,7 +87,7 @@
 
 			<tr>
 				<th colspan="2">
-					<p style="float: left;text-align: justify;">Don't worry, you can still resubmit your application. Please click this link to download your reference number <a href="{{env('APP_URL')}}">{{env("APP_URL")}}</a> and attached it to your physical documents and send it to our office.</p><br>
+					<p style="float: left;text-align: justify;">Don't worry, you can still resubmit your application. Please click this link to download your reference number <b>{{$ref_num}}</b> and attached it to your physical documents and send it to our office.</p><br>
 					<p>Thank you for choosing EOTC-PHP!</p>
 				</th>
 			</tr>

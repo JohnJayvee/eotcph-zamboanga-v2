@@ -603,8 +603,8 @@
                                                 @foreach ($business_line as $key => $item)
                                                 <tr id="repeat_form" class="activity">
                                                     <td>
-                                                        <input type="text" readonly class="form-control form-control-sm {{ $errors->has('line_of_business.*') ? 'is-invalid': NULL  }}" name="line_of_business[]" value="{{old('line_of_business[]', $item->name) }}">
-                                                        <input type="hidden" readonly class="form-control form-control-sm {{ $errors->has('account_code.*') ? 'is-invalid': NULL  }}" name="account_code[]" value="{{old('account_code[]', $item->name."---".$item->reference_code."---".$item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class : 0))."---".$item->account_code }}">
+                                                        <input type="text" readonly class="form-control form-control-sm {{ $errors->has('line_of_business.*') ? 'is-invalid': NULL  }}" name="line_of_business[]" value="{{old('line_of_business[]', $item->name.($item->particulars ? " (".$item->particulars.")" : "")) }}">
+                                                        <input type="hidden" readonly class="form-control form-control-sm {{ $errors->has('account_code.*') ? 'is-invalid': NULL  }}" name="account_code[]" value="{{old('class[]', $item->name."---".$item->reference_code."---".$item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class : 0))."---".$item->account_code."---".$item->particulars }}">
                                                         <input type="hidden" class="form-control form-control-sm" name="is_new[]" value="0">
                                                     </td>
                                                     <td>
@@ -866,7 +866,7 @@
     }
 
     $.fn.get_line_of_business = function(){
-      $.get("{{env('OBOSS_GET_LINE_OF_BUSINESS')}}", function( data ) {
+      $.get("{{env('OBOSS_UPLOAD_LINE_OF_BUSINESS')}}", function( data ) {
         line_of_businesses = data.data;
       });
     }
@@ -909,7 +909,7 @@
         $('#repeater_add_activity').on('click', function(){
             var list_of_lob = '<option>Select Line of Business</option>';
             $.each(line_of_businesses,function(index,value){
-                var code = value.Class+"---"+value.RefCode+'---'+value.BClass+"---"+value.SClass+"---"+(value.XClass ? value.XClass:"0")+"---"+value.AcctCode;
+                var code = value.Class+"---"+value.RefCode+'---'+value.BClass+"---"+value.SClass+"---"+(value.XClass ? value.XClass:"0")+"---"+value.AcctCode+"---"+value.Particulars;
                 list_of_lob += `<option value="${code}">${value.Class}</option>`;
             })
             var repeat_item = `<tr id="repeat_form" class="activity">

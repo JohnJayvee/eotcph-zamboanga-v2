@@ -115,6 +115,9 @@ class EventServiceProvider extends ServiceProvider
         'notify-bplo-admin-email' => [
             'App\Laravel\Listeners\NotifyBPLOAdminEmailListener'
         ],
+        'send-digital-business-permit' => [
+            'App\Laravel\Listeners\SendEmailDigitalCertificateListener'
+        ],
 
     ];
 

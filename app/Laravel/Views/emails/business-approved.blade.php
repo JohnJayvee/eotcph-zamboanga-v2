@@ -72,7 +72,7 @@
 				<th style="text-align: left;padding: 10px;">Application Name:</th>
 				<th style="text-align: right;">{{Str::title($application_name)}}</th>
 			</tr>
-			
+
 			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Date:</th>
 				<th style="text-align: right;">{{Str::title($modified_at)}}</th>
@@ -86,9 +86,8 @@
 				<th style="text-align: right;">{{Str::title($ref_num)}}</th>
 			</tr> -->
 			<tr>
-				<th colspan="2">
-					<p style="float: left;text-align: justify;">Please visit the <a href="{{env('APP_URL')}}">{{env("APP_URL")}}</a> and input the payment reference number to the E-Payment section to pay. This payment reference number will expire at 11:59 PM. You can pay via online(Debit/Credit card, e-wallet, etc.) or over-the-counter (7Eleven, Bayad Center, Cebuana Lhuillier, and to other affiliated partners)</p><br>
-					<p>Thank you for choosing EOTC-PHP!</p>
+                <th colspan="2">
+					<p style="float: left;text-align: justify;">Please go to this link <a href="{{ route('web.business_payment.index', ['id' => $business_id]) }}">{{ route('web.business_payment.index') }}</a> to pay and view your detailed payment transaction. You can pay via online (Debit/Credit Card, E-wallet, etc.) or over-the-counter (Smart Padala and POS Terminal)</p>
 				</th>
 			</tr>
 

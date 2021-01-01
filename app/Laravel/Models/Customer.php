@@ -59,4 +59,8 @@ class Customer extends Authenticatable{
     public function getRegionalAddressAttribute(){
         return Str::title("{$this->region_name} "."-"." {$this->town_name}"."-"."{$this->barangay_name}");
     }
+
+    public function getOwnerFullAddressAttribute(){
+        return Str::title("{$this->unit_number}, {$this->street_name}, {$this->barangay_name}, {$this->town_name}");
+    }
 }
