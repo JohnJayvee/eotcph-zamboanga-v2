@@ -6,7 +6,6 @@ namespace App\Laravel\Controllers\Web;
  * Request Validator
  */
 use App\Laravel\Requests\PageRequest;
-use App\Laravel\Requests\Web\TransactionRequest;
 use App\Laravel\Requests\Web\UploadRequest;
 use App\Laravel\Requests\Web\BusinessRequest;
 use App\Laravel\Models\{BusinessTransaction,Business,BusinessLine,BusinessFee,RegulatoryPayment,BusinessTaxPayment};
@@ -42,7 +41,7 @@ class BusinessPaymentController extends Controller
         $this->data['transaction'] = BusinessTransaction::where('business_id',$id)->first();
 
         $this->data['payment_type'] = $request->get('type') ?:"0";
-        $this->data['business_fee'] = BusinessFee::where('transaction_id', $id)->where('fee_type' , $this->data['payment_type'])->where('payment_status' ,"PENDING")->get(); 
+        $this->data['business_fee'] = BusinessFee::where('transaction_id', $id)->where('fee_type' , $this->data['payment_type'])->where('payment_status' ,"PENDING")->get();
 
         return view('web.business.payment',$this->data);
     }
@@ -86,7 +85,7 @@ class BusinessPaymentController extends Controller
 				'last_name' => $transaction_data->business_name,
 				'contact_number' => $transaction_data->contact_number,
 				'email' => $transaction_data->email
-			]);  
+			]);
 			$response = Curl::to(env('DIGIPEP_CHECKOUT_URL'))
 			 		->withHeaders( [
 			 			"X-token: ".env('DIGIPEP_TOKEN'),
@@ -95,8 +94,8 @@ class BusinessPaymentController extends Controller
 			         ->withData($request_body)
 			         ->asJson( true )
 			         ->returnResponseObject()
-			         ->post();	
-			 
+			         ->post();
+
 			if($response->status == "200"){
 				$content = $response->content;
 
@@ -110,7 +109,7 @@ class BusinessPaymentController extends Controller
 
 		}catch(\Exception $e){
 			DB::rollBack();
-			
+
 			session()->flash('notification-status',"failed");
 			session()->flash('notification-msg',"Server Error. Please try again.".$e->getMessage());
 			return redirect()->back();
@@ -182,7 +181,7 @@ class BusinessPaymentController extends Controller
         }
 
 		$payment = BusinessTaxPayment::where('transaction_id', $id)->whereIn('quarter' , $q)->where('payment_status',"UNPAID")->get();
-		
+
         $total_amount = $payment->sum('amount') + $payment->sum('surcharge');
 
         if (($this->data['quarter'] == 4) and (Carbon::now()->format('Y-m-d') < $due_date->format('Y-m-d')) and (count($payment) == 4)) {
@@ -199,7 +198,7 @@ class BusinessPaymentController extends Controller
 			$request_body = Helper::digipep_transaction([
 				'title' => $transaction_data->application_name,
 				'trans_token' => $code,
-				'transaction_type' => "", 
+				'transaction_type' => "",
 				'amount' => $total_amount,
 				'penalty_fee' => 0,
 				'dst_fee' => 0,
@@ -242,5 +241,30 @@ class BusinessPaymentController extends Controller
 			session()->flash('notification-msg',"Server Error. Please try again.".$e->getMessage());
 			return redirect()->back();
 		}
-	}
+    }
+
+    public function download_assessment(PageRequest $request,$id=NULL){
+
+        $this->data['transaction'] = BusinessTransaction::find($id);
+        $transaction = BusinessTransaction::find($id);
+        $this->data['business_activity'] = DB::table('business_activities as activity')
+                                        ->leftjoin('business_line', 'activity.application_business_permit_id', '=', 'business_line.business_id')
+                                        ->select('business_line.name as bLine', 'business_line.gross_sales as bGross' ,'activity.*')
+                                        ->where('activity.application_business_permit_id', $transaction->business_id)
+                                        ->groupBy('application_business_permit_id')
+                                        ->get();
+        // $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
+        // $this->data['app_business_permit'] = ApplicationBusinessPermit::find($request->id)->get();
+        // dd($this->data);
+        // $insert[] = [
+        //     'business_line' => $business_line
+        // ];
+        // dd($this->data);
+        $pdf = PDF::loadView('pdf.business-permit-assessment-details', $this->data);
+        $pdf->setPaper('A4', 'landscape');
+        // return $pdf->download('Business Permit Assessment Details.pdf');
+        return view('pdf.business-permit-assessment-details', $this->data);
+        // $notification_data_email = new SendEmailDigitalCertificate($insert);
+        // Event::dispatch('send-digital-business-permit', $notification_data_email);
+    }
 }

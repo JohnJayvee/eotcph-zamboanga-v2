@@ -382,31 +382,6 @@ class BusinessTransactionController extends Controller
         Event::dispatch('send-digital-business-permit', $notification_data_email);
     }
 
-    public function download_assessment(PageRequest $request,$id=NULL){
-
-        $this->data['transaction'] = BusinessTransaction::find($id);
-        $transaction = BusinessTransaction::find($id);
-        $this->data['business_activity'] = DB::table('business_activities as activity')
-                                        ->leftjoin('business_line', 'activity.application_business_permit_id', '=', 'business_line.business_id')
-                                        ->select('business_line.name as bLine', 'business_line.gross_sales as bGross' ,'activity.*')
-                                        ->where('activity.application_business_permit_id', $transaction->business_id)
-                                        ->groupBy('application_business_permit_id')
-                                        ->get();
-        // $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
-        // $this->data['app_business_permit'] = ApplicationBusinessPermit::find($request->id)->get();
-        // dd($this->data);
-        // $insert[] = [
-        //     'business_line' => $business_line
-        // ];
-        // dd($this->data);
-        $pdf = PDF::loadView('pdf.business-permit-assessment-details', $this->data);
-        $pdf->setPaper('A4', 'landscape');
-        // return $pdf->download('Business Permit Assessment Details.pdf');
-        return view('pdf.business-permit-assessment-details', $this->data);
-        // $notification_data_email = new SendEmailDigitalCertificate($insert);
-        // Event::dispatch('send-digital-business-permit', $notification_data_email);
-    }
-
 	public function save_collection (TransactionCollectionRequest $request){
 		$transaction_id = $request->get('transaction_id');
 		DB::beginTransaction();
