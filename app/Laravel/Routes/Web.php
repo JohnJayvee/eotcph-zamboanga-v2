@@ -9,9 +9,6 @@ Route::group(['as' => "web.",
 
 	Route::group(['prefix'=> "/",'as' => 'main.' ],function(){
         Route::get('/', [ 'as' => "index",'uses' => "MainController@index"]);
-        // route::get('/pdf', function(){
-        //     return view('pdf.business-permit');
-        // });
     });
 	Route::get('coming-soon',['as' => "coming_soon",'uses' => "MainController@soon"]);
 	Route::get('type',['as' => "get_application_type",'uses' => "MainController@get_application_type"]);

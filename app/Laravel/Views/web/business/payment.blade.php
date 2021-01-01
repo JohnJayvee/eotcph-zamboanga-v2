@@ -23,8 +23,8 @@
                 <div class="btn-group float-right" role="group" aria-label="Basic example">
                   <a href="{{route('web.business_payment.index',[$profile->id])}}?type=regulatory_fee" class="btn btn-primary btn-sm {{$payment_type == "regulatory_fee" ? "active" :""}}">Regulatory Fee</a>
                   <a href="{{route('web.business_payment.index',[$profile->id])}}?type=business_tax" class="btn btn-primary btn-sm {{$payment_type == "business_tax" ? "active" :""}}">Business Tax</a>
-                          
-                </div>                      
+
+                </div>
               </div>
               </div>
             	@if($payment_type == "regulatory_fee")
@@ -63,6 +63,9 @@
                 </div>
                 @if($transaction)
                   <a href="{{route('web.business_payment.regulatory_payment',[$transaction->id])}}" class="btn btn-primary ">Proceed to Payment</a >
+                    <div class="float-right">
+                        <a href="{{ route('system.business_transaction.download_assessment', ['id' => $profile->id]) }}" class="btn btn-danger ">Download Assessment Details</a >
+                    </div>
                 @endif
               @endif
               @if($payment_type == "business_tax")
@@ -100,6 +103,7 @@
                   </table>
                 </div>
                 <a href="" class="btn btn-primary ">Proceed to Payment</a >
+
               @endif
             </div>
         </div>

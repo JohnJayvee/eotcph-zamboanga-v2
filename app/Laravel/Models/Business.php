@@ -67,6 +67,10 @@ class Business extends Model{
         return Str::title("{$this->unit_no} {$this->street_address} ");
     }
 
+    public function getBusinessFullAddressAttribute(){
+        return Str::title("{$this->unit_no}, {$this->street_address}, {$this->brgy_name}, {$this->town_name}");
+    }
+
     public function owner(){
         return $this->BelongsTo("App\Laravel\Models\Customer",'customer_id','id');
     }
