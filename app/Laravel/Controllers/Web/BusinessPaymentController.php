@@ -42,7 +42,11 @@ class BusinessPaymentController extends Controller
 
         $this->data['payment_type'] = $request->get('type') ?:"0";
         $this->data['business_fee'] = BusinessFee::where('transaction_id', $id)->where('fee_type' , $this->data['payment_type'])->where('payment_status' ,"PENDING")->get();
-
+        if (!$this->data['transaction']) {
+        	session()->flash('notification-status',"failed");
+			session()->flash('notification-msg', "No Transaction For this business Found.");
+			return redirect()->back();
+        }
         return view('web.business.payment',$this->data);
     }
 
