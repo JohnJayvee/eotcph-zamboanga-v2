@@ -53,6 +53,7 @@ class BusinessPermitController extends Controller{
             $new_business_permit->status = 'pending';
             $new_business_permit->application_no = strtoupper($request->application_no);
             $new_business_permit->type = $request->type_of_application;
+            $new_business_permit->permit_no = $business->permit_no;
             $new_business_permit->save();
 
             $new_business_transaction = new BusinessTransaction();
@@ -145,7 +146,6 @@ class BusinessPermitController extends Controller{
             return redirect()->route('web.business.application.business_permit.create');
 
 		}catch(\Exception $e){
-            dd($e);
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
