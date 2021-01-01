@@ -62,10 +62,9 @@ class BusinessController extends Controller
                          ->asJson( true )
                          ->returnResponseObject()
                          ->post();
-                         
+
             if($response->status == "200"){
                 $content = $response->content;
-
                 session()->flash('notification-status', "success");
                 session()->flash('notification-msg', "Business validated");
                 session()->forget('negativelist');
@@ -74,6 +73,7 @@ class BusinessController extends Controller
                     if(!empty($value['Class'])){
                         $particulars = !empty($value['Particulars']) ? " (".$value['Particulars'].")" : "";
                         $this->data['lob'][] = $value['Class'].$particulars;
+
                     }
                 }
                 session()->put('line_of_business', $this->data['business']['LineOfBusiness']);
@@ -197,7 +197,8 @@ class BusinessController extends Controller
                             $particulars = !empty($line_of_business['Particulars']) ? " (".$line_of_business['Particulars'].")" : "";
                             $data = [
                                 'business_id' => $new_business->id,
-                                'name' => $line_of_business['Class'].$particulars,
+                                'name' => $line_of_business['Class'],
+                                'particulars' => $line_of_business['Particulars'],
                                 'account_code' => $line_of_business['AcctCode'],
                                 'b_class' => $line_of_business['BClass'],
                                 's_class' => $line_of_business['SClass'],
@@ -244,7 +245,6 @@ class BusinessController extends Controller
 
         $this->data['profile'] = Business::find($id);
         $this->data['business_line'] = BusinessLine::where('business_id', session()->get('selected_business_id'))->get();
-        // dd($this->data);
         session()->put('selected_business_id', $id);
 		return view('web.business.profile',$this->data);
     }
