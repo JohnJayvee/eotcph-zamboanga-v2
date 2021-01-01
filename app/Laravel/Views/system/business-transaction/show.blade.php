@@ -196,7 +196,7 @@
                     
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->amount)}} </td>
-                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->fee_type == "1" ? "Business Tax" : "Regulatory Fee"}} </td>
+                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{ Helper::fee_type($fee->fee_type)}} </td>
                   </tr>
                   @foreach(json_decode($fee->collection_of_fees) as $collection)
                     <tr >
@@ -235,7 +235,7 @@
                     
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->amount)}} </td>
-                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->fee_type == "1" ? "Business Tax" : "Regulatory Fee"}} </td>
+                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{ Helper::fee_type($fee->fee_type)}} </td>
                   </tr>
                   @foreach(json_decode($fee->collection_of_fees) as $collection)
                     <tr >
@@ -246,6 +246,45 @@
                 @empty
                   <tr>
                     <td colspan="5" class="text-center"> No Business Tax Records Available </td>
+                  </tr>
+                @endforelse
+
+              </tbody>
+            </table>
+          </div>
+           <div class="table-responsive pt-3">
+            <p class="text-title text-bold">Garbage Fee</p>
+            <table class="table table-bordered table-wrap" style="table-layout: fixed;">
+              <thead>
+                <tr class="text-center">
+                  <th class="text-title" rowspan="2" style="vertical-align: middle;">Department Name</th>
+                  <th class="text-title" rowspan="2" style="vertical-align: middle;">Total Amount</th>
+                  <th class="text-title" rowspan="2" style="vertical-align: middle;">Fee Type</th>
+
+                  <th class="text-title p-3" colspan="2">Breakdown</th>
+                </tr>
+                <tr class="text-center">
+                  <th class="text-title p-3">Account Name</th>
+                  <th class="text-title p-3">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                @forelse($garbage_fee as $fee)
+                  <tr class="text-center">
+                    
+                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
+                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->amount)}} </td>
+                    <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{ Helper::fee_type($fee->fee_type)}} </td>
+                  </tr>
+                  @foreach(json_decode($fee->collection_of_fees) as $collection)
+                    <tr >
+                      <td style="font-size: 12px;" class="p-2">{{$collection->BusinessID}}</td>
+                      <td style="font-size: 12px;" class="p-2">PHP {{Helper::money_format($collection->Amount)}}</td>
+                    </tr>
+                  @endforeach
+                @empty
+                  <tr>
+                    <td colspan="5" class="text-center"> No Garbage Fee Records Available </td>
                   </tr>
                 @endforelse
 

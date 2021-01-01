@@ -10,7 +10,7 @@ namespace App\Laravel\Controllers\System;
  * Models
  */
 
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment,User};
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment,User,BusinessTaxPayment};
 
 
 use App\Laravel\Requests\PageRequest;
@@ -215,6 +215,7 @@ class BusinessTransactionController extends Controller
 
 		$this->data['regulatory_fee'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 0)->get();
 		$this->data['business_tax'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 1)->get();
+		$this->data['garbage_fee'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 2)->get();
 
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.business-transaction.show',$this->data);
@@ -243,6 +244,11 @@ class BusinessTransactionController extends Controller
 	}*/
 
 	public function process($id = NULL,PageRequest $request){
+		$d1 = new Carbon('01/20');
+		$d2 = new Carbon('04/20');
+		$d3 = new Carbon('07/20');
+		$d4 = new Carbon('10/20');
+		
 		$type = strtoupper($request->get('status_type'));
 		DB::beginTransaction();
 		try{
@@ -267,7 +273,8 @@ class BusinessTransactionController extends Controller
 			    Event::dispatch('send-email-business-approved', $notification_data_email);
 
 			    $regulatory_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 0)->get();
-
+			    $business_tax = BusinessFee::where('transaction_id', $id)->where('fee_type' , 1)->first();
+			    $garbage_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 2)->get();
 			    if ($regulatory_fee) {
 			    	$business_fee_id = [];
 			    	$total_amount = 0;
@@ -283,6 +290,38 @@ class BusinessTransactionController extends Controller
 			    	$new_regulatory_payment->save();
 			    	$new_regulatory_payment->transaction_code = 'RF-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($new_regulatory_payment->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
 			    	$new_regulatory_payment->save();
+			    }
+			    if ($business_tax) {
+			    	$amount = $business_tax->amount / 4 ;
+			    	for ($i=0; $i < 4; $i++) { 
+			    		switch ($i + 1) {
+			    			case '1':
+			    				$due_date = Carbon::now()->year.$d1->format('-m-d');
+			    				break;
+			    			case '2':
+			    				$due_date = Carbon::now()->year.$d2->format('-m-d');
+			    				break;
+			    			case '3':
+			    				$due_date = Carbon::now()->year.$d3->format('-m-d');
+			    				break;
+			    			case '4':
+			    				$due_date = Carbon::now()->year.$d4->format('-m-d');
+			    				break;
+			    			default:
+			    				break;
+			    		}
+			    		$business_tax_payment  = new BusinessTaxPayment();
+			    		$business_tax_payment->business_fee_id =  $business_tax->id;
+			    		$business_tax_payment->transaction_id = $id;
+			    		$business_tax_payment->quarter = $i + 1;
+			    		$business_tax_payment->fee_type = 1;
+			    		$business_tax_payment->amount = $amount;
+			    		$business_tax_payment->surcharge = $amount * .25;
+			    		$business_tax_payment->due_date = $due_date;
+			    		$business_tax_payment->save();
+				    	$business_tax_payment->transaction_code = 'BT-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($business_tax_payment->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
+				    	$business_tax_payment->save();
+			    	}
 			    }
 
 
@@ -461,32 +500,36 @@ class BusinessTransactionController extends Controller
 				return redirect()->route('system.business_transaction.assessment',[$id]);
 			}
 
-			$array1 = [];
-			$array2 = [];
+			$regulatory_array = [];
+			$business_array = [];
+			$garbage_array = [];
 
 			foreach ($response->content['data'] as $key => $value) {
 				if ($value['FeeType'] == 0 ) {
-					array_push($array1, $value);
+					array_push($regulatory_array, $value);
 				}
 				if ($value['FeeType'] == 1 ) {
-					array_push($array2, $value);
+					array_push($business_array, $value);
+				}
+				if ($value['FeeType'] == 2) {
+					array_push($garbage_array, $value);
 				}
 			}
-			if (count($array1) > 0) {
+			if (count($regulatory_array) > 0) {
 				$total_amount = 0 ;
-				foreach ($array1 as $key => $value) {
+				foreach ($regulatory_array as $key => $value) {
 					$total_amount += Helper::db_amount($value['Amount']);
 				}
 				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('office_code',$request->get('office_code'))->where('fee_type' , 0)->first();
 				if ($existing) {
-					$existing->collection_of_fees = json_encode($array1);
+					$existing->collection_of_fees = json_encode($regulatory_array);
 					$existing->amount = Helper::db_amount($total_amount);
 					$existing->save();
 				}else{
 					$new_business_fee = new BusinessFee();
 					$new_business_fee->business_id = $this->data['transaction']->business_id;
 					$new_business_fee->transaction_id =$this->data['transaction']->id;
-					$new_business_fee->collection_of_fees = json_encode($array1);
+					$new_business_fee->collection_of_fees = json_encode($regulatory_array);
 					$new_business_fee->amount = Helper::db_amount($total_amount);
 					$new_business_fee->status = "PENDING";
 					$new_business_fee->office_code = $request->get('office_code');
@@ -495,25 +538,49 @@ class BusinessTransactionController extends Controller
 				}
 			}
 
-			if (count($array2) > 0) {
+			if (count($business_array) > 0) {
 				$total_amount = 0 ;
-				foreach ($array2 as $key => $value) {
+				foreach ($business_array as $key => $value) {
 					$total_amount += Helper::db_amount($value['Amount']);
 				}
 				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('office_code',$request->get('office_code'))->where('fee_type' , 1)->first();
 				if ($existing) {
-					$existing->collection_of_fees = json_encode($array2);
+					$existing->collection_of_fees = json_encode($business_array);
 					$existing->amount = Helper::db_amount($total_amount);
 					$existing->save();
 				}else{
 					$new_business_fee = new BusinessFee();
 					$new_business_fee->business_id = $this->data['transaction']->business_id;
 					$new_business_fee->transaction_id =$this->data['transaction']->id;
-					$new_business_fee->collection_of_fees = json_encode($array2);
+					$new_business_fee->collection_of_fees = json_encode($business_array);
 					$new_business_fee->amount = Helper::db_amount($total_amount);
 					$new_business_fee->status = "PENDING";
 					$new_business_fee->office_code = $request->get('office_code');
 					$new_business_fee->fee_type = 1;
+					$new_business_fee->save();
+				}
+
+			}
+
+			if (count($garbage_array) > 0) {
+				$total_amount = 0 ;
+				foreach ($garbage_array as $key => $value) {
+					$total_amount += Helper::db_amount($value['Amount']);
+				}
+				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('office_code',$request->get('office_code'))->where('fee_type' , 2)->first();
+				if ($existing) {
+					$existing->collection_of_fees = json_encode($garbage_array);
+					$existing->amount = Helper::db_amount($total_amount);
+					$existing->save();
+				}else{
+					$new_business_fee = new BusinessFee();
+					$new_business_fee->business_id = $this->data['transaction']->business_id;
+					$new_business_fee->transaction_id =$this->data['transaction']->id;
+					$new_business_fee->collection_of_fees = json_encode($garbage_array);
+					$new_business_fee->amount = Helper::db_amount($total_amount);
+					$new_business_fee->status = "PENDING";
+					$new_business_fee->office_code = $request->get('office_code');
+					$new_business_fee->fee_type = 2;
 					$new_business_fee->save();
 				}
 

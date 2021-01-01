@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Laravel\Traits\DateFormatter;
 use Str;
 
-class BusinessPayment extends Model{
+class BusinessTaxPayment extends Model{
     
     use SoftDeletes,DateFormatter;
     
@@ -16,7 +16,7 @@ class BusinessPayment extends Model{
      *
      * @var string
      */
-    protected $table = "business_transaction";
+    protected $table = "business_tax_payment";
 
     /**
      * The database connection used by the model.
@@ -62,24 +62,6 @@ class BusinessPayment extends Model{
      */
     protected $casts = [
     ];
-
-    public function owner(){
-        return $this->BelongsTo("App\Laravel\Models\Customer",'owners_id','id');
-    }
-
-    public function business_info(){
-        return $this->BelongsTo("App\Laravel\Models\Business",'business_id','id');
-    }
-    public function type(){
-        return $this->BelongsTo("App\Laravel\Models\Application",'application_id','id');
-    }
-
-    public function department(){
-        return $this->belongsToMany('App\Laravel\Models\Department');
-    }
-    public function admin(){
-        return $this->BelongsTo("App\Laravel\Models\User",'processor_user_id','id');
-    }
 
 
 }

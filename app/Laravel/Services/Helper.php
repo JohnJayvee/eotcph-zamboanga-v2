@@ -53,7 +53,22 @@ class Helper{
 		}
 		return $result;
 	}
-
+	public static function fee_type($type = NULL){
+		switch ($type) {
+			case '0':
+				return "Regulatory Fee";
+				break;
+			case '1':
+				return "Business Tax";
+				break;
+			case '2':
+				return "Garbage Fee";
+				break;
+			default:
+				return "-";
+				break;
+		}
+	}
 	public static function digipep_transaction(array $param){
 		$trans_id = $param['trans_token'];
 		// .Str::upper(Str::random(6))
