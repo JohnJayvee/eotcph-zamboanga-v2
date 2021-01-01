@@ -62,7 +62,7 @@ class BusinessController extends Controller
                          ->asJson( true )
                          ->returnResponseObject()
                          ->post();
-
+            
             if($response->status == "200"){
                 $content = $response->content;
                 session()->flash('notification-status', "success");
@@ -125,6 +125,8 @@ class BusinessController extends Controller
                     $new_business->business_name = $request->get('business_name');
                     $new_business->tradename = $request->trade_name;
                     $new_business->business_id_no = $request->get('BusinessID');
+                    $new_business->permit_no = $request->get('permit_no');
+                    $new_business->business_plate_no = $request->get('business_plate_no');
 
                     $new_business->dti_sec_cda_registration_no = $request->dti_sec_cda_registration_no;
                     $new_business->dti_sec_cda_registration_date = $request->dti_sec_cda_registration_date;
@@ -258,7 +260,6 @@ class BusinessController extends Controller
 			session()->flash('notification-msg',"No CV has been selected");
 			return redirect()->route('frontend.business.index');
         }
-        // dd($this->data);
 		return view('web.business.edit',$this->data);
 	}
 

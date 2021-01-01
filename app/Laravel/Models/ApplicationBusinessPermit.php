@@ -11,6 +11,6 @@ class ApplicationBusinessPermit extends Model
      *
      * @var array
      */
-    protected $fillable = ['is_posted_on_local'];
+    protected $fillable = ['is_posted_on_local', 'permit_no'];
 
 }
