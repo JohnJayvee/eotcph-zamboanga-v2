@@ -23,7 +23,7 @@
                 @if(in_array($auth->type,['super_user','admin']))
                         @forelse ($new_business_cv as $item)
                             @if (get_class($item) == 'App\Laravel\Models\BusinessTransaction')
-                                @if ($item->for_bplo_approval == '1' AND $item->isNew == 1)
+                                @if ($item->for_bplo_approval == '1' || $item->isNew == 1)
                                 <a class="dropdown-item" href="{{route('system.business_transaction.show',[$item->id])}}">
                                     Approved by BPLO Admin {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}}
                                 </a>
