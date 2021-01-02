@@ -277,15 +277,15 @@ class OtherTransactionController extends Controller
 			$transaction->modified_at = Carbon::now();
 			$transaction->save();
 			
-			// $insert[] = [
-   //              'contact_number' => $transaction->contact_number,
-   //              'ref_num' => $transaction->processing_fee_code,
-   //              'amount' => $transaction->amount,
-   //              'full_name' => $transaction->customer->full_name
-   //          ];
+			$insert[] = [
+                'contact_number' => $transaction->contact_number,
+                'ref_num' => $transaction->processing_fee_code,
+                'amount' => $transaction->amount,
+                'full_name' => $transaction->customer->full_name
+            ];
 
-			// $notification_data = new SendTaxReference($insert);
-		 //    Event::dispatch('send-sms-tax', $notification_data);
+			$notification_data = new SendTaxReference($insert);
+		    Event::dispatch('send-sms-tax', $notification_data);
 
 			DB::commit();
 			session()->flash('notification-status', "success");

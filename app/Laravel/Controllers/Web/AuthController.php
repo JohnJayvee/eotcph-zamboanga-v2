@@ -36,7 +36,7 @@ class AuthController extends Controller{
 
 	public function login($redirect_uri = NULL){
         $this->data['page_title'] = " :: Login";
-        session(['link' => url()->previous()]);
+        /*session(['link' => url()->previous()]);*/
 		return view('web.auth.login',$this->data);
 	}
 	public function authenticate(PageRequest $request){
@@ -53,13 +53,13 @@ class AuthController extends Controller{
                     session()->put('auth_id', Auth::guard('customer')->user()->id);
                     session()->flash('notification-status','success');
                     session()->flash('notification-msg',"Welcome to EOTC Portal, {$user->full_name}!");
-                    $redirect_s = session('link');
+                    /*$redirect_s = session('link');
                     if($redirect_s){
                         return redirect()->intended($redirect_s);
                         session()->forget('link');
-                    } else {
+                    } else {*/
                         return redirect()->route('web.business.index');
-                    }
+                    
                 } else if (Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'declined'])){
                     session()->flash('notification-status','error');
                     session()->flash('notification-msg','Your Account has been Declined.');
@@ -106,8 +106,8 @@ class AuthController extends Controller{
         $new_customer_otp->save();
 
         // Send OTP Code via SMS
-        // $notification_data = new SendCustomerOTP($insert);
-        // Event::dispatch('send-customer-otp', $notification_data);
+        $notification_data = new SendCustomerOTP($insert);
+        Event::dispatch('send-customer-otp', $notification_data);
 
         // send OTP Code via Email
         $notification_data = new SendCustomerOTPEmail($insert);
