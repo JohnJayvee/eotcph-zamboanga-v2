@@ -8,7 +8,8 @@
 </head>
 <body>
     <p>Hello {{ $fullname }},</p>
-    <p>This is to inform you that your request to create an account in the oBOSS Web Application has been declined by our Admin. Please review the Information, Government IDs, and the Existing Business Permit you have uploaded during the Account Creation Process.</p>
+    <p>This is to inform you that your request to create an account in the oBOSS Web Application has been declined by our Admin. Please review the Remarks.</p>
+    <p>Remarks:{{ $remarks}}.</p>
     <p>If you didn't request this, please ignore this message.</p>
 </body>
 </html>

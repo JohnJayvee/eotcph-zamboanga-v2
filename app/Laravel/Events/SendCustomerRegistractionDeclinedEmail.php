@@ -27,7 +27,8 @@ class SendCustomerRegistractionDeclinedEmail extends Event {
 			$mailname = "oBOSS OTP Verification";
             $user_email =  $value['email'];
             $this->data['fullname'] = $value['name'];
-
+			$this->data['remarks'] = $value['remarks'];
+			
 			Mail::send('emails.customer-registration-declined-email', $this->data, function($message) use ($mailname,$user_email){
 				$message->from('eotcph-noreply@ziaplex.biz');
 				$message->to($user_email);
