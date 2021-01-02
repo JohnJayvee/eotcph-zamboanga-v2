@@ -35,7 +35,7 @@
                   </tbody>
                 </table>
               </div>
-              <!-- <a href="{{route('web.business_payment.payment',[$transaction_id])}}?quarter={{$quarter}}" class="btn btn-primary">Proceed to Checkout</a> -->
+             <!--  <a href="{{route('web.business_payment.payment',[$transaction_id])}}?quarter={{$quarter}}&type={{$fee_type}}" class="btn btn-primary">Proceed to Checkout</a> -->
             </div>
           </div>
       </div>

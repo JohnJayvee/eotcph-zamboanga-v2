@@ -28,12 +28,12 @@
                 </div>
               </div>
             </div>
-            @if($payment_type == 1)
+            @if(($payment_type == 1 || $payment_type == 2) and $transaction->status == "APPROVED")
               <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=1" class="btn btn-primary btn-quarter">1st Quarter</a>
-                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=2" class="btn btn-primary btn-quarter">2nd Quarter</a>
-                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=3" class="btn btn-primary btn-quarter">3rd Quarter</a>
-                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=4" class="btn btn-primary btn-quarter">4th Quarter</a>
+                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=1&type={{$payment_type}}" class="btn btn-primary btn-quarter">1st Quarter</a>
+                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=2&type={{$payment_type}}" class="btn btn-primary btn-quarter">2nd Quarter</a>
+                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=3&type={{$payment_type}}" class="btn btn-primary btn-quarter">3rd Quarter</a>
+                <a href="{{route('web.business_payment.tax_fee',[$transaction->id])}}?quarter=4&type={{$payment_type}}" class="btn btn-primary btn-quarter">4th Quarter</a>
               </div>
             @endif
             <div class="table-responsive pt-2">

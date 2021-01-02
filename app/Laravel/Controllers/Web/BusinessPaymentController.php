@@ -125,6 +125,8 @@ class BusinessPaymentController extends Controller
         $this->data['auth'] = Auth::guard('customer')->user();
         $this->data['transaction_id'] = $id;
         $this->data['quarter'] = $request->get('quarter') ;
+        $this->data['fee_type'] = $request->get('type') ;
+
         switch ($this->data['quarter']) {
         	case '1':
         		$q = [1];
@@ -142,7 +144,7 @@ class BusinessPaymentController extends Controller
         		break;
         }
 
-        $this->data['business_tax_payment'] = BusinessTaxPayment::where('transaction_id', $id)->whereIn('quarter' , $q)->where('payment_status',"UNPAID")->get();
+        $this->data['business_tax_payment'] = BusinessTaxPayment::where('transaction_id', $id)->whereIn('quarter' , $q)->where('fee_type',$this->data['fee_type'])->where('payment_status',"UNPAID")->get();
 
         return view('web.business.tax_fee',$this->data);
 	}
@@ -150,9 +152,13 @@ class BusinessPaymentController extends Controller
 	public function payment(PageRequest $request, $id= NULL){
 
 		$this->data['quarter'] = $request->get('quarter');
-		$business = BusinessTaxPayment::where('transaction_id', $id)->where('quarter' , 1)->where('payment_status',"UNPAID")->first();
+		$this->data['fee_type'] = $request->get('type') ;
+
 		$transaction_data = BusinessTransaction::find($id);
-		$quarter = BusinessTaxPayment::where('transaction_id', $id)->where('quarter' , $this->data['quarter'])->where('payment_status',"UNPAID")->first();
+
+		$business = BusinessTaxPayment::where('transaction_id', $id)->where('quarter' , 1)->where('fee_type',$this->data['fee_type'])->where('payment_status',"UNPAID")->first();
+		$quarter = BusinessTaxPayment::where('transaction_id', $id)->where('quarter' , $this->data['quarter'])->where('fee_type',$this->data['fee_type'])->where('payment_status',"UNPAID")->first();
+
 		$code = $quarter->transaction_code;
 		$dt = Carbon::parse($business->due_date);
 		$due_date = "";
@@ -184,14 +190,14 @@ class BusinessPaymentController extends Controller
         		break;
         }
 
-		$payment = BusinessTaxPayment::where('transaction_id', $id)->whereIn('quarter' , $q)->where('payment_status',"UNPAID")->get();
+		$payment = BusinessTaxPayment::where('transaction_id', $id)->whereIn('quarter' , $q)->where('fee_type',$this->data['fee_type'])->where('payment_status',"UNPAID")->get();
 
         $total_amount = $payment->sum('amount') + $payment->sum('surcharge');
 
         if (($this->data['quarter'] == 4) and (Carbon::now()->format('Y-m-d') < $due_date->format('Y-m-d')) and (count($payment) == 4)) {
         	$discount = $business->amount * .10;
         	foreach ($payment as $key => $value) {
-        		BusinessTaxPayment::where('transaction_id',$id)->update(['discount' => $discount]);
+        		BusinessTaxPayment::where('transaction_id',$id)->where('fee_type',$this->data['fee_type'])->update(['discount' => $discount]);
         	}
         	$total_amount = $payment->sum('amount') + $payment->sum('surcharge') - $payment->sum('discount');
         }

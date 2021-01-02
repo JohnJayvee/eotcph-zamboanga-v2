@@ -286,6 +286,7 @@ class BusinessTransactionController extends Controller
 			    $regulatory_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 0)->get();
 			    $business_tax = BusinessFee::where('transaction_id', $id)->where('fee_type' , 1)->first();
 			    $garbage_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 2)->get();
+
 			    if ($regulatory_fee) {
 			    	$business_fee_id = [];
 			    	$total_amount = 0;
@@ -334,7 +335,38 @@ class BusinessTransactionController extends Controller
 				    	$business_tax_payment->save();
 			    	}
 			    }
-
+			    if ($garbage_fee) {
+			    	$amount = $business_tax->amount / 4 ;
+			    	for ($i=0; $i < 4; $i++) { 
+			    		switch ($i + 1) {
+			    			case '1':
+			    				$due_date = Carbon::now()->year.$d1->format('-m-d');
+			    				break;
+			    			case '2':
+			    				$due_date = Carbon::now()->year.$d2->format('-m-d');
+			    				break;
+			    			case '3':
+			    				$due_date = Carbon::now()->year.$d3->format('-m-d');
+			    				break;
+			    			case '4':
+			    				$due_date = Carbon::now()->year.$d4->format('-m-d');
+			    				break;
+			    			default:
+			    				break;
+			    		}
+			    		$business_tax_payment  = new BusinessTaxPayment();
+			    		$business_tax_payment->business_fee_id =  $business_tax->id;
+			    		$business_tax_payment->transaction_id = $id;
+			    		$business_tax_payment->quarter = $i + 1;
+			    		$business_tax_payment->fee_type = 2;
+			    		$business_tax_payment->amount = $amount;
+			    		$business_tax_payment->surcharge = $amount * .25;
+			    		$business_tax_payment->due_date = $due_date;
+			    		$business_tax_payment->save();
+				    	$business_tax_payment->transaction_code = 'GF-' . Helper::date_format(Carbon::now(), 'ym') . str_pad($business_tax_payment->id, 5, "0", STR_PAD_LEFT) . Str::upper(Str::random(3));
+				    	$business_tax_payment->save();
+			    	}
+			    }
 
 			} else {
                 $insert = [];
@@ -527,10 +559,10 @@ class BusinessTransactionController extends Controller
 			$this->data['transaction'] = BusinessTransaction::find($id);
 
 			$request_body = [
-				'business_id' => $request->get('business_id'),
-				'ebriu_application_no' => $request->get('application_no'),
+				'business_id' => "1134697",
+				'ebriu_application_no' => "21-00002-E",
 				'year' => "2021",
-				'office_code' => $request->get('office_code'),
+				'office_code' => "99",
 			];
 			$response = Curl::to(env('ZAMBOANGA_URL'))
 			         ->withData($request_body)
