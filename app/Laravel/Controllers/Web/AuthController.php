@@ -141,9 +141,9 @@ class AuthController extends Controller{
             return redirect()->route('web.login');
         }
     }
-	public function store(PageRequest $request){
+	public function store(RegisterRequest $request){
         DB::beginTransaction();
-        try{
+        
             $new_customer = new Customer;
             $new_customer->status = 'pending';
             $new_customer->fname = $request->fname;
@@ -189,23 +189,18 @@ class AuthController extends Controller{
             }
 
             // store contact number and email address to session incase of failure
-            session()->put('register.contact_number', $request->contact_number);
-            session()->put('register.email', $request->email);
+            session()->put('register.contact_number', $new_customer->contact_number);
+            session()->put('register.email', $new_customer->email);
 
             // fire sendOTP function after above all success
-            $this->sendOTP($request->contact_number, $request->email);
+            $this->sendOTP($new_customer->contact_number, $new_customer->email);
 
             DB::commit();
             session()->flash('notification-status', "success");
             session()->flash('notification-msg','Successfully registered.');
             session()->put('register.progress', 2);
             return redirect()->route('web.register.otp');
-        }catch(\Exception $e){
-            // dd($e->getMessage());
-            DB::rollback();
-            session()->flash('notification-status', "failed");
-            return redirect()->back();
-        }
+        
 	}
 	public function verify(){
 		$this->data['page_title'] = " :: Verify Account";
