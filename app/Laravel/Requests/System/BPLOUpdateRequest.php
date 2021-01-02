@@ -7,9 +7,11 @@ class BPLOUpdateRequest extends RequestManager{
 
 	public function rules(){
 
-        $rules = [];
+        $rules = [
+        	'status' => "required",
+        ];
         if($this->get('status') == 'declined'){
-			$rules['remark'] = "required";
+			$rules['remarks'] = "required";
 		}
 		return $rules;
 	}

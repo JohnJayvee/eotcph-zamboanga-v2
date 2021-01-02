@@ -11,7 +11,7 @@
 
     </ul>
     <ul class="navbar-nav navbar-nav-right">
-        <li class="nav-item nav-profile dropdown navbar-nav-right float-right" style="width: 300px;">
+        <li class="nav-item nav-profile dropdown navbar-nav-right float-right" style="width: 90px;">
             @if(in_array($auth->type,['super_user','admin']))
             <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="">
                 <i class="fas fa-bell fa-lg ml-2">

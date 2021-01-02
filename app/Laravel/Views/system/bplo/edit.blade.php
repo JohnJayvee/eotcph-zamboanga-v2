@@ -11,130 +11,140 @@
 @stop
 
 @section('content')
-<div class="col-md-8 grid-margin stretch-card">
+<div class="col-md-10 grid-margin stretch-card">
     <div class="card">
-        <form class="create-form" method="POST" enctype="multipart/form-data">
-            @include('system._components.notifications')
-            {!!csrf_field()!!}
-            <div class="card-body registration-card py-0">
-                <h5 class="text-title text-uppercase pt-5">Account Details</h5>
+        <div class="card-body">
+            <form class="create-form" method="POST" enctype="multipart/form-data">
+                @include('system._components.notifications')
+                {!!csrf_field()!!}
+               
+                <h5 class="text-title text-uppercase ">Account Details</h5>
+                <div class="row">
+                    <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                            <label class="text-title">Account Status</label>
+                            {!!Form::select("status", $status_type, old('status'), ['id' => "input_status", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('status') ? 'is-invalid' : NULL)])!!}
+                            @if($errors->first('status'))
+                              <p class="mt-1 text-danger">{!!$errors->first('status')!!}</p>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6" id="remarks_container">
+                        <div class="form-group">
+                          <label for="input_email">Remarks</label>
+                          <textarea class="form-control" id="input_email" name="remarks" rows="5"></textarea>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-6 col-lg-6 ">
                         <div class="form-group">
-                            <label class="text-form pb-2">Email</label>
-                            <p class="text-form text-success">{{ $customer->email?? '-' }}</p>
+                          <label for="input_email">Email</label>
+                          <input type="text" class="form-control" id="input_email" value="{{ $customer->email ?: '-' }}" readonly>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6">
                         <div class="form-group">
-                            <label class="text-title pb-2">Account Status</label>
-                            <select name="status" class="form-control" id="status">
-                                <option value="approved">Approved</option>
-                                <option value="declined">Declined</option>
-                            </select>
+                            <label for="input_contact_number">Contact Number</label>
+                            <input type="text" class="form-control" id="input_contact_number" value="{{ $customer->contact_number ?: '-' }}" readonly>
                         </div>
                     </div>
                 </div>
-            </div>
-            <hr class="form pt-0">
-            <div class="card-body registration-card">
+                
+                <hr class="form pt-0">
+                
                 <h5 class="text-title text-uppercase ">Account Information</h5>
                 <div class="row">
-                    <div class="col-md-6 col-lg-6">
+                    <div class="col-md-4 col-lg-4">
                         <div class="form-group">
-                            <label class="text-form pb-2">First Name</label>
-                            <p class="text-form text-success">{{ $customer->fname?? '-' }}</p>
+                          <label for="input_lname">Last Name</label>
+                          <input type="text" class="form-control" id="input_lname" value="{{ $customer->lname ?: '-' }}" readonly>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6">
-                        <div class="form-group mb-0">
-                            <label class="text-form pb-2">Last Name</label>
-                            <p class="text-form text-success">{{ $customer->lname?? '-' }}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 col-lg-6">
-                        <div class="form-group ">
-                            <label class="text-form pb-2">Middle Name</label>
-                            <p class="text-form text-success">{{ $customer->mname?? '-' }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6">
+                    <div class="col-md-4 col-lg-4">
                         <div class="form-group">
-                            <label class="text-form pb-2">Contact Number</label>
-                            <p class="text-form text-success">{{ $customer->contact_number?? '-' }}</p>
+                          <label for="input_fname">First Name</label>
+                          <input type="text" class="form-control" id="input_fname" value="{{ $customer->fname ?: '-' }}" readonly>
+                        </div>
+                    </div>
+                   
+                    <div class="col-md-4 col-lg-4">
+                        <div class="form-group">
+                          <label for="input_mname">Middle Name</label>
+                          <input type="text" class="form-control" id="input_mname" value="{{ $customer->mname ?: '-' }}" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="text-form pb-2">Region</label>
-                            <p class="text-form text-success">{{ $customer->region_name?? '-' }}</p>
+                            <label for="input_region_name">Region</label>
+                            <input type="text" class="form-control" id="input_region_name" value="{{ $customer->region_name ?: '-' }}" readonly>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="text-form pb-2">City Municipality</label>
-                            <p class="text-form text-success">{{ $customer->town_name?? '-' }}</p>
+                            <label for="input_town_name">City Municipality</label>
+                            <input type="text" class="form-control" id="input_town_name" value="{{ $customer->town_name ?: '-' }}" readonly>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6">
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-lg-4">
                         <div class="form-group">
-                            <label class="text-form pb-2">Barangay</label>
-                            <p class="text-form text-success">{{ $customer->barangay_name?? '-' }}</p>
+                          <label for="input_barangay_name">Barangay</label>
+                          <input type="text" class="form-control" id="input_barangay_name" value="{{ $customer->barangay_name ?: '-' }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <div class="form-group">
+                          <label for="input_street_name">Street Name</label>
+                          <input type="text" class="form-control" id="input_street_name" value="{{ $customer->street_name ?: '-' }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <div class="form-group">
+                            <label for="input_unit_number">BLDG/ Unit Number</label>
+                            <input type="text" class="form-control" id="input_unit_number" value="{{ $customer->unit_number ?: '-' }}" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-lg-6">
                         <div class="form-group">
-                            <label class="text-form pb-2">Street Name</label>
-                            <p class="text-form text-success">{{ $customer->street_name?? '-' }}</p>
+                            <label for="input_zipcode">Zipcode</label>
+                            <input type="text" class="form-control" id="input_zipcode" value="{{ $customer->zipcode ?: '-' }}" readonly>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6">
                         <div class="form-group">
-                            <label class="text-form pb-2">BLDG/ Unit Number</label>
-                            <p class="text-form text-success">{{ $customer->unit_number?? '-' }}</p>
+                            <label for="input_birthdate">Birthdate</label>
+                            <input type="text" class="form-control" id="input_birthdate" value="{{ $customer->birthdate ?: '-' }}" readonly>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 col-lg-6">
-                        <div class="form-group">
-                            <label for="input_zipcode" class="text-form pb-2">Zipcode</label>
-                            <<p class="text-form text-success">{{ $customer->zipcode?? '-' }}</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6">
-                        <div class="form-group">
-                            <label class="text-form pb-2">Birthdate</label>
-                            <p class="text-form text-success">{{ $customer->birthdate?? '-' }}</p>
-                        </div>
-                    </div>
-                </div>
+
                 <h5 class="text-title text-uppercase ">Account Requirements</h5>
+
                 <div class="row">
                     <div class="col-md-6 col-lg-6">
                         <div class="form-group">
-                            <label class="text-form pb-2">TIN No.</label>
-                            <p class="text-form text-success">{{ $customer->tin_no?? '-' }}</p>
+                            <label for="input_tin_no">TIN No.</label>
+                            <input type="text" class="form-control" id="input_tin_no" value="{{ $customer->tin_no ?: '-' }}" readonly>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6">
                         <div class="form-group">
-                            <label class="text-form pb-2">SSS No.</label>
-                            <p class="text-form text-success">{{ $customer->sss_no?? '-' }}</p>
+                            <label for="input_sss_no">SSS No.</label>
+                            <input type="text" class="form-control" id="input_sss_no" value="{{ $customer->sss_no ?: '-' }}" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-lg-6">
                         <div class="form-group">
-                            <label class="text-form pb-2">PHIC No.</label>
-                            <p class="text-form text-success">{{ $customer->phic_no ?? '-'}}</p>
+                            <label for="input_phic_no">PHIC No.</label>
+                            <input type="text" class="form-control" id="input_phic_no" value="{{ $customer->phic_no ?: '-' }}" readonly>
                         </div>
                     </div>
                 </div>
@@ -179,25 +189,8 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary mr-2">Update Record</button>
-            </div>
-            <div class="modal modal-remark" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <p class="text-form">Why Decline this registrant?</p>
-                            <textarea name="remark" id="" class="form-control {{$errors->has('remark') ? 'is-invalid' : NULL}}" cols="30" rows="5"></textarea>
-                            @if($errors->first('remark'))
-                                <p class="mt-1 text-danger">{!!$errors->first('remark')!!}</p>
-                            @endif
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 @stop
@@ -218,17 +211,17 @@
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-        @if(Session::has('errors'))
-        $('.modal-remark').modal({show: true});
-        @endif
+      $('#input_status').on('change', function(){
+        var val = $(this).val();
 
-        $("#status").change(function(){
-            if($(this).val() == 'declined'){
-                $(".modal-remark").modal('show');
-            } else {
-                $('.modal-remark').modal('hide');
-            }
-        })
+        if (val == "approved") {
+            $('#remarks_container').hide();
+        }else if (val == "declined") {
+            $('#remarks_container').show();
+        }else{
+            $('#remarks_container').hide();
+        }
+      }).change();
     });//document ready
 </script>
 @endsection

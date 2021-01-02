@@ -27,12 +27,8 @@ class SendCustomerRegistractionActive extends Event {
 			$phone = $value['contact_number'];
 			$fullname = $value['name'];
 
-			$nexmo = Nexmo::message()->send([
-				'to' => '+63'.(int)$phone,
-				'from' => 'EOTCPH' ,
-				'text' => "Hello ".$fullname.", This is to inform you that your account is now active. You may now login using the email and password you provided on the Sign Up Application. If you didn't request this, please ignore this message.",
-			]);
-
+			$phone = '+63'.(int)$phone;
+			$sms = Helper::send_sms($phone,"Hello ".$fullname.", This is to inform you that your account is now active. You may now login using the email and password you provided on the Sign Up Application. If you didn't request this, please ignore this message.");
 		}
 
 

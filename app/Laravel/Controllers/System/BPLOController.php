@@ -36,6 +36,7 @@ class BPLOController extends Controller
 		array_merge($this->data, parent::get_data());
 		$this->data['department'] = ['' => "All Department"] + Department::pluck('name','id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
+		$this->data['status_type'] = ['' => "Choose Status",'approved' => "Approved" , 'declined' => "Decline"];
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
 	}
 
@@ -102,8 +103,8 @@ class BPLOController extends Controller
 		DB::beginTransaction();
 		try{
             $update_customer = Customer::find($id);
-            $update_customer->status = $request->status;
-            $update_customer->remark = $request->remark;
+            $update_customer->status = $request->get('status');
+            $update_customer->remark = $request->get('remarks');
             $update_customer->save();
             DB::commit();
 
@@ -111,13 +112,13 @@ class BPLOController extends Controller
             'contact_number' => $request->contact_number,
             'email' => $update_customer->email,
             'name' => $update_customer->name,
+            'remark' => $update_customer->remarks,
         ];
 
         if($request->status == 'approved'){
-
             // via SMS
-            // $notification_data = new SendCustomerRegistractionActive($insert);
-            // Event::dispatch('send-customer-registration-active', $notification_data);
+            $notification_data = new SendCustomerRegistractionActive($insert);
+            Event::dispatch('send-customer-registration-active', $notification_data);
 
             // via Email
             $notification_data = new SendCustomerRegistractionActiveEmail($insert);
@@ -125,8 +126,8 @@ class BPLOController extends Controller
         } else {
 
             //  via SMS
-            // $notification_data = new SendCustomerRegistractionDecline($insert);
-            // Event::dispatch('send-customer-registration-declined', $notification_data);
+            $notification_data = new SendCustomerRegistractionDecline($insert);
+            Event::dispatch('send-customer-registration-declined', $notification_data);
 
             // via Email
             $notification_data = new SendCustomerRegistractionDeclinedEmail($insert);

@@ -36,7 +36,7 @@
                     <div class="row pt-5">
                         <div class="col-md-12">
                             <button type="submit" class="otp-btn m-2 submitOTP">Submit</button>
-                            <a href="#" class="otp-btn m-2" data-dismiss="modal">Close</a>
+                            <!-- <a href="#" class="otp-btn m-2" data-dismiss="modal">Close</a> -->
                         </div>
                     </div>
                 </form>
