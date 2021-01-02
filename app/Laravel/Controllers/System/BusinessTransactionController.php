@@ -494,6 +494,7 @@ class BusinessTransactionController extends Controller
 	public function bplo_validate($id = NULL , PageRequest $request){
 
 		DB::beginTransaction();
+		try{
 			$dept_code_array = explode(",", $request->get('department_code'));
 
 			foreach ($dept_code_array as $data) {
@@ -533,7 +534,12 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Office Code has been saved.");
 			return redirect()->route('system.business_transaction.pending');
 
-		
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
 	}
 
 	public function assessment (PageRequest $request , $id = NULL){
