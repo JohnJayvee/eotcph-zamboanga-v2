@@ -112,7 +112,7 @@ class BPLOController extends Controller
             'contact_number' => $request->contact_number,
             'email' => $update_customer->email,
             'name' => $update_customer->name,
-            'remark' => $update_customer->remarks,
+            'remark' => $update_customer->remark,
         ];
 
         if($request->status == 'approved'){
