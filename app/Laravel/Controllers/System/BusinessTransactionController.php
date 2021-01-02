@@ -521,8 +521,8 @@ class BusinessTransactionController extends Controller
                 ];
             }
             // Send via SMS
-            $notification_data = new NotifyDepartmentSMS($insert);
-            Event::dispatch('notify-departments-sms', $notification_data);
+            //$notification_data = new NotifyDepartmentSMS($insert);
+            //Event::dispatch('notify-departments-sms', $notification_data);
 
             // send via Email
             $notification_data = new NotifyDepartmentEmail($insert);

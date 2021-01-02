@@ -157,8 +157,8 @@ class BusinessPermitController extends Controller{
             // Send event to BPLO Admin
 
             // Send via SMS
-            $notification_data = new NotifyBPLOAdminSMS($insert_department);
-            Event::dispatch('notify-bplo-admin-sms', $notification_data);
+            //$notification_data = new NotifyBPLOAdminSMS($insert_department);
+            //Event::dispatch('notify-bplo-admin-sms', $notification_data);
 
             // send via Email
             $notification_data = new NotifyBPLOAdminEmail($insert_department);

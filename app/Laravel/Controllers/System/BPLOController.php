@@ -117,8 +117,8 @@ class BPLOController extends Controller
 
         if($request->status == 'approved'){
             // via SMS
-            $notification_data = new SendCustomerRegistractionActive($insert);
-            Event::dispatch('send-customer-registration-active', $notification_data);
+            //$notification_data = new SendCustomerRegistractionActive($insert);
+            //Event::dispatch('send-customer-registration-active', $notification_data);
 
             // via Email
             $notification_data = new SendCustomerRegistractionActiveEmail($insert);
@@ -126,8 +126,8 @@ class BPLOController extends Controller
         } else {
 
             //  via SMS
-            $notification_data = new SendCustomerRegistractionDecline($insert);
-            Event::dispatch('send-customer-registration-declined', $notification_data);
+            //$notification_data = new SendCustomerRegistractionDecline($insert);
+            //Event::dispatch('send-customer-registration-declined', $notification_data);
 
             // via Email
             $notification_data = new SendCustomerRegistractionDeclinedEmail($insert);
