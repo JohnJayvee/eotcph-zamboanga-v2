@@ -37,18 +37,19 @@ class BusinessPaymentController extends Controller
     public function index(PageRequest $request , $id = NULL){
         $this->data['page_title'] = "Business Payment Method";
         $this->data['auth'] = Auth::guard('customer')->user();
+        $this->data['payment_type'] = $request->get('type') ?:"0";
+
         $this->data['profile'] = Business::find($id);
         $this->data['transaction'] = BusinessTransaction::where('business_id',$id)->first();
 
-        $this->data['payment_type'] = $request->get('type') ?:"0";
-        
-        $this->data['business_fee'] = BusinessFee::where('transaction_id', $this->data['transaction']->id)->where('fee_type' , $this->data['payment_type'])->where('payment_status' ,"PENDING")->get();
         if (!$this->data['transaction']) {
         	session()->flash('notification-status',"failed");
 			session()->flash('notification-msg', "No Transaction For this business Found.");
 			return redirect()->back();
 		}
-
+		
+        $this->data['business_fee'] = BusinessFee::where('transaction_id', $this->data['transaction']->id)->where('fee_type' , $this->data['payment_type'])->where('payment_status' ,"PENDING")->get();
+        
         return view('web.business.payment',$this->data);
     }
 
