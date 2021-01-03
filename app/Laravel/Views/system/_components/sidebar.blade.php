@@ -96,12 +96,12 @@
             <span class="menu-title">Applications</span>
           </a>
         </li>
-        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.collection_fees.index', 'system.collection_fees.create', 'system.collection_fees.edit')) ? 'active' : ''}}">
+        {{-- <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.collection_fees.index', 'system.collection_fees.create', 'system.collection_fees.edit')) ? 'active' : ''}}">
             <a class="nav-link" href="{{route('system.collection_fees.index')}}">
               <i class="fa fa-check-circle menu-icon"></i>
               <span class="menu-title">Collection of Fees</span>
             </a>
-        </li>
+        </li> --}}
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.bplo.index', 'system.bplo.edit', 'system.bplo.create')) ? 'active' : ''}}">
             <a class="nav-link" href="{{route('system.bplo.index')}}">
               <i class="fa fa-user menu-icon"></i>
@@ -129,12 +129,12 @@
           </a>
         </li> -->
       @if(in_array($auth->type,['super_user','admin','office_head']))
-        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.report.index')) ? 'active' : ''}}">
+        {{-- <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.report.index')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.report.index')}}">
             <i class="fa fa-chart-line menu-icon"></i>
             <span class="menu-title">Reporting</span>
           </a>
-        </li>
+        </li> --}}
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.holiday.index','system.holiday.create','system.holiday.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.holiday.index')}}">
             <i class="fa fa-calendar-check menu-icon"></i>

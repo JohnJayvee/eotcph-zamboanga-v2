@@ -20,8 +20,8 @@
                             <a href="{{ route('web.business.index') }}" data-url="" class="btn btn-white btn-submission"> <i class="fa fa-laptop"></i> Submit</a>
                         </div>
                     </div>
-
-                    <div class="col-lg-12">
+                    {{-- COMMENTED OUT FOR PROD DEPLOYMENT - 2021-01-04 --}}
+                    {{-- <div class="col-lg-12">
 
                         <form method="GET" action={{ route('web.upload') }} class="mb-3">
                             <div class="col-lg-12 pt-2">
@@ -31,7 +31,7 @@
                                <button class="btn btn-white" type="submit"><i class="fa fa-money-bill"></i> RESUBMISSION</button>
                             </div>
                         </form>
-                    </div>
+                    </div> --}}
 
                     <div class="col-lg-12">
                          <div class="col-lg-12 pt-4">
