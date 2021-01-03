@@ -588,7 +588,7 @@ class BusinessTransactionController extends Controller
 			$regulatory_array = [];
 			$business_array = [];
 			$garbage_array = [];
-		 
+
 			foreach ($response->content['data'] as $key => $value) {
 				if ($value['FeeType'] == 0 ) {
 					array_push($regulatory_array, $value);
@@ -678,7 +678,6 @@ class BusinessTransactionController extends Controller
 		}catch(\Exception $e){
             DB::rollback();
             info('LOG - ASSESSMENT_ERROR', ['error' => $e->getMessage()]);
-            throw($e);
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
