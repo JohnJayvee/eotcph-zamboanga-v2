@@ -17,13 +17,14 @@
             <form class="create-form" method="POST" enctype="multipart/form-data">
                 @include('system._components.notifications')
                 {!!csrf_field()!!}
-               
+
                 <h5 class="text-title text-uppercase ">Account Details</h5>
                 <div class="row">
                     <div class="col-md-6 col-lg-6">
                         <div class="form-group">
                             <label class="text-title">Account Status</label>
-                            {!!Form::select("status", $status_type, old('status'), ['id' => "input_status", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('status') ? 'is-invalid' : NULL)])!!}
+                            {!!Form::select("status", $status_type, old('status'), ['id' => "input_status", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('status') ? 'is-invalid' : NULL), $customer->otp_verified ?:'disabled'])!!}
+                            <small class="text-danger">{{ $customer->otp_verified ? '' : 'The registrant is not OTP verified' }}</small>
                             @if($errors->first('status'))
                               <p class="mt-1 text-danger">{!!$errors->first('status')!!}</p>
                             @endif
@@ -50,9 +51,9 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <hr class="form pt-0">
-                
+
                 <h5 class="text-title text-uppercase ">Account Information</h5>
                 <div class="row">
                     <div class="col-md-4 col-lg-4">
@@ -67,7 +68,7 @@
                           <input type="text" class="form-control" id="input_fname" value="{{ $customer->fname ?: '-' }}" readonly>
                         </div>
                     </div>
-                   
+
                     <div class="col-md-4 col-lg-4">
                         <div class="form-group">
                           <label for="input_mname">Middle Name</label>

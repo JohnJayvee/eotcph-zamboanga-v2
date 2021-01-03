@@ -135,7 +135,7 @@ class BPLOController extends Controller
         }
 
         session()->flash('notification-status', "success");
-        session()->flash('notification-msg', "Registrant has been.".$request->status);
+        session()->flash('notification-msg', "Registrant has been ".$request->status.'.');
         return redirect()->route('system.bplo.index');
 
 		}catch(\Exception $e){

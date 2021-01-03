@@ -24,7 +24,7 @@
                                             <label for="exampleInputEmail1" class="text-form pb-2">Business ID No.</label>
                                             <input type="hidden" class="form-control"  name="permit_no" value="{{old('permit_no', $business['PermitNo'] ?? '') }}">
                                             <input type="hidden" class="form-control"  name="business_plate_no" value="{{old('business_plate_no', $business['BusinessPlateNo'] ?? '') }}">
-                                            
+
                                             <input type="number" class="form-control form-control-sm {{ $errors->first('business_id_no') ? 'is-invalid': NULL  }}"  name="business_id_no" value="{{old('business_id_no', $business['BusinessID'] ?? '') }}" required>
                                             @if($errors->first('business_id_no'))
                                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('business_id_no')}}</small>
@@ -124,6 +124,7 @@
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">DTI/SEC/CDA registration No.</label>
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('dti_sec_cda_registration_no') ? 'is-invalid': NULL  }}"  name="dti_sec_cda_registration_no" value="{{old('dti_sec_cda_registration_no') }}">
+                                        <p class="text-right text-primary"><a href="http://betastaging.bnrs.dti.gov.ph/registration" target="_blank">Not yet registered to DTI? click here.</a></p>
                                         @if($errors->first('dti_sec_cda_registration_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('dti_sec_cda_registration_no')}}</small>
                                         @endif

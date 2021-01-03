@@ -59,7 +59,7 @@ class AuthController extends Controller{
                         session()->forget('link');
                     } else {*/
                         return redirect()->route('web.business.index');
-                    
+
                 } else if (Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'declined'])){
                     session()->flash('notification-status','error');
                     session()->flash('notification-msg','Your Account has been Declined.');
@@ -84,7 +84,7 @@ class AuthController extends Controller{
         $this->data['page_title'] = " :: Create Account";
 
         $session_stage = session('register.progress');
-        if($session_stage == '2'){
+        if(in_array($session_stage ,['2','3'])){
             return redirect()->route('web.register.otp');
         }
 		return view('web.auth.registration',$this->data);
@@ -124,26 +124,34 @@ class AuthController extends Controller{
         $this->data['page_title'] = " :: OTP";
 
         $account = CustomerOTP::where('otp',request('code'))->first();
-
         $contact_number = session('register.contact_number');
         $email = session('register.email');
 
         if(!$account){
             // incase of otp failure resend OTP code
-            $this->sendOTP($contact_number, $email);
-            return redirect()->back();
+            // $this->sendOTP($contact_number, $email);
+            return redirect()->back()->withErrors(['otp_code' => trans('Invalid OTP code.')]);;
         } else {
+
+            $customer = Customer::find($account->id);
+            $customer->otp_verified = '1';
+            $customer->save();
+
             CustomerOTP::where('id',$account->id)->delete();
+            auth()->guard('customer')->logout();
+
             session()->flash('notification-status', "success");
             session()->flash('notification-msg','Successfully registered.');
             // OTP success forget all session
-            session()->forget('register');
-            return redirect()->route('web.login');
+            session()->put('register.progress', 3);
+            return redirect()->back();
+            // session()->forget('register');
+            // return redirect()->route('web.login');
         }
     }
 	public function store(RegisterRequest $request){
         DB::beginTransaction();
-        
+
             $new_customer = new Customer;
             $new_customer->status = 'pending';
             $new_customer->fname = $request->fname;
@@ -200,7 +208,7 @@ class AuthController extends Controller{
             session()->flash('notification-msg','Successfully registered.');
             session()->put('register.progress', 2);
             return redirect()->route('web.register.otp');
-        
+
 	}
 	public function verify(){
 		$this->data['page_title'] = " :: Verify Account";
