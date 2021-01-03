@@ -20,7 +20,7 @@ class ProcessorRequest extends RequestManager{
 
 		if ($this->get('type') == "processor") {
             //commented out for prod
-			// $rules['application_id'] = "required";
+			$rules['application_id'] = "required";
 			$rules['department_id'] = "required";
 		}
 		if ($this->get('type') == "office_head") {
