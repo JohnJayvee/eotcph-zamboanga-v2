@@ -75,7 +75,7 @@ class BusinessTransactionController extends Controller
 		$this->data['selected_processor'] = $request->get('processor');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
-		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
+        $this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
 
 		$this->data['transactions'] = BusinessTransaction::with('application_permit')->where('status',"PENDING")->where('is_resent',0)->whereHas('application_permit',function($query){
 				if(strlen($this->data['keyword']) > 0){
@@ -103,6 +103,11 @@ class BusinessTransactionController extends Controller
 				->where(function($query){
 					if(strlen($this->data['selected_processor']) > 0){
 						return $query->where('is_validated',$this->data['selected_processor']);
+					}
+                })
+                ->where(function($query) use($auth){
+					if(strlen($auth->department_id) > 0 && !in_array($auth->type, ['admin', 'super_user'])){
+						return $query->where('is_validated', '1');
 					}
 				})
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
@@ -258,7 +263,7 @@ class BusinessTransactionController extends Controller
 		$d2 = new Carbon('04/20');
 		$d3 = new Carbon('07/20');
 		$d4 = new Carbon('10/20');
-		
+
 		$type = strtoupper($request->get('status_type'));
 		DB::beginTransaction();
 		try{
@@ -286,7 +291,7 @@ class BusinessTransactionController extends Controller
 			    $regulatory_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 0)->get();
 			    $business_tax = BusinessFee::where('transaction_id', $id)->where('fee_type' , 1)->first();
 			    $garbage_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 2)->get();
-				
+
 			    if ($regulatory_fee) {
 			    	$business_fee_id = [];
 			    	$total_amount = 0;
@@ -305,7 +310,7 @@ class BusinessTransactionController extends Controller
 			    }
 			    if ($business_tax) {
 			    	$amount = $business_tax->amount / 4 ;
-			    	for ($i=0; $i < 4; $i++) { 
+			    	for ($i=0; $i < 4; $i++) {
 			    		switch ($i + 1) {
 			    			case '1':
 			    				$due_date = Carbon::now()->year.$d1->format('-m-d');
@@ -337,7 +342,7 @@ class BusinessTransactionController extends Controller
 			    }
 			    if ($garbage_fee) {
 			    	$amount = $business_tax->amount / 4 ;
-			    	for ($i=0; $i < 4; $i++) { 
+			    	for ($i=0; $i < 4; $i++) {
 			    		switch ($i + 1) {
 			    			case '1':
 			    				$due_date = Carbon::now()->year.$d1->format('-m-d');
