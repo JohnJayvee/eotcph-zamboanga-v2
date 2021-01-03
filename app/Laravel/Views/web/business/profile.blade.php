@@ -23,7 +23,7 @@
                                 </h5>
                             </div>
                             <div class="col-md-6">
-                                <a href="{{route('web.business.history',[$profile->id])}}" class="custom-btn badge-primary-2 text-white " style="float: right;">Applicaton History</a>
+                                <a href="{{route('web.business.history',[$profile->id])}}" class="custom-btn badge-primary-2 text-white " style="float: right;">Application History</a>
                                 <a href="{{route('web.business_payment.index',[$profile->id])}}" class="mr-2 custom-btn badge-primary-2 text-white " style="float: right;">Business Payment</a>
                             </div>
                         </div>

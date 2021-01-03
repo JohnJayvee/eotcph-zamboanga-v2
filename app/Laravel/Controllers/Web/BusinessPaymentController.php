@@ -276,7 +276,7 @@ class BusinessPaymentController extends Controller
 			->where('business_fee.fee_type', 1)
 			->first();
 		$this->data['business_tax'] = $business_tax ;
-		
+
 		$this->data['garbage_fee'] = DB::table('business_fee')
 			->leftjoin('department', 'department.code', '=', 'business_fee.office_code')
 			->select('business_fee.*','department.*')
@@ -295,7 +295,5 @@ class BusinessPaymentController extends Controller
         $pdf->setPaper('A4', 'landscape');
         return $pdf->download('Business Permit Assessment Details.pdf');
         //return view('pdf.business-permit-assessment-details', $this->data);
-        // $notification_data_email = new SendEmailDigitalCertificate($insert);
-        // Event::dispatch('send-digital-business-permit', $notification_data_email);
     }
 }
