@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <style type="text/css">
+    body{
+        font-size: 12px;
+    }
+    @page { size: a4 landscape;}
+    .page-break {
+        page-break-before: always;
+    }
 	.text-center{
 		text-align: center;
 	}
@@ -20,10 +27,22 @@
         font-size: 48px;
         letter-spacing: -1px;
     }
+    .border-top {
+        border-top:solid 2px #000 !important;
+    }
+    .border-bottom {
+        border-bottom:solid 2px #000 !important;
+    }    
+    .border-right {
+        border-right:solid 2px #000 !important;
+    }
+    .border-left {
+        border-left:solid 2px #000 !important;
+    }
 </style>
 <body>
     <div class="container mt-3">
-        <div class="row d-flex justify-content-center">
+        <div class="row justify-content-center">
             <div class="head text-center">
                 <p>Republic of the Philippines</p>
                 <p><b>OFFICE OF THE CITY TREASURER</b></p>
@@ -33,34 +52,35 @@
                 <p>{{ now()->format('F d, Y') }}</p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
+        <div class="row bg-secondary">
+            <div class="col-md-9">
                 <div class="form-group mb-0">
                     <div class="row">
-                        <div class="col-md-4">Name of Permitee:</div>
-                        <div class="col-md-8">{{ strtoupper($transaction->business_info->owner->name) }}</div>
+                        <div class="col-md-3" >Name of Permitee:</div>
+                        <div class="col-md-9" style="float: right">{{ strtoupper($transaction->business_info->owner->name) }}</div>
                     </div>
                 </div>
                 <div class="form-group mb-0">
                     <div class="row">
-                        <div class="col-md-4">Address of Permitee:</div>
-                        <div class="col-md-8">{{ strtoupper($transaction->business_info->owner->owner_full_address) }}</div>
+                        <div class="col-md-3">Address of Permitee:</div>
+                        <div class="col-md-9" style="float: right">{{ strtoupper($transaction->business_info->owner->owner_full_address) }}</div>
                     </div>
                 </div>
                 <div class="form-group mb-0">
                     <div class="row">
-                        <div class="col-md-4">Business Name:</div>
-                        <div class="col-md-8">{{ strtoupper($transaction->business_info->business_name) }}</div>
+                        <div class="col-md-3">Business Name:</div>
+                        <div class="col-md-9" style="float: right">{{ strtoupper($transaction->business_info->business_name) }}</div>
                     </div>
                 </div>
                 <div class="form-group mb-0">
                     <div class="row">
-                        <div class="col-md-4">Location of Business:</div>
-                        <div class="col-md-8">{{ strtoupper($transaction->business_info->business_full_address) }}</div>
+                        <div class="col-md-12">
+                            Location of Business:<br>
+                            <label>{{ strtoupper($transaction->business_info->business_full_address) }}</label></div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3" style="float:right">
                 <div class="float-right">
                     <div class="form-group mb-0">
                         <div class="row text-center">
@@ -86,38 +106,172 @@
             </div>
         </div>
         <div class="row">
-            <table style="width: 100%">
-                <th>
-                    <tr style="border: 2px solid; text-align:center;">
-                        <td>Particulars</td>
-                        <td>Year</td>
-                        <td>Previous Gross Sales</td>
-                        <td>Gross Sales / Capital / No of Units</td>
-                        <td>Permit Fee</td>
-                        <td>Business Tax</td>
-                        <td>Qtr</td>
-                        <td>Surcharge</td>
-                        <td>Interest</td>
-                        <td>Remarks</td>
-                    </tr>
-                </th>
-                <tbody>
-                    @foreach ($business_activity as $businessactivity)
+            @php
+                $total_to_be_paid = 0;
+            @endphp
+            <div class="mt-3" style="float:left;width: 100%;">
+                <table class="mt-3" style="width: 100%; float:left;">
+                    <thead>
                         <tr>
-                            <td rowspan="1"><p class="ml-3 mb-0">{{ $businessactivity->line_of_business }}</p></td>
-                            <td rowspan="1"><p class="ml-3 mb-0">2021</p></td>
-                            <td rowspan="1"><p class="ml-3 mb-0">{{ $businessactivity->bGross }}</p></td>
-                            <td rowspan="1"><p class="ml-3 mb-0">{{ $businessactivity->gross_sales }}</p></td>
+                            <td colspan="2"><label><strong>Regulatory Fees</strong></label></td>
                         </tr>
+                        <tr style="text-align:center;">
+                            <td class="border-top border-bottom border-left">Particulars</td>
+                            <td class="border-top border-bottom border-right" >Assessed Amount</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $regulatory_total = 0;
+                        @endphp
+                        @foreach ($regulatory_fees as $rf)
+                            <tr>
+                                <td colspan="2" class="bg-light p-1"><p class="ml-3 mb-0">{{ $rf->name }}</p></td>
+                            </tr>
+                            @php
+                                $sub_total = 0;
+                                $collection_of_fees = json_decode($rf->collection_of_fees)
+                            @endphp
+                            @foreach ($collection_of_fees as $fee)
+                            <tr>
+                                <td><p class="ml-3 mb-0">{{ $fee->Particulars }}</p></td>
+                                <td class="text-right pr-4"><p class="ml-3 mb-0">{{ $fee->Amount }}</p></td>
+                            </tr>
+                            @php
+                                $sub_total += $fee->Amount;
+                                $regulatory_total += $sub_total;
+                                $total_to_be_paid += $regulatory_total;
+                            @endphp 
+                            @endforeach
                         @endforeach
-                </tbody>
-                <th>
-                    <tr style="border-bottom: 2px solid;border-top: 2px solid; text-align:center;">
-                        <td colspan="2"><b>Total</b></td>
-                        <td colspan="8" style="text-align:right;">Year</td>
-                    </tr>
-                </th>
-            </table>
+                        <tr>
+                            <td class="text-left pl-4 border-top border-bottom"><b>Total</b></td>
+                            <td class="text-right pr-4 border-top border-bottom"><b>{{number_format($regulatory_total,2)}}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="page-break"></div>
+            <div style="float:left;width: 100%; height:auto">
+                <table style="width: 100%; float:left;">
+                    <tbody>
+                        <tr>
+                            <td>
+                            <table >
+                                <thead>
+                                    <tr>
+                                        <td colspan="2"><label><strong>Business Tax</strong></label></td>
+                                    </tr>
+                                    <tr style="border: 2px solid; text-align:center;">
+                                        <td width="250" class="border-top border-bottom border-left">Particulars</td>
+                                        <td class="border-top border-bottom">Year</td>
+                                        <td class="border-top border-bottom" width="150">Gross Sales / Capital / No of Units</td>
+                                        <td class="border-top border-bottom">Business Tax</td>
+                                        <td class="border-top border-bottom">Qtr</td>
+                                        <td class="border-top border-bottom">Surcharge</td>
+                                        <td class="border-top border-bottom">Interest</td>
+                                        <td class="border-top border-bottom border-right">Remarks</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $total_tax = 0;
+                                        $collection_of_fees = json_decode($business_tax->collection_of_fees)
+                                    @endphp
+                                    @foreach ($collection_of_fees as $fee)
+                                        @php
+                                            $tax_amount = $fee->Qtr1 == "0" ? $fee->TaxAmount1 : 0;
+                                            $tax_amount += $fee->Qtr2 == "0" ? $fee->TaxAmount2 : 0;
+                                            $tax_amount += $fee->Qtr3 == "0" ? $fee->TaxAmount3 : 0;
+                                            $tax_amount += $fee->Qtr4 == "0" ? $fee->TaxAmount4 : 0;
+                                            $total_tax += $tax_amount;
+                                            $total_to_be_paid += $total_tax;
+                            
+                                            $quarter = $fee->Qtr1 == "0" ? "1 " : "";
+                                            $quarter .= $fee->Qtr2 == "0" ? "2 " : "";
+                                            $quarter .= $fee->Qtr3 == "0" ? "3 " : "";
+                                            $quarter .= $fee->Qtr4 == "0" ? "4 " : "";
+                                        @endphp
+                                        <tr>
+                                            <td rowspan="1"><p class="ml-3 mb-0">{{ $fee->Particulars }}</p></td>
+                                            <td rowspan="1"><p class="ml-3 mb-0">{{ $fee->CYear }}</p></td>
+                                            <td rowspan="1" class="text-right pr-4"><p class="ml-3 mb-0">{{ $fee->GrossSales <= 0 ? $fee->Capital : $fee->GrossSales}}</p></td>
+                                            <td rowspan="1" class="text-right pr-4"><p class="ml-3 mb-0">{{ number_format($tax_amount,2) }}</p></td>
+                                            <td rowspan="1" class="text-center"><p class="ml-3 mb-0">{{ $quarter }}</p></td>
+                                            <td rowspan="1"><p class="ml-3 mb-0">0</p></td>
+                                            <td rowspan="1"><p class="ml-3 mb-0">0</td>
+                                            <td rowspan="1"><p class="ml-3 mb-0">{{$fee->Remarks}}</td>
+                                        </tr>
+                                    @endforeach
+                                    <tr style="text-align:center;">
+                                        <td class="text-left pl-4 border-top border-bottom " colspan="7"><b>Total</b></td>
+                                        <td class="text-right pr-4 border-top border-bottom "><b>{{number_format($total_tax,2)}}</b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="mt-3">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td colspan="2"><label><strong>Garbage Fee</strong></label></td>
+                                    </tr>
+                                    <tr style="border: 2px solid; text-align:center;">
+                                        <td class="border-top border-bottom border-left">Year</td>
+                                        <td class="border-top border-bottom" width="150">Account</td>
+                                        <td class="border-top border-bottom">Amount</td>
+                                        <td class="border-top border-bottom">Qtr</td>
+                                        <td class="border-top border-bottom">Surcharge</td>
+                                        <td class="border-top border-bottom border-right">Total Amount</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $total_garbage_fee = 0;
+                                        $collection_of_fees = json_decode($garbage_fee->collection_of_fees)
+                                    @endphp
+                                    @foreach ($collection_of_fees as $fee)
+                                        @php
+                                            $garbage_amount = $fee->Qtr1 == "0" ? $fee->TaxAmount1 : 0;
+                                            $garbage_amount += $fee->Qtr2 == "0" ? $fee->TaxAmount2 : 0;
+                                            $garbage_amount += $fee->Qtr3 == "0" ? $fee->TaxAmount3 : 0;
+                                            $garbage_amount += $fee->Qtr4 == "0" ? $fee->TaxAmount4 : 0;
+                                            $total_garbage_fee += $garbage_amount;
+                                            $total_to_be_paid += $total_garbage_fee;
+                            
+                                            $quarter = $fee->Qtr1 == "0" ? "1 " : "";
+                                            $quarter .= $fee->Qtr2 == "0" ? "2 " : "";
+                                            $quarter .= $fee->Qtr3 == "0" ? "3 " : "";
+                                            $quarter .= $fee->Qtr4 == "0" ? "4 " : "";
+                                        @endphp
+                                        <tr>
+                                            <td rowspan="1"><p class="ml-3 mb-0">{{ $fee->CYear }}</p></td>
+                                            <td rowspan="1"><p class="ml-3 mb-0">Garbage Fee</p></td>
+                                            <td rowspan="1" class="text-right pr-4"><p class="ml-3 mb-0">{{ number_format($garbage_amount,2) }}</p></td>
+                                            <td rowspan="1"  class="text-center"><p class="ml-3 mb-0">{{ $quarter }}</p></td>
+                                            <td rowspan="1"><p class="ml-3 mb-0">0</p></td>
+                                            <td rowspan="1"><p class="ml-3 mb-0">{{ number_format($garbage_amount,2) }}</td>
+                                        </tr>
+                                    @endforeach
+                                    <tr style="text-align:center;">
+                                        <td class="text-left pl-4 border-top border-bottom" colspan="5"><b>Total</b></td>
+                                        <td class="text-right pr-4 border-bottom border-top"><b>{{number_format($total_garbage_fee,2)}}</b></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5 class="mt-4">Pay this amount at City Treasurer's Office: <b>P {{number_format($total_to_be_paid)}}</b></h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>

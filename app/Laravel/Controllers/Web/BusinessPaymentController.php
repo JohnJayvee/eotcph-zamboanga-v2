@@ -46,7 +46,8 @@ class BusinessPaymentController extends Controller
         	session()->flash('notification-status',"failed");
 			session()->flash('notification-msg', "No Transaction For this business Found.");
 			return redirect()->back();
-        }
+		}
+
         return view('web.business.payment',$this->data);
     }
 
@@ -256,24 +257,42 @@ class BusinessPaymentController extends Controller
     public function download_assessment(PageRequest $request,$id=NULL){
 
         $this->data['transaction'] = BusinessTransaction::find($id);
-        $transaction = BusinessTransaction::find($id);
+		$transaction = BusinessTransaction::find($id);
+		
+		BusinessFee::where("transaction_id",$id)->where("fee_type", 0)->get();
+		$this->data['regulatory_fees'] = DB::table('business_fee')
+			->leftjoin('department', 'department.code', '=', 'business_fee.office_code')
+			->select('business_fee.*','department.*')
+			->where('business_fee.transaction_id', $id)
+			->where('business_fee.fee_type', 0)
+			->get();
+
+		$business_tax = DB::table('business_fee')
+			->leftjoin('department', 'department.code', '=', 'business_fee.office_code')
+			->select('business_fee.*','department.*')
+			->where('business_fee.transaction_id', $id)
+			->where('business_fee.fee_type', 1)
+			->first();
+		$this->data['business_tax'] = $business_tax ;
+		
+		$this->data['garbage_fee'] = DB::table('business_fee')
+			->leftjoin('department', 'department.code', '=', 'business_fee.office_code')
+			->select('business_fee.*','department.*')
+			->where('business_fee.transaction_id', $id)
+			->where('business_fee.fee_type', 2)
+			->first();
+		
         $this->data['business_activity'] = DB::table('business_activities as activity')
                                         ->leftjoin('business_line', 'activity.application_business_permit_id', '=', 'business_line.business_id')
                                         ->select('business_line.name as bLine', 'business_line.gross_sales as bGross' ,'activity.*')
                                         ->where('activity.application_business_permit_id', $transaction->business_id)
                                         ->groupBy('application_business_permit_id')
                                         ->get();
-        // $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
-        // $this->data['app_business_permit'] = ApplicationBusinessPermit::find($request->id)->get();
-        // dd($this->data);
-        // $insert[] = [
-        //     'business_line' => $business_line
-        // ];
-        // dd($this->data);
+
         $pdf = PDF::loadView('pdf.business-permit-assessment-details', $this->data);
         $pdf->setPaper('A4', 'landscape');
-        // return $pdf->download('Business Permit Assessment Details.pdf');
-        return view('pdf.business-permit-assessment-details', $this->data);
+        return $pdf->download('Business Permit Assessment Details.pdf');
+        //return view('pdf.business-permit-assessment-details', $this->data);
         // $notification_data_email = new SendEmailDigitalCertificate($insert);
         // Event::dispatch('send-digital-business-permit', $notification_data_email);
     }

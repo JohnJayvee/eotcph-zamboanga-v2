@@ -1,5 +1,4 @@
 @extends('system._layouts.main')
-
 @section('breadcrumbs')
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">

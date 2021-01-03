@@ -33,13 +33,17 @@
                                 <label class="text-uppercase">{{str_replace("_"," ",$profile->business_type)}}</label>
                                 <p>Business Type</p>
                             </div>
-                             <div class="col-md-4">
+                             <div class="col-md-3">
                                 <label class="text-uppercase">{{str_replace("_"," ",$profile->business_scope)}}</label>
                                 <p>Business Scope</p>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="text-uppercase">{{$profile->dti_sec_cda_registration_no}}</label>
                                 <p>BN Number</p>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="text-uppercase">{{$profile->business_id_no}}</label>
+                                <p>Business ID</p>
                             </div>
                         </div>
                         <div class="row underline mb-2">

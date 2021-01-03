@@ -286,7 +286,7 @@ class BusinessTransactionController extends Controller
 			    $regulatory_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 0)->get();
 			    $business_tax = BusinessFee::where('transaction_id', $id)->where('fee_type' , 1)->first();
 			    $garbage_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 2)->get();
-
+				
 			    if ($regulatory_fee) {
 			    	$business_fee_id = [];
 			    	$total_amount = 0;
@@ -560,7 +560,7 @@ class BusinessTransactionController extends Controller
 
 			$request_body = [
 				'business_id' => "1134697",
-				'ebriu_application_no' => "21-00002-E",
+				'ebriu_application_no' => "21-00001-E",
 				'year' => "2021",
 				'office_code' => "99",
 			];
@@ -568,7 +568,8 @@ class BusinessTransactionController extends Controller
 			         ->withData($request_body)
 			         ->asJson( true )
 			         ->returnResponseObject()
-			         ->post();
+					 ->post();
+
 			if ($response->content['data'] == NULL) {
 				session()->flash('notification-status', "failed");
 				session()->flash('notification-msg', "No Assesment Found.");
