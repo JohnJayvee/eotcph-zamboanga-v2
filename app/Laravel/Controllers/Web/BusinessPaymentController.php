@@ -41,6 +41,7 @@ class BusinessPaymentController extends Controller
         $this->data['transaction'] = BusinessTransaction::where('business_id',$id)->first();
 
         $this->data['payment_type'] = $request->get('type') ?:"0";
+        
         $this->data['business_fee'] = BusinessFee::where('transaction_id', $this->data['transaction']->id)->where('fee_type' , $this->data['payment_type'])->where('payment_status' ,"PENDING")->get();
         if (!$this->data['transaction']) {
         	session()->flash('notification-status',"failed");
