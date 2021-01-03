@@ -204,9 +204,11 @@
             <h5 class="text-title text-uppercase">Assessment Details</h5>
           </div>
           <div class="col-md-6">
-           
+            @if(Auth::user()->type == "processor" and $transaction->department_involved)
+              @if(in_array(Auth::user()->department->code, json_decode($transaction->department_involved)))
                 <a href="{{route('system.business_transaction.assessment',[$transaction->id])}}"  class="btn btn-primary border-5 text-white float-right">Get Assessment Details</a>
-              
+              @endif
+            @endif
           </div>
           <div class="table-responsive pt-2">
             <p class="text-title text-bold">Regulatory Fee <!-- <span class="badge  badge-{{Helper::status_badge(Helper::check_regulatory($transaction->id))}} p-2">{{Helper::check_regulatory($transaction->id)}}</span> --></p>
