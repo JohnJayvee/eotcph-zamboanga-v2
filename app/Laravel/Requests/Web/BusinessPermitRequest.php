@@ -12,8 +12,8 @@ class BusinessPermitRequest extends RequestManager{
 
 		$rules = [
             'line_of_business.*' => 'required',
-            'no_of_units' => 'required',
-            'no_of_units.*' => 'numeric',
+            // 'no_of_units' => 'required',
+            'no_of_units.*' => 'nullable|numeric',
             'file' => 'required',
             'amount' => 'required',
             'amount.*' => 'numeric',
@@ -29,7 +29,7 @@ class BusinessPermitRequest extends RequestManager{
 		return [
             'file.*'	=> "Field is required.",
             'file.mimes' => "Invalid File",
-            'no_of_units.*' => "No. of Unit is required",
+            // 'no_of_units.*' => "No. of Unit is required",
             'amount.*' => "Gross sales is required",
             'capitalization.*' => "Capitalization is required",
             'renew.*' => "Gross is required",

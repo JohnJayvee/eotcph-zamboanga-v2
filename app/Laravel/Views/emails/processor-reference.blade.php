@@ -6,7 +6,7 @@
 
 	<style>
 		th.primary{
-			background-color: #D4EDDA; 
+			background-color: #D4EDDA;
 		}
 		table, th, td {
 		  border-collapse: collapse;
@@ -15,7 +15,7 @@
 		}
 
 		table.center {
-			margin-left:auto; 
+			margin-left:auto;
 			margin-right:auto;
 			border-bottom: solid 1px #F0F0F0;
 			border-right: solid 1px #F0F0F0;
@@ -49,7 +49,7 @@
 <body style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;  font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6em; margin: 0;">
 
 	<table class="center bg-white" width="55%">
-		
+
 			<tr>
 				<th colspan="2" class="primary" style="padding: 25px;">
 					<div id="pageElement">
@@ -58,7 +58,7 @@
 					</div>
 				</th>
 			</tr>
-		
+
 			<tr>
 				<th colspan="2" class="text-gray" style="padding: 10px;">Date: {{Helper::date_only(Carbon::now())}} | {{Helper::time_only(Carbon::now())}}</th>
 			</tr>
@@ -79,16 +79,16 @@
 				<th style="text-align: left;padding: 10px;">One-time-password (OTP):</th>
 				<th style="text-align: right;">{{$otp}}</th>
 			</tr>
-			
+
 			<tr>
 				<th colspan="2">
 					<p style="float: left;text-align: justify;">If you didn't request this or believe that you received this in error, please ignore this EMAIL.</p><br>
-					<p>Thank you for choosing DTI Online Pay!</p>
+					<p>Thank you!</p>
 				</th>
 			</tr>
-		
+
 	</table>
-	
+
 
 </body>
 </html>

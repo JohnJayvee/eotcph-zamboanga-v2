@@ -10,6 +10,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                {{-- {{ dd(session()->all()) }} --}}
                     @include('system._components.notifications')
                     @if($errors->first('valid_business'))
                         <small class="form-text pl-1" style="color:red;">{{$errors->first('valid_business')}}</small>
@@ -64,7 +65,7 @@
                         <div class="card-body">
                             <form class="create-form" method="POST" action="{{ route('web.business.create') }}" enctype="multipart/form-data">
                             {!!csrf_field()!!}
-                            <input type="hidden" name="BusinessID" value="{{ $business['BusinessID'] ?? '' }}">
+                            <input type="hidden" name="business_id_no" value="{{  old('business_id_no' ,( $business['BusinessID'] ?? '') )}}">
                             <input type="hidden" name="valid_business" class="form-control form-control-sm {{ $errors->first('valid_business') ? 'is-invalid': NULL  }}" value="{{ session('status_code') ?? '' }}">
                             @if($errors->first('valid_business'))
                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('valid_business')}}</small>
@@ -129,6 +130,9 @@
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('dti_sec_cda_registration_no') ? 'is-invalid': NULL  }}"  name="dti_sec_cda_registration_no" value="{{old('dti_sec_cda_registration_no') }}">
                                         @if($errors->first('dti_sec_cda_registration_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('dti_sec_cda_registration_no')}}</small>
+                                        @endif
+                                        @if (session()->has('bnn-error'))
+                                            <small class="form-text pl-1" style="color:red;">{{ session('bnn-error') }}</small>
                                         @endif
                                         <p class="text-right text-primary"><a href="http://betastaging.bnrs.dti.gov.ph/registration" target="_blank">Not yet registered to DTI? click here.</a></p>
                                     </div>

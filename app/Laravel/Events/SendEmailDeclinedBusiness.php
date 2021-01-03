@@ -36,12 +36,12 @@ class SendEmailDeclinedBusiness extends Event {
 			$this->data['amount'] = $value['amount'];
 			$this->data['department_name'] = $value['department_name'];
             $this->data['remarks'] = $value['remarks'];
-            $pdf = PDF::loadView('pdf.business-declined', $this->data);
-			Mail::send('emails.business-declined', $this->data, function($message) use ($mailname,$user_email,$pdf){
+            // $pdf = PDF::loadView('pdf.business-declined', $this->data);
+			Mail::send('emails.business-declined', $this->data, function($message) use ($mailname,$user_email){
 				$message->from('eotcph-noreply@ziaplex.biz');
 				$message->to($user_email);
                 $message->subject("Business Application Details");
-                $message->attachData($pdf->output(), "Document Reference Number.pdf");
+                // $message->attachData($pdf->output(), "Document Reference Number.pdf");
 			});
 		}
 

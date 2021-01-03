@@ -73,10 +73,6 @@
 				<th style="text-align: right;">{{Str::title($application_name)}}</th>
 			</tr>
 			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Department:</th>
-				<th style="text-align: right;">{{Str::title($department_name)}}</th>
-			</tr>
-			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Date:</th>
 				<th style="text-align: right;">{{Str::title($modified_at)}}</th>
 			</tr>
@@ -87,8 +83,10 @@
 
 			<tr>
 				<th colspan="2">
-					<p style="float: left;text-align: justify;">Don't worry, you can still resubmit your application. Please click this link to download your reference number <b>{{$ref_num}}</b> and attached it to your physical documents and send it to our office.</p><br>
-					<p>Thank you for choosing EOTC-PHP!</p>
+					<p style="float: left;text-align: justify;">Don't worry you can still re-apply. Make sure that you follow the remarks of the BPLO Admin to secure a Business Permit. Please login to your oBOSS Account and apply for a new Business Permit Renewal.</p><br>
+                    <p>Thank you!</p>
+
+
 				</th>
 			</tr>
 

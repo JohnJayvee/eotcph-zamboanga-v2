@@ -273,7 +273,11 @@ class BusinessTransactionController extends Controller
 			$transaction->processor_user_id = Auth::user()->id;
 			$transaction->status = $type;
 			$transaction->modified_at = Carbon::now();
-			$transaction->save();
+            $transaction->save();
+
+            $transaction->application_permit->status =  strtolower($type);
+            $transaction->application_permit->save();
+
 			if ($type == "APPROVED") {
 				$insert[] = [
 	            	'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,

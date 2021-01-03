@@ -13,4 +13,8 @@ class ApplicationBusinessPermit extends Model
      */
     protected $fillable = ['is_posted_on_local', 'permit_no'];
 
+   public function business()
+   {
+       return $this->hasOne(BusinessTransaction::class, 'business_permit_id');
+   }
 }

@@ -62,7 +62,7 @@ class BusinessController extends Controller
                          ->asJson( true )
                          ->returnResponseObject()
                          ->post();
-            
+
             if($response->status == "200"){
                 $content = $response->content;
                 session()->flash('notification-status', "success");
@@ -105,13 +105,12 @@ class BusinessController extends Controller
                 ->post();
         $content = $response->content;
         $status_code = $content['status_code'];
-        session()->put('status_code', $status_code);
+        // session()->put('status_code', $status_code);
         switch ($status_code) {
             case 'NO_RECORD':
-                session()->forget('status_code');
                 session()->flash('notification-status', "failed");
                 session()->flash('notification-msg', "BNN not Found");
-                return redirect()->route('web.business.create')->withInput();
+                return redirect()->route('web.business.create')->with('bnn-error', 'BNN not found')->withInput(request()->all());
                 break;
             default:
                 DB::beginTransaction();

@@ -307,7 +307,7 @@
               <tbody>
                 @forelse($garbage_fee as $fee)
                   <tr class="text-center">
-                    
+
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->amount)}} </td>
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{ Helper::fee_type($fee->fee_type)}} </td>
@@ -440,7 +440,7 @@
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
-        title: "Please put Remarks in the field below. Are you sure you want to approve this application? You can't undo this action.?",
+        title: "Please put Remarks in the field below. Are you sure you want to disapprove this application? You can't undo this action.?",
         icon: 'warning',
         input: 'text',
         inputPlaceholder: "Put remarks",
@@ -499,13 +499,15 @@
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
-        title: "Input Department Code ",
+        title: 'Input Department Code',
+        text: 'Use comma(,) as separator',
+        content: '<span>test</span>',
         icon: 'warning',
         input: 'text',
-        inputPlaceholder: "Put Department Code",
+        inputPlaceholder: "E.g. 01,02,03,99",
         showCancelButton: true,
         confirmButtonText: 'Proceed',
-        cancelButtonColor: '#d33'
+        cancelButtonColor: '#d33',
       }).then((result) => {
         if (result.value === "") {
           alert("You need to write something")
