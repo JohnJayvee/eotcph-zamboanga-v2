@@ -27,7 +27,6 @@
                                 <a href="{{route('web.business_payment.index',[$profile->id])}}" class="mr-2 custom-btn badge-primary-2 text-white " style="float: right;">Business Payment</a>
                             </div>
                         </div>
-
                         <div class="row underline mb-2">
                             <div class="col-md-4 mb-2">
                                 <label class="text-uppercase">{{str_replace("_"," ",$profile->business_type)}}</label>
@@ -157,7 +156,7 @@
                             @foreach ($business_line as $key => $item)
                                 <div class="col-md-4">
                                     <label class="text-uppercase">{{ $item->name }}
-                                        @if(!empty($item->particulars) && $item->particulars != "") 
+                                        @if(!empty($item->particulars) && $item->particulars != "")
                                             <small>({{ $item->particulars }})</small>
                                         @endif
                                     </label>

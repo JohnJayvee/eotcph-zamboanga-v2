@@ -123,7 +123,7 @@ class BusinessController extends Controller
                     $new_business->dominant_name = $request->get('dominant_name');
                     $new_business->business_name = $request->get('business_name');
                     $new_business->tradename = $request->trade_name;
-                    $new_business->business_id_no = $request->get('BusinessID');
+                    $new_business->business_id_no = $request->get('business_id_no');
                     $new_business->permit_no = $request->get('permit_no');
                     $new_business->business_plate_no = $request->get('business_plate_no');
 
