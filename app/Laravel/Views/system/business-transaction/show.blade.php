@@ -458,6 +458,7 @@
       });
     });
     $(".btn-remarks").on('click', function(){
+
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
@@ -467,7 +468,8 @@
         inputPlaceholder: "Put remarks",
         showCancelButton: true,
         confirmButtonText: 'Add Remarks',
-        cancelButtonColor: '#d33'
+        cancelButtonColor: '#d33',
+        inputValue: 'Approved',
       }).then((result) => {
         if (result.value === "") {
           alert("You need to write something")

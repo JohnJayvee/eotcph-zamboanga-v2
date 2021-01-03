@@ -676,7 +676,9 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Record Found.");
 			return redirect()->route('system.business_transaction.assessment',$id);
 		}catch(\Exception $e){
-			DB::rollback();
+            DB::rollback();
+            info('LOG - ASSESSMENT_ERROR', ['error' => $e->getMessage()]);
+            throw($e);
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
