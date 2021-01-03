@@ -138,7 +138,7 @@
                                 <td class="text-right pr-4"><p class="ml-3 mb-0">{{ $fee->Amount }}</p></td>
                             </tr>
                             @php
-                                $sub_total += $fee->Amount;
+                                $sub_total += Helper::db_amount($fee->Amount);
                                 $regulatory_total += $sub_total;
                                 $total_to_be_paid += $regulatory_total;
                             @endphp 
@@ -181,10 +181,10 @@
                                     @endphp
                                     @foreach ($collection_of_fees as $fee)
                                         @php
-                                            $tax_amount = $fee->Qtr1 == "0" ? $fee->TaxAmount1 : 0;
-                                            $tax_amount += $fee->Qtr2 == "0" ? $fee->TaxAmount2 : 0;
-                                            $tax_amount += $fee->Qtr3 == "0" ? $fee->TaxAmount3 : 0;
-                                            $tax_amount += $fee->Qtr4 == "0" ? $fee->TaxAmount4 : 0;
+                                            $tax_amount = $fee->Qtr1 == "0" ? Helper::db_amount($fee->TaxAmount1) : 0;
+                                            $tax_amount += $fee->Qtr2 == "0" ? Helper::db_amount($fee->TaxAmount2) : 0;
+                                            $tax_amount += $fee->Qtr3 == "0" ? Helper::db_amount($fee->TaxAmount3) : 0;
+                                            $tax_amount += $fee->Qtr4 == "0" ? Helper::db_amount($fee->TaxAmount4) : 0;
                                             $total_tax += $tax_amount;
                                             $total_to_be_paid += $total_tax;
                             
@@ -235,10 +235,10 @@
                                     @endphp
                                     @foreach ($collection_of_fees as $fee)
                                         @php
-                                            $garbage_amount = $fee->Qtr1 == "0" ? $fee->TaxAmount1 : 0;
-                                            $garbage_amount += $fee->Qtr2 == "0" ? $fee->TaxAmount2 : 0;
-                                            $garbage_amount += $fee->Qtr3 == "0" ? $fee->TaxAmount3 : 0;
-                                            $garbage_amount += $fee->Qtr4 == "0" ? $fee->TaxAmount4 : 0;
+                                            $garbage_amount = $fee->Qtr1 == "0" ? Helper::db_amount($fee->TaxAmount1) : 0;
+                                            $garbage_amount += $fee->Qtr2 == "0" ? Helper::db_amount($fee->TaxAmount2) : 0;
+                                            $garbage_amount += $fee->Qtr3 == "0" ? Helper::db_amount($fee->TaxAmount3) : 0;
+                                            $garbage_amount += $fee->Qtr4 == "0" ? Helper::db_amount($fee->TaxAmount4) : 0;
                                             $total_garbage_fee += $garbage_amount;
                                             $total_to_be_paid += $total_garbage_fee;
                             
