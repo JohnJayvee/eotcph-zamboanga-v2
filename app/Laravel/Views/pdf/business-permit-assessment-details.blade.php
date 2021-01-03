@@ -140,10 +140,12 @@
                             @php
                                 $sub_total += Helper::db_amount($fee->Amount);
                                 $regulatory_total += $sub_total;
-                                $total_to_be_paid += $regulatory_total;
                             @endphp 
                             @endforeach
                         @endforeach
+                        @php
+                        $total_to_be_paid += $regulatory_total;
+                        @endphp 
                         <tr>
                             <td class="text-left pl-4 border-top border-bottom"><b>Total</b></td>
                             <td class="text-right pr-4 border-top border-bottom"><b>{{number_format($regulatory_total,2)}}</b></td>
@@ -171,23 +173,54 @@
                                         <td class="border-top border-bottom">Qtr</td>
                                         <td class="border-top border-bottom">Surcharge</td>
                                         <td class="border-top border-bottom">Interest</td>
+                                        <td class="border-top border-bottom">Total Amount</td>
                                         <td class="border-top border-bottom border-right">Remarks</td>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @php
                                         $total_tax = 0;
-                                        $collection_of_fees = json_decode($business_tax->collection_of_fees)
+                                        $collection_of_fees = json_decode($business_tax->collection_of_fees);
                                     @endphp
                                     @foreach ($collection_of_fees as $fee)
-                                        @php
+                                    
+                                        @php  
+                                            $surcharge = 0;                
                                             $tax_amount = $fee->Qtr1 == "0" ? Helper::db_amount($fee->TaxAmount1) : 0;
                                             $tax_amount += $fee->Qtr2 == "0" ? Helper::db_amount($fee->TaxAmount2) : 0;
                                             $tax_amount += $fee->Qtr3 == "0" ? Helper::db_amount($fee->TaxAmount3) : 0;
                                             $tax_amount += $fee->Qtr4 == "0" ? Helper::db_amount($fee->TaxAmount4) : 0;
                                             $total_tax += $tax_amount;
-                                            $total_to_be_paid += $total_tax;
-                            
+
+                                            if($fee->CYear < Carbon::now()->year){
+                                                $surcharge = $tax_amount * 0.25;
+                                                $total_tax += $surcharge;
+                                            }
+
+                                            $unpaid_quarter_start = 0;
+                                                if ($fee->Qtr4 == "0") {
+                                                    $unpaid_quarter_start = Carbon::parse($fee->CYear.'-10-01')->floorMonth();
+                                                }
+                                                if ($fee->Qtr3 == "0") {
+                                                    $unpaid_quarter_start = Carbon::parse($fee->CYear.'-07-01')->floorMonth();
+                                                }
+                                                if ($fee->Qtr2 == "0") {
+                                                    $unpaid_quarter_start = Carbon::parse($fee->CYear.'-04-01')->floorMonth();
+                                                }
+                                                if ($fee->Qtr1 == "0") {
+                                                    $unpaid_quarter_start = Carbon::parse($fee->CYear.'-01-01')->floorMonth();
+                                                }                                             
+                                                $current_month = Carbon::now()->floorMonth(); // returns 2019-06-01
+                                                $difference_in_month = $current_month->diffInMonths($unpaid_quarter_start ); 
+                                                $interest_percentage = $difference_in_month * 2; 
+                                                if ( $interest_percentage < 72){
+                                                    $interest_percentage =  $interest_percentage/100;
+                                                } else {
+                                                    $interest_percentage = 0.72;
+                                                }
+                                                $interest = $tax_amount*$interest_percentage;
+                                                $total_tax += $interest;
+
                                             $quarter = $fee->Qtr1 == "0" ? "1 " : "";
                                             $quarter .= $fee->Qtr2 == "0" ? "2 " : "";
                                             $quarter .= $fee->Qtr3 == "0" ? "3 " : "";
@@ -199,14 +232,19 @@
                                             <td rowspan="1" class="text-right pr-4"><p class="ml-3 mb-0">{{ $fee->GrossSales <= 0 ? $fee->Capital : $fee->GrossSales}}</p></td>
                                             <td rowspan="1" class="text-right pr-4"><p class="ml-3 mb-0">{{ number_format($tax_amount,2) }}</p></td>
                                             <td rowspan="1" class="text-center"><p class="ml-3 mb-0">{{ $quarter }}</p></td>
-                                            <td rowspan="1"><p class="ml-3 mb-0">0</p></td>
-                                            <td rowspan="1"><p class="ml-3 mb-0">0</td>
+                                            <td rowspan="1"><p class="text-right ml-3 mb-0">{{number_format($surcharge, 2)}}</p></td>
+                                            <td rowspan="1"><p class="ml-3 mb-0">{{number_format($interest,2)}}</td>
+                                            <td rowspan="1"><p class="text-right ml-3 mb-0">{{number_format($surcharge + $tax_amount + $interest, 2)}}</td>
                                             <td rowspan="1"><p class="ml-3 mb-0">{{$fee->Remarks}}</td>
                                         </tr>
                                     @endforeach
+                                    @php
+                                    $total_to_be_paid += $total_tax;
+                                    @endphp 
                                     <tr style="text-align:center;">
                                         <td class="text-left pl-4 border-top border-bottom " colspan="7"><b>Total</b></td>
                                         <td class="text-right pr-4 border-top border-bottom "><b>{{number_format($total_tax,2)}}</b></td>
+                                        <td class="text-right pr-4 border-top border-bottom "></b></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -235,13 +273,18 @@
                                     @endphp
                                     @foreach ($collection_of_fees as $fee)
                                         @php
+                                            $surcharge = 0;
                                             $garbage_amount = $fee->Qtr1 == "0" ? Helper::db_amount($fee->TaxAmount1) : 0;
                                             $garbage_amount += $fee->Qtr2 == "0" ? Helper::db_amount($fee->TaxAmount2) : 0;
                                             $garbage_amount += $fee->Qtr3 == "0" ? Helper::db_amount($fee->TaxAmount3) : 0;
                                             $garbage_amount += $fee->Qtr4 == "0" ? Helper::db_amount($fee->TaxAmount4) : 0;
                                             $total_garbage_fee += $garbage_amount;
-                                            $total_to_be_paid += $total_garbage_fee;
-                            
+
+                                            if($fee->CYear < Carbon::now()->year){
+                                                $surcharge = $garbage_amount * 0.25;
+                                                $total_garbage_fee += $surcharge;
+                                            }
+                                        
                                             $quarter = $fee->Qtr1 == "0" ? "1 " : "";
                                             $quarter .= $fee->Qtr2 == "0" ? "2 " : "";
                                             $quarter .= $fee->Qtr3 == "0" ? "3 " : "";
@@ -252,10 +295,13 @@
                                             <td rowspan="1"><p class="ml-3 mb-0">Garbage Fee</p></td>
                                             <td rowspan="1" class="text-right pr-4"><p class="ml-3 mb-0">{{ number_format($garbage_amount,2) }}</p></td>
                                             <td rowspan="1"  class="text-center"><p class="ml-3 mb-0">{{ $quarter }}</p></td>
-                                            <td rowspan="1"><p class="ml-3 mb-0">0</p></td>
-                                            <td rowspan="1"><p class="ml-3 mb-0">{{ number_format($garbage_amount,2) }}</td>
+                                            <td rowspan="1"><p class="ml-3 mb-0 text-right">{{number_format($surcharge,2)}}</p></td>
+                                            <td rowspan="1"><p class="ml-3 mb-0 text-right">{{ number_format($surcharge + $garbage_amount,2) }}</td>
                                         </tr>
                                     @endforeach
+                                    @php
+                                    $total_to_be_paid += $total_garbage_fee;
+                                    @endphp 
                                     <tr style="text-align:center;">
                                         <td class="text-left pl-4 border-top border-bottom" colspan="5"><b>Total</b></td>
                                         <td class="text-right pr-4 border-bottom border-top"><b>{{number_format($total_garbage_fee,2)}}</b></td>

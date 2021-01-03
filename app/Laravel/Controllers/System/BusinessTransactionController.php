@@ -588,7 +588,7 @@ class BusinessTransactionController extends Controller
 			$regulatory_array = [];
 			$business_array = [];
 			$garbage_array = [];
-
+		 
 			foreach ($response->content['data'] as $key => $value) {
 				if ($value['FeeType'] == 0 ) {
 					array_push($regulatory_array, $value);
