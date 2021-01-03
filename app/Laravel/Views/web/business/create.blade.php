@@ -29,6 +29,9 @@
                                             @if($errors->first('business_id_no'))
                                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('business_id_no')}}</small>
                                             @endif
+                                            @if($errors->first('BusinessID'))
+                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('BusinessID')}}</small>
+                                            @endif
                                         </div>
 
                                         @if (session('negativelist') == 1)
@@ -124,10 +127,10 @@
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">DTI/SEC/CDA registration No.</label>
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('dti_sec_cda_registration_no') ? 'is-invalid': NULL  }}"  name="dti_sec_cda_registration_no" value="{{old('dti_sec_cda_registration_no') }}">
-                                        <p class="text-right text-primary"><a href="http://betastaging.bnrs.dti.gov.ph/registration" target="_blank">Not yet registered to DTI? click here.</a></p>
                                         @if($errors->first('dti_sec_cda_registration_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('dti_sec_cda_registration_no')}}</small>
                                         @endif
+                                        <p class="text-right text-primary"><a href="http://betastaging.bnrs.dti.gov.ph/registration" target="_blank">Not yet registered to DTI? click here.</a></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

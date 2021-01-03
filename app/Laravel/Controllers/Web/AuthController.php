@@ -133,7 +133,7 @@ class AuthController extends Controller{
             return redirect()->back()->withErrors(['otp_code' => trans('Invalid OTP code.')]);;
         } else {
 
-            $customer = Customer::find($account->id);
+            $customer = Customer::where('id' , $account->id)->first();
             $customer->otp_verified = '1';
             $customer->save();
 
@@ -345,7 +345,6 @@ class AuthController extends Controller{
 		session()->flash('notification-status','success');
 		session()->flash('notification-msg','You are now signed off.');
 		return redirect()->route('web.login');
-	}
-
+    }
 
 }
