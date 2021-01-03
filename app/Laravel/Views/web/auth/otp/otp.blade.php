@@ -17,6 +17,9 @@
                 @if (session('register.progress') == 2)
                 @include('web.auth.otp.modal')
                 @endif
+                @if (session('register.progress') == 3)
+                @include('web.auth.otp.success')
+                @endif
             </div>
         </div>
 
@@ -38,12 +41,15 @@
     })
     $('.submitOTP').click(function(e){
         // e.preventDefault();
+        var _form = $(this).parents("form")
+        $(this).prop('disabled', true)
+        $(this).html('Validating... <i class="fa fa-circle-o-notch fa-spin"></i>')
         var otpCode='';
         $('input[type=number]').each(function(){
             otpCode+=this.value;
         });
         $('input[name=code]').val(otpCode);
-        $(this).submit();
+        _form.submit();
     });
     $('.digit-group').find('input').each(function() {
         $(this).attr('maxlength', 1);

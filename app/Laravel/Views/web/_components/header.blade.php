@@ -74,7 +74,7 @@
                             <li><a href="{{route('web.coming_soon')}}">Taxes , Fees and Dues</a></li>
                         </ul>
                     </li>
-                    <li><a  href="#"><i class="fa fa-list-alt"></i> About Us</a></li>
+                    <li><a  href="#" data-toggle="modal" data-target=".targeted-tutorial-video"><i class="fa fa-list-alt"></i> Tutorial</a></li>
                     <li><a  href="{{route('web.login')}}"><span class="badge badge-primary-2"><i class="fa fa-sign-in-alt"></i> Login</span></a></li>
 
                 </ul>

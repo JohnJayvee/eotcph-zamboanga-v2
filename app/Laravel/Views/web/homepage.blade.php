@@ -67,13 +67,17 @@
             </div>
 
         </div>
-
     </div>
 
 </section>
 <!--team section end-->
-
-
+<div class="modal fade targeted-tutorial-video" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <iframe class="mobile-frame" width="100%" height="100%" src="https://embed.fleeq.io/l/n4hwzo0qza-xy9bjajcor" frameborder="0" allowfullscreen="true"></iframe>
+        </div>
+    </div>
+</div>
 
 @stop
 @section('page-styles')
@@ -84,13 +88,29 @@
     body{
         padding: 0px !important;
     }
+    .modal-dialog {
+    width: 98%;
+    height: 92%;
+    padding: 0;
+    }
+    .modal-content {
+    height: 99%;
+    }
+    @media only screen and (max-width: 600px) {
+        .mobile-frame {
+            height: 100% !important;
+            width: 100% !important;
+        }
+    }
 </style>
 @endsection
 @section('page-scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="{{asset('system/vendors/sweet-alert2/sweetalert2.min.js')}}"></script>
     <script type="text/javascript">
-
+    $(".targeted-tutorial-video").on('hidden.bs.modal', function (e) {
+        $(".targeted-tutorial-video iframe").attr("src", $(".targeted-tutorial-video iframe").attr("src"));
+    });
     // $(".btn-submission").on('click', function(){
     //     var url = $(this).data('url');
     //     var self = $(this);
