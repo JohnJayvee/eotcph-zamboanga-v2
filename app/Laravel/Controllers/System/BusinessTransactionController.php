@@ -559,10 +559,10 @@ class BusinessTransactionController extends Controller
 			$this->data['transaction'] = BusinessTransaction::find($id);
 
 			$request_body = [
-				'business_id' => "1134697",
-				'ebriu_application_no' => "21-00001-E",
+				'business_id' => $request->get('business_id'),
+				'ebriu_application_no' => $request->get('application_no'),
 				'year' => "2021",
-				'office_code' => "99",
+				'office_code' => $request->get('office_code'),
 			];
 			$response = Curl::to(env('ZAMBOANGA_URL'))
 			         ->withData($request_body)
