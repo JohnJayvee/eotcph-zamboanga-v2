@@ -68,6 +68,7 @@ class AuthController extends Controller{
                 } else if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'pending' , 'otp_verified' => 0])){
                     Auth::guard('customer')->logout();
                     session()->put('register.progress', 2);
+                    session()->put('register.email', $email);
                     return redirect()->route('web.register.otp');
 
                 }
@@ -142,7 +143,7 @@ class AuthController extends Controller{
         } else {
             info('OTP - Email ::  ' . $email);
             $customer = Customer::where('email' ,  $email)->first();
-            info('OTP - Customer :: ', ['data' =>  $customer->all() ?? '']);
+            info('OTP - Customer :: ', ['data' =>  $customer->all() : '']);
             $customer->otp_verified = '1';
             $customer->save();
 

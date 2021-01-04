@@ -18,7 +18,7 @@
         <div class="modal-body">
           <div class="container">
             <h3 class="text-form text-title">ENTER ONE-TIME PASSWORD</h3>
-            <p>An OTP was sent to your email. This is valid for <b>5 minutes</b></p>
+            <p>An OTP was sent to your <b>EMAIL</b>. This is valid for <b>5 minutes</b></p>
             <div class="text-center pt-2 pb-2">
                 @error('otp_code')
                     <p><span class="text-danger"><b>{{ $message }}</b></span></p>
@@ -35,7 +35,7 @@
                         <input type="hidden" name="code" />
                         <p class="text-muted text-form p-3">Did not recieved OTP?</p>
                     </div>
-                    <a href="{{ route('web.register.otp') }}">Resend OTP via SMS</a>
+                    <a href="{{ route('web.register.otp') }}">Resend OTP via <b>EMAIL</b></a>
                     <div class="row pt-5">
                         <div class="col-md-12">
                             <button type="submit" class="otp-btn m-2 submitOTP">Submit</button>
