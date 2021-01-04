@@ -143,7 +143,7 @@ class AuthController extends Controller{
         } else {
             info('OTP - Email ::  ' . $email);
             $customer = Customer::where('email' ,  $email)->first();
-            info('OTP - Customer :: ', ['data' =>  $customer->all() : '']);
+            info('OTP - Customer :: ', ['data' =>  $customer->all() ?: '']);
             $customer->otp_verified = '1';
             $customer->save();
 
