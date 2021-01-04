@@ -48,15 +48,17 @@
 
             <p class="text-title fw-500">Line of Business :</p>
             <table class="table table-bordered">
+              <tr>
+                <th>Particulars</th>
+                <th>Gross Sales/ Capitalization</th>
+            </tr>
                 <tbody>
                     @forelse ($business_line as $item)
                     <tr>
                         <td>{{ $item->line_of_business }}</td>
+                        <td>{{ number_format($item->gross_sales,2,'.','') > 0 ?  number_format($item->gross_sales,2) : number_format($item->capitalization,2)}}</td>
                     </tr>
                     @empty
-                    <tr>
-                        <tr>--</tr>
-                    </tr>
                     @endforelse
                 </tbody>
             </table>
