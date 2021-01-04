@@ -16,33 +16,34 @@
   <div class="col-12 ">
     <form>
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label>Status</label>
-          <select name="status" id="" class="form-control mb-2 mr-sm-2">
-              <option value="all">All Status</option>
-              <option value="approved">Approved</option>
-              <option value="pending">Pending</option>
-              <option value="declined">Declined</option>
-          </select>
+          {!!Form::select("status", $status_type, $selected_status, ['id' => "input_status", 'class' => "custom-select"])!!}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
+          <label>OTP Verified</label>
+          {!!Form::select("otp_verified", $verified, $selected_otp_verified, ['id' => "input_otp_verified", 'class' => "custom-select"])!!}
+        </div>
+        <div class="col-md-4">
+          <label>Date Range</label>
+          <div class="input-group input-daterange d-flex align-items-center">
+            <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly"
+                name="start_date">
+            <div class="input-group-addon mx-2">to</div>
+            <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly"
+                name="end_date">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
           <label>Keywords</label>
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
             <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{ $keyword }}" placeholder="Keyword">
           </div>
         </div>
-        <div class="col-md-4">
-            <label>Date Range</label>
-            <div class="input-group input-daterange d-flex align-items-center">
-                <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly"
-                    name="start_date">
-                <div class="input-group-addon mx-2">to</div>
-                <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly"
-                    name="end_date">
-            </div>
-        </div>
-        <div class="col-md-3 mt-4 p-1">
+        <div class="col-md-6 mt-4 p-1">
           <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
           <a href="{{route('system.bplo.index')}}" class="btn btn-primary btn-sm p-2">Clear</a>
         </div>

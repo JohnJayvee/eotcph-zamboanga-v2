@@ -36,7 +36,8 @@ class BPLOController extends Controller
 		array_merge($this->data, parent::get_data());
 		$this->data['department'] = ['' => "All Department"] + Department::pluck('name','id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
-		$this->data['status_type'] = ['' => "Choose Status",'approved' => "Approved" , 'declined' => "Decline"];
+		$this->data['status_type'] = ['' => "Choose Status",'approved' => "Approved" ,'pending' => "Pending", 'declined' => "Decline"];
+		$this->data['verified'] = ['' => "Choose Status",'1' => "Yes" , '0' => "No"];
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
 	}
 
@@ -51,10 +52,10 @@ class BPLOController extends Controller
         }
         $this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
 		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
-        $this->data['selected_status'] = $request->status;
+        $this->data['selected_status'] = $request->get('status');
+        $this->data['selected_otp_verified'] = $request->get('otp_verified');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->keyword);
-
         $this->data['customer'] = Customer::where(function($query){
             if(strlen($this->data['keyword']) > 0){
                 return $query->WhereRaw("LOWER(fname)  LIKE  '%{$this->data['keyword']}%'");
@@ -63,6 +64,11 @@ class BPLOController extends Controller
             ->where(function($query){
                 if(strlen($this->data['selected_status']) > 0){
                     return $query->where('status',$this->data['selected_status']);
+                }
+            })
+            ->where(function($query){
+                if(strlen($this->data['selected_otp_verified']) > 0){
+                    return $query->where('otp_verified',$this->data['selected_otp_verified']);
                 }
             })
             ->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
