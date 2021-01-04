@@ -65,7 +65,13 @@ class AuthController extends Controller{
                     session()->flash('notification-status','error');
                     session()->flash('notification-msg','Your Account has been Declined.');
                     return redirect()->back();
-                } else if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'pending'])){
+                } else if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'pending' , 'otp_verified' => 0])){
+                    Auth::guard('customer')->logout();
+                    session()->put('register.progress', 2);
+                    return redirect()->route('web.register.otp');
+
+                }
+                else if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'pending'])){
                     Auth::guard('customer')->logout();
                     session()->flash('notification-status','warning');
                     session()->flash('notification-msg','BPLO Activation Required.');
