@@ -18,7 +18,7 @@
         <div class="modal-body">
           <div class="container">
             <h3 class="text-form text-title">ENTER ONE-TIME PASSWORD</h3>
-            <p>An OTP was sent to your mobile number. This is valid for <b>5 minutes</b></p>
+            <p>An OTP was sent to your email. This is valid for <b>5 minutes</b></p>
             <div class="text-center pt-2 pb-2">
                 @error('otp_code')
                     <p><span class="text-danger"><b>{{ $message }}</b></span></p>
