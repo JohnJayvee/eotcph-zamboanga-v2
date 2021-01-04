@@ -318,7 +318,7 @@
 
                 </div>
                 <a href="{{route('web.business.index')}}" class="btn badge-default-2 mt-2" style="float: right;">Return to Dashboard</a>
-                <a href="{{route('web.business.application.create')}}" class="btn badge-primary-2 mt-2">Apply New Permit</a>
+                <a href="{{route('web.business.application.create',[$profile->id])}}" class="btn badge-primary-2 mt-2">Apply New Permit</a>
 
             </div>
         </div>

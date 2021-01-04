@@ -44,8 +44,6 @@ class BusinessPermitController extends Controller{
 	}
 
 	public function store(BusinessPermitRequest $request){
-        $application_id = session()->get('application_id');
-        $application_name = session()->get('application_name');
         $auth = Auth::guard('customer')->user();
         $business = Business::find(session()->get('selected_business_id'));
         $this->data['business'] = $business;
@@ -60,6 +58,8 @@ class BusinessPermitController extends Controller{
             $new_business_permit->type = $request->type_of_application;
             $new_business_permit->permit_no = $business->permit_no;
             $new_business_permit->save();
+            $new_business_permit->application_no = date('y').'-'.str_pad($new_business_permit->id, 5, "0", STR_PAD_LEFT).'-E';
+            $new_business_permit->save();
 
             $new_business_transaction = new BusinessTransaction();
             $new_business_transaction->isNew = 1;
@@ -68,7 +68,7 @@ class BusinessPermitController extends Controller{
             $new_business_transaction->business_name = $business->business_name;
             $new_business_transaction->email = $auth->email;
             $new_business_transaction->contact_number = $auth->contact_number;
-            $new_business_transaction->application_id = $application_id;
+            $new_business_transaction->application_id = $new_business_permit->id;
             $new_business_transaction->application_name = $application_name;
             $new_business_transaction->application_date = Carbon::now();
             $new_business_transaction->business_permit_id = $new_business_permit->id;

@@ -1,6 +1,6 @@
 <meta name="description"
-      content="Trillion Dollar View">
-<meta name="author" content="HIGHLY SUCCEED INC">
+      content="OBOSS">
+<meta name="author" content="Ziaplex Inc,.">
 
 <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
 <meta property="og:site_name" content=""/> <!-- website name -->
