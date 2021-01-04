@@ -76,8 +76,8 @@ Route::group(['as' => "web.",
 			Route::get('history/{id?}',['as' => "history",'uses' => "BusinessController@history"]);
             Route::get('application',['as' => "application",'uses' => "BusinessController@application"]);
             Route::group(['prefix' => "application", 'as' => "application."], function () {
-                Route::get('create/{id?}',['as' => "create",'uses' => "ApplicationController@create"]);
-                Route::post('create/{id?}',['uses' => "ApplicationController@store"]);
+                Route::get('create',['as' => "create",'uses' => "ApplicationController@create"]);
+                Route::post('create',['uses' => "ApplicationController@store"]);
 
                 Route::group(['as' => "business_permit.",'prefix' => "business-permit"],function(){
                     Route::get('/',['as' => "create",'uses' => "BusinessPermitController@create"]);
