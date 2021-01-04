@@ -35,7 +35,6 @@ class Authenticate {
     {	
 
         if (!Auth::guard('customer')->check()) {
-            
             $redirect_uri = $request->url();
             $redirect_key = base64_encode($redirect_uri);
             session()->put($redirect_key, $redirect_uri);
