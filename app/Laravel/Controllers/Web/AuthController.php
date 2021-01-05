@@ -189,23 +189,69 @@ class AuthController extends Controller{
             $new_customer->save();
 
             $customer_id = $new_customer->id;
-            if(count(request('file')) > 0){
-                foreach (request('file') as $key => $value) {
-                    $new_file = new CustomerFile;
-                    $file_type = $key;
-                    $ext = $value->getClientOriginalExtension();
-                    $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($key)). "_" . $new_customer->name) . "." . $ext;
-                    $file = FileUploader::upload($value, "uploads/{$customer_id}/file", $filename);
-                    $new_file->path = $file['path'];
-                    $new_file->directory = $file['directory'];
-                    $new_file->filename = $file['filename'];
-                    $new_file->application_id = $customer_id;
-                    $new_file->type = $file_type;
-                    $new_file->original_name = $value->getClientOriginalName();
-                    $new_file->save();
+       
+
+            if($request->hasFile('gov_id_1')) {
+                $image = $request->file('gov_id_1');
+                $ext = $image->getClientOriginalExtension();
+                $original_name = $image->getClientOriginalName();
+                $file_type = 'gov_id_1';
+                $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . $new_customer->name) . "." . $ext;
+                if($ext == 'pdf' || $ext == 'docx' || $ext == 'doc'){
+                    $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
+                } elseif($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png'){
+                    $upload_image = ImageUploader::upload($image, "uploads/".$customer_id."/file",$filename);
                 }
+                $new_file = new CustomerFile;
+                $new_file->path = $upload_image['path'];
+                $new_file->directory = $upload_image['directory'];
+                $new_file->filename = $filename;
+                $new_file->type = $file_type;
+                $new_file->original_name = $original_name;
+                $new_file->application_id = $customer_id;
+                $new_file->save();
             }
 
+            if($request->hasFile('gov_id_2')) {
+                $image = $request->file('gov_id_2');
+                $ext = $image->getClientOriginalExtension();
+                $original_name = $image->getClientOriginalName();
+                $file_type = 'gov_id_2';
+                $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . $new_customer->name) . "." . $ext;
+                if($ext == 'pdf' || $ext == 'docx' || $ext == 'doc'){
+                    $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
+                } elseif($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png'){
+                    $upload_image = ImageUploader::upload($image, "uploads/".$customer_id."/file",$filename);
+                }
+                $new_file = new CustomerFile;
+                $new_file->path = $upload_image['path'];
+                $new_file->directory = $upload_image['directory'];
+                $new_file->filename = $filename;
+                $new_file->type = $file_type;
+                $new_file->original_name = $original_name;
+                $new_file->application_id = $customer_id;
+                $new_file->save();
+            }
+            if($request->hasFile('business_permit')) {
+                $image = $request->file('business_permit');
+                $ext = $image->getClientOriginalExtension();
+                $original_name = $image->getClientOriginalName();
+                $file_type = 'business_permit';
+                $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . $new_customer->name) . "." . $ext;
+                if($ext == 'pdf' || $ext == 'docx' || $ext == 'doc'){
+                    $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
+                } elseif($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png'){
+                    $upload_image = ImageUploader::upload($image, "uploads/".$customer_id."/file",$filename);
+                }
+                $new_file = new CustomerFile;
+                $new_file->path = $upload_image['path'];
+                $new_file->directory = $upload_image['directory'];
+                $new_file->filename = $filename;
+                $new_file->type = $file_type;
+                $new_file->original_name = $original_name;
+                $new_file->application_id = $customer_id;
+                $new_file->save();
+            }
             // store contact number and email address to session incase of failure
             session()->put('register.contact_number', $new_customer->contact_number);
             session()->put('register.email', $new_customer->email);

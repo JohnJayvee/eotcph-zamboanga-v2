@@ -563,7 +563,7 @@ class BusinessTransactionController extends Controller
 
 	public function get_assessment(PageRequest $request , $id = NULL){
 		DB::beginTransaction();
-		
+		try{
 			$auth = Auth::user();
 			$this->data['transaction'] = BusinessTransaction::find($id);
 
@@ -677,7 +677,12 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Record Found.");
 			return redirect()->route('system.business_transaction.assessment',$id);
-		
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
 	}
 
 	public function approved_assessment(PageRequest $request , $id = NULL){
