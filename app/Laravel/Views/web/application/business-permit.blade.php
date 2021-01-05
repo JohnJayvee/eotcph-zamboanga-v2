@@ -620,7 +620,7 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                        <button class="btn btn-light btn-sm" id="repeater_add_activity" type="button"><i class="fa fa-plus mr-2"></i>Add Line of Business</button>
+                                        {{-- <button class="btn btn-light btn-sm" id="repeater_add_activity" type="button"><i class="fa fa-plus mr-2"></i>Add Line of Business</button> --}}
                                     </div>
                                 </div>
                             </div>
