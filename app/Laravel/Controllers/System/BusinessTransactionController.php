@@ -25,9 +25,10 @@ use App\Laravel\Events\SendEmailDeclinedBusiness;
 use App\Laravel\Events\SendDeclinedEmailReference;
 use App\Laravel\Events\SendEmailDigitalCertificate;
 
+use Illuminate\Support\Facades\Http;
 
 use App\Laravel\Requests\System\TransactionCollectionRequest;
-use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF,Http;
+use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF;
 
 
 class BusinessTransactionController extends Controller
