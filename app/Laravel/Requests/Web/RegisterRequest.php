@@ -20,7 +20,7 @@ class RegisterRequest extends RequestManager{
 			'zipcode' => "required",
 			'birthdate' => "required",
 			'contact_number' => "required|max:10|phone:PH",
-			'email'	=> "required|unique:customer,email,{$id}",
+			'email'	=> "required|unique:customer,email,{$id},id,status,!declined",
             'password'	=> "required|password_format|confirmed",
             'gov_id_1' => 'required|mimes:jpeg,jpg,png,JPEG,PNG,pdf,docx,doc|max:5000',
             'gov_id_2' => 'required|mimes:jpeg,jpg,png,JPEG,PNG,pdf,docx,doc|max:5000',
