@@ -23,7 +23,7 @@ use App\Laravel\Events\SendCustomerOTP;
 use App\Laravel\Events\SendCustomerOTPEmail;
 use App\Laravel\Events\SendResetPasswordLink;
 use App\Laravel\Requests\Web\RegisterRequest;
-use Carbon,Auth,DB,Str,FileUploader,Event,Session,Helper,Validator;
+use Carbon,Auth,DB,Str,FileUploader,Event,Session,Helper,Validator,ImageUploader;
 
 class AuthController extends Controller{
 
