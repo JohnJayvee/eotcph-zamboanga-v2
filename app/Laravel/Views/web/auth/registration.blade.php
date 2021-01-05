@@ -216,7 +216,7 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group {{$errors->first('gov_id_1') ? 'text-danger' : NULL}}">
-                                <label class="text-form pb-2">Government ID 1 (Required)</label>
+                                <label class="text-form pb-2">Government ID 1 (Required-maximum of 5mb)</label>
                                 <input type="file" class="form-control form-control-sm" name="gov_id_1" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
                                 @if($errors->first('gov_id_1'))
                                 <p class="help-block text-danger">{{$errors->first('gov_id_1')}}</p>
@@ -225,7 +225,7 @@
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group {{$errors->first('gov_id_2') ? 'text-danger' : NULL}}">
-                                <label class="text-form pb-2">Government ID 2 (Required)</label>
+                                <label class="text-form pb-2">Government ID 2 (Required-maximum of 5mb)</label>
                                 <input type="file" class="form-control form-control-sm" name="gov_id_2" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
                                 @if($errors->first('gov_id_2'))
                                 <p class="help-block text-danger">{{$errors->first('gov_id_2')}}</p>
@@ -236,7 +236,7 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group {{$errors->first('business_permit') ? 'text-danger' : NULL}}">
-                                <label class="text-form pb-2">Business Permit (Required)</label>
+                                <label class="text-form pb-2">Business Permit (Required-maximum of 5mb)</label>
                                 <input type="file" class="form-control form-control-sm" name="business_permit" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
                                 @if($errors->first('business_permit'))
                                 <p class="help-block text-danger">{{$errors->first('business_permit')}}</p>
