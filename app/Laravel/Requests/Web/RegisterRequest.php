@@ -23,7 +23,7 @@ class RegisterRequest extends RequestManager{
 			'email'	=> "required|unique:customer,email,{$id}",
             'password'	=> "required|password_format|confirmed",
             'file' => 'required',
-            'file.*' => 'mimes:png,jpg,jpeg,pdf',
+            'file.*' => 'mimes:jpeg,jpg,png,JPEG,PNG|max:5000',
 		];
 
 		return $rules;
@@ -35,6 +35,7 @@ class RegisterRequest extends RequestManager{
 			'contact_number.phone' => "Please provide a valid PH mobile number.",
             'password_format' => "Password must be 6-20 alphanumeric and some allowed special characters only.",
             'file.mimes' => "Invalid File",
+            'max' => 'This file is greater than allowed file size.',
             'file.required' => "Field is required.",
 		];
 	}
