@@ -197,11 +197,9 @@ class AuthController extends Controller{
                 $original_name = $image->getClientOriginalName();
                 $file_type = 'gov_id_1';
                 $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . $new_customer->name) . "." . $ext;
-                if($ext == 'pdf' || $ext == 'docx' || $ext == 'doc'){
-                    $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
-                } elseif($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png'){
-                    $upload_image = ImageUploader::upload($image, "uploads/".$customer_id."/file",$filename);
-                }
+               
+                $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
+                
                 $new_file = new CustomerFile;
                 $new_file->path = $upload_image['path'];
                 $new_file->directory = $upload_image['directory'];
@@ -218,11 +216,9 @@ class AuthController extends Controller{
                 $original_name = $image->getClientOriginalName();
                 $file_type = 'gov_id_2';
                 $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . $new_customer->name) . "." . $ext;
-                if($ext == 'pdf' || $ext == 'docx' || $ext == 'doc'){
-                    $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
-                } elseif($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png'){
-                    $upload_image = ImageUploader::upload($image, "uploads/".$customer_id."/file",$filename);
-                }
+                
+                $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
+               
                 $new_file = new CustomerFile;
                 $new_file->path = $upload_image['path'];
                 $new_file->directory = $upload_image['directory'];
@@ -238,11 +234,9 @@ class AuthController extends Controller{
                 $original_name = $image->getClientOriginalName();
                 $file_type = 'business_permit';
                 $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . $new_customer->name) . "." . $ext;
-                if($ext == 'pdf' || $ext == 'docx' || $ext == 'doc'){
-                    $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
-                } elseif($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png'){
-                    $upload_image = ImageUploader::upload($image, "uploads/".$customer_id."/file",$filename);
-                }
+            
+                $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
+                
                 $new_file = new CustomerFile;
                 $new_file->path = $upload_image['path'];
                 $new_file->directory = $upload_image['directory'];

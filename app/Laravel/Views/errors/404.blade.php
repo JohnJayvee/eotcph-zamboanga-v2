@@ -15,6 +15,14 @@
 <body>
   <div class="container-scroller">
     <div class="container-fluid page-body-wrapper full-page-wrapper">
+     
+        <img src="{{asset('web/img/pagenotfound.png')}}" width="100%" height="100%">
+      <!-- content-wrapper ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- <div class="container-scroller">
+    <div class="container-fluid page-body-wrapper full-page-wrapper">
       <div class="content-wrapper d-flex align-items-center text-center error-page bg-danger">
         <div class="row flex-grow">
           <div class="col-lg-7 mx-auto text-white">
@@ -40,10 +48,8 @@
           </div>
         </div>
       </div>
-      <!-- content-wrapper ends -->
     </div>
-    <!-- page-body-wrapper ends -->
-  </div>
+  </div> -->
   <!-- container-scroller -->
   <script src="{{asset('system/vendors/js/vendor.bundle.base.js')}}"></script>
   <script src="{{asset('system/js/off-canvas.js')}}"></script>
