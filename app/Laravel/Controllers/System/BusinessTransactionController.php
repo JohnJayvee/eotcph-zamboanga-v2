@@ -27,7 +27,7 @@ use App\Laravel\Events\SendEmailDigitalCertificate;
 
 
 use App\Laravel\Requests\System\TransactionCollectionRequest;
-use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF,GuzzleHttp;
+use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF;
 
 
 class BusinessTransactionController extends Controller
@@ -562,36 +562,26 @@ class BusinessTransactionController extends Controller
 	}
 
 	public function get_assessment(PageRequest $request , $id = NULL){
-			DB::beginTransaction();
+		DB::beginTransaction();
 		
 			$auth = Auth::user();
 			$this->data['transaction'] = BusinessTransaction::find($id);
 
-		/*	$request_body = [
+			$request_body = [
 				'business_id' => $request->get('business_id'),
 				'ebriu_application_no' => $request->get('application_no'),
 				'year' => "2021",
 				'office_code' => $request->get('office_code'),
 			];
-*/
-			$client = new GuzzleHttp\Client();
 
-			$response = $client->post(env('ZAMBOANGA_URL'), [
-			    'json' => [
-			        'business_id' => $request->get('business_id'),
-					'ebriu_application_no' => $request->get('application_no'),
-					'year' => "2021",
-					'office_code' => $request->get('office_code'),
-			    ]
-			]);
-			$response = json_decode($response->getBody(),true);
+			$response = Http::get(env('ZAMBOANGA_URL'),$request_body);
 			/*$response = Curl::to(env('ZAMBOANGA_URL'))
 			         ->withData($request_body)
 			         ->asJson( true )
 			         ->returnResponseObject()
 					 ->post();
 */
-			if ($response['data'] == NULL) {
+			if ($response->content['data'] == NULL) {
 				session()->flash('notification-status', "failed");
 				session()->flash('notification-msg', "No Assesment Found.");
 				return redirect()->route('system.business_transaction.assessment',[$id]);
@@ -601,7 +591,7 @@ class BusinessTransactionController extends Controller
 			$business_array = [];
 			$garbage_array = [];
 
-			foreach ($response['data'] as $key => $value) {
+			foreach ($response->content['data'] as $key => $value) {
 				if ($value['FeeType'] == 0 ) {
 					array_push($regulatory_array, $value);
 				}
