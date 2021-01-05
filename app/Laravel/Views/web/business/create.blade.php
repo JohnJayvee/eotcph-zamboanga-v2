@@ -27,7 +27,7 @@
                                             <input type="hidden" class="form-control"  name="business_plate_no" value="{{old('business_plate_no', $business['BusinessPlateNo'] ?? '') }}">
 
                                             <input type="number" class="form-control form-control-sm {{ $errors->first('business_id_no') ? 'is-invalid': NULL  }}"  name="business_id_no" value="{{old('business_id_no', $business['BusinessID'] ?? '') }}" required>
-                                            <span class="text-danger"><small>Please make sure that your BID is correct. You can't undo this action.</small></span>
+                                            <span class="text-info"><small>Please make sure that your BID is correct. You can't undo this action.</small></span>
                                             @if($errors->first('business_id_no'))
                                                 <small class="form-text pl-1" style="color:red;">{{$errors->first('business_id_no')}}</small>
                                             @endif

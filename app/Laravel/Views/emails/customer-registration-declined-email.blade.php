@@ -8,8 +8,16 @@
 </head>
 <body>
     <p>Hello {{ $fullname }},</p>
-    <p>This is to inform you that your request to create an account in the oBOSS Web Application has been declined by our Admin. Please review the Remarks.</p>
+    <p>We regret to inform you that your application to create an account in the oBOSS Web Application has been declined. Please review the Remarks below:</p>
     <p>Remarks:{{ $remarks}}.</p>
+    <br>
+    <p>Don't worry, you can still register again and use your email address.</p>
+    <br>
+    <p>For more information or concerns, please contact the BPLO hotline:</p>
+    <br>
+    <p>Landline: 991-2565</p>
+    <p>Globe: 0926-630-3210</p>
+    <br>
     <p>If you didn't request this, please ignore this message.</p>
 </body>
 </html>
