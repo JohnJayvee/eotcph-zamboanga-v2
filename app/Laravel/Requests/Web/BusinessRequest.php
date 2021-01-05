@@ -53,9 +53,8 @@ class BusinessRequest extends RequestManager{
                   "male_residing_in_city" =>"required|integer",
                   "female_residing_in_city" => "required|integer",
                   "capitalization" => "required|integer",
-                  "region_name" => "required",
-                  "town_name" => "required",
-                  "brgy_name" => "required",
+                  
+                  "brgy" => "required",
                   "unit_no" => "required",
                   "street_address" => "required",
                   "email" => "required|email:rfc,dns",
