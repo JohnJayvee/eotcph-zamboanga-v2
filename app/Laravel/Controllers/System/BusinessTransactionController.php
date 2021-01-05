@@ -574,13 +574,13 @@ class BusinessTransactionController extends Controller
 				'office_code' => $request->get('office_code'),
 			];
 
-			$response = Http::get(env('ZAMBOANGA_URL'),$request_body);
-			/*$response = Curl::to(env('ZAMBOANGA_URL'))
+			
+			$response = Curl::to(env('ZAMBOANGA_URL'))
 			         ->withData($request_body)
 			         ->asJson( true )
 			         ->returnResponseObject()
 					 ->post();
-*/
+
 			if ($response->content['data'] == NULL) {
 				session()->flash('notification-status', "failed");
 				session()->flash('notification-msg', "No Assesment Found.");
