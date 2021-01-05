@@ -103,9 +103,8 @@ class BusinessPermitController extends Controller{
                     'account_code' => $account_code [5],
                     'particulars' => $account_code [6]
                 ];
-
                 BusinessActivity::insert($data);
-                $data = array_merge($data, array("particulars"=>$request->line_of_business [$key]));
+                $data = array_merge($data, array("particulars"=>$account_code [6]));
                 array_push($list_of_line_of_business_save_to_local, $data);
             }
 
@@ -147,7 +146,7 @@ class BusinessPermitController extends Controller{
                 'business_owner' => Auth::guard('customer')->user()->name,
                 'application_no' => $request->application_no,
             ];
-
+            
             $line_of_business_data = new UploadLineOfBusinessToLocal($request_body);
             Event::dispatch('upload-line-of-business-to-local', $line_of_business_data);
 

@@ -69,11 +69,11 @@ class BusinessController extends Controller
                 session()->flash('notification-msg', "Business validated");
                 session()->forget('negativelist');
                 $this->data['business'] = $response->content['data'];
+                
                 foreach ($this->data['business']['LineOfBusiness'] as $key => $value) {
                     if(!empty($value['Class'])){
                         $particulars = !empty($value['Particulars']) ? " (".$value['Particulars'].")" : "";
                         $this->data['lob'][] = $value['Class'].$particulars;
-
                     }
                 }
                 session()->put('line_of_business', $this->data['business']['LineOfBusiness']);
