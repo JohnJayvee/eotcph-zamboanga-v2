@@ -214,8 +214,9 @@ class BusinessTransactionController extends Controller
         $requirements_id = $this->data['transaction']->requirements_id;
 
         $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', $this->data['transaction']->business_permit_id)->get();
-        $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $request->id)->get();
-		$this->data['app_business_permit'] = ApplicationBusinessPermit::find($request->id)->get();
+		$this->data['app_business_permit'] = ApplicationBusinessPermit::where('business_id' , $this->data['transaction']->business_info->id)->get();
+        $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $this->data['transaction']->business_info->id)->get();
+		
 
 		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $requirements_id))->get();
 
