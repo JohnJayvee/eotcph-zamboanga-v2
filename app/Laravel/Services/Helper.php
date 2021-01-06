@@ -704,7 +704,7 @@ class Helper{
                     'from' => "oBOSS",
                     'to' => $contact_number,
                     'api_key' => "1mgP6RMgSXDWRNaJXatDYwPVkjR",
-                    'api_secret' => "kgFegmoWP6oaQ625xHTxfrVYe0jGUqg8X95AG6qm"
+                    'api_secret' => "sxXw2tBIi70RU1HoV4o9gmpMMvU5JPuDmQSroiyv"
                 ];
 
 			$response = Curl::to("https://api.movider.co/v1/sms")

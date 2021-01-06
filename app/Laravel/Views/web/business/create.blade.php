@@ -135,7 +135,7 @@
                                         @if (session()->has('bnn-error'))
                                             <small class="form-text pl-1" style="color:red;">{{ session('bnn-error') }}</small>
                                         @endif
-                                        <p class="text-right text-primary"><a href="http://betastaging.bnrs.dti.gov.ph/registration" target="_blank">Not yet registered to DTI? click here.</a></p>
+                                        <p class="text-right text-primary"><a href="https://bnrs.dti.gov.ph/registration" target="_blank">Not yet registered to DTI? click here.</a></p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

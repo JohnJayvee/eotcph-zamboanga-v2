@@ -33,8 +33,8 @@ class BusinessController extends Controller
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
 
-		$this->data['business_scopes'] = ['national' => "National",'regional' => "Regional",'municipality' => "City/Municipality",'barangay' => "Barangay"];
-		$this->data['business_types'] = ['sole_proprietorship' => "Sole Proprietorship",'cooperative' => "Cooperative",'corporation' => "Corporation",'partnership' => "Partnership"];
+		$this->data['business_scopes'] = ["" => "Choose Business Scope",'national' => "National",'regional' => "Regional",'municipality' => "City/Municipality",'barangay' => "Barangay"];
+		$this->data['business_types'] = ["" => "Choose Business Type",'sole_proprietorship' => "Sole Proprietorship",'cooperative' => "Cooperative",'corporation' => "Corporation",'partnership' => "Partnership"];
 		$this->data['transaction_types'] = ['new' => "New Business",'renewal' => "Renewal"];
 		if (Auth::guard('customer')->user()) {
 			$this->data['auth'] = Auth::guard('customer')->user();
