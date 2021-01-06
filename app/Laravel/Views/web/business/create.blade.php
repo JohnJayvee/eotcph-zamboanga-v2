@@ -22,7 +22,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1" class="text-form pb-2">Business ID No. </label>
+                                            <label for="exampleInputEmail1" class="text-form pb-2">Business ID No. <span class="text-danger">*</span></label>
                                             <input type="hidden" class="form-control"  name="permit_no" value="{{old('permit_no', $business['PermitNo'] ?? '') }}">
                                             <input type="hidden" class="form-control"  name="business_plate_no" value="{{old('business_plate_no', $business['BusinessPlateNo'] ?? '') }}">
 
@@ -96,7 +96,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Dominant Name</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Dominant Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('dominant_name') ? 'is-invalid': NULL  }}"  name="dominant_name" value="{{old('dominant_name', $business['BusinessName'] ?? '') }}">
                                         @if($errors->first('dominant_name'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('dominant_name')}}</small>
@@ -105,7 +105,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Business Name</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Business Name <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('business_name') ? 'is-invalid': NULL  }}"  name="business_name" value="{{old('business_name', $business['BusinessName'] ?? '') }}">
                                         @if($errors->first('business_name'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('business_name')}}</small>
@@ -116,7 +116,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Trade name / Franchise</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Trade name / Franchise <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('trade_name') ? 'is-invalid': NULL  }}"  name="trade_name" value="{{old('trade_name', $business['TradeName'] ?? '') }}">
                                         @if($errors->first('trade_name'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('trade_name')}}</small>
@@ -127,7 +127,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">DTI/SEC/CDA registration No.</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">DTI/SEC/CDA registration No. <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('dti_sec_cda_registration_no') ? 'is-invalid': NULL  }}"  name="dti_sec_cda_registration_no" value="{{old('dti_sec_cda_registration_no') }}">
                                         @if($errors->first('dti_sec_cda_registration_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('dti_sec_cda_registration_no')}}</small>
@@ -140,7 +140,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">DTI/SEC/CDA registration Date</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">DTI/SEC/CDA registration Date <span class="text-danger">*</span></label>
                                         <input type="date" class="form-control form-control-sm {{ $errors->first('dti_sec_cda_registration_date') ? 'is-invalid': NULL  }}"  name="dti_sec_cda_registration_date" value="{{old('dti_sec_cda_registration_date') }}">
                                         @if($errors->first('dti_sec_cda_registration_date'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('dti_sec_cda_registration_date')}}</small>
@@ -151,7 +151,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">CTC No.</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">CTC No.<span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('ctc_no') ? 'is-invalid': NULL  }}"  name="ctc_no" value="{{old('ctc_no', $business['CTCNo'] ?? '' ) }}">
                                         @if($errors->first('ctc_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('ctc_no')}}</small>
@@ -160,7 +160,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Business TIN.</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Business TIN.<span class="text-danger">*</span></label>
                                         <input type="number" class="form-control form-control-sm {{ $errors->first('business_tin') ? 'is-invalid': NULL  }}"  name="business_tin" value="{{old('business_tin', $business['TIN'] ?? '') }}">
                                         @if($errors->first('business_tin'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('business_tin')}}</small>
@@ -269,7 +269,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Business Area (Sq. m)</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Business Area (Sq. m) <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control form-control-sm {{ $errors->first('business_area') ? 'is-invalid': NULL  }}"  name="business_area" value="{{old('business_area', $business['BusArea'] ?? '') }}">
                                         @if($errors->first('business_area'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('business_area')}}</small>
@@ -280,7 +280,7 @@
                             <div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="input_no_male_employee" class="text-form pb-2">Total No. of Male Employees</label>
+										<label for="input_no_male_employee" class="text-form pb-2">Total No. of Male Employees <span class="text-danger">*</span></label>
 										<input type="number" id="input_no_male_employee" class="form-control {{ $errors->first('no_male_employee') ? 'is-invalid': NULL  }}" name="no_male_employee" value="{{old('no_male_employee')}}">
 										@if($errors->first('no_male_employee'))
 										<p class="help-block text-danger">{{$errors->first('no_male_employee')}}</p>
@@ -289,7 +289,7 @@
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="input_male_residing_in_city" class="text-form pb-2">No. of Male Employees Residing In City</label>
+										<label for="input_male_residing_in_city" class="text-form pb-2">No. of Male Employees Residing In City <span class="text-danger">*</span></label>
 										<input type="number" id="input_male_residing_in_city" class="form-control {{ $errors->first('male_residing_in_city') ? 'is-invalid': NULL  }}" name="male_residing_in_city" value="{{old('male_residing_in_city')}}">
 										@if($errors->first('male_residing_in_city'))
 										<p class="help-block text-danger">{{$errors->first('male_residing_in_city')}}</p>
@@ -301,7 +301,7 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="input_no_female_employee" class="text-form pb-2">Total No. of Female Employees</label>
+										<label for="input_no_female_employee" class="text-form pb-2">Total No. of Female Employees <span class="text-danger">*</span></label>
 										<input type="number" id="input_no_female_employee" class="form-control {{ $errors->first('no_female_employee') ? 'is-invalid': NULL  }}" name="no_female_employee" value="{{old('no_female_employee')}}">
 										@if($errors->first('no_female_employee'))
 										<p class="help-block text-danger">{{$errors->first('no_female_employee')}}</p>
@@ -310,7 +310,7 @@
 								</div>
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="input_female_residing_in_city" class="text-form pb-2">No. of Female Employees Residing In City</label>
+										<label for="input_female_residing_in_city" class="text-form pb-2">No. of Female Employees Residing In City <span class="text-danger">*</span></label>
 										<input type="number" id="input_female_residing_in_city" class="form-control {{ $errors->first('female_residing_in_city') ? 'is-invalid': NULL  }}" name="female_residing_in_city" value="{{old('female_residing_in_city')}}">
 										@if($errors->first('female_residing_in_city'))
 										<p class="help-block text-danger">{{$errors->first('female_residing_in_city')}}</p>
@@ -321,7 +321,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Capitalization</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Capitalization <span class="text-danger">*</span></label>
                                         <input type="number" class="form-control form-control-sm {{ $errors->first('capitalization') ? 'is-invalid': NULL  }}"  name="capitalization" value="{{old('capitalization') }}">
                                         @if($errors->first('capitalization'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('capitalization')}}</small>
@@ -336,7 +336,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                    <label for="exampleInputEmail1" class="text-form pb-2">Region</label>
+                                    <label for="exampleInputEmail1" class="text-form pb-2">Region <span class="text-danger">*</span></label>
                                        {!!Form::select('region',[],old('region'),['id' => "input_region",'class' => "form-control form-control-sm classic ".($errors->first('region') ? 'border-red' : NULL)])!!}
                                         @if($errors->first('region'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('region')}}</small>
@@ -347,7 +347,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label class="text-form pb-2">City Municipality</label>
+                                        <label class="text-form pb-2">City Municipality <span class="text-danger">*</span></label>
                                         {!!Form::select('town',[],old('town'),['id' => "input_town",'class' => "form-control form-control-sm classic ".($errors->first('town') ? 'border-red' : NULL)])!!}
                                         @if($errors->first('town'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('town')}}</small>
@@ -356,7 +356,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-4 col-lg-4">
                                     <div class="form-group">
-                                        <label class="text-form pb-2">Barangay</label>
+                                        <label class="text-form pb-2">Barangay <span class="text-danger">*</span></label>
                                         {!!Form::select('brgy',[],old('brgy'),['id' => "input_brgy",'class' => "form-control form-control-sm classic ".($errors->first('brgy') ? 'border-red' : NULL)])!!}
                                         @if($errors->first('brgy'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('brgy')}}</small>
@@ -365,7 +365,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-2 col-lg-2">
                                     <div class="form-group">
-                                        <label for="input_zipcode" class="text-form pb-2">Zipcode</label>
+                                        <label for="input_zipcode" class="text-form pb-2">Zipcode <span class="text-danger">*</span></label>
                                         <input type="text" id="input_zipcode" class="form-control form-control-sm  {{ $errors->first('zipcode') ? 'is-invalid': NULL  }}" name="zipcode" value="{{old('zipcode')}}" readonly="readonly">
                                         @if($errors->first('zipcode'))
                                         <p class="help-block text-danger">{{$errors->first('zipcode')}}</p>
@@ -376,7 +376,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No.</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No. <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('unit_no') ? 'is-invalid': NULL  }}"  name="unit_no" value="{{old('unit_no'), ($business['BusBldgName'] ?? '').' '.($business['BusBldgNo'] ?? '')}}">
                                         @if($errors->first('unit_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('unit_no')}}</small>
@@ -385,7 +385,7 @@
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Street Address</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Street Address <span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('street_address') ? 'is-invalid': NULL  }}"  name="street_address" value="{{old('street_address', $business['BusStreet'] ?? '') }}">
                                         @if($errors->first('street_address'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('street_address')}}</small>
@@ -396,7 +396,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Email <span class="text-danger">*</span></label>
                                         <input type="email" class="form-control form-control-sm {{ $errors->first('email') ? 'is-invalid': NULL  }}"  name="email" value="{{old('email', $business['BusEmailAddress'] ?? '') }}">
                                         @if($errors->first('email'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
@@ -416,7 +416,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
-                                        <label class="text-form pb-2">Mobile Number</label>
+                                        <label class="text-form pb-2">Mobile Number <span class="text-danger">*</span></label>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
