@@ -46,6 +46,7 @@
                   </tr>
                   <tr class="text-center">
                     <th class="text-title p-3">Account Name</th>
+                    <th class="text-title p-3">Year</th>
                     <th class="text-title p-3">Amount</th>
                   </tr>
                 </thead>
@@ -58,6 +59,7 @@
                     @foreach(json_decode($fee->collection_of_fees) as $collection)
                       <tr >
                         <td style="font-size: 12px;" class="p-2">{{$collection->BusinessID}}</td>
+                        <td style="font-size: 12px;" class="p-2">{{$collection->CYear}}</td>
                         <td style="font-size: 12px;" class="p-2">PHP {{Helper::money_format($collection->Amount)}}</td>
                       </tr>
                     @endforeach
