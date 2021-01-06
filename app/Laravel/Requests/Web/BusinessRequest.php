@@ -12,8 +12,8 @@ class BusinessRequest extends RequestManager{
 
 		$rules = [
             	"business_id_no" => "required|unique:business,business_id_no",
-            	//"business_scope" => "required",
-                  //"business_type" => "required",
+            	"business_scope" => "required",
+                  "business_type" => "required",
                   "dominant_name" => "required",
                   "business_name" => "required",
                   "trade_name" => "required",
