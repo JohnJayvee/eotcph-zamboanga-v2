@@ -13,7 +13,7 @@
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-body">
-                        <h3>{{ $profile->business_name }} (str::title($profile->business_type))</h3>
+                        <h3>{{ $profile->business_name }} ({{Str::title($profile->business_type)}})</h3>
                         <form method="POST">
                             @include('system._components.notifications')
                             {!!csrf_field()!!}

@@ -699,22 +699,24 @@ class Helper{
     }
 
     public static function send_sms($contact_number, $msg_body = "Hello!"){
-		try{
-			$response = Curl::to("https://api.movider.co/v1/sms")
-                ->withData([
-                    'api_key' => "1m2wwrOS0zkVozrx4HMH1is4XXa",
-                    'api_secret' => "kgFegmoWP6oaQ625xHTxfrVYe0jGUqg8X95AG6qm",
-                    'message' => $msg_body,
+
+    			$request_body = ['text' => "Hello",
                     'from' => "oBOSS",
-                    'to' => $contact_number
-                ])
+                    'to' => $contact_number,
+                    'api_key' => "1mgP6RMgSXDWRNaJXatDYwPVkjR",
+                    'api_secret' => "kgFegmoWP6oaQ625xHTxfrVYe0jGUqg8X95AG6qm"
+                ];
+
+			$response = Curl::to("https://api.movider.co/v1/sms")
+                ->withData($request_body)
+                ->withContentType('application/form-data')
+                ->asJson( true )
                 ->returnResponseObject()
                 ->post();
 			    $code = $response->status;
+			    dd($response);
 			    return $code >= 200 AND $code <= 299 ? TRUE : FALSE;
-		}catch(Exception $e){
-			return FALSE;
-        }
+
     }
 }
 

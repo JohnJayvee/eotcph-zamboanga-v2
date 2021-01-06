@@ -24,16 +24,13 @@ class SendCustomerOTP extends Event {
 		foreach($this->data as $index =>$value){
 			$phone = $value['contact_number'];
 			$otp = $value['otp'];
+			 $nexmo = Nexmo::message()->send([
+			 	'to' => '+63'.(int)$phone,
+			 	'from' => 'EOTCPH' ,
+			 	'text' => "Never share your OTP with anyone & verify that you're on the oBOSS official web application. The OTP for your login is ".$otp.". If you didn't request this, please disregard this message.",
+             ]);
 
-			// $nexmo = Nexmo::message()->send([
-			// 	'to' => '+63'.(int)$phone,
-			// 	'from' => 'EOTCPH' ,
-			// 	'text' => "Never share your OTP with anyone & verify that you're on the oBOSS official web application. The OTP for your login is ".$otp.". If you didn't request this, please disregard this message.",
-            // ]);
-
-            $phone = '+63'.(int)$phone;
-            $sms = Helper::send_sms($phone,"Never share your OTP with anyone & verify that you're on the oBOSS official web application. The OTP for your login is ".$otp.". If you didn't request this, please disregard this message.");
-
+           
 		}
 	}
 }
