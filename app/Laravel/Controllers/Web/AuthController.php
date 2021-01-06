@@ -48,7 +48,7 @@ class AuthController extends Controller{
 
 			if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password])){
 
-				if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'approved'])){
+				if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => '!declined'])){
                     $user = Auth::guard('customer')->user();
                     session()->put('auth_id', Auth::guard('customer')->user()->id);
                     session()->flash('notification-status','success');
@@ -60,11 +60,6 @@ class AuthController extends Controller{
                         } else {*/
                         return redirect()->route('web.business.index');
 
-                } else if (Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'declined'])){
-                    Auth::guard('customer')->logout();
-                    session()->flash('notification-status','error');
-                    session()->flash('notification-msg','Your Account has been Declined.');
-                    return redirect()->back();
                 } else if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'pending' , 'otp_verified' => 0])){
                     Auth::guard('customer')->logout();
                     session()->put('register.progress', 2);
@@ -76,6 +71,11 @@ class AuthController extends Controller{
                     Auth::guard('customer')->logout();
                     session()->flash('notification-status','warning');
                     session()->flash('notification-msg','BPLO Activation Required.');
+                    return redirect()->back();
+                }else{
+                    Auth::guard('customer')->logout();
+                    session()->flash('notification-status','error');
+                    session()->flash('notification-msg','Your Account has been Declined.');
                     return redirect()->back();
                 }
 			}

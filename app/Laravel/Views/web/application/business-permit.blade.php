@@ -629,7 +629,7 @@
                                     <div class="table-responsive">
                                         <table class="table table-striped">
                                             <thead>
-                                                <th class="text-title">Requirment Name</th>
+                                                <th class="text-title">Requirement Name</th>
                                                 <th class="text-title" class="text-wrap">File</th>
                                             </thead>
                                             {{-- <tr>
