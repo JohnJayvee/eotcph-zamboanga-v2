@@ -14,10 +14,8 @@ class BusinessPermitRequest extends RequestManager{
             'line_of_business.*' => 'required',
             // 'no_of_units' => 'required',
             'no_of_units.*' => 'nullable|numeric',
-            'file' => 'required',
-            'amount' => 'required',
-            'amount.*' => 'numeric',
-            'file.*' => 'mimes:png,jpg,jpeg,pdf',
+            'amount.*' => 'required|numeric',
+            'file.*' => 'required|mimes:png,jpg,jpeg,pdf',
             'agree' => 'accepted',
 
         ];

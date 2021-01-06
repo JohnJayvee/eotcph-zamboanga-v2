@@ -48,6 +48,13 @@ class BusinessPermitController extends Controller{
         $business = Business::find(session()->get('selected_business_id'));
         $this->data['business'] = $business;
 
+        
+         $permits = ApplicationBusinessPermit::where('customer_id', Auth::guard('customer')->user()->id)->where('business_id', $business->id)->where('created_at', 'LIKE', now()->format('Y') .'-%')->where('type', 'renew')->where('status', 'pending')->count();
+         if($permits >= 1){
+            session()->flash('notification-status',"warning");
+            session()->flash('notification-msg',"Sorry, you still have a Pending application for approval. Please wait for BPLO Admin's Feedback.");
+            return redirect()->back();
+        }
 		DB::beginTransaction();
 		try{
 			$new_business_permit = new ApplicationBusinessPermit();
