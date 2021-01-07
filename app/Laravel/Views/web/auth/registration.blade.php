@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6 ">
                             <div class="form-group">
-                                <label class="text-form pb-2">Email</label>
+                                <label class="text-form pb-2">Email <span class="text-danger">*</span></label>
                                 <input type="email" class="form-control {{ $errors->first('email') ? 'is-invalid': NULL  }} form-control-sm" name="email" placeholder="Email Address" value="{{old('email', session('register.email'))}}">
                                 @if($errors->first('email'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
@@ -23,7 +23,7 @@
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label class="text-form pb-2">Password</label>
+                                <label class="text-form pb-2">Password <span class="text-danger">*</span></label>
                                 <input type="password" class="form-control {{ $errors->first('password') ? 'is-invalid': NULL  }} form-control-sm" name="password" placeholder="Password" id="password-field" value="{{ session('register.password_uncrypt') }}">
                                 <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                 @if($errors->first('password'))
@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label class="text-form pb-2">Confirm Password</label>
+                                <label class="text-form pb-2">Confirm Password <span class="text-danger">*</span></label>
                                 <input type="password" class="form-control form-control-sm" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" value="{{ session('register.password_uncrypt') }}">
                                 <span toggle="#password_confirmation" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                             </div>
@@ -48,7 +48,7 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label class="text-form pb-2">First Name</label>
+                                <label class="text-form pb-2">First Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control {{ $errors->first('fname') ? 'is-invalid': NULL  }} form-control-sm" name="fname" placeholder="Firstname" value="{{old('fname', session('register.fname'))}}">
                                  @if($errors->first('fname'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('fname')}}</small>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group mb-0">
-                                <label class="text-form pb-2">Last Name</label>
+                                <label class="text-form pb-2">Last Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control {{ $errors->first('lname') ? 'is-invalid': NULL  }} form-control-sm" name="lname" placeholder="Lastname" value="{{old('lname', session('register.lname'))}}">
                                 @if($errors->first('lname'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('lname')}}</small>
@@ -74,7 +74,7 @@
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label class="text-form pb-2">Contact Number</label>
+                                <label class="text-form pb-2">Contact Number <span class="text-danger">*</span></label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
@@ -126,7 +126,7 @@
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label class="text-form pb-2">Barangay</label>
+                                <label class="text-form pb-2">Barangay <span class="text-danger">*</span></label>
                                 {!!Form::select('brgy',[],old('brgy'),['id' => "input_brgy",'class' => "form-control form-control-sm classic ".($errors->first('brgy') ? 'border-red' : NULL)])!!}
                                 @if($errors->first('brgy'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('brgy')}}</small>
@@ -137,7 +137,7 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label class="text-form pb-2">Street Name</label>
+                                <label class="text-form pb-2">Street Name <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control {{ $errors->first('street_name') ? 'is-invalid': NULL  }} form-control-sm" name="street_name" placeholder="Street Name" value="{{old('street_name', session('register.street_name'))}}">
                                  @if($errors->first('street_name'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('street_name')}}</small>
@@ -146,7 +146,7 @@
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label class="text-form pb-2">BLDG/ Unit Number</label>
+                                <label class="text-form pb-2">BLDG/ Unit Number <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control {{ $errors->first('unit_number') ? 'is-invalid': NULL  }} form-control-sm" name="unit_number" placeholder="Unit Number" value="{{old('unit_number', session('register.unit_number'))}}">
                                 @if($errors->first('unit_number'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('unit_number')}}</small>
@@ -155,10 +155,9 @@
                         </div>
                     </div>
                     <div class="row">
-
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="input_zipcode" class="text-form pb-2">Zipcode</label>
+                                <label for="input_zipcode" class="text-form pb-2">Zipcode <span class="text-danger">*</span></label>
                                 <input type="text" id="input_zipcode" class="form-control {{ $errors->first('zipcode') ? 'is-invalid': NULL  }}" name="zipcode" value="{{old('zipcode', session('register.zipcode'))}}" readonly="readonly">
                                 @if($errors->first('zipcode'))
                                 <p class="help-block text-danger">{{$errors->first('zipcode')}}</p>
@@ -167,7 +166,7 @@
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label class="text-form pb-2">Birthdate</label>
+                                <label class="text-form pb-2">Birthdate <span class="text-danger">*</span></label>
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control datepicker {{ $errors->first('birthdate') ? 'is-invalid': NULL  }} br-right-white p-2" name="birthdate" placeholder="YYYY-MM-DD" value="{{old('birthdate', session('register.birthdate'))}}">
                                     <div class="input-group-append">
@@ -216,7 +215,7 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group {{$errors->first('gov_id_1') ? 'text-danger' : NULL}}">
-                                <label class="text-form pb-2">Government ID 1 (Required-maximum of 5mb)</label>
+                                <label class="text-form pb-2">Government ID 1 <span class="text-danger">*</span> (maximum of 5mb)</label>
                                 <input type="file" class="form-control form-control-sm" name="gov_id_1" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
                                 @if($errors->first('gov_id_1'))
                                 <p class="help-block text-danger">{{$errors->first('gov_id_1')}}</p>
@@ -225,7 +224,7 @@
                         </div>
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group {{$errors->first('gov_id_2') ? 'text-danger' : NULL}}">
-                                <label class="text-form pb-2">Government ID 2 (Required-maximum of 5mb)</label>
+                                <label class="text-form pb-2">Government ID 2 <span class="text-danger">*</span> (maximum of 5mb)</label>
                                 <input type="file" class="form-control form-control-sm" name="gov_id_2" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
                                 @if($errors->first('gov_id_2'))
                                 <p class="help-block text-danger">{{$errors->first('gov_id_2')}}</p>
@@ -236,7 +235,7 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="form-group {{$errors->first('business_permit') ? 'text-danger' : NULL}}">
-                                <label class="text-form pb-2">Business Permit (Required-maximum of 5mb)</label>
+                                <label class="text-form pb-2">Business Permit <span class="text-danger">*</span> (maximum of 5mb)</label>
                                 <input type="file" class="form-control form-control-sm" name="business_permit" accept="image/x-png,image/gif,image/jpeg,application/pdf" />
                                 @if($errors->first('business_permit'))
                                 <p class="help-block text-danger">{{$errors->first('business_permit')}}</p>
@@ -275,7 +274,6 @@
       $('#lblName').text(fileName);
     });
     $.fn.get_region = function(input_region,input_province,input_city,input_brgy,selected){
-
       $(input_city).empty().prop('disabled',true)
       $(input_brgy).empty().prop('disabled',true)
 
@@ -291,7 +289,6 @@
                 text: value
             }));
           })
-
           $(input_region).prop('disabled',true)
           $(input_region).prepend($('<option>',{value : "",text : "--Select Region--"}))
             if(selected.length > 0){
@@ -319,7 +316,6 @@
                   text: value
               }));
           })
-
           $(input_city).prop('disabled',true)
           $(input_city).prepend($('<option>',{value : "",text : "--SELECT MUNICIPALITY/CITY, PROVINCE--"}))
           if(selected.length > 0){
