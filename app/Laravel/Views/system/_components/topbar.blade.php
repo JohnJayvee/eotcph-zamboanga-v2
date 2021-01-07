@@ -22,24 +22,26 @@
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                 @if(in_array($auth->type,['super_user','admin']))
                         @forelse ($new_business_cv as $item)
-                            @if (get_class($item) == 'App\Laravel\Models\BusinessTransaction')
-                                @if ($item->for_bplo_approval == '1')
-                                <a class="dropdown-item" href="{{route('system.business_transaction.show',[$item->id])}}">
-                                    BPLO Admin ,  {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}} is now ready for your approval.
-                                </a>
+                            @if ($item->owner)
+                                @if (get_class($item) == 'App\Laravel\Models\BusinessTransaction')
+                                    @if ($item->for_bplo_approval == '1')
+                                    <a class="dropdown-item" href="{{route('system.business_transaction.show',[$item->id])}}">
+                                        BPLO Admin ,  {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}} is now ready for your approval.
+                                    </a>
+                                    @endif
+                                    @if($item->isNew == 1)
+                                    <a class="dropdown-item" href="{{route('system.business_transaction.show',[$item->id])}}">
+                                        New Business Transaction Added {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}}
+                                    </a>
+                                    @endif
                                 @endif
-                                @if($item->isNew == 1)
-                                <a class="dropdown-item" href="{{route('system.business_transaction.show',[$item->id])}}">
-                                    New Business Transaction Added {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}}
-                                </a>
+                                @if (get_class($item) == 'App\Laravel\Models\Business')
+                                    <a class="dropdown-item" href="{{ route('system.business_cv.show', ['id' => $item->id]) }}">
+                                        New Business CV Addded {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}}
+                                    </a>
                                 @endif
                             @endif
-                            @if (get_class($item) == 'App\Laravel\Models\Business')
-                                <a class="dropdown-item" href="{{ route('system.business_cv.show', ['id' => $item->id]) }}">
-                                    New Business CV Addded {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}}
-                                </a>
-                            @endif
-                    @empty
+                        @empty
                     <a href="#" class="dropdown-item">
                         No notification
                     </a>
