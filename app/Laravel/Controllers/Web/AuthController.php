@@ -160,8 +160,8 @@ class AuthController extends Controller{
         }
     }
 	public function store(RegisterRequest $request){
-        DB::beginTransaction();
-
+            DB::beginTransaction();
+        try {
             $new_customer = new Customer;
             $new_customer->status = 'pending';
             $new_customer->fname = $request->fname;
@@ -258,6 +258,12 @@ class AuthController extends Controller{
             session()->flash('notification-msg','Successfully registered.');
             session()->put('register.progress', 2);
             return redirect()->route('web.register.otp');
+        }catch(\Exception $e){
+            DB::rollback();
+            session()->flash('notification-status', "failed");
+            session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
+            return redirect()->back();
+        }
 
 	}
 	public function verify(){
@@ -313,7 +319,6 @@ class AuthController extends Controller{
 
         return true;
         } catch (\Exception $e) {
-            dd($e);
             return false;
         }
     }

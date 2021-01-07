@@ -701,12 +701,12 @@ class Helper{
 
     public static function send_sms($contact_number, $msg_body = "Hello!"){
 
-    			$request_body = ['text' => "Hello",
-                    'from' => "oBOSS",
-                    'to' => $contact_number,
-                    'api_key' => "1mgP6RMgSXDWRNaJXatDYwPVkjR",
-                    'api_secret' => "sxXw2tBIi70RU1HoV4o9gmpMMvU5JPuDmQSroiyv"
-                ];
+			$request_body = ['text' => $msg_body,
+                'from' => "oBOSS",
+                'to' => $contact_number,
+                'api_key' => "1mgP6RMgSXDWRNaJXatDYwPVkjR",
+                'api_secret' => "sxXw2tBIi70RU1HoV4o9gmpMMvU5JPuDmQSroiyv"
+            ];
 
 			$response = Curl::to("https://api.movider.co/v1/sms")
                 ->withData($request_body)

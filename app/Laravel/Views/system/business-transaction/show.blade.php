@@ -171,6 +171,13 @@
             <div class="col-md-6 pt-2">
               <h5 class="text-title text-uppercase">Involved Departments</h5>
             </div>
+            <div class="col-md-6">
+            @if(in_array(Auth::user()->type , ["admin","super_user"]))
+              @if($transaction->department_remarks == NULL and $transaction->department_involved)
+                <a data-url="{{route('system.business_transaction.update_department',[$transaction->id])}}"  class="btn btn-primary btn-involved border-5 text-white float-right">Update Department</a>
+              @endif
+            @endif
+            </div>
             <div class="table-responsive pt-2">
               <table class="table table-bordered table-wrap" style="table-layout: fixed;">
                 <thead>
@@ -422,6 +429,7 @@
 
 @section('page-scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<!-- <script src="{{asset('system/vendors/sweet-alert2/sweetalert2.min.js')}}"></script> -->
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
 
@@ -499,6 +507,30 @@
       })
     });
     $(".btn-validate").on('click', function(){
+      var url = $(this).data('url');
+      var self = $(this)
+      Swal.fire({
+        title: 'Input Department Code',
+        text: 'Use comma(,) as separator',
+        content: '<span>test</span>',
+        icon: 'warning',
+        input: 'text',
+        inputPlaceholder: "E.g. 01,02,03,99",
+        showCancelButton: true,
+        confirmButtonText: 'Proceed',
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.value === "") {
+          alert("You need to write something")
+          return false
+        }
+        if (result.value) {
+          window.location.href = url + "?department_code="+result.value;
+        }
+      });
+    });
+
+    $(".btn-involved").on('click', function(){
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({

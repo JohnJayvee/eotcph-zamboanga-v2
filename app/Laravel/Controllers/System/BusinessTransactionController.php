@@ -712,4 +712,35 @@ class BusinessTransactionController extends Controller
 			return redirect()->back();
 		}
 	}
+
+	public function update_department(PageRequest $request , $id = NULL){
+		DB::beginTransaction();
+		try{
+			$dept_code_array = explode(",", $request->get('department_code'));
+
+			foreach ($dept_code_array as $data) {
+				$department = Department::where('code',$data)->first();
+				if (!$department) {
+					session()->flash('notification-status', "failed");
+					session()->flash('notification-msg', "No Department Found.");
+					return redirect()->route('system.business_transaction.show',[$id]);
+				}
+			}
+
+			$transaction = $request->get('business_transaction_data');
+			$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
+			$transaction->save();
+
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "Office Code has been updated.");
+			return redirect()->route('system.business_transaction.show',[$id]);
+
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
+		}
+	}
 }
