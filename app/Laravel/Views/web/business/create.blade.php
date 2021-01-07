@@ -34,6 +34,7 @@
                                             @if($errors->first('BusinessID'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('BusinessID')}}</small>
                                             @endif
+                                            <button type="submit" class="btn badge-primary-2 text-white mr-2" style="float: right;">Validate</button>
                                         </div>
 
                                         @if (session('negativelist') == 1)
@@ -56,7 +57,7 @@
                                                 $('.modal_negative').modal('show');
                                             })
                                         </script>
-                                        <button type="submit" class="btn badge-primary-2 text-white mr-2" style="float: right;">Validate</button>
+                                        
                                     </div>
                                 </div>
                             </form>
