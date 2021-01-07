@@ -692,7 +692,8 @@ class Helper{
             case "authorization_owner": return 'Authorization of Owner' ;  break;
             case "photo_establishment": return 'Photo of Establishment' ;  break;
             case "bir_itr_form": return 'BIR ITR Form Financial Statement' ;  break;
-
+            case '0': return 'Photo of Establishment' ;  break;
+        	case '1': return 'BIR ITR Form Financial Statement' ;  break;
 
             default: return '';    break;
         }
