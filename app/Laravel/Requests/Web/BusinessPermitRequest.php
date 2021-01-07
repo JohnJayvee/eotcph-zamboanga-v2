@@ -13,12 +13,13 @@ class BusinessPermitRequest extends RequestManager{
 		$rules = [
             'line_of_business.*' => 'required',
             // 'no_of_units' => 'required',
-            'no_of_units.*' => 'nullable|numeric',
+            //'no_of_units.*' => 'nullable',
             'amount.*' => 'required|numeric',
             'file.*' => 'required|mimes:png,jpg,jpeg,pdf',
             'agree' => 'accepted',
 
-        ];
+        ];  
+        dd($rules);
 		return $rules;
 
 	}
