@@ -22,7 +22,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1" class="text-form pb-2">Business ID No. <span class="text-danger">*</span></label>
+                                            <label for="exampleInputEmail1" class="text-form pb-2">Business ID No. <span class="text-danger">* </span> <a href="#myModal" role="button" class="text-info" data-toggle="modal">To know where your BusinessID No. is click here</a>
                                             <input type="hidden" class="form-control"  name="permit_no" value="{{old('permit_no', $business['PermitNo'] ?? '') }}">
                                             <input type="hidden" class="form-control"  name="business_plate_no" value="{{old('business_plate_no', $business['BusinessPlateNo'] ?? '') }}">
 
@@ -705,7 +705,20 @@
 
 </section>
 <!--team section end-->
-
+<div class="modal fade bd-example-modal-lg show" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="dynamic-content">
+                <img src="{{asset('web/img/guide.jpg')}}" width="100%">
+            </div>
+        </div>
+    </div>
+</div> 
 
 @stop
 @section('page-styles')

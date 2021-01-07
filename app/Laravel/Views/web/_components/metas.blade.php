@@ -10,7 +10,6 @@
 <meta property="og:image" content=""/> <!-- image link, make sure it's jpg -->
 <meta property="og:url" content=""/> <!-- where do you want your post to link to -->
 <meta property="og:type" content="article"/>
-<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <title>{{$page_title}}</title>
 
 <link rel="icon" href="{{asset('web/img/favicon.png')}}" type="image/png" sizes="16x16">
