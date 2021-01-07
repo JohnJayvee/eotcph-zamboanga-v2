@@ -19,7 +19,6 @@ class BusinessPermitRequest extends RequestManager{
             'agree' => 'accepted',
 
         ];  
-        dd($rules);
 		return $rules;
 
 	}
