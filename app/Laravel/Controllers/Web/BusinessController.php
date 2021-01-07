@@ -245,8 +245,8 @@ class BusinessController extends Controller
 	public function business_profile(PageRequest $request , $id = NULL){
 
 		$this->data['page_title'] = "Create Business CV";
-
         $this->data['profile'] = Business::find($id);
+        $this->data['business_transaction'] = BusinessTransaction::where('business_id', $id)->first();
         $this->data['business_line'] = BusinessLine::where('business_id', session()->get('selected_business_id'))->get();
         session()->put('selected_business_id', $id);
 		return view('web.business.profile',$this->data);
