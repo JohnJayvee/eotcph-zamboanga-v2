@@ -593,10 +593,10 @@
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
                                             <thead class="text-center">
-                                                <th class="text-title text-uppercase">Line of Business</th>
+                                                <th class="text-title text-uppercase">Line of Business <span class="text-danger">*</span></th>
                                                 <th class="text-title text-uppercase">No. Units</th>
                                                 <th class="text-title text-uppercase new" style="display: none;">New (Capital Investment)</th>
-                                                <th class="text-title text-uppercase renew" style="display: none;">Renew (Gross Sales / Capital)</th>
+                                                <th class="text-title text-uppercase renew" style="display: none;">Renew (Gross Sales / Capital) <span class="text-danger">*</span></th>
                                                 <th class="text-title text-uppercase">Action</th>
                                             </thead>
                                             <tbody id="businessline_tbody">
@@ -630,7 +630,7 @@
                                         <table class="table table-striped">
                                             <thead>
                                                 <th class="text-title">Requirement Name</th>
-                                                <th class="text-title" class="text-wrap">File</th>
+                                                <th class="text-title" class="text-wrap">File <span class="text-danger">*</span></th>
                                             </thead>
                                             {{-- <tr>
                                                 <td>BN Certificate</td>
@@ -678,18 +678,18 @@
                                                 </td>
                                             </tr> --}}
                                             <tr>
-                                                <td>Actual Photo of Establishment</td>
+                                                <td>Actual Photo of Establishment </td>
                                                 <td>
-                                                    <input type="file" name="file[photo_establishment]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg">
+                                                    <input type="file" name="file[]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg">
                                                     @if($errors->first('file'))
                                                     <p class="help-block text-danger">{{$errors->first('file')}}</p>
                                                     @endif
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>BIR ITR Form / Financial Statement</td>
+                                                <td>BIR ITR Form / Financial Statement </td>
                                                 <td>
-                                                    <input type="file" name="file[bir_itr_form]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
+                                                    <input type="file" name="file[]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
                                                     @if($errors->first('file'))
                                                     <p class="help-block text-danger">{{$errors->first('file')}}</p>
                                                     @endif
@@ -699,6 +699,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-check">
