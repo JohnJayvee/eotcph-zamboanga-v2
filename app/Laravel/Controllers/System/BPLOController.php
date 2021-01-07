@@ -58,7 +58,7 @@ class BPLOController extends Controller
 		$this->data['keyword'] = Str::lower($request->keyword);
         $this->data['customer'] = Customer::where(function($query){
             if(strlen($this->data['keyword']) > 0){
-                return $query->WhereRaw("LOWER(fname)  LIKE  '%{$this->data['keyword']}%'");
+                return $query->WhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'");
                 }
             })
             ->where(function($query){
