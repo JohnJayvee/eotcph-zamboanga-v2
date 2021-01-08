@@ -84,7 +84,7 @@
       </table>
     </div>
       <nav class="mt-2">
-        {!!$customer->render()!!}
+        {!!$customer->appends(['status' => $selected_status , 'otp_verified' => $selected_otp_verified , 'keyword' => $keyword , 'start_date' => $start_date , 'end_date' => $end_date])->render()!!}
         </ul>
       </nav>
   </div>

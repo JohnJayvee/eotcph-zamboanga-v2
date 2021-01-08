@@ -265,7 +265,7 @@ class ReportController extends Controller
 				->orderBy('created_at',"DESC")->get();
 
 
-		$pdf = PDF::loadView('pdf.report',$this->data)->setPaper('a4', 'landscape');;
+		$pdf = PDF::loadView('pdf.report',$this->data)->setPaper('a4', 'landscape');
 		return $pdf->download("report.pdf");	
 
     }
