@@ -52,6 +52,13 @@
               <span class="count-name">For BPLO Approval</span>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="card-counter info">
+            <i class="fa fas fa-id-card"></i>
+              <span class="count-numbers">{{$business_cv}}</span>
+              <span class="count-name">Total Business CV</span>
+            </div>
+        </div>
 	</div>
 
 	<div class="row pt-2">

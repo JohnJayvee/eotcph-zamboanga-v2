@@ -12,7 +12,7 @@ use App\Laravel\Requests\PageRequest;
 /*
  * Models
  */
-use App\Laravel\Models\{Transaction,Department,Application, BusinessTransaction};
+use App\Laravel\Models\{Transaction,Department,Application, Business, BusinessTransaction};
 
 /* App Classes
  */
@@ -31,7 +31,6 @@ class MainController extends Controller{
 		$auth = $request->user();
 		$this->data['page_title'] .= "Dashboard";
 
-        // NOTE:: Remove office head here after some time. this is only so that we can deploy to Prod with visible office_head data
 		if (in_array($auth->type, ["admin", "super_user"])) {
 			$this->data['applications'] = BusinessTransaction::orderBy('created_at',"DESC")->get();
             $this->data['pending'] = BusinessTransaction::where('status',"PENDING")->count();
@@ -39,6 +38,7 @@ class MainController extends Controller{
             $this->data['for_bplo'] = BusinessTransaction::where('for_bplo_approval',"1")->count();
 			$this->data['approved'] = BusinessTransaction::where('status',"APPROVED")->count();
 			$this->data['declined'] = BusinessTransaction::where('status',"DECLINED")->count();
+			$this->data['business_cv'] = Business::count();
 			$this->data['application_today'] = BusinessTransaction::whereDate('created_at', Carbon::now())->count();
 			$this->data['labels'] = Department::pluck('name')->toArray();
 			$this->data['transaction_per_department'] = Department::withCount('assignTransaction')->pluck('assign_transaction_count')->toArray();
@@ -82,6 +82,7 @@ class MainController extends Controller{
 			$this->data['application_today'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->whereDate('created_at', Carbon::now())->count();
             $this->data['validated'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('is_validated',"1")->count();
             $this->data['for_bplo'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('for_bplo_approval',"1")->count();
+			$this->data['business_cv'] = Business::count();
 
 			$this->data['labels'] = Application::where('department_id',explode(",", $auth->department_id))->pluck('name')->toArray();
 
@@ -125,6 +126,7 @@ class MainController extends Controller{
 			$this->data['application_today'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->whereDate('created_at', Carbon::now())->count();
             $this->data['validated'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('is_validated',"1")->count();
             $this->data['for_bplo'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('for_bplo_approval',"1")->count();
+			$this->data['business_cv'] = Business::count();
 
 			$this->data['labels'] = Application::where('department_id',$auth->department_id)->pluck('name')->toArray();
 
