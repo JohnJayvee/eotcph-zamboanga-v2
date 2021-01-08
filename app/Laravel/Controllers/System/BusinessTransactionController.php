@@ -46,7 +46,7 @@ class BusinessTransactionController extends Controller
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
 		$this->data['approval'] = ['' => "Choose Approval Type",'1' => "Yes" , '0' => "No"];
 		$this->data['processor'] = ['' => "Choose Validation",'1' => "Validated" , '0' => "Not Yet"];
-		$this->data['fees'] =  ['' => "Choose Collection Fees"] + CollectionOfFees::pluck('collection_name','id')->toArray();
+        $this->data['fees'] =  ['' => "Choose Collection Fees"] + CollectionOfFees::pluck('collection_name','id')->toArray();
 		$this->per_page = env("DEFAULT_PER_PAGE",2);
 	}
 
@@ -235,6 +235,7 @@ class BusinessTransactionController extends Controller
 
     public function edit(PageRequest $request,$id=NULL)
     {
+        $this->retrieve_lobs();
         $this->data['count_file'] = TransactionRequirements::where('transaction_id',$id)->count();
 		$this->data['attachments'] = TransactionRequirements::where('transaction_id',$id)->get();
 		$this->data['transaction'] = $request->get('business_transaction_data');
@@ -242,6 +243,7 @@ class BusinessTransactionController extends Controller
         $requirements_id = $this->data['transaction']->requirements_id;
 
         $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', $this->data['transaction']->business_permit_id)->get();
+
 		$this->data['app_business_permit'] = ApplicationBusinessPermit::where('business_id' , $this->data['transaction']->business_id)->get();
 
         $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $this->data['transaction']->id)->get();
@@ -261,14 +263,76 @@ class BusinessTransactionController extends Controller
 
     public function update(PageRequest $request,$id=NULL)
     {
-
+        $this->retrieve_lobs();
         $transaction = $request->get('business_transaction_data');
         DB::beginTransaction();
         try{
-
             $transaction->update(request('transaction'));
             $transaction->business_info->fill(request('business_info'))->save();
             $transaction->owner->fill(request('owner'))->save();
+
+            $permit_business_lines = BusinessActivity::where('application_business_permit_id', $transaction->business_permit_id)->get();
+            $lob_array = [];
+            foreach ($permit_business_lines  as $business_l) {
+                $lob_array[$business_l->id] = $business_l->b_class."---".$business_l->s_class."---".($business_l->x_class ? $business_l->x_class:"0")."---".$business_l->account_code;
+            }
+
+            if(request('business_line')){
+                foreach (request('business_line') as $key_business => $lob_request) {
+                    $lob_code =$this->data['line_of_businesses_coded'][$lob_request];
+                    if (!in_array( $lob_request, $lob_array)) {
+                        $list_of_line_of_business_save_to_local = array();
+                        /**
+                         * 0 = line of business name
+                         * 1 = reference code
+                         * 2 = b class
+                         * 3 = s class
+                         * 4 = x class
+                         * 5 = account code
+                         * 6 = particular
+                         */
+                        $data = [
+                            'application_business_permit_id' => $transaction->application_permit->id,
+                            'line_of_business' => $transaction->application_permit->type == "renew" && !$request->is_new [$key_business] ? $lob_code['Class'] : $request->line_of_business [$key_business],
+                            'no_of_unit' => $request->no_of_units [$key_business],
+                            'capitalization' => $transaction->application_permit->type == "new" ? $request->amount [$key_business] : ($request->is_new [$key_business] ? $request->amount [$key_business] : 0),
+                            'gross_sales' => $transaction->application_permit->type == "renew" && !$request->is_new [$key_business] ? $request->amount [$key_business] : 0,
+                            'reference_code' => $lob_code ['RefCode'],
+                            'b_class' => $lob_code ['BClass'],
+                            's_class' => $lob_code ['SClass'],
+                            'x_class' => $lob_code ['XClass'] ?? 0 ,
+                            'account_code' => $lob_code ['AcctCode'] ,
+                            'particulars' => strtoupper($request->particulars [$key_business]) ?? ''
+                        ];
+                        BusinessActivity::insert($data);
+                        array_push($list_of_line_of_business_save_to_local, $data);
+
+                        $request_body = [
+                            'business_id' => $transaction->business_info->business_id_no,
+                            'ebriu_application_no' =>   $transaction->application_permit->application_no,
+                            'year' => Carbon::now()->year,
+                            'line_of_business' => $list_of_line_of_business_save_to_local
+                        ];
+
+                        // $line_of_business_data = new UploadLineOfBusinessToLocal($request_body);
+                        // Event::dispatch('upload-line-of-business-to-local', $line_of_business_data);
+                    }else{
+                        foreach($lob_array as $lob_key => $exist_lob){
+                            if(!in_array($exist_lob  , request('business_line'))){
+                            $business_line_to_delete =  BusinessActivity::where('id', $lob_key)->first();
+                            if(!empty($business_line_to_delete)){
+                                $business_line_to_delete->delete();
+                            }
+                            }
+                        }
+                    }
+                }
+            }else{
+                foreach ($permit_business_lines as $permit_to_delete) {
+                    $permit_to_delete->delete();
+                }
+            }
+
             DB::commit();
 
             session()->flash('notification-status', "success");
@@ -281,6 +345,26 @@ class BusinessTransactionController extends Controller
 			return redirect()->back();
         }
 
+    }
+
+    public function retrieve_lobs()
+    {
+        $response = Curl::to(env('OBOSS_GET_LINE_OF_BUSINESS'))
+        ->withData($this->data)
+        ->asJson(true)
+        ->returnResponseObject()
+        ->get();
+
+        if ($response->status == "200") {
+            foreach($response->content['data'] as $key => $lob){
+                $this->data['line_of_businesses'][$lob['BClass']."---".$lob['SClass']."---".($lob['XClass'] ? $lob['XClass']:"0")."---".$lob['AcctCode']] = $lob['Class'];
+                $this->data['line_of_businesses_coded'][$lob['BClass']."---".$lob['SClass']."---".($lob['XClass'] ? $lob['XClass']:"0")."---".$lob['AcctCode']] = $lob;
+                if(!empty($lob['Class'])){
+                    $particulars = !empty($lob['Particulars']) ? " (".$lob['Particulars'].")" : "";
+                    $this->data['lob'][] = $lob['Class'].$particulars;
+                }
+            }
+        }
     }
 
     public function update_status($id = null)
@@ -794,5 +878,5 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
 		}
-	}
+    }
 }

@@ -176,26 +176,6 @@
                           <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[email]') ? 'is-invalid': NULL  }}"  name="business_info[email]" value="{{old('business_info[email]', $transaction->business_info->email ?? '') }}">
                           @include('system.business-transaction.error', ['error_field' => 'business_info[email]'])
                       </div>
-
-                      <p class="text-title fw-500">Line of Business :</p>
-                      <table class="table table-bordered">
-                        <tr>
-                          <th>Particulars</th>
-                          <th>Gross Sales/ Capitalization</th>
-                          <th>Action</th>
-                      </tr>
-                          <tbody>
-                              @forelse ($business_line as $item)
-                              <tr>
-                                  <td>{{ $item->line_of_business . ' - '. $item->id }}</td>
-                                  <td>{{ number_format($item->gross_sales,2,'.','') > 0 ?  number_format($item->gross_sales,2) : number_format($item->capitalization,2)}}</td>
-                                  {{-- <td><a class="btn btn-xs delete-record" data-id="0"><i class="fas fa-trash text-danger"></i></a> <a class="btn btn-xs delete-record" data-id="0"><i class="fas fa-trash text-danger"></i></a></td> --}}
-                              </tr>
-                              @empty
-                              @endforelse
-                          </tbody>
-                      </table>
-
                     </div>
                     <div class="col-md-6">
                       <div class="form-group my-0">
@@ -222,6 +202,46 @@
                           <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[region_name]') ? 'is-invalid': NULL  }}"  name="business_info[region_name]" value="{{old('business_info[region_name]', str::title($transaction->business_info->region_name) ?? '') }}" disabled>
                       </div>
                       <input type="hidden" class="form-control" name="business_info[brgy_name]" id="input_brgy_name" value="{{old('business_info[brgy_name]' , $transaction->business_info->brgy_name)}}">
+                    </div>
+                    <div class="col-md-8">
+                        <p class="text-title fw-500">Line of Business :</p>
+                      <table  id="tr-wrapper" class="table table-bordered">
+                        <tr>
+                            <th>Line of Business</th>
+                            <th>Particulars</th>
+                            <th>NO. Units</th>
+                            <th>Gross Sales/ Capitalization</th>
+                            <th>Action</th>
+                        </tr>
+                          <tbody>
+                              @forelse ($business_line as $key_level => $item)
+                              <tr id="lob-{{ $key_level }}"  data-count="{{ $key_level }}">
+                                  <td>
+                                    {!!Form::select("business_line[]", $line_of_businesses, old('business_line[]', $item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class:"0")."---".$item->account_code), ['id' => "input_business_scope".$key_level, 'class' => "form-control classic isDisabled".($errors->first('business_line.*') ? 'border-red' : NULL)])!!}
+                                  </td>
+                                  <td width="200">
+                                    <input type="text" class="form-control form-control-sm  isDisabled {{ $errors->first('particulars.*') ? 'is-invalid': NULL  }}"  name="particulars[]" value="{{old('particulars[]' , $item->particulars) }}">
+                                    @include('system.business-transaction.error', ['error_field' => 'particulars.*'])
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control form-control-sm isDisabled {{ $errors->first('no_of_units.*') ? 'is-invalid': NULL  }}"  name="no_of_units[]" value="{{old('no_of_units[]' , $item->no_of_unit) }}" >
+                                    @include('system.business-transaction.error', ['error_field' => 'no_of_units.*'])
+                                  </td>
+                                  <td>
+                                    <div class="form-group my-0">
+                                        <input type="text" class="form-control form-control-sm isDisabled {{ $errors->first('amount[]') ? 'is-invalid': NULL  }}"  name="amount[]" value="{{old('amount[]', $item->gross_sales) }}" >
+                                        @include('system.business-transaction.error', ['error_field' => 'amount[]'])
+                                    </div>
+                                  </td>
+                                  <td><a class="btn btn-xs lob-remove" data-essence="#lob-{{ $key_level }}" onclick="remove_row_level('#lob-{{ $key_level }}')"><i class="fas fa-trash text-danger"></i></a></td>
+                                </tr>
+                              @empty
+                              @endforelse
+                          </tbody>
+                      </table>
+                      <div class="text-right">
+                        <a role="button" id="add-tr" class="btn btn-primary btn-xs mt-2 border-5 text-white">Add New</a>
+                      </div>
                     </div>
 
                     <div class="col-md-6 mt-4">
@@ -272,7 +292,7 @@
                       </div>
                       <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Representative Gender</label>
-                          <select name="business_info[rep_gender]" id="" class="form-control">
+                          <select name="business_info[rep_gender]" id="rep_gender" class="form-control">
                               <option value="male" {{ old( 'business_info[rep_gender]', $transaction->business_info->rep_gender) == "male" ? 'selected' : '' }}>Male</option>
                               <option value="female" {{ old( 'business_info[rep_gender]', $transaction->business_info->rep_gender) == "female" ? 'selected' : '' }}>Female</option>
                           </select>
@@ -292,7 +312,7 @@
                           </div>
                           <div class="form-group my-0">
                               <label for="exampleInputEmail1" class="text-form">Lessor Gender</label>
-                              <select name="business_info[lessor_gender]" id="" class="form-control">
+                              <select name="business_info[lessor_gender]" id="lessor_gender" class="form-control">
                                   <option value="male" {{ old( 'business_info[lessor_gender]', $transaction->business_info->rep_gender) == "male" ? 'selected' : '' }}>Male</option>
                                   <option value="female" {{ old( 'business_info[lessor_gender]', $transaction->business_info->rep_gender) == "female" ? 'selected' : '' }}>Female</option>
                               </select>
@@ -682,7 +702,25 @@
 <!-- <script src="{{asset('system/vendors/sweet-alert2/sweetalert2.min.js')}}"></script> -->
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
-
+<script id="hidden-template" type="text/x-custom-template">
+    <td>
+        {!!Form::select("business_line[]", $line_of_businesses, old('business_line[]'), ['id' => "input_business_scope", 'class' => "form-control classic ".($errors->first('business_line.*') ? 'border-red' : NULL)])!!}
+    </td>
+    <td>
+        <input type="text" class="form-control form-control-sm {{ $errors->first('particulars.*') ? 'is-invalid': NULL  }}"  name="particulars[]" value="{{old('particulars[]') }}">
+        @include('system.business-transaction.error', ['error_field' => 'particulars.*'])
+      </td>
+    <td>
+        <input type="text" class="form-control form-control-sm {{ $errors->first('no_of_units.*') ? 'is-invalid': NULL  }}"  name="no_of_units[]" value="{{old('no_of_units[]' , 0) }}">
+        @include('system.business-transaction.error', ['error_field' => 'no_of_units.*'])
+    </td>
+    <td>
+        <div class="form-group my-0">
+        <input type="text" class="form-control form-control-sm {{ $errors->first('amount[]') ? 'is-invalid': NULL  }}"  name="amount[]" value="{{old('amount[]', 0) }}">
+        @include('system.business-transaction.error', ['error_field' => 'amount[]'])
+        </div>
+    </td>
+</script>
 <script type="text/javascript">
 
     $.fn.get_brgy = function (munc_code, input_brgy, selected) {
@@ -729,13 +767,21 @@
             }
         });
     }
+    function remove_row_level(data) {
+        console.log(data);
+        var row = data;
+        $(row).remove();
+    }
 
   $(function(){
     load_barangay();
     load_lessor_barangay();
+
     $('.input-daterange').datepicker({
       format : "yyyy-mm-dd"
     });
+
+
     $(".btn-certificate").on('click', function(){
       Swal.fire(
         'COMING SOON',
@@ -743,13 +789,19 @@
         'info'
       )
     });
-    $("a .isDisabled").on('click', function(){
-      Swal.fire(
-        'You are in edit mode',
-        'Save your progress before continuing',
-        'info'
-      )
+
+    $("#add-tr").on('click', function(){
+        var lastField = $("#tr-wrapper tr:last");
+        var intId = (lastField && lastField.length && lastField.data("count") + 1) || 1;
+        var row_wrapper =  $("<tr id=\"lob-" + intId + "\"/>");
+        row_wrapper.data("count", intId);
+        var template = $('#hidden-template').html();
+        var remove_button = "<td><a class=\"btn btn-xs lob-remove\" data-essence=\"#lob-" + intId + "\" onclick=\"remove_row_level('#lob-"+intId+"')\"><i class=\"fas fa-trash text-danger\"></i></a></td>"
+        row_wrapper.append(template);
+        row_wrapper.append(remove_button);
+        $('#tr-wrapper tr:last').after(row_wrapper);
     });
+
     $(".btn-decline").on('click', function(){
       var url = $(this).data('url');
       var self = $(this)
@@ -874,6 +926,9 @@
         $('#input_lessor_zipcode').val('');
         $('#input_lessor_town_name').val(_text);
     }
+
+
+
 
     $("#input_brgy").on("change", function () {
             $('#input_zipcode').val($(this).find(':selected').data('zip_code'))
