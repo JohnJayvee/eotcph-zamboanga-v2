@@ -687,7 +687,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>BIR ITR Form / Financial Statement </td>
+                                                <td>BIR ITR Form/Financial Statement / Previous year assessment details / Percentage tax/monthly/quarterly returns</td>
                                                 <td>
                                                     <input type="file" name="file[]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
                                                     @if($errors->first('file'))

@@ -404,7 +404,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                <!-- <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Website (URL)</label>
                                         <input type="url" class="form-control form-control-sm {{ $errors->first('website_url') ? 'is-invalid': NULL  }}"  name="website_url" value="{{old('website_url', $business['BusWebsite'] ?? '') }}">
@@ -412,7 +412,7 @@
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('website_url')}}</small>
                                         @endif
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-6">
