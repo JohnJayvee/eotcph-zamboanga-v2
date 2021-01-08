@@ -272,7 +272,7 @@ class BusinessTransactionController extends Controller
             DB::commit();
 
             session()->flash('notification-status', "success");
-            session()->flash('notification-msg', "Date has been updated");
+            session()->flash('notification-msg', "Changes has been saved");
             return redirect(route('system.business_transaction.show', ['id' => $id]));
         }catch(\Throwable $e){
             DB::rollback();
