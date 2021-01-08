@@ -129,7 +129,6 @@
                                 <td colspan="2" class="bg-light p-1"><p class="ml-3 mb-0">{{ $rf->name }}</p></td>
                             </tr>
                             @php
-                                $sub_total = 0;
                                 $collection_of_fees = json_decode($rf->collection_of_fees)
                             @endphp
                             @foreach ($collection_of_fees as $fee)
@@ -138,7 +137,7 @@
                                 <td class="text-right pr-4"><p class="ml-3 mb-0">{{ $fee->Amount }}</p></td>
                             </tr>
                             @php
-                                $sub_total += Helper::db_amount($fee->Amount);
+                                $sub_total = Helper::db_amount($fee->Amount);
                                 $regulatory_total += $sub_total;
                             @endphp 
                             @endforeach
@@ -312,7 +311,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <h5 class="mt-4">Pay this amount at City Treasurer's Office: <b>P {{number_format($total_to_be_paid)}}</b></h5>
+                                <h5 class="mt-4">Pay this amount at City Treasurer's Office: <b>P {{number_format($total_to_be_paid,2)}}</b></h5>
                             </td>
                         </tr>
                     </tbody>

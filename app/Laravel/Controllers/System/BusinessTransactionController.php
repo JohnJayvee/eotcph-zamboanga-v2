@@ -719,7 +719,6 @@ class BusinessTransactionController extends Controller
 			         ->asJson( true )
 			         ->returnResponseObject()
 					 ->post();
-
 			if ($response->content['data'] == NULL) {
 				session()->flash('notification-status', "failed");
 				session()->flash('notification-msg', "No Assesment Found.");
