@@ -33,9 +33,11 @@
         </div>
       </div>
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
-        <div class="row">
-            <a class="btn btn-primary mb-2 border-5 text-white" href="{{ route('system.business_transaction.edit', $transaction->id) }}"><i class="fas fa-info-circle"></i> Edit Information</a>
-        </div>
+        @if (in_array(Auth::user()->type, ['admin', 'super_user']))
+            <div class="row">
+                <a class="btn btn-primary mb-2 border-5 text-white" href="{{ route('system.business_transaction.edit', $transaction->id) }}"><i class="fas fa-info-circle"></i> Edit Information</a>
+            </div>
+        @endif
         <div class="row">
           <div class="col-md-6">
             <p class="text-title fw-500" style="font-size: 1.2rem;">Application Number: <span class="text-black">{{str::title($transaction->application_permit->application_no)}}</span></p>
