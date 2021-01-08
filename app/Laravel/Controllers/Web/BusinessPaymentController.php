@@ -284,12 +284,12 @@ class BusinessPaymentController extends Controller
 			->where('business_fee.fee_type', 2)
 			->first();
 		
-        $this->data['business_activity'] = DB::table('business_activities as activity')
-                                        ->leftjoin('business_line', 'activity.application_business_permit_id', '=', 'business_line.business_id')
-                                        ->select('business_line.name as bLine', 'business_line.gross_sales as bGross' ,'activity.*')
-                                        ->where('activity.application_business_permit_id', $transaction->business_id)
-                                        ->groupBy('application_business_permit_id')
-                                        ->get();
+        // $this->data['business_activity'] = DB::table('business_activities as activity')
+        //                                 ->leftjoin('business_line', 'activity.application_business_permit_id', '=', 'business_line.business_id')
+        //                                 ->select('business_line.name as bLine', 'business_line.gross_sales as bGross' ,'activity.*')
+        //                                 ->where('activity.application_business_permit_id', $transaction->business_id)
+        //                                 ->groupBy('application_business_permit_id')
+        //                                 ->get();
 
         $pdf = PDF::loadView('pdf.business-permit-assessment-details', $this->data);
         $pdf->setPaper('A4', 'landscape');
