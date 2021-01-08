@@ -75,38 +75,40 @@
         </thead>
         <tbody>
           @forelse($transactions as $transaction)
-          <tr class="text-center">
-            <td>{{ Helper::date_format($transaction->created_at)}}</td>
-            <td>{{str::title($transaction->business_name)}} /<br>  {{str::title($transaction->owner->full_name)}}</td>
-            <td>{{str::title($transaction->application_permit->application_no)}}</td>
-            <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
-            <td>
-              <div>{{Helper::money_format($transaction->amount) ?: '---'}}</div>
-              <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->application_payment_status)}} p-2">{{Str::upper($transaction->application_payment_status)}}</span></small></div>
-              <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->application_transaction_status)}} p-2 mt-1">{{Str::upper($transaction->application_transaction_status)}}</span></small></div>
-            </td>
-            <td>
-            <div>
-                <span class="badge badge-pill badge-{{Helper::status_badge($transaction->is_validated == 1 ? "approved" : "pending")}} p-2">{{Str::upper($transaction->is_validated == 1 ? "validated" : 'pending')}}</span>
-            </div>
-            </td>
-            <td>{{ $transaction->for_bplo_approval == 1 ? "Yes" : "No" }}</td>
-            <td>
-              <div>
-                <span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::upper($transaction->status)}}</span>
-              </div>
-              @if($transaction->status == 'APPROVED')
-                <div class="mt-1"><p>{{ $transaction->admin ? $transaction->admin->full_name : '---' }}</p></div>
-              @endif
-            </td>
-            <td >
-              <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
-                <a class="dropdown-item" href="{{route('system.business_transaction.show',[$transaction->id])}}">View transaction</a>
-               <!--  <a class="dropdown-item action-delete"  data-url="#" data-toggle="modal" data-target="#confirm-delete">Remove Record</a> -->
-              </div>
-            </td>
-          </tr>
+          @if ($transaction->owner)
+            <tr class="text-center">
+                <td>{{ Helper::date_format($transaction->created_at)}}</td>
+                <td>{{str::title($transaction->business_name)}} /<br>  {{str::title($transaction->owner->full_name)}}</td>
+                <td>{{str::title($transaction->application_permit->application_no)}}</td>
+                <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
+                <td>
+                <div>{{Helper::money_format($transaction->amount) ?: '---'}}</div>
+                <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->application_payment_status)}} p-2">{{Str::upper($transaction->application_payment_status)}}</span></small></div>
+                <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->application_transaction_status)}} p-2 mt-1">{{Str::upper($transaction->application_transaction_status)}}</span></small></div>
+                </td>
+                <td>
+                <div>
+                    <span class="badge badge-pill badge-{{Helper::status_badge($transaction->is_validated == 1 ? "approved" : "pending")}} p-2">{{Str::upper($transaction->is_validated == 1 ? "validated" : 'pending')}}</span>
+                </div>
+                </td>
+                <td>{{ $transaction->for_bplo_approval == 1 ? "Yes" : "No" }}</td>
+                <td>
+                <div>
+                    <span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::upper($transaction->status)}}</span>
+                </div>
+                @if($transaction->status == 'APPROVED')
+                    <div class="mt-1"><p>{{ $transaction->admin ? $transaction->admin->full_name : '---' }}</p></div>
+                @endif
+                </td>
+                <td >
+                <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
+                    <a class="dropdown-item" href="{{route('system.business_transaction.show',[$transaction->id])}}">View transaction</a>
+                <!--  <a class="dropdown-item action-delete"  data-url="#" data-toggle="modal" data-target="#confirm-delete">Remove Record</a> -->
+                </div>
+                </td>
+            </tr>
+          @endif
           @empty
           <tr>
            <td colspan="8" class="text-center"><i>No Transaction Records Available.</i></td>

@@ -58,7 +58,7 @@ class Application extends Authenticatable{
      */
     protected $casts = [];
 
-    
+
     public function department(){
         return $this->BelongsTo("App\Laravel\Models\Department",'department_id','id');
     }
@@ -66,10 +66,13 @@ class Application extends Authenticatable{
     public function assignAppTransaction(){
         return $this->hasMany("App\Laravel\Models\Transaction", 'application_id', 'id');
     }
-    
+    public function assignAppBusinessTransaction(){
+        return $this->hasMany("App\Laravel\Models\BusinessTransaction", 'application_id', 'id');
+    }
+
     public function transaction_items() {
         return $this->hasMany('App\Laravel\Models\Transaction', 'application_id');
-    
+
     }
 
 }

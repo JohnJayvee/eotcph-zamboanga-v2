@@ -14,32 +14,53 @@
 	      <div class="card-counter info">
 	        <i class="fa fa-hourglass-half"></i>
 	        <span class="count-numbers">{{$pending}}</span>
-	        <span class="count-name">Pending Applications</span>
+	        <span class="count-name">Pending Transactions</span>
 	      </div>
 	    </div>
 	    <div class="col-md-3">
 	      <div class="card-counter success">
 	        <i class="fa  fa-check-circle"></i>
 	        <span class="count-numbers">{{$approved}}</span>
-	        <span class="count-name">Approved Applications</span>
+	        <span class="count-name">Approved Transactions</span>
 	      </div>
 	    </div>
 	    <div class="col-md-3">
 	      <div class="card-counter primary">
 	        <i class="fa fa-file"></i>
-	        <span class="count-numbers">{{$application_today}}</span>
-	        <span class="count-name">Total Daily Applications</span>
+	        <span class="count-numbers">{{$applications->count()}}</span>
+	        <span class="count-name">Total Business Transactions</span>
 	      </div>
 	    </div>
 	    <div class="col-md-3">
 	      <div class="card-counter danger">
 	        <i class="fa fa-times-circle"></i>
 	        <span class="count-numbers">{{$declined}}</span>
-	        <span class="count-name">Disapproved Applications</span>
+	        <span class="count-name">Disapproved Transactions</span>
 	      </div>
-	    </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-counter success">
+              <i class="fa  fas fa-check-double"></i>
+              <span class="count-numbers">{{$validated}}</span>
+              <span class="count-name">Validated Transactions</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-counter primary">
+              <i class="fa  fas fa-user-check"></i>
+              <span class="count-numbers">{{$for_bplo}}</span>
+              <span class="count-name">For BPLO Approval</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-counter info">
+            <i class="fa fas fa-id-card"></i>
+              <span class="count-numbers">{{$business_cv}}</span>
+              <span class="count-name">Total Business CV</span>
+            </div>
+        </div>
 	</div>
-	
+
 	<div class="row pt-2">
 		<div class="col-md-6 p-2">
 			<div class="card h-100" style="border: none;border-radius: 10px;">
@@ -49,7 +70,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-6 p-2">
+		{{-- <div class="col-md-6 p-2">
 			<div class="card h-100" style="border: none;border-radius: 10px;">
 				<div class="card-body">
 					<h5 class="text-title d-inline-block p-3">Total Transactions</h5>
@@ -59,11 +80,11 @@
 						</div>
 						<div class="col-md-12">
 							<div id="js-legend" class="chart-legend"></div>
-						</div>	
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> --}}
 	</div>
 	@if(Auth::user()->type != "processor")
 	<div class="row">
@@ -78,15 +99,15 @@
 							</tr>
 						</thead>
 						<tbody>
-							@foreach($amount_per_application as $index)
+							{{-- @foreach($amount_per_application as $index)
 							<tr>
 								<td>{{$index->name}}</td>
 								<td>PHP {{Helper::money_format($index->amount_sum ?: "0.00")}}</td>
 							</tr>
-							@endforeach
+							@endforeach --}}
 						</tbody>
 					</table>
-					<h5 class="p-2">Total Amount Collected : PHP {{Helper::money_format($total_amount->total ?: "0.00")}}</h5>
+					{{-- <h5 class="p-2">Total Amount Collected : PHP {{Helper::money_format($total_amount->total ?: "0.00")}}</h5> --}}
 				</div>
 
 			</div>
@@ -94,20 +115,20 @@
 	</div>
 	@endif
 </div>
-@stop 
+@stop
 
 @section('page-styles')
 <link rel="stylesheet" href="{{asset('system/vendors/c3/c3.min.css')}}">
 <link rel="stylesheet" href="{{asset('system/vendors/morris.js/morris.css')}}">
 <style type="text/css">
-	
+
 .chart-legend li span{
     display: inline-block;
     width: 20px;
     height: 20px;
     margin-right: 5px;
     vertical-align: middle;
-  	
+
 }
 .chart-legend ul{
 	list-style: none;
@@ -181,7 +202,7 @@
 				render: 'value',
 				fontColor: '#fff',
 				fontSize:25
-				
+
 			}
 		}
     }
