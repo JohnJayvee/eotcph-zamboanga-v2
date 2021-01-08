@@ -700,9 +700,7 @@ class Helper{
     }
 
     public static function send_sms($contact_number, $msg_body = "Hello!"){
-
 			$request_body = ['text' => $msg_body,
-                'from' => "oBOSS",
                 'to' => $contact_number,
                 'api_key' => "1mgP6RMgSXDWRNaJXatDYwPVkjR",
                 'api_secret' => "sxXw2tBIi70RU1HoV4o9gmpMMvU5JPuDmQSroiyv"
@@ -710,12 +708,10 @@ class Helper{
 
 			$response = Curl::to("https://api.movider.co/v1/sms")
                 ->withData($request_body)
-                ->withContentType('application/form-data')
-                ->asJson( true )
                 ->returnResponseObject()
                 ->post();
 			    $code = $response->status;
-			    dd($response);
+
 			    return $code >= 200 AND $code <= 299 ? TRUE : FALSE;
 
     }

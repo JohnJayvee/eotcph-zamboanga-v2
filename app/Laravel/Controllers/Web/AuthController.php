@@ -116,7 +116,7 @@ class AuthController extends Controller{
 
         // Send OTP Code via SMS
         //$notification_data = new SendCustomerOTP($insert);
-        //Event::dispatch('send-customer-otp', $notification_data);*/
+        //Event::dispatch('send-customer-otp', $notification_data);
 
         // send OTP Code via Email
         $notification_data = new SendCustomerOTPEmail($insert);
