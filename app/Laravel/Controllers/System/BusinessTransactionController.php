@@ -39,6 +39,8 @@ class BusinessTransactionController extends Controller
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
 
+        $this->data['business_scopes'] = ["" => "Choose Business Scope",'national' => "National",'regional' => "Regional",'municipality' => "City/Municipality",'barangay' => "Barangay"];
+		$this->data['business_types'] = ["" => "Choose Business Type",'sole_proprietorship' => "Sole Proprietorship",'cooperative' => "Cooperative",'corporation' => "Corporation",'partnership' => "Partnership"];
 		$this->data['regional_offices'] = ['' => "Choose Regional Offices"] + RegionalOffice::pluck('name', 'id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
@@ -217,7 +219,7 @@ class BusinessTransactionController extends Controller
 		$this->data['app_business_permit'] = ApplicationBusinessPermit::where('business_id' , $this->data['transaction']->business_id)->get();
 
         $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $this->data['transaction']->id)->get();
-		
+
 
 		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $requirements_id))->get();
 
@@ -229,6 +231,56 @@ class BusinessTransactionController extends Controller
         $this->update_status($id);
 		$this->data['page_title'] = "Transaction Details";
 		return view('system.business-transaction.show',$this->data);
+    }
+
+    public function edit(PageRequest $request,$id=NULL)
+    {
+        $this->data['count_file'] = TransactionRequirements::where('transaction_id',$id)->count();
+		$this->data['attachments'] = TransactionRequirements::where('transaction_id',$id)->get();
+		$this->data['transaction'] = $request->get('business_transaction_data');
+
+        $requirements_id = $this->data['transaction']->requirements_id;
+
+        $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', $this->data['transaction']->business_permit_id)->get();
+		$this->data['app_business_permit'] = ApplicationBusinessPermit::where('business_id' , $this->data['transaction']->business_id)->get();
+
+        $this->data['app_business_permit_file'] = ApplicationBusinessPermitFile::where('application_business_permit_id', $this->data['transaction']->id)->get();
+
+
+		$this->data['physical_requirements'] = ApplicationRequirements::whereIn('id',explode(",", $requirements_id))->get();
+
+		$this->data['department'] =  Department::pluck('name','id')->toArray();
+
+		$this->data['regulatory_fee'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 0)->get();
+		$this->data['garbage_fee'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 2)->get();
+        $this->data['business_tax'] = BusinessFee::where('transaction_id',$id)->where('fee_type' , 1)->get();
+        // $this->update_status($id);
+		$this->data['page_title'] = "Transaction Details";
+		return view('system.business-transaction.edit',$this->data);
+    }
+
+    public function update(PageRequest $request,$id=NULL)
+    {
+
+        $transaction = $request->get('business_transaction_data');
+        DB::beginTransaction();
+        try{
+
+            $transaction->update(request('transaction'));
+            $transaction->business_info->fill(request('business_info'))->save();
+            $transaction->owner->fill(request('owner'))->save();
+            DB::commit();
+
+            session()->flash('notification-status', "success");
+            session()->flash('notification-msg', "Date has been updated");
+            return redirect(route('system.business_transaction.show', ['id' => $id]));
+        }catch(\Throwable $e){
+            DB::rollback();
+            session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
+			return redirect()->back();
+        }
+
     }
 
     public function update_status($id = null)
@@ -577,7 +629,7 @@ class BusinessTransactionController extends Controller
 				'office_code' => $request->get('office_code'),
 			];
 
-			
+
 			$response = Curl::to(env('ZAMBOANGA_URL'))
 			         ->withData($request_body)
 			         ->asJson( true )
