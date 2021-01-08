@@ -12,13 +12,13 @@
         <p class="text-dim  float-right">EOR-PHP Processor Portal / Transactions</p>
       </div>
     </div>
-  
+
   </div>
 
   <div class="col-12 ">
     <form>
       <div class="row pb-2">
-        
+
         <div class="col-md-4">
           <label>Application Type</label>
          {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="row">
-      
+
         <div class="col-md-4 p-2">
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
@@ -66,6 +66,7 @@
         </thead>
         <tbody>
           @forelse($transactions as $transaction)
+          @if ($transaction->owner)
           <tr class="text-center">
             <td>{{ Helper::date_format($transaction->created_at)}}</td>
             <td>{{str::title($transaction->business_name)}} /<br>  {{str::title($transaction->owner->full_name)}}</td>
@@ -91,13 +92,14 @@
               </div>
             </td>
           </tr>
+          @endif
           @empty
           <tr>
            <td colspan="8" class="text-center"><i>No transaction Records Available.</i></td>
           </tr>
           @endforelse
-         
-          
+
+
         </tbody>
       </table>
     </div>
@@ -116,7 +118,7 @@
 @section('page-styles')
 <link rel="stylesheet" href="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
 <style type="text/css" >
-  .input-daterange input{ background: #fff!important; }  
+  .input-daterange input{ background: #fff!important; }
   .btn-sm{
     border-radius: 10px;
   }

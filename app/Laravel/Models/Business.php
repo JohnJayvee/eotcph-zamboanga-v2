@@ -36,7 +36,7 @@ class Business extends Model{
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $guarded = [];
 
 
     /**

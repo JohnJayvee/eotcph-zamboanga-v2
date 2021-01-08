@@ -34,6 +34,9 @@
       </div>
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
         <div class="row">
+            <a class="btn btn-primary mb-2 border-5 text-white" href="{{ route('system.business_transaction.edit', $transaction->id) }}"><i class="fas fa-info-circle"></i> Edit Information</a>
+        </div>
+        <div class="row">
           <div class="col-md-6">
             <p class="text-title fw-500" style="font-size: 1.2rem;">Application Number: <span class="text-black">{{str::title($transaction->application_permit->application_no)}}</span></p>
             <p class="text-title fw-500">Business Name: <span class="text-black">{{str::title($transaction->business_name)}}</span></p>
