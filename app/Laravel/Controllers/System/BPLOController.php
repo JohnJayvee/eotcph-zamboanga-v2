@@ -48,7 +48,7 @@ class BPLOController extends Controller
 		$start_date = $request->get('start_date',Carbon::now()->startOfMonth());
 
 		if($first_record){
-			$start_date = $request->get('start_date',$first_record->created_at->format("Y-m-d"));
+			$start_date = $request->get('start_date',$first_record->created_at ? $first_record->created_at->format("Y-m-d") :  $request->get('start_date',Carbon::now()->startOfMonth()));
         }
         $this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
 		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
