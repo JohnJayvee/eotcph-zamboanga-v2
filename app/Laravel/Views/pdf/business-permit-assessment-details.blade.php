@@ -169,7 +169,7 @@
                                         <td class="border-top border-bottom">Year</td>
                                         <td class="border-top border-bottom" width="150">Gross Sales / Capital / No of Units</td>
                                         <td class="border-top border-bottom">Business Tax</td>
-                                        <td class="border-top border-bottom">Qtr</td>
+                                        <td class="border-top border-bottom" width="50">Qtr</td>
                                         <td class="border-top border-bottom">Surcharge</td>
                                         <td class="border-top border-bottom">Interest</td>
                                         <td class="border-top border-bottom">Total Amount</td>

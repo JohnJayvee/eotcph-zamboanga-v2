@@ -42,7 +42,7 @@
                   <tr class="text-center">
                     <th class="text-title" rowspan="2" style="vertical-align: middle;">Department Name</th>
                     <th class="text-title" rowspan="2" style="vertical-align: middle;">Total Amount</th>
-                    <th class="text-title p-3" colspan="2">Breakdown</th>
+                    <th class="text-title p-3" colspan="3">Breakdown</th>
                   </tr>
                   <tr class="text-center">
                     <th class="text-title p-3">Account Name</th>
@@ -74,7 +74,7 @@
             @if(count($business_fee) > 0)
              <!--  <a href="{{route('web.business_payment.regulatory_payment',[$profile->id])}}" class="btn btn-primary ">Proceed to Payment</a > -->
                 <div class="float-right">
-                    <a href="{{ route('web.business_payment.download_assessment', ['id' => $profile->id]) }}" class="btn btn-danger ">Download Assessment Details</a >
+                    <a href="{{ route('web.business_payment.download_assessment', ['id' => $transaction->id]) }}" class="btn btn-danger ">Download Assessment Details</a >
                 </div>
             @endif
           </div>
