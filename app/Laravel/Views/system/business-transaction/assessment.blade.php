@@ -60,9 +60,10 @@
                   <th class="text-title" rowspan="2" style="vertical-align: middle;"></th>
                   <th class="text-title" rowspan="2" style="vertical-align: middle;">Fee Type</th>
                   <th class="text-title" rowspan="2" style="vertical-align: middle;">Status</th>
-                  <th class="text-title p-3" colspan="2">Breakdown</th>
+                  <th class="text-title p-3" colspan="3">Breakdown</th>
                 </tr>
                 <tr class="text-center">
+                  <th class="text-title p-3">Office Code</th>
                   <th class="text-title p-3">Account Name</th>
                   <th class="text-title p-3">Amount</th>
                 </tr>
@@ -77,6 +78,7 @@
                   <td rowspan="{{count(json_decode($business_fee->collection_of_fees)) + 1}}">{{$business_fee->status}}</td>
                 @foreach(json_decode($business_fee->collection_of_fees) as $collection)
                   <tr>
+                    <td style="font-size: 12px">{{$collection->OfficeCode}}</td>
                     <td style="font-size: 12px">{{$collection->BusinessID}}</td>
                     <td style="font-size: 12px">{{$collection->Amount}}</td>
                   </tr>
