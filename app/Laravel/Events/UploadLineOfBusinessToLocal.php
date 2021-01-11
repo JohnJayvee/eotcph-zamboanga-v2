@@ -5,6 +5,7 @@ namespace App\Laravel\Events;
 use App\Laravel\Models\ApplicationBusinessPermit;
 use Illuminate\Queue\SerializesModels;
 use Curl, Carbon;
+use Illuminate\Support\Facades\Log;
 
 class UploadLineOfBusinessToLocal extends Event
 {
@@ -29,8 +30,11 @@ class UploadLineOfBusinessToLocal extends Event
 			->post();
 		$data = $this->data;
 		if ($response->status == "200") {
+            info('UPLOAD_TO_LOCAL_SUCCESS');
 			$transaction = ApplicationBusinessPermit::where("application_no", $data['ebriu_application_no'])->first();
 			$transaction->update(['is_posted_on_local' => true]);
-		}
+		}else{
+            Log::error('UPLOAD_LOB_FAILED', ['data' => $data , 'response' => $response]);
+        }
 	}
 }
