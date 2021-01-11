@@ -20,10 +20,10 @@ use App\Laravel\Events\NotifyBPLOAdminEmail;
  */
 use App\Laravel\Requests\System\BPLORequest;
 use App\Laravel\Events\NotifyDepartmentEmail;
+use App\Laravel\Events\SendEmailDigitalCertificate;
 use App\Laravel\Events\SendEmailApprovedBusiness;
 use App\Laravel\Events\SendEmailDeclinedBusiness;
 use App\Laravel\Events\SendDeclinedEmailReference;
-use App\Laravel\Events\SendEmailDigitalCertificate;
 
 
 use App\Laravel\Requests\System\TransactionCollectionRequest;
@@ -794,5 +794,23 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
 		}
+	}
+
+	public function release(PageRequest $request , $id = NULL){
+
+		$transaction = $request->get('business_transaction_data');
+		$transaction->digital_certificate_released = "1";
+		$transaction->save();
+
+		$insert[] = [
+        	'email' => "ronnie.castro54@gmail.com",
+            'business_name' => $transaction->business_info ? $transaction->business_info->business_name : $transaction->business_name,
+            'business_id' => $transaction->business_id,
+            'link' => env("APP_URL")."e-permit/".$transaction->business_id,
+    	];
+
+	    $notification_data_email = new SendEmailDigitalCertificate($insert);
+	    Event::dispatch('send-digital-business-permit', $notification_data_email);
+
 	}
 }

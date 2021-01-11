@@ -3,7 +3,7 @@
 namespace App\Laravel\Middlewares\Api;
 
 use Closure, Helper,Str;
-use App\Laravel\Models\{TravelHistory,Article};
+use App\Laravel\Models\{TravelHistory,Article,BusinessTransaction};
 use App\Laravel\Models\{AccountCode};
 
 
@@ -73,6 +73,18 @@ class ExistRecord
                     ];
                 }
             break;
+
+            case 'business_transaction':
+                $this->reference_id = $request->get('id');
+                if(! $this->__exist_business_transaction($request)) {
+                    $response = [
+                        'msg' => "Reference Code not found.",
+                        'status' => FALSE,
+                        'status_code' => "CODE_NOT_FOUND",
+                        'hint' => "Make sure the 'reference_code' from your request parameter exists and valid."
+                    ];
+                }
+            break;
         }
 
         if(empty($response)) {
@@ -129,6 +141,17 @@ class ExistRecord
 
         if($article){
             $request->merge(['article_data' => $article]);
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+    private function __exist_business_transaction($request){
+        $business_transaction = BusinessTransaction::find($this->reference_id);
+
+        if($business_transaction){
+            $request->merge(['business_transaction_data' => $business_transaction]);
             return TRUE;
         }
 

@@ -27,16 +27,17 @@ class SendEmailDigitalCertificate extends Event {
 
 
 		foreach($this->data as $index =>$value){
-			$mailname = "Bussiness Application Permit";
+			$mailname = "Digital Certificate";
 			$user_email = $value['email'];
-            $this->data['data'] = $value['data'];
-            $pdf = PDF::loadView('pdf.business-permit',  $this->data['data']);
-            $pdf->setPaper('A4', 'landscape');
-			Mail::send('emails.digital-certificate-email', $this->data, function($message) use ($mailname,$user_email,$pdf){
+			$this->data['business_name'] = $value['business_name'];
+			$this->data['business_id'] = $value['business_id'];
+			$this->data['link'] = $value['link'];
+            // $pdf = PDF::loadView('pdf.business-declined', $this->data);
+			Mail::send('emails.digital-certificate-email', $this->data, function($message) use ($mailname,$user_email){
 				$message->from('eotcph-noreply@ziaplex.biz');
 				$message->to($user_email);
-                $message->subject("Bussiness Application Permit");
-                $message->attachData($pdf->output(), "oBOSS Digital Business Permit.pdf");
+                $message->subject("Digital Certificate");
+                // $message->attachData($pdf->output(), "Document Reference Number.pdf");
 			});
 		}
 

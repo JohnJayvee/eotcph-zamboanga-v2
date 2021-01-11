@@ -12,12 +12,12 @@ use App\Laravel\Requests\Api\TransactionRequest;
 
 /* Models
  */
-// use App\Laravel\Models\{Barangay};
+use App\Laravel\Models\{BusinessTransaction,Business};
 
 
 /* Data Transformer
  */
-use App\Laravel\Transformers\{TransformerManager, TransactionTransformer};
+use App\Laravel\Transformers\{TransformerManager, TransactionTransformer,BusinessTransactionTransformer};
 
 /* App classes
  */
@@ -53,48 +53,96 @@ class TransactionController extends Controller{
         /*
             is "total" is going tobe computed here? or is it already an input value?
         */
-            $postrequest = $this->client->post('http://staging.digipep.ziapay.ph/api/transaction/store', [
-                'headers' =>  $this->headers,
-                'json'  => $request->all()
-                ]);
-            $this->response= json_decode($postrequest->getBody(), true);
-            
-            callback:
-            switch(Str::lower($format)){
-            case 'json' :
-                return response()->json($this->response, $this->response_code);
-            break;
-            case 'xml' :
-                return response()->xml($this->response, $this->response_code);
-            break;
-            }
+        $postrequest = $this->client->post('http://staging.digipep.ziapay.ph/api/transaction/store', [
+            'headers' =>  $this->headers,
+            'json'  => $request->all()
+            ]);
+        $this->response= json_decode($postrequest->getBody(), true);
+        
+        callback:
+        switch(Str::lower($format)){
+        case 'json' :
+            return response()->json($this->response, $this->response_code);
+        break;
+        case 'xml' :
+            return response()->xml($this->response, $this->response_code);
+        break;
+        }
     }
 
     public function  show(Request $request, $format = NULL){
-            $data = request()->validate([
-                'qrCode' => 'required'
+        $data = request()->validate([
+            'qrCode' => 'required'
+        ]);
+        try{
+        $postrequest = $this->client->post('staging.digipep.ziapay.ph/api/transaction/inquire', [
+            'headers' =>  $this->headers,
+            'json'  => $data
             ]);
-            try{
-            $postrequest = $this->client->post('staging.digipep.ziapay.ph/api/transaction/inquire', [
-                'headers' =>  $this->headers,
-                'json'  => $data
-                ]);
-                
-            $this->response= json_decode($postrequest->getBody(), true);
-            $this->response_code = 200;
-            }catch(Exception $e){
-                return $e->getMessage();
-            }
             
-            callback:
-            switch(Str::lower($format)){
+        $this->response= json_decode($postrequest->getBody(), true);
+        $this->response_code = 200;
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+        
+        callback:
+        switch(Str::lower($format)){
+        case 'json' :
+            return response()->json($this->response, $this->response_code);
+        break;
+        case 'xml' :
+            return response()->xml($this->response, $this->response_code);
+        break;
+        }
+    }
+
+    public function list(Request $request , $format = NULL){
+
+        $business_transactions = BusinessTransaction::where("status",'APPROVED')
+                            ->orderBy('updated_at',"DESC")->get();
+
+        $this->response['status'] = TRUE;
+        $this->response['status_code'] = "TRANSACTION_LIST";
+        $this->response['msg'] = "Transaction list.";
+        $this->response['data'] = $this->transformer->transform($business_transactions,new BusinessTransactionTransformer,'collection');
+        $this->response_code = 200;
+        callback:
+        switch(Str::lower($format)){
             case 'json' :
                 return response()->json($this->response, $this->response_code);
             break;
             case 'xml' :
                 return response()->xml($this->response, $this->response_code);
             break;
-            }
+        }
+    }
+
+    public function update(Request $request,$format = NULL){
+
+        
+        $business_transactions = $request->get('business_transaction_data');
+        $business_transactions->payment_status = $request->get('status');
+        $business_transactions->save();
+
+        $business_cv = Business::find($business_transactions->business_id);
+        $business_cv->business_plate_no = $request->get('business_plate_no');
+        $business_cv->permit_no = $request->get('permit_number');
+        $business_cv->save();
+
+        $this->response['status'] = TRUE;
+        $this->response['status_code'] = "TRANSCTION_UPDATE";
+        $this->response['msg'] = "Business Transaction has been modified.";
+        $this->response_code = 200;
+        callback:
+        switch(Str::lower($format)){
+            case 'json' :
+                return response()->json($this->response, $this->response_code);
+            break;
+            case 'xml' :
+                return response()->xml($this->response, $this->response_code);
+            break;
+        }   
     }
 }
 
