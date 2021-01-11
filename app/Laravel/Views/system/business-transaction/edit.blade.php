@@ -175,7 +175,7 @@
                           @include('system.business-transaction.error', ['error_field' => 'business_info.mobile_no'])
                       </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Business Tel No. <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">Business Tel No.</label>
                           <input type="text" class="form-control {{ $errors->first('business_info.telephone_no') ? 'is-invalid': NULL  }}"  name="business_info[telephone_no]" value="{{old('business_info.telephone_no', $transaction->business_info->telephone_no ?? '') }}">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.telephone_no'])
                       </div>
@@ -191,6 +191,11 @@
                     </div>
                     </div>
                     <div class="col-md-6">
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">Trade Name / Franchise<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control {{ $errors->first('business_info.dominant_name') ? 'is-invalid': NULL  }}"  name="business_info[dominant_name]" value="{{old('business_info.dominant_name', str::title($transaction->business_info->dominant_name) ?? '') }}">
+                            @include('system.business-transaction.error', ['error_field' => 'business_info.dominant_name'])
+                        </div>
                         <div class="form-group my-0">
                             <label for="exampleInputEmail1" class="text-form">Business Unit No <span class="text-danger">*</span></label>
                             <input type="text" class="form-control {{ $errors->first('business_info.unit_no') ? 'is-invalid': NULL  }}"  name="business_info[unit_no]" value="{{old('business_info.unit_no', $transaction->business_info->unit_no ?? '') }}">
@@ -254,12 +259,12 @@
                         <div class="form-group d-flex flex-row">
                             <label for="" class="text-form pr-2">Are you enjoying tax incentive from any Goverment Entity?</label>
                             <div class="form-check form-check-inline">
-                                <input class="form-control form-control-sm" type="checkbox" name="checkbox" value="yes" style="width: 30px; height: 30px;" {{ ($transaction->business_info->tax_incentive == null ?: ($transaction->business_info->tax_incentive == "no" ?: 'checked')) }}>
+                                <input class="form-control form-control-sm" type="checkbox" name="checkbox" value="yes" style="width: 30px; height: 30px;" {{ ($transaction->business_info->tax_incentive == null ?: ($transaction->business_info->tax_incentive == "no" ? '' : 'checked')) }}>
                                 <label class="my-2 mx-1" for="inlineCheckbox1">YES</label>
                                 {{-- <small class="my-2" for="inlineCheckbox3">Please Specify entity:</small> --}}
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-control" type="checkbox" name="checkbox" value="no" style="width: 30px; height: 30px;">
+                                <input class="form-control" type="checkbox" name="checkbox" value="no" style="width: 30px; height: 30px;" {{ $transaction->business_info->tax_incentive == 'no' ? 'checked' : ''  }}>
                                 <label class="my-2 mx-1" for="inlineCheckbox3">NO</label>
                             </div>
                         </div>
@@ -314,25 +319,37 @@
                           <tbody>
                               @forelse ($business_line as $key_level => $item)
                               <tr id="lob-{{ $key_level }}"  data-count="{{ $key_level }}">
+                                  {{-- <td>
+                                    {!!Form::select("editables[business_line][]", $line_of_businesses, old('editables.business_line[]', $item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class:"0")."---".$item->account_code), ['id' => "input_business_scope".$key_level, 'class' => "form-control classic".($errors->first('editables.business_line.*') ? 'border-red' : NULL)])!!}
+                                  </td> --}}
                                   <td>
-                                    {!!Form::select("business_line[]", $line_of_businesses, old('business_line[]', $item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class:"0")."---".$item->account_code), ['id' => "input_business_scope".$key_level, 'class' => "form-control classic isDisabled".($errors->first('business_line.*') ? 'border-red' : NULL)])!!}
+                                    <select id="input_business_scope{{ $key_level }}" class="form-control classic{{ ($errors->first('editables.business_line.*') ? 'border-red' : NULL) }}" name="editables[business_line][]" >
+                                        @foreach ($line_of_businesses as $key_set => $item_line)
+                                            <option value="{{ $key_set }}" @if (array_key_exists($key_set, $existing))
+                                               class="isDisabled" style="background-color: #ECEFF1 !important"
+                                            @endif  @if (($item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class:"0")."---".$item->account_code) == $key_set)
+                                                selected
+                                            @endif> {{ $item_line }}</option>
+                                        @endforeach
+                                    </select>
                                   </td>
                                   <td width="200">
-                                    <input type="text" class="form-control form-control-sm  isDisabled {{ $errors->first('particulars.*') ? 'is-invalid': NULL  }}"  name="particulars[]" value="{{old('particulars[]' , $item->particulars) }}">
-                                    @include('system.business-transaction.error', ['error_field' => 'particulars.*'])
+                                    <input type="text" class="form-control form-control-sm {{ $errors->first('editables.particulars.*') ? 'is-invalid': NULL  }}"  name="editables[particulars][]" value="{{old('editables.particulars[]' , $item->particulars) }}" autocomplete="none">
+                                    @include('system.business-transaction.error', ['error_field' => 'editables.particulars.*'])
                                   </td>
                                   <td>
-                                    <input type="text" class="form-control form-control-sm isDisabled {{ $errors->first('no_of_units.*') ? 'is-invalid': NULL  }}"  name="no_of_units[]" value="{{old('no_of_units[]' , $item->no_of_unit) }}" >
-                                    @include('system.business-transaction.error', ['error_field' => 'no_of_units.*'])
+                                    <input type="text" class="form-control form-control-sm {{ $errors->first('editables.no_of_units.*') ? 'is-invalid': NULL  }}"  name="editables[no_of_units][]" value="{{old('editables.no_of_units[]' , $item->no_of_unit) }}" autocomplete="none">
+                                    @include('system.business-transaction.error', ['error_field' => 'editables.no_of_units.*'])
                                   </td>
                                   <td>
                                     <div class="form-group my-0">
-                                        <input type="text" class="form-control form-control-sm isDisabled {{ $errors->first('amount[]') ? 'is-invalid': NULL  }}"  name="amount[]" value="{{old('amount[]', $item->gross_sales) }}" >
-                                        @include('system.business-transaction.error', ['error_field' => 'amount[]'])
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('editables.amount[]') ? 'is-invalid': NULL  }}"  name="editables[amount][]" value="{{old('editables.amount[]', $item->gross_sales) }}" autocomplete="none">
+                                        @include('system.business-transaction.error', ['error_field' => 'editables.amount.*'])
                                     </div>
                                   </td>
                                   <td><a class="btn btn-xs lob-remove" data-essence="#lob-{{ $key_level }}" onclick="remove_row_level('#lob-{{ $key_level }}')"><i class="fas fa-trash text-danger"></i></a></td>
-                                </tr>
+                                  <input type="hidden" name="editables[old_line][]" value="{{ $item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class:"0")."---".$item->account_code }}">
+                              </tr>
                               @empty
                               @endforelse
                           </tbody>
@@ -491,6 +508,7 @@
                       </div>
                   </div>
                   <button class="btn btn-primary mt-4 border-5 text-white"><i class="fas fa-info-circle"></i> Update Information</button>
+                  <a class="btn btn-danger mt-4 border-5 text-white" href="{{ route('system.business_transaction.show', $transaction->id) }}"><i class="fas fa-ban"></i> Cancel</a>
             </form>
           </div>
     </div>
@@ -833,13 +851,16 @@
                 if(!$(this).is(":checked")){
                     $('#checkYes').hide();
                 }else{
-                    // $('input[name="tax_incentive"]').val('');
+                    if($('input[name="business_info[tax_incentive]"]').val() == "no"){
+                        $('input[name="business_info[tax_incentive]"]').val('')
+                    }
                     $('#checkYes').show();
                 }
             }
             if($(this).val() == 'no'){
+                console.log('no');
+                $('input[name="business_info[tax_incentive]"]').val('no');
                 $('#checkYes').hide();
-                $('input[name="tax_incentive"]').val('no');
             }
         });
     })

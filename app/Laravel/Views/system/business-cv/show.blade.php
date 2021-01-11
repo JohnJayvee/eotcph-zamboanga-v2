@@ -14,25 +14,36 @@
 <div class="col-md-8 grid-margin stretch-card">
     <div class="card">
         <div class="card-body" style="padding: 3em">
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <h5 class="text-title text-uppercase mt-3">Business Information
-                    </h5>
-                </div>
-            </div>
-
+            <h5 class="text-title text-uppercase mt-4">REGISTRANT DETAILS</h5>
             <div class="row underline mb-2">
-                <div class="col-md-4 mb-2">
-                    <label class="text-uppercase">{{str_replace("_"," ",$profile->business_type)}}</label>
-                    <p>Business Type</p>
+                <div class="col-md-4">
+                    <label class="text-uppercase">{{$profile->owner->fullname}}</label>
+                    <p>Fullname</p>
                 </div>
-                 <div class="col-md-4">
-                    <label class="text-uppercase">{{str_replace("_"," ",$profile->business_scope)}}</label>
-                    <p>Business Scope</p>
+                <div class="col-md-4">
+                    <label class="text-uppercase">{{$profile->owner->email}}</label>
+                    <p>Email Address</p>
+                </div>
+                <div class="col-md-4">
+                    <label>{{$profile->owner->contact_number}}</label>
+                    <p>Contact Number</p>
+                </div>
+
+            </div>
+            <h5 class="text-title text-uppercase mt-3">Business Information
+            </h5>
+            <div class="row underline mb-2">
+                <div class="col-md-4">
+                    <label class="text-uppercase">{{$profile->business_id_no}}</label>
+                    <p>Business ID</p>
                 </div>
                 <div class="col-md-4">
                     <label class="text-uppercase">{{$profile->dti_sec_cda_registration_no}}</label>
                     <p>BN Number</p>
+                </div>
+                <div class="col-md-4">
+                    <label class="text-uppercase">{{$profile->capitalization}}</label>
+                    <p>Capitalization</p>
                 </div>
             </div>
             <div class="row underline mb-2">
@@ -66,9 +77,13 @@
 
             </div>
             <div class="row underline mb-2">
-                <div class="col-md-4">
-                    <label class="text-uppercase">{{$profile->capitalization}}</label>
-                    <p>Capitalization</p>
+                <div class="col-md-4 mb-2">
+                    <label class="text-uppercase">{{str_replace("_"," ",$profile->business_type)}}</label>
+                    <p>Business Type</p>
+                </div>
+                 <div class="col-md-4">
+                    <label class="text-uppercase">{{str_replace("_"," ",$profile->business_scope)}}</label>
+                    <p>Business Scope</p>
                 </div>
             </div>
             <h5 class="text-title text-uppercase mt-4">Line of Business</h5>
@@ -76,7 +91,7 @@
                 @foreach ($business_line as $key => $item)
                     <div class="col-md-4">
                         <label class="text-uppercase">{{ $item->name }}</label>
-                        <p class="text-title">Business Line</p>
+                        <p class="text-title">Line of Business</p>
                     </div>
                 @endforeach
             </div>
@@ -128,7 +143,7 @@
                     <p>Region</p>
                 </div>
             </div>
-            <h5 class="text-title text-uppercase mt-4">Business Address Information</h5>
+            <h5 class="text-title text-uppercase mt-4">OTHER INFORMATION FORM (GOVERNMENT OWNED OR CONTROLLED CORPORATIONS)</h5>
              <div class="row underline mb-2">
                 <div class="col-md-6">
                     <label class="text-uppercase">{{$profile->sss_no ?: "-"}}</label>
