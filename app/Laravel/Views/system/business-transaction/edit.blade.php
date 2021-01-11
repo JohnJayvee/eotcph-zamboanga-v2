@@ -122,7 +122,6 @@
         </div>
       </div> --}}
     </div>
-
     <div class="card card-rounded shadow-sm mb-4">
         <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
             <form action="{{ route('system.business_transaction.update', $transaction->id) }}" method="POST">
@@ -193,8 +192,8 @@
                     <div class="col-md-6">
                         <div class="form-group my-0">
                             <label for="exampleInputEmail1" class="text-form">Trade Name / Franchise<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control {{ $errors->first('business_info.dominant_name') ? 'is-invalid': NULL  }}"  name="business_info[dominant_name]" value="{{old('business_info.dominant_name', str::title($transaction->business_info->dominant_name) ?? '') }}">
-                            @include('system.business-transaction.error', ['error_field' => 'business_info.dominant_name'])
+                            <input type="text" class="form-control {{ $errors->first('business_info.tradename') ? 'is-invalid': NULL  }}"  name="business_info[tradename]" value="{{old('business_info.tradename', str::title($transaction->business_info->tradename) ?? '') }}">
+                            @include('system.business-transaction.error', ['error_field' => 'business_info.tradename'])
                         </div>
                         <div class="form-group my-0">
                             <label for="exampleInputEmail1" class="text-form">Business Unit No <span class="text-danger">*</span></label>
