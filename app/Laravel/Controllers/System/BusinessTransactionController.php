@@ -244,6 +244,12 @@ class BusinessTransactionController extends Controller
         $requirements_id = $this->data['transaction']->requirements_id;
 
         $this->data['business_line'] = BusinessActivity::where('application_business_permit_id', $this->data['transaction']->business_permit_id)->get();
+        $this->data['existing'] = [];
+        if(count($this->data['business_line']) > 0){
+            foreach ($this->data['business_line'] as $key => $value) {
+                $this->data['existing'][$value->b_class."---".$value->s_class."---".($value->x_class ? $value->x_class:"0")."---".$value->account_code] = $value->line_of_business;
+            }
+        }
 
 		$this->data['app_business_permit'] = ApplicationBusinessPermit::where('business_id' , $this->data['transaction']->business_id)->get();
 
@@ -277,65 +283,93 @@ class BusinessTransactionController extends Controller
             $transaction->business_info->fill($business_info)->save();
             $transaction->owner->fill(request('owner'))->save();
 
+            // retrieve all lines of business by transaction
+            // if empty  disregard
             $permit_business_lines = BusinessActivity::where('application_business_permit_id', $transaction->business_permit_id)->get();
-            $lob_array = [];
-            foreach ($permit_business_lines  as $business_l) {
-                $lob_array[$business_l->id] = $business_l->b_class."---".$business_l->s_class."---".($business_l->x_class ? $business_l->x_class:"0")."---".$business_l->account_code;
+
+
+            // handle edit of existing line of businesses
+            if($permit_business_lines){
+                $lob_array = [];
+                foreach ($permit_business_lines  as $business_l) {
+                    $lob_array[$business_l->id] = $business_l->b_class."---".$business_l->s_class."---".($business_l->x_class ? $business_l->x_class:"0")."---".$business_l->account_code;
+                }
+
+                if(!empty($lob_array)){
+                    if(request('editables')){
+                        foreach ($lob_array as $key_business => $editable_lob) {
+                            if(in_array($editable_lob, request('editables.old_line'))){
+                                $line_key = array_search($editable_lob, request('editables.old_line'));
+                                $lob_code =$this->data['line_of_businesses_coded'][request('editables.business_line')[$line_key]];
+
+                                $line = BusinessActivity::where('id', $key_business)->first();
+                                $line->gross_sales = request('editables.amount')[$line_key];
+                                $line->no_of_unit = request('editables.no_of_units')[$line_key];
+                                $line->particulars = strtoupper(request('editables.particulars')[$line_key]);
+
+                                $line->line_of_business = $lob_code['Class'];
+                                $line->b_class =  $lob_code['BClass'];
+                                $line->s_class =  $lob_code['SClass'];
+                                $line->x_class =  $lob_code['XClass'] ?? 0 ;
+                                $line->account_code =  $lob_code['AcctCode'];
+                                $line->reference_code =  $lob_code['RefCode'];
+                                $line->save();
+                                info('updated - ', ['key_line' => $line_key, 'data' => $line]);
+                            }else{
+                                if(!in_array($editable_lob, request('editables.business_line'))){
+                                    info('deleted - ', ['data' => $key_business]);
+                                    BusinessActivity::where('id', $key_business)->delete();
+                                }
+                            }
+                        }
+                    }else{
+                        // all existing business lines has been requested for deletion
+                        foreach ($permit_business_lines as $permit_to_delete) {
+                            info('Deleted All LOB');
+                            $permit_to_delete->delete();
+                        }
+                    }
+                }
             }
 
             if(request('business_line')){
                 foreach (request('business_line') as $key_business => $lob_request) {
                     $lob_code =$this->data['line_of_businesses_coded'][$lob_request];
-                    if (!in_array( $lob_request, $lob_array)) {
-                        $list_of_line_of_business_save_to_local = array();
-                        /**
-                         * 0 = line of business name
-                         * 1 = reference code
-                         * 2 = b class
-                         * 3 = s class
-                         * 4 = x class
-                         * 5 = account code
-                         * 6 = particular
-                         */
-                        $data = [
-                            'application_business_permit_id' => $transaction->application_permit->id,
-                            'line_of_business' => $transaction->application_permit->type == "renew" && !$request->is_new [$key_business] ? $lob_code['Class'] : $request->line_of_business [$key_business],
-                            'no_of_unit' => $request->no_of_units [$key_business],
-                            'capitalization' => $transaction->application_permit->type == "new" ? $request->amount [$key_business] : ($request->is_new [$key_business] ? $request->amount [$key_business] : 0),
-                            'gross_sales' => $transaction->application_permit->type == "renew" && !$request->is_new [$key_business] ? $request->amount [$key_business] : 0,
-                            'reference_code' => $lob_code ['RefCode'],
-                            'b_class' => $lob_code ['BClass'],
-                            's_class' => $lob_code ['SClass'],
-                            'x_class' => $lob_code ['XClass'] ?? 0 ,
-                            'account_code' => $lob_code ['AcctCode'] ,
-                            'particulars' => strtoupper($request->particulars [$key_business]) ?? ''
-                        ];
-                        BusinessActivity::insert($data);
-                        array_push($list_of_line_of_business_save_to_local, $data);
+                    $list_of_line_of_business_save_to_local = array();
+                    /**
+                     * 0 = line of business name
+                     * 1 = reference code
+                     * 2 = b class
+                     * 3 = s class
+                     * 4 = x class
+                     * 5 = account code
+                     * 6 = particular
+                     */
+                    $data = [
+                        'application_business_permit_id' => $transaction->application_permit->id,
+                        'line_of_business' => $transaction->application_permit->type == "renew" && !$request->is_new [$key_business] ? $lob_code['Class'] : $request->line_of_business [$key_business],
+                        'no_of_unit' => $request->no_of_units [$key_business],
+                        'capitalization' => $transaction->application_permit->type == "new" ? $request->amount [$key_business] : ($request->is_new [$key_business] ? $request->amount [$key_business] : 0),
+                        'gross_sales' => $transaction->application_permit->type == "renew" && !$request->is_new [$key_business] ? $request->amount [$key_business] : 0,
+                        'reference_code' => $lob_code ['RefCode'],
+                        'b_class' => $lob_code ['BClass'],
+                        's_class' => $lob_code ['SClass'],
+                        'x_class' => $lob_code ['XClass'] ?? 0 ,
+                        'account_code' => $lob_code ['AcctCode'] ,
+                        'particulars' => strtoupper($request->particulars [$key_business]) ?? ''
+                    ];
+                    BusinessActivity::insert($data);
+                    array_push($list_of_line_of_business_save_to_local, $data);
 
-                        $request_body = [
-                            'business_id' => $transaction->business_info->business_id_no,
-                            'ebriu_application_no' =>   $transaction->application_permit->application_no,
-                            'year' => Carbon::now()->year,
-                            'line_of_business' => $list_of_line_of_business_save_to_local
-                        ];
+                    $request_body = [
+                        'business_id' => $transaction->business_info->business_id_no,
+                        'ebriu_application_no' =>   $transaction->application_permit->application_no,
+                        'year' => Carbon::now()->year,
+                        'line_of_business' => $list_of_line_of_business_save_to_local
+                    ];
 
-                        // $line_of_business_data = new UploadLineOfBusinessToLocal($request_body);
-                        // Event::dispatch('upload-line-of-business-to-local', $line_of_business_data);
-                    }else{
-                        foreach($lob_array as $lob_key => $exist_lob){
-                            if(!in_array($exist_lob  , request('business_line'))){
-                            $business_line_to_delete =  BusinessActivity::where('id', $lob_key)->first();
-                            if(!empty($business_line_to_delete)){
-                                $business_line_to_delete->delete();
-                            }
-                            }
-                        }
-                    }
-                }
-            }else{
-                foreach ($permit_business_lines as $permit_to_delete) {
-                    $permit_to_delete->delete();
+                    // $line_of_business_data = new UploadLineOfBusinessToLocal($request_body);
+                    // Event::dispatch('upload-line-of-business-to-local', $line_of_business_data);
                 }
             }
 
