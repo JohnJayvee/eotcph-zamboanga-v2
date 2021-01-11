@@ -927,7 +927,7 @@ class BusinessTransactionController extends Controller
 			$transaction->save();
 
 			$insert[] = [
-	        	'email' => "ronnie.castro54@gmail.com",
+	        	'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
 	            'business_name' => $transaction->business_info ? $transaction->business_info->business_name : $transaction->business_name,
 	            'business_id' => $transaction->business_id,
 	            'link' => env("APP_URL")."e-permit/".$transaction->business_id,
