@@ -177,6 +177,7 @@
                                         <td class="border-top border-bottom border-right">Remarks</td>
                                     </tr>
                                 </thead>
+                                @if($business_tax)
                                 <tbody>
                                     @php
                                         $total_tax = 0;
@@ -247,6 +248,7 @@
                                         <td class="text-right pr-4 border-top border-bottom "></b></td>
                                     </tr>
                                 </tbody>
+                                @endif
                             </table>
                             </td>
                         </tr>
@@ -266,6 +268,7 @@
                                         <td class="border-top border-bottom border-right">Total Amount</td>
                                     </tr>
                                 </thead>
+                                @if($garbage_fee)
                                 <tbody>
                                     @php
                                         $total_garbage_fee = 0;
@@ -307,6 +310,7 @@
                                         <td class="text-right pr-4 border-bottom border-top"><b>{{number_format($total_garbage_fee,2)}}</b></td>
                                     </tr>
                                 </tbody>
+                                @endif
                             </table>
                         </td>
                         </tr>
