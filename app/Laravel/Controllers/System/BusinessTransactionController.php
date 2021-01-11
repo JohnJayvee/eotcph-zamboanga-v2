@@ -24,8 +24,7 @@ use App\Laravel\Events\SendEmailDigitalCertificate;
 use App\Laravel\Events\SendEmailApprovedBusiness;
 use App\Laravel\Events\SendEmailDeclinedBusiness;
 use App\Laravel\Events\SendDeclinedEmailReference;
-
-
+use App\Laravel\Events\UploadLineOfBusinessToLocal;
 use App\Laravel\Requests\System\TransactionCollectionRequest;
 use App\Laravel\Requests\System\TransactionUpdateRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF;
@@ -342,9 +341,9 @@ class BusinessTransactionController extends Controller
                     }else{
                         // all existing business lines has been requested for deletion
                         foreach ($permit_business_lines as $permit_to_delete) {
-                            info('Deleted All LOB');
                             $permit_to_delete->delete();
                         }
+                        info('Deleted All LOB');
                     }
                 }
             }
@@ -422,6 +421,8 @@ class BusinessTransactionController extends Controller
                     $this->data['lob'][] = $lob['Class'].$particulars;
                 }
             }
+        }else{
+            Log::error('API_GET_LOB_FAILED', ['response' => $response]);
         }
     }
 
