@@ -243,6 +243,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-2" style="color: #008bcc !important;">Please take note of your email address and password used.</p>
+                        </div>
+                    </div>
                     <button type="submit" class="btn secondary-solid-btn px-3 py-3 fs-14 otp_trigger"><i class="fa fa-paper-plane pr-2"></i>Create Account</button>
                 </div>
             </form>

@@ -130,7 +130,6 @@
                                 <td colspan="3" class="bg-light p-1"><p class=" mb-0">{{ $rf->name }}</p></td>
                             </tr>
                             @php
-                                $sub_total = 0;
                                 $collection_of_fees = json_decode($rf->collection_of_fees)
                             @endphp
                             @foreach ($collection_of_fees as $fee)
@@ -139,7 +138,7 @@
                                 <td style="text-align: center;">{{ $fee->Amount }}</td>
                             </tr>
                             @php
-                                $sub_total += Helper::db_amount($fee->Amount);
+                                $sub_total = Helper::db_amount($fee->Amount);
                                 $regulatory_total += $sub_total;
                             @endphp 
                             @endforeach
@@ -171,7 +170,7 @@
                                         <td class="border-top border-bottom">Year</td>
                                         <td class="border-top border-bottom" width="150">Gross Sales / Capital / No of Units</td>
                                         <td class="border-top border-bottom">Business Tax</td>
-                                        <td class="border-top border-bottom">Qtr</td>
+                                        <td class="border-top border-bottom" width="50">Qtr</td>
                                         <td class="border-top border-bottom">Surcharge</td>
                                         <td class="border-top border-bottom">Interest</td>
                                         <td class="border-top border-bottom">Total Amount</td>
@@ -313,7 +312,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <h5 class="mt-4">Pay this amount at City Treasurer's Office: <b>P {{number_format($total_to_be_paid)}}</b></h5>
+                                <h5 class="mt-4">Pay this amount at City Treasurer's Office: <b>P {{number_format($total_to_be_paid,2)}}</b></h5>
                             </td>
                         </tr>
                     </tbody>

@@ -57,7 +57,7 @@
                                                 $('.modal_negative').modal('show');
                                             })
                                         </script>
-                                        
+
                                     </div>
                                 </div>
                             </form>
@@ -152,7 +152,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">CTC No.<span class="text-danger">*</span></label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Cedula No.<span class="text-danger">*</span></label>
                                         <input type="text" class="form-control form-control-sm {{ $errors->first('ctc_no') ? 'is-invalid': NULL  }}"  name="ctc_no" value="{{old('ctc_no', $business['CTCNo'] ?? '' ) }}">
                                         @if($errors->first('ctc_no'))
                                             <small class="form-text pl-1" style="color:red;">{{$errors->first('ctc_no')}}</small>
@@ -719,7 +719,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 @stop
 @section('page-styles')

@@ -361,12 +361,32 @@ class BusinessController extends Controller
     public function e_permit(PageRequest $request , $id = NULL){
        
         $this->data['d1']  = new Carbon('12/31');
-        $this->data['business'] = Business::find($id);
-        $this->data['business_transaction'] = BusinessTransaction::where('business_id',$id)->where('digital_certificate_released',"1")->first();
+        $this->data['business_transaction'] = BusinessTransaction::where('business_id', $id)->where('digital_certificate_released',"1")->first();
+        $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
+
         if ($this->data['business_transaction']) {
-            $this->data['business_lines'] = BusinessLine::where('business_id' , $id)->get();
+            $this->data['business_lines'] = BusinessLine::where('business_id' , $this->data['business']->id)->get();
             $pdf = PDF::loadView('pdf.e-permit',$this->data)->setPaper('a4', 'landscape');
             return $pdf->download("e-permit.pdf");
+        }else{
+            session()->flash('notification-status', "failed");
+            session()->flash('notification-msg', "You dont have access for this process");
+            return redirect()->route('web.main.index');
+        }
+
+        
+    }
+
+     public function e_permit_view(PageRequest $request , $id = NULL){
+       
+        $this->data['d1']  = new Carbon('12/31');
+        $this->data['business_transaction'] = BusinessTransaction::where('id', $id)->where('digital_certificate_released',"1")->first();
+        $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
+
+        if ($this->data['business_transaction']) {
+            $this->data['business_lines'] = BusinessLine::where('business_id' , $this->data['business']->id)->get();
+            $pdf = PDF::loadView('pdf.e-permit',$this->data)->setPaper('a4', 'landscape');
+            return $pdf->stream("e-permit.pdf");
         }else{
             session()->flash('notification-status', "failed");
             session()->flash('notification-msg', "You dont have access for this process");

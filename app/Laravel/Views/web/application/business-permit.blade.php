@@ -168,7 +168,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">CTC No.</label>
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Cedula No.</label>
                                         <p class="form-data text-success text-uppercase">{{ $business->ctc_no }}</p>
                                     </div>
                                 </div>

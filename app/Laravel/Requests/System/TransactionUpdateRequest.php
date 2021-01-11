@@ -1,0 +1,35 @@
+<?php namespace App\Laravel\Requests\System;
+
+use Session,Auth;
+use App\Laravel\Requests\RequestManager;
+
+class TransactionUpdateRequest extends RequestManager{
+
+	public function rules(){
+		$rules = [
+			'transaction.business_name' => "required",
+			'business_info.business_id_no' => "required",
+			'business_info.dti_sec_cda_registration_no' => "required",
+			'business_info.dominant_name' => "required",
+			'business_info.email' => "required",
+			'business_info.business_type' => "required",
+			'business_info.business_scope' => "required",
+			'business_info.mobile_no' => "required",
+			'business_info.unit_no' => "required",
+			'business_info.street_address' => "required",
+			'business_info.brgy' => "required",
+			'owner.fname' => "required",
+			'owner.lname' => "required",
+			'owner.email' => "required",
+			'owner.contact_number' => "required",
+		];
+
+		return $rules;
+	}
+
+	public function messages(){
+		return [
+			'required'	=> "Field is required.",
+		];
+	}
+}

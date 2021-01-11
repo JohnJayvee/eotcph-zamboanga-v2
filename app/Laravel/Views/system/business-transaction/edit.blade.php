@@ -130,100 +130,217 @@
                 {{-- <input type="hidden" name="_method" value="PATCH"> --}}
                 <div class="row">
                     <div class="col-md-6">
-
-                      <div class="form-group">
+                      <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Business Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('transaction[business_name]') ? 'is-invalid': NULL  }}"  name="transaction[business_name]" value="{{old('transaction[business_name]', str::title($transaction->business_name) ?? '') }}">
-                          @include('system.business-transaction.error', ['error_field' => 'transaction[business_name]'])
+                          <input type="text" class="form-control {{ $errors->first('transaction.business_name') ? 'is-invalid': NULL  }}"  name="transaction[business_name]" value="{{old('transaction.business_name', str::title($transaction->business_name) ?? '') }}">
+                          @include('system.business-transaction.error', ['error_field' => 'transaction.business_name'])
                       </div>
-                      <div class="form-group">
+                      <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Business ID No <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[business_id_no]') ? 'is-invalid': NULL  }}"  name="business_info[business_id_no]" value="{{old('business_info[business_id_no]', str::title($transaction->business_info->business_id_no) ?? '') }}">
-                          @include('system.business-transaction.error', ['error_field' =>  'business_info[business_id_no]'])
+                          <input type="text" class="form-control {{ $errors->first('business_info.business_id_no') ? 'is-invalid': NULL  }}"  name="business_info[business_id_no]" value="{{old('business_info.business_id_no', str::title($transaction->business_info->business_id_no) ?? '') }}">
+                          @include('system.business-transaction.error', ['error_field' =>  'business_info.business_id_no'])
                       </div>
-                      <div class="form-group">
+                      <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Dominant Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[dominant_name]') ? 'is-invalid': NULL  }}"  name="business_info[dominant_name]" value="{{old('business_info[dominant_name]', str::title($transaction->business_info->dominant_name) ?? '') }}">
-                          @include('system.business-transaction.error', ['error_field' => 'business_info[dominant_name]'])
+                          <input type="text" class="form-control {{ $errors->first('business_info.dominant_name') ? 'is-invalid': NULL  }}"  name="business_info[dominant_name]" value="{{old('business_info.dominant_name', str::title($transaction->business_info->dominant_name) ?? '') }}">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.dominant_name'])
                       </div>
-                      <div class="form-group">
+                      <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Business Number <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[dti_sec_cda_registration_no]') ? 'is-invalid': NULL  }}"  name="business_info[dti_sec_cda_registration_no]" value="{{old('business_info[dti_sec_cda_registration_no]', $transaction->business_info->dti_sec_cda_registration_no ?? '') }}">
-                          @include('system.business-transaction.error', ['error_field' => 'business_info[dti_sec_cda_registration_no]'])
+                          <input type="text" class="form-control {{ $errors->first('business_info.dti_sec_cda_registration_no') ? 'is-invalid': NULL  }}"  name="business_info[dti_sec_cda_registration_no]" value="{{old('business_info.dti_sec_cda_registration_no', $transaction->business_info->dti_sec_cda_registration_no ?? '') }}">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.dti_sec_cda_registration_no'])
                       </div>
-                      <div class="form-group">
-                          <label for="exampleInputEmail1" class="text-form pb-2">Business Type</label>
-                          {!!Form::select("business_info[business_type]", $business_types, old('business_info[business_type]' , $transaction->business_info->business_type), ['id' => "input_business_type", 'class' => "form-control form-control classic ".($errors->first('business_info[business_type]') ? 'border-red' : NULL)])!!}
+                      <div class="form-group my-0">
+                        <label for="exampleInputEmail1" class="text-form">Cedula No. <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control {{ $errors->first('business_info.ctc_no') ? 'is-invalid': NULL  }}"  name="business_info[ctc_no]" value="{{old('business_info.ctc_no', str::title($transaction->business_info->ctc_no) ?? '') }}">
+                        </div>
+                      <div class="form-group my-0">
+                          <label for="exampleInputEmail1" class="text-form">Business Type</label>
+                          {!!Form::select("business_info[business_type]", $business_types, old('business_info.business_type' , $transaction->business_info->business_type), ['id' => "input_business_type", 'class' => "form-control form-control classic ".($errors->first('business_info.business_type') ? 'border-red' : NULL)])!!}
                           @include('system.business-transaction.error', ['error_field' => 'business_info[business_type]'])
                       </div>
-                      <div class="form-group">
-                          <label for="exampleInputEmail1" class="text-form pb-2">Business Scope</label>
-                          {!!Form::select("business_info[business_scope]", $business_scopes, old('business_info[business_scope]', $transaction->business_info->business_scope), ['id' => "input_business_scope", 'class' => "form-control classic ".($errors->first('business_info[business_scope]') ? 'border-red' : NULL)])!!}
+                      <div class="form-group my-0">
+                          <label for="exampleInputEmail1" class="text-form">Business Scope</label>
+                          {!!Form::select("business_info[business_scope]", $business_scopes, old('business_info.business_scope', $transaction->business_info->business_scope), ['id' => "input_business_scope", 'class' => "form-control classic ".($errors->first('business_info.business_scope') ? 'border-red' : NULL)])!!}
                           @include('system.business-transaction.error', ['error_field' => 'business_info[business_scope]'])
                       </div>
-                      <div class="form-group">
+                      <div class="form-group my-0">
+                          <label for="exampleInputEmail1" class="text-form">Business TIN <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control  {{ $errors->first('business_info.business_tin') ? 'is-invalid': NULL  }}"  name="business_info[business_tin]" value="{{old('business_info.business_tin', $transaction->business_info->business_tin ?? '') }}">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.business_tin'])
+                      </div>
+                      <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Business Mobile No. <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[mobile_no]') ? 'is-invalid': NULL  }}"  name="business_info[mobile_no]" value="{{old('business_info[mobile_no]', $transaction->business_info->mobile_no ?? '') }}">
-                          @include('system.business-transaction.error', ['error_field' => 'business_info[mobile_no]'])
+                          <input type="text" class="form-control {{ $errors->first('business_info.mobile_no') ? 'is-invalid': NULL  }}"  name="business_info[mobile_no]" value="{{old('business_info.mobile_no', $transaction->business_info->mobile_no ?? '') }}">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.mobile_no'])
                       </div>
-                      <div class="form-group">
+                      <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Business Tel No. <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[telephone_no]') ? 'is-invalid': NULL  }}"  name="business_info[telephone_no]" value="{{old('business_info[telephone_no]', $transaction->business_info->telephone_no ?? '') }}">
-                          @include('system.business-transaction.error', ['error_field' => 'business_info[telephone_no]'])
+                          <input type="text" class="form-control {{ $errors->first('business_info.telephone_no') ? 'is-invalid': NULL  }}"  name="business_info[telephone_no]" value="{{old('business_info.telephone_no', $transaction->business_info->telephone_no ?? '') }}">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.telephone_no'])
                       </div>
-                      <div class="form-group">
+                      <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Business Email <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[email]') ? 'is-invalid': NULL  }}"  name="business_info[email]" value="{{old('business_info[email]', $transaction->business_info->email ?? '') }}">
-                          @include('system.business-transaction.error', ['error_field' => 'business_info[email]'])
+                          <input type="text" class="form-control {{ $errors->first('business_info.email') ? 'is-invalid': NULL  }}"  name="business_info[email]" value="{{old('business_info.email', $transaction->business_info->email ?? '') }}">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.email'])
                       </div>
-
-                      <p class="text-title fw-500">Line of Business :</p>
-                      <table class="table table-bordered">
+                      <div class="form-group my-0">
+                        <label for="exampleInputEmail1" class="text-form">Capitalization <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control  {{ $errors->first('business_info.capitalization') ? 'is-invalid': NULL  }}"  name="business_info[capitalization]" value="{{old('business_info.capitalization', $transaction->business_info->capitalization ?? '') }}">
+                        @include('system.business-transaction.error', ['error_field' => 'business_info.capitalization'])
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">Business Unit No <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control {{ $errors->first('business_info.unit_no') ? 'is-invalid': NULL  }}"  name="business_info[unit_no]" value="{{old('business_info.unit_no', $transaction->business_info->unit_no ?? '') }}">
+                            @include('system.business-transaction.error', ['error_field' => 'business_info.unit_no'])
+                        </div>
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">Business Street <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control  {{ $errors->first('business_info.street_address') ? 'is-invalid': NULL  }}"  name="business_info[street_address]" value="{{old('business_info.street_address', $transaction->business_info->street_address ?? '') }}">
+                            @include('system.business-transaction.error', ['error_field' => 'business_info.street_address'])
+                        </div>
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">Business Barangay <span class="text-danger">*</span></label>
+                            {!!Form::select('business_info[brgy]',[],old('business_info.brgy' , $transaction->business_info->brgy),['id' => "input_brgy",'class' => "form-control form-control classic ".($errors->first('business_info.brgy') ? 'border-red' : NULL)])!!}
+                            @include('system.business-transaction.error', ['error_field' => 'business_info[brgy]'])
+                        </div>
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">Business Province/Town <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control {{ $errors->first('business_info.town_name') ? 'is-invalid': NULL  }}"  name="business_info[town_name]" value="{{old('business_info.town_name', $transaction->business_info->town_name ?? '') }}" disabled>
+                        </div>
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">Business Region <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control {{ $errors->first('business_info.region_name') ? 'is-invalid': NULL  }}"  name="business_info[region_name]" value="{{old('business_info.region_name', str::title($transaction->business_info->region_name) ?? '') }}" disabled>
+                        </div>
+                            <input type="hidden" class="form-control" name="business_info[brgy_name]" id="input_brgy_name" value="{{old('business_info[brgy_name]' , $transaction->business_info->brgy_name)}}">
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">DTI/SEC/CDA Registration Date (MM/DD/YYYY) <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control  {{ $errors->first('business_info.dti_sec_cda_registration_date') ? 'is-invalid': NULL  }}"  name="business_info[dti_sec_cda_registration_date]" value="{{old('business_info.dti_sec_cda_registration_date', str::title($transaction->business_info->dti_sec_cda_registration_date) ?? '') }}">
+                            @include('system.business-transaction.error', ['error_field' => 'business_info.dti_sec_cda_registration_date'])
+                        </div>
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">No. of Male Employees <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control  {{ $errors->first('business_info.no_of_male_employee') ? 'is-invalid': NULL  }}"  name="business_info[no_of_male_employee]" value="{{old('business_info.no_of_male_employee.', $transaction->business_info->no_of_male_employee ?? '') }}">
+                            @include('system.business-transaction.error', ['error_field' => 'business_info.no_of_male_employee'])
+                        </div>
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">No. of Male Employees residing in city<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control  {{ $errors->first('business_info.male_residing_in_city') ? 'is-invalid': NULL  }}"  name="business_info[male_residing_in_city]" value="{{old('business_info.male_residing_in_city', $transaction->business_info->male_residing_in_city ?? '') }}">
+                            @include('system.business-transaction.error', ['error_field' => 'business_info.male_residing_in_city'])
+                        </div>
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">No. of Female Employees <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control  {{ $errors->first('business_info.no_of_female_employee') ? 'is-invalid': NULL  }}"  name="business_info[no_of_female_employee]" value="{{old('business_info.no_of_female_employee', $transaction->business_info->no_of_female_employee ?? '') }}">
+                            @include('system.business-transaction.error', ['error_field' => 'business_info.no_of_female_employee'])
+                        </div>
+                        <div class="form-group my-0">
+                            <label for="exampleInputEmail1" class="text-form">No. of Female Employees residing in city<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control  {{ $errors->first('business_info.female_residing_in_city') ? 'is-invalid': NULL  }}"  name="business_info[female_residing_in_city]" value="{{old('business_info.female_residing_in_city', $transaction->business_info->female_residing_in_city ?? '') }}">
+                            @include('system.business-transaction.error', ['error_field' => 'business_info.female_residing_in_city'])
+                        </div>
+                        <div class="form-group my-0">
+                          <label for="exampleInputEmail1" class="text-form">Business Area (Sq. m)<span class="text-danger">*</span></label>
+                          <input type="text" class="form-control  {{ $errors->first('business_info.business_area') ? 'is-invalid': NULL  }}"  name="business_info[business_area]" value="{{old('business_info.business_area', $transaction->business_info->business_area ?? '') }}">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.business_area'])
+                        </div>
+                    </div>
+                </div>
+                {{-- I COPIED THIS AT CREATE BLADE --}}
+                {{-- I MOVED THE JS SCRIPT BELOW  --}}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group d-flex flex-row">
+                            <label for="" class="text-form pr-2">Are you enjoying tax incentive from any Goverment Entity?</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-control form-control-sm" type="checkbox" name="checkbox" value="yes" style="width: 30px; height: 30px;" {{ ($transaction->business_info->tax_incentive == null ?: ($transaction->business_info->tax_incentive == "no" ?: 'checked')) }}>
+                                <label class="my-2 mx-1" for="inlineCheckbox1">YES</label>
+                                {{-- <small class="my-2" for="inlineCheckbox3">Please Specify entity:</small> --}}
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-control" type="checkbox" name="checkbox" value="no" style="width: 30px; height: 30px;">
+                                <label class="my-2 mx-1" for="inlineCheckbox3">NO</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" style="{{ ($transaction->business_info->tax_incentive == null ?: ($transaction->business_info->tax_incentive != "no" ?: 'display:none;')) }}" id="checkYes">
+                            <label class="text-form text-title">Please Specify entity:</label>
+                            <input type="text" class="form-control " name="business_info[tax_incentive]" value="{{old('business_info.tax_incentive', str::title($transaction->business_info->tax_incentive) ?? '') }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="text-title text-uppercase">Other Information Form (Government Owned Or Controlled Corporations)</h5>
+                    </div>
+                  <div class="col-md-6">
+                    <div class="form-group my-0">
+                      <label for="exampleInputEmail1" class="text-form">Tin No.</label>
+                      <input type="text" class="form-control  {{ $errors->first('business_info.tin_no') ? 'is-invalid': NULL  }}"  name="business_info[tin_no]" value="{{old('business_info.tin_no', $transaction->business_info->tin_no ?? '') }}">
+                      @include('system.business-transaction.error', ['error_field' => 'business_info[tin_no]'])
+                    </div>
+                    <div class="form-group my-0">
+                        <label for="exampleInputEmail1" class="text-form">Philhealth No.</label>
+                        <input type="text" class="form-control  {{ $errors->first('business_info.philhealth_no') ? 'is-invalid': NULL  }}"  name="business_info[philhealth_no]" value="{{old('business_info.philhealth_no', $transaction->business_info->philhealth_no ?? '') }}">
+                        @include('system.business-transaction.error', ['error_field' => 'business_info.philhealth_no'])
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group my-0">
+                        <label for="exampleInputEmail1" class="text-form">SSS No.</label>
+                        <input type="text" class="form-control  {{ $errors->first('business_info.sss_no') ? 'is-invalid': NULL  }}"  name="business_info[sss_no]" value="{{old('business_info.sss_no', $transaction->business_info->sss_no ?? '') }}">
+                        @include('system.business-transaction.error', ['error_field' => 'business_info.sss_no'])
+                    </div>
+                    <div class="form-group my-0">
+                        <label for="exampleInputEmail1" class="text-form">PAGIBIG No.</label>
+                        <input type="text" class="form-control  {{ $errors->first('business_info[pagibig_no]') ? 'is-invalid': NULL  }}"  name="business_info[pagibig_no]" value="{{old('business_info.pagibig_no', $transaction->business_info->pagibig_no ?? '') }}">
+                        @include('system.business-transaction.error', ['error_field' => 'business_info.pagibig_no'])
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-8">
+                        <p class="text-title fw-500">Line of Business :</p>
+                      <table  id="tr-wrapper" class="table table-bordered">
                         <tr>
-                          <th>Particulars</th>
-                          <th>Gross Sales/ Capitalization</th>
-                          <th>Action</th>
-                      </tr>
+                            <th>Line of Business</th>
+                            <th>Particulars</th>
+                            <th>NO. Units</th>
+                            <th>Gross Sales/ Capitalization</th>
+                            <th>Action</th>
+                        </tr>
                           <tbody>
-                              @forelse ($business_line as $item)
-                              <tr>
-                                  <td>{{ $item->line_of_business . ' - '. $item->id }}</td>
-                                  <td>{{ number_format($item->gross_sales,2,'.','') > 0 ?  number_format($item->gross_sales,2) : number_format($item->capitalization,2)}}</td>
-                                  {{-- <td><a class="btn btn-xs delete-record" data-id="0"><i class="fas fa-trash text-danger"></i></a> <a class="btn btn-xs delete-record" data-id="0"><i class="fas fa-trash text-danger"></i></a></td> --}}
-                              </tr>
+                              @forelse ($business_line as $key_level => $item)
+                              <tr id="lob-{{ $key_level }}"  data-count="{{ $key_level }}">
+                                  <td>
+                                    {!!Form::select("business_line[]", $line_of_businesses, old('business_line[]', $item->b_class."---".$item->s_class."---".($item->x_class ? $item->x_class:"0")."---".$item->account_code), ['id' => "input_business_scope".$key_level, 'class' => "form-control classic isDisabled".($errors->first('business_line.*') ? 'border-red' : NULL)])!!}
+                                  </td>
+                                  <td width="200">
+                                    <input type="text" class="form-control form-control-sm  isDisabled {{ $errors->first('particulars.*') ? 'is-invalid': NULL  }}"  name="particulars[]" value="{{old('particulars[]' , $item->particulars) }}">
+                                    @include('system.business-transaction.error', ['error_field' => 'particulars.*'])
+                                  </td>
+                                  <td>
+                                    <input type="text" class="form-control form-control-sm isDisabled {{ $errors->first('no_of_units.*') ? 'is-invalid': NULL  }}"  name="no_of_units[]" value="{{old('no_of_units[]' , $item->no_of_unit) }}" >
+                                    @include('system.business-transaction.error', ['error_field' => 'no_of_units.*'])
+                                  </td>
+                                  <td>
+                                    <div class="form-group my-0">
+                                        <input type="text" class="form-control form-control-sm isDisabled {{ $errors->first('amount[]') ? 'is-invalid': NULL  }}"  name="amount[]" value="{{old('amount[]', $item->gross_sales) }}" >
+                                        @include('system.business-transaction.error', ['error_field' => 'amount[]'])
+                                    </div>
+                                  </td>
+                                  <td><a class="btn btn-xs lob-remove" data-essence="#lob-{{ $key_level }}" onclick="remove_row_level('#lob-{{ $key_level }}')"><i class="fas fa-trash text-danger"></i></a></td>
+                                </tr>
                               @empty
                               @endforelse
                           </tbody>
                       </table>
-
+                      <div class="text-right">
+                        <a role="button" id="add-tr" class="btn btn-primary btn-xs mt-2 border-5 text-white">Add New</a>
+                      </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Business Unit No <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[unit_no]') ? 'is-invalid': NULL  }}"  name="business_info[unit_no]" value="{{old('business_info[unit_no]', $transaction->business_info->unit_no ?? '') }}">
-                          @include('system.business-transaction.error', ['error_field' => 'business_info[unit_no]'])
-                      </div>
-                      <div class="form-group my-0">
-                        <label for="exampleInputEmail1" class="text-form">Business Street <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[street_address]') ? 'is-invalid': NULL  }}"  name="business_info[street_address]" value="{{old('business_info[street_address]', $transaction->business_info->street_address ?? '') }}">
-                        @include('system.business-transaction.error', ['error_field' => 'business_info[street_address]'])
-                    </div>
-                      <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Business Barangay <span class="text-danger">*</span></label>
-                          {!!Form::select('business_info[brgy]',[],old('business_info[brgy]' , $transaction->business_info->brgy),['id' => "input_brgy",'class' => "form-control form-control classic ".($errors->first('business_info[brgy]') ? 'border-red' : NULL)])!!}
-                          @include('system.business-transaction.error', ['error_field' => 'business_info[brgy]'])
-                      </div>
-                      <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Business Province/Town <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[town_name]') ? 'is-invalid': NULL  }}"  name="business_info[town_name]" value="{{old('business_info[town_name]', $transaction->business_info->town_name ?? '') }}" disabled>
-                      </div>
-                      <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Business Region <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[region_name]') ? 'is-invalid': NULL  }}"  name="business_info[region_name]" value="{{old('business_info[region_name]', str::title($transaction->business_info->region_name) ?? '') }}" disabled>
-                      </div>
-                      <input type="hidden" class="form-control" name="business_info[brgy_name]" id="input_brgy_name" value="{{old('business_info[brgy_name]' , $transaction->business_info->brgy_name)}}">
-                    </div>
-
                     <div class="col-md-6 mt-4">
                       <p class="text-title fw-500">Transaction Details:</p>
                       <p class="text-title fw-500">Application : <span class="text-black">{{str::title($transaction->application_name)}}</span></p>
@@ -236,134 +353,140 @@
                     <div class="col-md-6 mt-4">
                       <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Owners First Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner[fname]') ? 'is-invalid': NULL  }}"  name="owner[fname]" value="{{old('owner[fname]', str::title($transaction->owner->fname) ?? '') }}" autocomplete="none">
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner.fname') ? 'is-invalid': NULL  }}"  name="owner[fname]" value="{{old('owner.fname', str::title($transaction->owner->fname) ?? '') }}" autocomplete="none">
+                          @include('system.business-transaction.error', ['error_field' => 'owner.fname'])
                       </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owners Middle Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner[mname]') ? 'is-invalid': NULL  }}"  name="owner[mname]" value="{{old('owner[mname]', str::title($transaction->owner->mname) ?? '') }}" autocomplete="none">
+                          <label for="exampleInputEmail1" class="text-form">Owners Middle Name </label>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner.mname') ? 'is-invalid': NULL  }}"  name="owner[mname]" value="{{old('owner.mname', str::title($transaction->owner->mname) ?? '') }}" autocomplete="none">
+                          @include('system.business-transaction.error', ['error_field' => 'owner.mname'])
                       </div>
                       <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Owners Last Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner[lname]') ? 'is-invalid': NULL  }}"  name="owner[lname]" value="{{old('owner[lname]', str::title($transaction->owner->lname) ?? '') }}" autocomplete="none">
-                      </div>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner.lname') ? 'is-invalid': NULL  }}"  name="owner[lname]" value="{{old('owner.lname', str::title($transaction->owner->lname) ?? '') }}" autocomplete="none">
+                          @include('system.business-transaction.error', ['error_field' => 'owner.lname'])
+                        </div>
                       <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Owners Email <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner[email]') ? 'is-invalid': NULL  }}"  name="owner[email]" value="{{old('owner[email]', str::title($transaction->owner->email) ?? '') }}" autocomplete="none">
-                      </div>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner.email') ? 'is-invalid': NULL  }}"  name="owner[email]" value="{{old('owner.email', str::title($transaction->owner->email) ?? '') }}" autocomplete="none">
+                          @include('system.business-transaction.error', ['error_field' => 'owner.email'])
+                        </div>
                       <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Owners Contact No. <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner[contact_number]') ? 'is-invalid': NULL  }}"  name="owner[contact_number]" value="{{old('owner[contact_number]', str::title($transaction->owner->contact_number) ?? '') }}" autocomplete="none">
-                      </div>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner.contact_number') ? 'is-invalid': NULL  }}"  name="owner[contact_number]" value="{{old('owner.contact_number', str::title($transaction->owner->contact_number) ?? '') }}" autocomplete="none">
+                          @include('system.business-transaction.error', ['error_field' => 'owner.contact_number'])
+                        </div>
                     </div>
-
                     <div class="col-md-6 mt-4">
                       <p class="text-title fw-500">Authorize Representative:</p>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Representative First Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[rep_firstname]') ? 'is-invalid': NULL  }}"  name="business_info[rep_firstname]" value="{{old('business_info[rep_firstname]', str::title($transaction->business_info->rep_firstname) ?? '') }}" autocomplete="none">
+                          <label for="exampleInputEmail1" class="text-form">Representative First Name </label>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.rep_firstname') ? 'is-invalid': NULL  }}"  name="business_info[rep_firstname]" value="{{old('business_info.rep_firstname', str::title($transaction->business_info->rep_firstname) ?? '') }}" autocomplete="none">
                       </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Representative Middle Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[rep_middlename]') ? 'is-invalid': NULL  }}"  name="business_info[rep_middlename]" value="{{old('business_info[rep_middlename]', str::title($transaction->business_info->rep_middlename) ?? '') }}" autocomplete="none">
+                          <label for="exampleInputEmail1" class="text-form">Representative Middle Name </label>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.rep_middlename') ? 'is-invalid': NULL  }}"  name="business_info[rep_middlename]" value="{{old('business_info.rep_middlename', str::title($transaction->business_info->rep_middlename) ?? '') }}" autocomplete="none">
                       </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Representative Last Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[rep_lastname]') ? 'is-invalid': NULL  }}"  name="business_info[rep_lastname]" value="{{old('business_info[rep_lastname]', str::title($transaction->business_info->rep_lastname) ?? '') }}" autocomplete="none">
+                          <label for="exampleInputEmail1" class="text-form">Representative Last Name </label>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.rep_lastname') ? 'is-invalid': NULL  }}"  name="business_info[rep_lastname]" value="{{old('business_info.rep_lastname', str::title($transaction->business_info->rep_lastname) ?? '') }}" autocomplete="none">
                       </div>
                       <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Representative Gender</label>
-                          <select name="business_info[rep_gender]" id="" class="form-control">
-                              <option value="male" {{ old( 'business_info[rep_gender]', $transaction->business_info->rep_gender) == "male" ? 'selected' : '' }}>Male</option>
-                              <option value="female" {{ old( 'business_info[rep_gender]', $transaction->business_info->rep_gender) == "female" ? 'selected' : '' }}>Female</option>
+                          <select name="business_info[rep_gender]" id="rep_gender" class="form-control">
+                              <option value="" {{ !empty($transaction->business_info->rep_gender) ?: 'selected'   }}>  -- CHOOSE GENDER --  </option>
+                              <option value="male" {{ old( 'business_info.rep_gender', $transaction->business_info->rep_gender) == "male" ? 'selected' : '' }}>Male</option>
+                              <option value="female" {{ old( 'business_info.rep_gender', $transaction->business_info->rep_gender) == "female" ? 'selected' : '' }}>Female</option>
                           </select>
                       </div>
                       <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Representative Position <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[rep_position]') ? 'is-invalid': NULL  }}"  name="business_info[rep_position]" value="{{old('business_info[rep_position]', str::title($transaction->business_info->rep_position) ?? '') }}" autocomplete="none">
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.rep_position') ? 'is-invalid': NULL  }}"  name="business_info[rep_position]" value="{{old('business_info.rep_position', str::title($transaction->business_info->rep_position) ?? '') }}" autocomplete="none">
                       </div>
                     </div>
-                  </div>
-                  <div class="row">
+                </div>
+                <div class="row">
                       <div class="col-md-6 mt-4">
                           <p class="text-title fw-500">Lessor Details:</p>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Lessor Name <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[lessor_fullname]') ? 'is-invalid': NULL  }}"  name="business_info[lessor_fullname]" value="{{old('business_info[lessor_fullname]', str::title($transaction->business_info->lessor_fullname) ?? '') }}" autocomplete="none">
+                              <label for="exampleInputEmail1" class="text-form">Lessor Name </label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_fullname') ? 'is-invalid': NULL  }}"  name="business_info[lessor_fullname]" value="{{old('business_info.lessor_fullname', str::title($transaction->business_info->lessor_fullname) ?? '') }}" autocomplete="none">
                           </div>
                           <div class="form-group my-0">
                               <label for="exampleInputEmail1" class="text-form">Lessor Gender</label>
-                              <select name="business_info[lessor_gender]" id="" class="form-control">
-                                  <option value="male" {{ old( 'business_info[lessor_gender]', $transaction->business_info->rep_gender) == "male" ? 'selected' : '' }}>Male</option>
-                                  <option value="female" {{ old( 'business_info[lessor_gender]', $transaction->business_info->rep_gender) == "female" ? 'selected' : '' }}>Female</option>
+                              <select name="business_info[lessor_gender]" id="lessor_gender" class="form-control">
+                                  <option value="" {{ !empty($transaction->business_info->lessor_gender) ?: 'selected'   }}>  -- CHOOSE GENDER --  </option>
+                                  <option value="male" {{ old( 'business_info.lessor_gender', $transaction->business_info->lessor_gender) == "male" ? 'selected' : '' }}>Male</option>
+                                  <option value="female" {{ old( 'business_info.lessor_gender', $transaction->business_info->lessor_gender) == "female" ? 'selected' : '' }}>Female</option>
                               </select>
                           </div>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Monthly Rental <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[lessor_monthly_rental]') ? 'is-invalid': NULL  }}"  name="business_info[lessor_monthly_rental]" value="{{old('business_info[lessor_monthly_rental]', str::title($transaction->business_info->lessor_monthly_rental) ?? '') }}" autocomplete="none">
+                              <label for="exampleInputEmail1" class="text-form">Monthly Rental </label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_monthly_rental') ? 'is-invalid': NULL  }}"  name="business_info[lessor_monthly_rental]" value="{{old('business_info.lessor_monthly_rental', str::title($transaction->business_info->lessor_monthly_rental) ?? '') }}" autocomplete="none">
                           </div>
                           <div class="form-group">
                               <label for="exampleInputEmail1" class="text-form pb-2">Start Date of Rental (MM/DD/YYYY)</label>
-                              <input type="date" class="form-control form-control-sm {{ $errors->first('business_info[lessor_rental_date]') ? 'is-invalid': NULL  }}"  name="business_info[lessor_rental_date]" value="{{old('business_info[lessor_rental_date]', str::title($transaction->business_info->lessor_rental_date) ?? '') }}">
+                              <input type="date" class="form-control form-control-sm {{ $errors->first('business_info.lessor_rental_date') ? 'is-invalid': NULL  }}"  name="business_info[lessor_rental_date]" value="{{old('business_info.lessor_rental_date', str::title($transaction->business_info->lessor_rental_date) ?? '') }}">
                           </div>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Lessor Email <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[lessor_email]') ? 'is-invalid': NULL  }}"  name="business_info[lessor_email]" value="{{old('business_info[lessor_email]', str::title($transaction->business_info->lessor_email) ?? '') }}" autocomplete="none">
+                              <label for="exampleInputEmail1" class="text-form">Lessor Email </label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_email') ? 'is-invalid': NULL  }}"  name="business_info[lessor_email]" value="{{old('business_info.lessor_email', str::title($transaction->business_info->lessor_email) ?? '') }}" autocomplete="none">
                           </div>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Lessor Mobile No. <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[lessor_mobile_no]') ? 'is-invalid': NULL  }}"  name="business_info[lessor_mobile_no]" value="{{old('business_info[lessor_mobile_no]', str::title($transaction->business_info->lessor_mobile_no) ?? '') }}" autocomplete="none">
+                              <label for="exampleInputEmail1" class="text-form">Lessor Mobile No. </label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_mobile_no') ? 'is-invalid': NULL  }}"  name="business_info[lessor_mobile_no]" value="{{old('business_info.lessor_mobile_no', str::title($transaction->business_info->lessor_mobile_no) ?? '') }}" autocomplete="none">
                           </div>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Lessor Tel No. <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[lessor_tel_no]') ? 'is-invalid': NULL  }}"  name="business_info[lessor_tel_no]" value="{{old('business_info[lessor_tel_no]', str::title($transaction->business_info->lessor_tel_no) ?? '') }}" autocomplete="none">
+                              <label for="exampleInputEmail1" class="text-form">Lessor Tel No. </label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_tel_no') ? 'is-invalid': NULL  }}"  name="business_info[lessor_tel_no]" value="{{old('business_info.lessor_tel_no', str::title($transaction->business_info->lessor_tel_no) ?? '') }}" autocomplete="none">
                           </div>
                       </div>
                       <div class="col-md-6 mt-4">
                           <p class="text-title fw-500">Lessor Details:</p>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Lessor Unit No <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[lessor_unit_no]') ? 'is-invalid': NULL  }}"  name="business_info[lessor_unit_no]" value="{{old('business_info[lessor_unit_no]', $transaction->business_info->lessor_unit_no ?? '') }}">
-                              @include('system.business-transaction.error', ['error_field' => 'business_info[lessor_unit_no]'])
+                              <label for="exampleInputEmail1" class="text-form">Lessor Unit No </label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_unit_no') ? 'is-invalid': NULL  }}"  name="business_info[lessor_unit_no]" value="{{old('business_info.lessor_unit_no', $transaction->business_info->lessor_unit_no ?? '') }}">
+                              @include('system.business-transaction.error', ['error_field' => 'business_info.lessor_unit_no'])
                           </div>
                           <div class="form-group my-0">
-                            <label for="exampleInputEmail1" class="text-form">Lessor Street <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[lessor_street_address]') ? 'is-invalid': NULL  }}"  name="business_info[lessor_street_address]" value="{{old('business_info[lessor_street_address]', $transaction->business_info->lessor_street_address ?? '') }}">
-                            @include('system.business-transaction.error', ['error_field' => 'business_info[lessor_street_address]'])
+                            <label for="exampleInputEmail1" class="text-form">Lessor Street </label>
+                            <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_street_address') ? 'is-invalid': NULL  }}"  name="business_info[lessor_street_address]" value="{{old('business_info.lessor_street_address', $transaction->business_info->lessor_street_address ?? '') }}">
+                            @include('system.business-transaction.error', ['error_field' => 'business_info.lessor_street_address'])
                         </div>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Lessor Barangay <span class="text-danger">*</span></label>
-                              {!!Form::select('business_info[lessor_brgy]',[],old('business_info[lessor_brgy]' ,$transaction->business_info->lessor_brgy),['id' => "input_lessor_brgy",'class' => "form-control form-control classic ".($errors->first('business_info[lessor_brgy]') ? 'border-red' : NULL)])!!}
-                              @include('system.business-transaction.error', ['error_field' => 'business_info[lessor_brgy]'])
+                              <label for="exampleInputEmail1" class="text-form">Lessor Barangay</label>
+                              {!!Form::select('business_info[lessor_brgy]',[],old('business_info.lessor_brgy' ,$transaction->business_info->lessor_brgy),['id' => "input_lessor_brgy",'class' => "form-control form-control classic ".($errors->first('business_info.lessor_brgy') ? 'border-red' : NULL)])!!}
+                              @include('system.business-transaction.error', ['error_field' => 'business_info.lessor_brgy'])
                           </div>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Lessor Province/Town <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[lessor_town_name]') ? 'is-invalid': NULL  }}"  name="business_info[lessor_town_name]" value="{{old('business_info[lessor_town_name]', $transaction->business_info->lessor_town_name ?? '') }}" disabled>
+                              <label for="exampleInputEmail1" class="text-form">Lessor Province/Town</label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_town_name') ? 'is-invalid': NULL  }}"  name="business_info[lessor_town_name]" value="{{old('business_info.lessor_town_name', $transaction->business_info->lessor_town_name ?? '') }}" disabled>
                           </div>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Lessor Region <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[lessor_region_name]') ? 'is-invalid': NULL  }}"  name="business_info[lessor_region_name]" value="{{old('business_info[lessor_region_name]',str::title($transaction->business_info->lessor_region_name) ?? '') }}" disabled>
+                              <label for="exampleInputEmail1" class="text-form">Lessor Region</label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_region_name') ? 'is-invalid': NULL  }}"  name="business_info[lessor_region_name]" value="{{old('business_info.lessor_region_name',str::title($transaction->business_info->lessor_region_name) ?? '') }}" disabled>
                           </div>
-                          <input type="hidden" class="form-control" name="business_info[lessor_brgy_name]" id="input_lessor_brgy_name" value="{{old('business_info[lessor_brgy_name]' ,  $transaction->business_info->lessor_brgy_name )}}">
+                          <input type="hidden" class="form-control" name="business_info[lessor_brgy_name]" id="input_lessor_brgy_name" value="{{old('business_info.lessor_brgy_name' ,  $transaction->business_info->lessor_brgy_name )}}">
                         </div>
                   </div>
                   <div class="row">
                       <div class="col-md-6 mt-4">
                           <p class="text-title fw-500">Emergency Contact:</p>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Name <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[emergency_contact_fullname]') ? 'is-invalid': NULL  }}"  name="business_info[emergency_contact_fullname]" value="{{old('business_info[emergency_contact_fullname]', str::title($transaction->business_info->emergency_contact_fullname) ?? '') }}" autocomplete="none">
+                              <label for="exampleInputEmail1" class="text-form">Name </label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.emergency_contact_fullname') ? 'is-invalid': NULL  }}"  name="business_info[emergency_contact_fullname]" value="{{old('business_info.emergency_contact_fullname', str::title($transaction->business_info->emergency_contact_fullname) ?? '') }}" autocomplete="none">
                           </div>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Email <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[emergency_contact_email]') ? 'is-invalid': NULL  }}"  name="business_info[emergency_contact_email]" value="{{old('business_info[emergency_contact_email]', ucfirst($transaction->business_info->emergency_contact_email) ?? '') }}" autocomplete="none">
+                              <label for="exampleInputEmail1" class="text-form">Email </label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.emergency_contact_email') ? 'is-invalid': NULL  }}"  name="business_info[emergency_contact_email]" value="{{old('business_info.emergency_contact_email', ucfirst($transaction->business_info->emergency_contact_email) ?? '') }}" autocomplete="none">
                           </div>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Mobile No. <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[emergency_contact_mobile_no]') ? 'is-invalid': NULL  }}"  name="business_info[emergency_contact_mobile_no]" value="{{old('business_info[emergency_contact_mobile_no]', $transaction->business_info->emergency_contact_mobile_no ?? '') }}" autocomplete="none">
+                              <label for="exampleInputEmail1" class="text-form">Mobile No.</label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.emergency_contact_mobile_no') ? 'is-invalid': NULL  }}"  name="business_info[emergency_contact_mobile_no]" value="{{old('business_info.emergency_contact_mobile_no', $transaction->business_info->emergency_contact_mobile_no ?? '') }}" autocomplete="none">
                           </div>
                           <div class="form-group my-0">
-                              <label for="exampleInputEmail1" class="text-form">Tel No. <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info[emergency_contact_tel_no]') ? 'is-invalid': NULL  }}"  name="business_info[emergency_contact_tel_no]" value="{{old('business_info[emergency_contact_tel_no]', str::title($transaction->business_info->emergency_contact_tel_no) ?? '') }}" autocomplete="none">
+                              <label for="exampleInputEmail1" class="text-form">Tel No. </label>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.emergency_contact_tel_no') ? 'is-invalid': NULL  }}"  name="business_info[emergency_contact_tel_no]" value="{{old('business_info.emergency_contact_tel_no', str::title($transaction->business_info->emergency_contact_tel_no) ?? '') }}" autocomplete="none">
                           </div>
                       </div>
                   </div>
@@ -682,7 +805,45 @@
 <!-- <script src="{{asset('system/vendors/sweet-alert2/sweetalert2.min.js')}}"></script> -->
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
+<script id="hidden-template" type="text/x-custom-template">
+    <td>
+        {!!Form::select("business_line[]", $line_of_businesses, old('business_line[]'), ['id' => "input_business_scope", 'class' => "form-control classic ".($errors->first('business_line.*') ? 'border-red' : NULL)])!!}
+    </td>
+    <td>
+        <input type="text" class="form-control form-control-sm {{ $errors->first('particulars.*') ? 'is-invalid': NULL  }}"  name="particulars[]" value="{{old('particulars[]') }}">
+        @include('system.business-transaction.error', ['error_field' => 'particulars.*'])
+      </td>
+    <td>
+        <input type="text" class="form-control form-control-sm {{ $errors->first('no_of_units.*') ? 'is-invalid': NULL  }}"  name="no_of_units[]" value="{{old('no_of_units[]' , 0) }}">
+        @include('system.business-transaction.error', ['error_field' => 'no_of_units.*'])
+    </td>
+    <td>
+        <div class="form-group my-0">
+        <input type="text" class="form-control form-control-sm {{ $errors->first('amount[]') ? 'is-invalid': NULL  }}"  name="amount[]" value="{{old('amount[]', 0) }}">
+        @include('system.business-transaction.error', ['error_field' => 'amount[]'])
+        </div>
+    </td>
+</script>
 
+<script>
+    $(function(){
+        $('input[name="checkbox"]').on('change', function () {
+            $('input[name="checkbox"]').not(this).prop('checked', false);
+            if($(this).val() == 'yes'){
+                if(!$(this).is(":checked")){
+                    $('#checkYes').hide();
+                }else{
+                    // $('input[name="tax_incentive"]').val('');
+                    $('#checkYes').show();
+                }
+            }
+            if($(this).val() == 'no'){
+                $('#checkYes').hide();
+                $('input[name="tax_incentive"]').val('no');
+            }
+        });
+    })
+</script>
 <script type="text/javascript">
 
     $.fn.get_brgy = function (munc_code, input_brgy, selected) {
@@ -729,13 +890,21 @@
             }
         });
     }
+    function remove_row_level(data) {
+        console.log(data);
+        var row = data;
+        $(row).remove();
+    }
 
   $(function(){
     load_barangay();
     load_lessor_barangay();
+
     $('.input-daterange').datepicker({
       format : "yyyy-mm-dd"
     });
+
+
     $(".btn-certificate").on('click', function(){
       Swal.fire(
         'COMING SOON',
@@ -743,13 +912,19 @@
         'info'
       )
     });
-    $("a .isDisabled").on('click', function(){
-      Swal.fire(
-        'You are in edit mode',
-        'Save your progress before continuing',
-        'info'
-      )
+
+    $("#add-tr").on('click', function(){
+        var lastField = $("#tr-wrapper tr:last");
+        var intId = (lastField && lastField.length && lastField.data("count") + 1) || 1;
+        var row_wrapper =  $("<tr id=\"lob-" + intId + "\"/>");
+        row_wrapper.data("count", intId);
+        var template = $('#hidden-template').html();
+        var remove_button = "<td><a class=\"btn btn-xs lob-remove\" data-essence=\"#lob-" + intId + "\" onclick=\"remove_row_level('#lob-"+intId+"')\"><i class=\"fas fa-trash text-danger\"></i></a></td>"
+        row_wrapper.append(template);
+        row_wrapper.append(remove_button);
+        $('#tr-wrapper tr:last').after(row_wrapper);
     });
+
     $(".btn-decline").on('click', function(){
       var url = $(this).data('url');
       var self = $(this)
@@ -874,6 +1049,9 @@
         $('#input_lessor_zipcode').val('');
         $('#input_lessor_town_name').val(_text);
     }
+
+
+
 
     $("#input_brgy").on("change", function () {
             $('#input_zipcode').val($(this).find(':selected').data('zip_code'))

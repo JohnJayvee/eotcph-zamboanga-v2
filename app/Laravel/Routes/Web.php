@@ -106,6 +106,8 @@ Route::group(['as' => "web.",
 	Route::get('physical-copy/{id?}',['as' => "physical-copy", 'uses' => "CustomerTransactionController@physical_pdf"]);
 	Route::get('certificate/{id?}',['as' => "certificate", 'uses' => "CustomerTransactionController@certificate"]);
 	Route::get('e-permit/{id?}',['as' => "e_permit",'uses' => "BusinessController@e_permit"]);
+	Route::get('e-permit-view/{id?}',['as' => "e_permit_view",'uses' => "BusinessController@e_permit_view"]);
+
 	
 	Route::group(['prefix' => "digipep",'as' => "digipep."],function(){
 		Route::any('success/{code}',['as' => "success",'uses' => "DigipepController@success"]);
