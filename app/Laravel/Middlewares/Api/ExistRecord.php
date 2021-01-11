@@ -3,7 +3,7 @@
 namespace App\Laravel\Middlewares\Api;
 
 use Closure, Helper,Str;
-use App\Laravel\Models\{TravelHistory,Article};
+use App\Laravel\Models\{TravelHistory,Article,BusinessTransaction};
 use App\Laravel\Models\{AccountCode};
 
 
@@ -73,6 +73,7 @@ class ExistRecord
                     ];
                 }
             break;
+
         }
 
         if(empty($response)) {
@@ -134,4 +135,5 @@ class ExistRecord
 
         return FALSE;
     }
+
 }

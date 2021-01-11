@@ -258,21 +258,21 @@ class BusinessPaymentController extends Controller
 
     public function download_assessment(PageRequest $request,$id=NULL){
 
-        $this->data['transaction'] = BusinessTransaction::find($id);
-		$transaction = BusinessTransaction::find($id);
+        $this->data['transaction'] = BusinessTransaction::where('business_id',$id)->first();
 		
-		BusinessFee::where("transaction_id",$id)->where("fee_type", 0)->get();
+		BusinessFee::where("transaction_id",$this->data['transaction']->id)->where("fee_type", 0)->get();
+
 		$this->data['regulatory_fees'] = DB::table('business_fee')
 			->leftjoin('department', 'department.code', '=', 'business_fee.office_code')
 			->select('business_fee.*','department.*')
-			->where('business_fee.transaction_id', $id)
+			->where('business_fee.transaction_id', $this->data['transaction']->id)
 			->where('business_fee.fee_type', 0)
 			->get();
 
 		$business_tax = DB::table('business_fee')
 			->leftjoin('department', 'department.code', '=', 'business_fee.office_code')
 			->select('business_fee.*','department.*')
-			->where('business_fee.transaction_id', $id)
+			->where('business_fee.transaction_id', $this->data['transaction']->id)
 			->where('business_fee.fee_type', 1)
 			->first();
 		$this->data['business_tax'] = $business_tax ;
@@ -280,20 +280,26 @@ class BusinessPaymentController extends Controller
 		$this->data['garbage_fee'] = DB::table('business_fee')
 			->leftjoin('department', 'department.code', '=', 'business_fee.office_code')
 			->select('business_fee.*','department.*')
-			->where('business_fee.transaction_id', $id)
+			->where('business_fee.transaction_id', $this->data['transaction']->id)
 			->where('business_fee.fee_type', 2)
 			->first();
 		
-        // $this->data['business_activity'] = DB::table('business_activities as activity')
-        //                                 ->leftjoin('business_line', 'activity.application_business_permit_id', '=', 'business_line.business_id')
-        //                                 ->select('business_line.name as bLine', 'business_line.gross_sales as bGross' ,'activity.*')
-        //                                 ->where('activity.application_business_permit_id', $transaction->business_id)
-        //                                 ->groupBy('application_business_permit_id')
-        //                                 ->get();
+        $this->data['business_activity'] = DB::table('business_activities as activity')
+                                        ->leftjoin('business_line', 'activity.application_business_permit_id', '=', 'business_line.business_id')
+                                        ->select('business_line.name as bLine', 'business_line.gross_sales as bGross' ,'activity.*')
+                                        ->where('activity.application_business_permit_id', $this->data['transaction']->business_id)
+                                        ->groupBy('application_business_permit_id')
+                                        ->get();
 
-        $pdf = PDF::loadView('pdf.business-permit-assessment-details', $this->data);
-        $pdf->setPaper('A4', 'landscape');
-        return $pdf->download('Business Permit Assessment Details.pdf');
+        //$this->data['regulatory_fees'] = BusinessFee::where('transaction_id',8)->where('fee_type' , 0)->get();
+        //$this->data['business_tax'] = BusinessFee::where('transaction_id',8)->where('fee_type' , 1)->get();
+        //$this->data['total_regulatory'] = $this->data['regulatory_fees']->sum('amount');
+                                        
+      	$pdf = PDF::loadView('pdf.business-permit-assessment-details',$this->data)->setPaper('a4', 'landscape');
+
+        return $pdf->download("business-permit-assessment-details");
+
+      
         //return view('pdf.business-permit-assessment-details', $this->data);
     }
 }

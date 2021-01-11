@@ -64,6 +64,8 @@ Route::group(['as' => "auth."], function(){
 			Route::get('approved-assessment/{id?}',['as' => "approved_assessment",'uses' => "BusinessTransactionController@approved_assessment"]);
             Route::get('certificate/{id?}',['as' => "digital_cerficate",'uses' => "BusinessTransactionController@digital_cerficate"]);
 			Route::get('update-department/{id?}',['as' => "update_department",'uses' => "BusinessTransactionController@update_department",'middleware' => "system.exist:business_transaction"]);
+			Route::get('release/{id?}',['as' => "release",'uses' => "BusinessTransactionController@release",'middleware' => "system.exist:business_transaction"]);
+
 		});
 
 

@@ -116,8 +116,9 @@
                             <td colspan="2"><label><strong>Regulatory Fees</strong></label></td>
                         </tr>
                         <tr style="text-align:center;">
-                            <td class="border-top border-bottom border-left">Particulars</td>
-                            <td class="border-top border-bottom border-right" >Assessed Amount</td>
+                            <td width="30%"class="border-top border-bottom border-left">Particulars</td>
+                            <td width="30%"class="border-top border-bottom" >Assessed Amount</td>
+                            <td width="40%"class="border-top border-bottom border-right" >Remark/s</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -126,7 +127,7 @@
                         @endphp
                         @foreach ($regulatory_fees as $rf)
                             <tr>
-                                <td colspan="2" class="bg-light p-1"><p class="ml-3 mb-0">{{ $rf->name }}</p></td>
+                                <td colspan="3" class="bg-light p-1"><p class=" mb-0">{{ $rf->name }}</p></td>
                             </tr>
                             @php
                                 $collection_of_fees = json_decode($rf->collection_of_fees)
@@ -134,7 +135,7 @@
                             @foreach ($collection_of_fees as $fee)
                             <tr>
                                 <td><p class="ml-3 mb-0">{{ $fee->Particulars }}</p></td>
-                                <td class="text-right pr-4"><p class="ml-3 mb-0">{{ $fee->Amount }}</p></td>
+                                <td style="text-align: center;">{{ $fee->Amount }}</td>
                             </tr>
                             @php
                                 $sub_total = Helper::db_amount($fee->Amount);
@@ -147,7 +148,7 @@
                         @endphp 
                         <tr>
                             <td class="text-left pl-4 border-top border-bottom"><b>Total</b></td>
-                            <td class="text-right pr-4 border-top border-bottom"><b>{{number_format($regulatory_total,2)}}</b></td>
+                            <td class="text-right pr-4 border-top border-bottom" colspan="2"><b>{{number_format($regulatory_total,2)}}</b></td>
                         </tr>
                     </tbody>
                 </table>
