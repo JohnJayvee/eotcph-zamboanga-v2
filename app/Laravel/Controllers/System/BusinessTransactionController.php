@@ -27,6 +27,7 @@ use App\Laravel\Events\SendEmailDigitalCertificate;
 
 
 use App\Laravel\Requests\System\TransactionCollectionRequest;
+use App\Laravel\Requests\System\TransactionUpdateRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF;
 
 
@@ -261,14 +262,19 @@ class BusinessTransactionController extends Controller
 		return view('system.business-transaction.edit',$this->data);
     }
 
-    public function update(PageRequest $request,$id=NULL)
+    public function update(TransactionUpdateRequest $request,$id=NULL)
     {
+        // dd(request()->all());
         $this->retrieve_lobs();
         $transaction = $request->get('business_transaction_data');
         DB::beginTransaction();
         try{
-            $transaction->update(request('transaction'));
-            $transaction->business_info->fill(request('business_info'))->save();
+
+            $owner_transaction_details = array('email' => request('owner.email'), 'contact_number' => request('owner.contact_number'));
+            $business_info = array_merge(request('business_info'), request('transaction'));
+
+            $transaction->fill(array_merge( request('transaction'),  $owner_transaction_details))->save();
+            $transaction->business_info->fill($business_info)->save();
             $transaction->owner->fill(request('owner'))->save();
 
             $permit_business_lines = BusinessActivity::where('application_business_permit_id', $transaction->business_permit_id)->get();

@@ -11,12 +11,12 @@
 
     </ul>
     <ul class="navbar-nav navbar-nav-right">
-        <li class="nav-item nav-profile dropdown navbar-nav-right float-right" style="width: 90px;">
+        <li class="nav-item nav-profile dropdown navbar-nav-right float-right mr-0" style="width: 70px;">
             @if(in_array($auth->type,['super_user','admin']))
             <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="">
-                <i class="fas fa-bell fa-lg ml-2">
-                  <span class="badge badge-danger">{{ $new_notification_count }}</span>
+                <i class="fas fa-bell fa-lg">
                 </i>
+                <span class="badge badge-danger">{{ $new_notification_count }}</span>
               </a>
             @endif
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
@@ -49,7 +49,7 @@
                 @endif
             </div>
           </li>
-        <li class="nav-item nav-profile dropdown navbar-nav-right" style="width: 300px;">
+        <li class="nav-item nav-profile dropdown navbar-nav-right ml-0" style="width: 250px;">
           <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="profileDropdown">
             <img src="{{strlen($auth->filename) > 0 ? "{$auth->directory}/resized/{$auth->filename}" : asset('placeholder/user.png')}}" alt="profile"/>
              <span class="profile-details">&nbsp; Welcome, {{Auth::user()->fullname}}</span>
