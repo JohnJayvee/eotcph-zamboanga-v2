@@ -116,7 +116,7 @@ Route::group(['as' => "api.",
 		Route::post('store.{format}',['as' => 'store', 'uses' => "TransactionController@store"]);
 		Route::post('inquire.{format}',['as' => 'show', 'uses' => "TransactionController@show"]);
 		Route::post('list.{format}',['as' => 'list', 'uses' => "TransactionController@list"]);
-		Route::post('update.{format}',['as' => 'update', 'uses' => "TransactionController@update",'middleware' => "api.exist:business_transaction"]);
+		Route::post('update.{format}',['as' => 'update', 'uses' => "TransactionController@update"]);
 	});
 
 });

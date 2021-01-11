@@ -12,7 +12,7 @@ use App\Laravel\Requests\Api\TransactionRequest;
 
 /* Models
  */
-use App\Laravel\Models\{BusinessTransaction,Business};
+use App\Laravel\Models\{BusinessTransaction,Business,ApplicationBusinessPermit};
 
 
 /* Data Transformer
@@ -119,17 +119,24 @@ class TransactionController extends Controller{
     }
 
     public function update(Request $request,$format = NULL){
-
+        $business_cv = Business::where('business_id_no',$request->get('id'))->first();
+        $application = ApplicationBusinessPermit::where('application_no', $request->get('application_no'))->first();
         
-        $business_transactions = $request->get('business_transaction_data');
-        $business_transactions->payment_status = $request->get('status');
-        $business_transactions->save();
+        if (!$application || !$business_cv) {
+            $this->response['status'] = FALSE;
+            $this->response['status_code'] = "NO_DATA";
+            $this->response['msg'] = "No Resources Found.";
+            $this->response_code = 401;
+            goto  callback;
+        }
 
-        $business_cv = Business::find($business_transactions->business_id);
         $business_cv->business_plate_no = $request->get('business_plate_no');
         $business_cv->permit_no = $request->get('permit_number');
         $business_cv->save();
-
+        $business_transactions = BusinessTransaction::where('business_id',$business_cv->id)->first();
+        $business_transactions->payment_status = $request->get('status');
+        $business_transactions->save();
+        
         $this->response['status'] = TRUE;
         $this->response['status_code'] = "TRANSCTION_UPDATE";
         $this->response['msg'] = "Business Transaction has been modified.";
