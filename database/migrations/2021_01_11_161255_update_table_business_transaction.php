@@ -15,6 +15,7 @@ class UpdateTableBusinessTransaction extends Migration
     {
         Schema::table('business_transaction', function (Blueprint $table) {
             $table->string('digital_certificate_released')->nullable()->default('0');
+            $table->date('or_date')->nullable();
         });
     }
 
@@ -26,7 +27,7 @@ class UpdateTableBusinessTransaction extends Migration
     public function down()
     {
         Schema::table('business_transaction', function (Blueprint $table) {
-            $table->dropColumn(['digital_certificate_released']);
+            $table->dropColumn(['digital_certificate_released','or_date']);
         });
     }
 }

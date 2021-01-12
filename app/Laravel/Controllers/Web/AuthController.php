@@ -142,7 +142,7 @@ class AuthController extends Controller{
             return redirect()->back()->withErrors(['otp_code' => trans('Invalid OTP code.')]);;
         } else {
             info('OTP - Email ::  ' . $email);
-            $customer = Customer::where('email' ,  $email)->first();
+            $customer = Customer::where('email' ,  $email)->where('status',"PENDING")->first();
             info('OTP - Customer :: ', ['data' =>  $customer->all() ?: '']);
             $customer->otp_verified = '1';
             $customer->save();

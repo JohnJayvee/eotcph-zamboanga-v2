@@ -457,22 +457,16 @@ class BusinessTransactionController extends Controller
             $transaction->application_permit->save();
 
 			if ($type == "APPROVED") {
-				$insert[] = [
-	            	'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,
-	            	'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
-	                'amount' => $transaction->total_amount,
-	                'ref_num' => $transaction->code,
-	                'full_name' => $transaction->owner ? $transaction->owner->full_name : $transaction->business_name,
-	                'application_name' => $transaction->application_name,
-                    'modified_at' => Helper::date_only($transaction->modified_at),
-                    'business_id' => $transaction->business_id,
-            	];
-			    $notification_data_email = new SendEmailApprovedBusiness($insert);
-			    Event::dispatch('send-email-business-approved', $notification_data_email);
-
-			    $regulatory_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 0)->get();
+				$regulatory_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 0)->get();
 			    $business_tax = BusinessFee::where('transaction_id', $id)->where('fee_type' , 1)->first();
 			    $garbage_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 2)->get();
+				if (!$regulatory_fee || !$business_tax || !$garbage_fee ) {
+
+					session()->flash('notification-status', "failed");
+					session()->flash('notification-msg', "Cannot approved transaction with incomplete assessment");
+					return redirect()->route('system.business_transaction.show',[$id]);
+				}
+			   
 
 			    if ($regulatory_fee) {
 			    	$business_fee_id = [];
@@ -554,6 +548,19 @@ class BusinessTransactionController extends Controller
 				    	$business_tax_payment->save();
 			    	}
 			    }
+
+			    $insert[] = [
+	            	'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,
+	            	'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
+	                'amount' => $transaction->total_amount,
+	                'ref_num' => $transaction->code,
+	                'full_name' => $transaction->owner ? $transaction->owner->full_name : $transaction->business_name,
+	                'application_name' => $transaction->application_name,
+                    'modified_at' => Helper::date_only($transaction->modified_at),
+                    'business_id' => $transaction->business_id,
+            	];
+			    $notification_data_email = new SendEmailApprovedBusiness($insert);
+			    Event::dispatch('send-email-business-approved', $notification_data_email);
 
 			} else {
                 $insert = [];

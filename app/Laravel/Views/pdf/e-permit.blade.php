@@ -29,11 +29,11 @@
 			<td width="10%" class="text-center"><img src="{{ public_path('web/img/zbpic1.jpg') }}" width="60%"></td>
 		</tr>
 		<tr>
-			<td width="10%" class="text-center">{{$business->permit_no}} <br> Permit Number</td>
+			<td width="10%" class="text-center"><h3>{{$business->permit_no}}</h3> <br> {{$business->permit_no ? "Permit Number" : ""}}</td>
 			<td width="10%"></td>
 			<td width="60%" class="text-center"><h1 style="color:#AC314C;">MAYOR'S PERMIT</h1></td>
 			<td width="10%"></td>
-			<td width="10%" class="text-center">{{$business->business_plate_no}}<br>Business Plate Number</td>
+			<td width="10%" class="text-center"><h3>{{$business->business_plate_no}}</h3><br> {{$business->permit_no ? "Business Plate Number" : ""}} </td>
 		</tr>
 	</tbody>
 </table>
@@ -70,7 +70,7 @@
 		</tr>
 		<tr>
 			<td>Date Issued</td>
-			<td>{{Carbon::now()->format('F j, Y')}}</td>
+			<td>{{Carbon::parse($business_transaction->or_date)->format('F j, Y')}}</td>
 			<td>No. of Male Employee : {{$business->no_of_male_employee}}</td>
 		</tr>
 		<tr>
@@ -89,6 +89,10 @@
 		</tr>
 	</tbody>
 </table>
-
+<div style="float: right;">
+<p><img src="{{ public_path('web/img/e-signature.jpg') }}" width="30%"></p>
+<p class="lh1" style="padding-left: 2.5em;">MARIA ISABELLE G. CLIMACO</p>
+<p class="lh1" style="padding-left: 7.5em;">City Mayor</p>
+</div>
 </body>
 </html>

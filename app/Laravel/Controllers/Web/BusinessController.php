@@ -362,9 +362,10 @@ class BusinessController extends Controller
        
         $this->data['d1']  = new Carbon('12/31');
         $this->data['business_transaction'] = BusinessTransaction::where('business_id', $id)->where('digital_certificate_released',"1")->first();
-        $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
+        
 
         if ($this->data['business_transaction']) {
+            $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
             $this->data['business_lines'] = BusinessLine::where('business_id' , $this->data['business']->id)->get();
             $pdf = PDF::loadView('pdf.e-permit',$this->data)->setPaper('a4', 'landscape');
             return $pdf->download("e-permit.pdf");
@@ -381,9 +382,10 @@ class BusinessController extends Controller
        
         $this->data['d1']  = new Carbon('12/31');
         $this->data['business_transaction'] = BusinessTransaction::where('id', $id)->where('digital_certificate_released',"1")->first();
-        $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
+      
 
         if ($this->data['business_transaction']) {
+            $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
             $this->data['business_lines'] = BusinessLine::where('business_id' , $this->data['business']->id)->get();
             $pdf = PDF::loadView('pdf.e-permit',$this->data)->setPaper('a4', 'landscape');
             return $pdf->stream("e-permit.pdf");
