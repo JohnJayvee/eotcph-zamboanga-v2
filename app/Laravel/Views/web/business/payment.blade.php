@@ -74,7 +74,7 @@
             @if(count($business_fee) > 0)
              <!--  <a href="{{route('web.business_payment.regulatory_payment',[$profile->id])}}" class="btn btn-primary ">Proceed to Payment</a > -->
                 <div class="float-right">
-                    <a href="{{ route('web.business_payment.download_assessment', ['id' => $transaction->id]) }}" class="btn btn-danger ">Download Assessment Details</a >
+                    <a href="{{ route('web.business_payment.download_assessment', [$transaction->id]) }}" class="btn btn-danger ">Download Assessment Details</a >
                 </div>
             @endif
           </div>

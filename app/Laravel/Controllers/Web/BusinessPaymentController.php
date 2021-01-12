@@ -258,7 +258,7 @@ class BusinessPaymentController extends Controller
 
     public function download_assessment(PageRequest $request,$id=NULL){
 
-        $this->data['transaction'] = BusinessTransaction::where('business_id',$id)->first();
+        $this->data['transaction'] = BusinessTransaction::find($id);
 		
 		BusinessFee::where("transaction_id",$this->data['transaction']->id)->where("fee_type", 0)->get();
 
