@@ -368,7 +368,7 @@ class BusinessController extends Controller
             $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
             $this->data['business_lines'] = BusinessLine::where('business_id' , $this->data['business']->id)->get();
             $pdf = PDF::loadView('pdf.e-permit',$this->data)->setPaper('a4', 'landscape');
-            return $pdf->download("e-permit.pdf");
+            return $pdf->stream("e-permit.pdf");
         }else{
             session()->flash('notification-status', "failed");
             session()->flash('notification-msg', "You dont have access for this process");

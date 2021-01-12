@@ -29,11 +29,11 @@
 			<td width="10%" class="text-center"><img src="{{ public_path('web/img/zbpic1.jpg') }}" width="60%"></td>
 		</tr>
 		<tr>
-			<td width="10%" class="text-center"><h3>{{$business->permit_no}}</h3> <br> {{$business->permit_no ? "Permit Number" : ""}}</td>
+			<td width="10%" class="text-center"><b>{{$business->permit_no}}</b> <br> {{$business->permit_no ? "Permit Number" : ""}}</td>
 			<td width="10%"></td>
 			<td width="60%" class="text-center"><h1 style="color:#AC314C;">MAYOR'S PERMIT</h1></td>
 			<td width="10%"></td>
-			<td width="10%" class="text-center"><h3>{{$business->business_plate_no}}</h3><br> {{$business->permit_no ? "Business Plate Number" : ""}} </td>
+			<td width="10%" class="text-center"><b>{{$business->business_plate_no}}</b><br> {{$business->business_plate_no ? "Business Plate Number" : ""}} </td>
 		</tr>
 	</tbody>
 </table>
