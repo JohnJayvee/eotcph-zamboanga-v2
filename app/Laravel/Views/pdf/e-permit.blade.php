@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Mayor's Permit</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<style type="text/css">
 		.text-uppercase{
 			text-transform: uppercase;
@@ -62,37 +63,55 @@
 </table>
 <p>The Permittee should keep the surroundings clean and in condition at all times within a radius of five meters. The permitee should provide trash bins within the business premises. This Permit should be posted conspicously at the place where the business is being conducted. This is non transferable and is only privilage and not a right. Any Violation of existing laws and ordinances subjects the permit to revocation.</p>
 
-<table width="50%" border="0" cellspacing="0" cellspacing="0" class="fs14">
-	<tbody>
-		<tr>
-			<td>Owner</td>
-			<td>{{$business->owner->name}}</td>
-		</tr>
-		<tr>
-			<td>Date Issued</td>
-			<td>{{Carbon::parse($business_transaction->or_date)->format('F j, Y')}}</td>
-			<td>No. of Male Employee : {{$business->no_of_male_employee}}</td>
-		</tr>
-		<tr>
-			<td>Valid Until</td>
-			<td>{{ $d1->format('F j, ').Carbon::now()->year }}</td>
-			<td>No. of Female Employee : {{$business->no_of_female_employee}}</td>
-		</tr>
-		<tr>
-			<td>Business ID No.</td>
-			<td>{{$business->business_id_no}}</td>
-		</tr>
-		<tr>
-			<td>Type</td>
-			<td>{{str::title($business->permit->type)}}</td>
-			<td>Printed By: CLD</td>
-		</tr>
-	</tbody>
+<table width="100%" border="0" cellspacing="0" cellspacing="0" class="fs14">
+<tr>
+  <td width="60%"> 
+  	<table width="100%" border="0" cellspacing="0" cellspacing="0" class="fs14">
+			<tbody>
+				<tr>
+					<td>Owner</td>
+					<td>{{$business->owner->name}}</td>
+				</tr>
+				<tr>
+					<td>Date Issued</td>
+					<td>{{Carbon::parse($business_transaction->or_date)->format('F j, Y')}}</td>
+					<td>No. of Male Employee : {{$business->no_of_male_employee}}</td>
+				</tr>
+				<tr>
+					<td>Valid Until</td>
+					<td>{{ $d1->format('F j, ').Carbon::now()->year }}</td>
+					<td>No. of Female Employee : {{$business->no_of_female_employee}}</td>
+				</tr>
+				<tr>
+					<td>Business ID No.</td>
+					<td >{{$business->business_id_no}}</td>
+					<td class=""></td>
+				</tr>
+				<tr>
+					<td>Type</td>
+					<td>{{str::title($business->permit->type)}}</td>
+					<td>Printed By: CLD</td>
+				</tr>
+			</tbody>
+		</table>
+	</td>
+  	<td width="40%"> 
+  		<table width="100%" border="0" cellspacing="0" cellspacing="0" class="fs14">
+			<tbody>
+				<tr>
+					<td class="text-center"><img src="{{ public_path('web/img/e-signature.jpg') }}" width="80%"></td>
+				</tr>
+				<tr>
+					<td class="text-center">MARIA ISABELLE G. CLIMACO </td>
+				</tr>
+				<tr>
+					<td class="text-center">City Mayor</td>
+				</tr>
+			</tbody>
+		</table> 
+	</td>
+</tr>
 </table>
-<div style="float: right;">
-<p><img src="{{ public_path('web/img/e-signature.jpg') }}" width="30%"></p>
-<p class="lh1" style="padding-left: 2.5em;">MARIA ISABELLE G. CLIMACO</p>
-<p class="lh1" style="padding-left: 7.5em;">City Mayor</p>
-</div>
+
 </body>
 </html>
