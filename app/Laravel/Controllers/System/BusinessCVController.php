@@ -52,7 +52,7 @@ class BusinessCVController extends Controller
         })
         ->orwhere(function($query){
             if(strlen($this->data['keyword']) > 0){
-                return $query->where('business_name', 'like', "%{$this->data['keyword']}%");
+                return $query->where('business_name', 'like', "%{$this->data['keyword']}%")->orWhere('business_id_no', 'like', "%{$this->data['keyword']}%");
             }
         })
         ->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
