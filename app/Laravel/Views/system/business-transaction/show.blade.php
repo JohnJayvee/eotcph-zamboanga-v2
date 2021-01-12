@@ -55,10 +55,10 @@
             <p class="text-title fw-500">Business Mobile No.: <span class="text-black"> +63{{$transaction->business_info->mobile_no}}</span></p>
             <p class="text-title fw-500">Business Tel No.: <span class="text-black"> {{$transaction->business_info->telephone_no}}</span></p>
             <p class="text-title fw-500">Business Email: <span class="text-black">{{$transaction->business_info->email}}</span></p>
-            <p class="text-title fw-500">Business Tin: <span class="text-black">{{$transaction->business_info->business_tin}}</span></p>
+            <p class="text-title fw-500">Business TIN: <span class="text-black">{{$transaction->business_info->business_tin}}</span></p>
             <p class="text-title fw-500">Is enjoying Tax Incentive from any Government? : <span class="text-black">{{$transaction->business_info->tax_incentive_display}}</span></p>
             <p class="text-title fw-500 mt-3"> OTHER INFORMATION FORM (GOVERNMENT OWNED OR CONTROLLED CORPORATIONS):</p>
-            <p class="text-title fw-500">Tin No: <span class="text-black">{{$transaction->business_info->tin_no}}</span></p>
+            <p class="text-title fw-500">TIN No: <span class="text-black">{{$transaction->business_info->tin_no}}</span></p>
             <p class="text-title fw-500">SSS No: <span class="text-black">{{$transaction->business_info->sss_no}}</span></p>
             <p class="text-title fw-500">Philhealth No: <span class="text-black">{{$transaction->business_info->philhealth_no}}</span></p>
             <p class="text-title fw-500">PAGIBIG No: <span class="text-black">{{$transaction->business_info->pagibig_no}}</span></p>
