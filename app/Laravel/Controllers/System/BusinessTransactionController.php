@@ -24,12 +24,11 @@ use App\Laravel\Events\SendEmailDigitalCertificate;
 use App\Laravel\Events\SendEmailApprovedBusiness;
 use App\Laravel\Events\SendEmailDeclinedBusiness;
 use App\Laravel\Events\SendDeclinedEmailReference;
-
-
+use App\Laravel\Events\UploadLineOfBusinessToLocal;
 use App\Laravel\Requests\System\TransactionCollectionRequest;
 use App\Laravel\Requests\System\TransactionUpdateRequest;
 use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF;
-
+use Illuminate\Support\Facades\Log;
 
 class BusinessTransactionController extends Controller
 {
@@ -286,7 +285,7 @@ class BusinessTransactionController extends Controller
             // retrieve all lines of business by transaction
             // if empty  disregard
             $permit_business_lines = BusinessActivity::where('application_business_permit_id', $transaction->business_permit_id)->get();
-
+            $list_of_line_of_business_save_to_local = array();
 
             // handle edit of existing line of businesses
             if($permit_business_lines){
@@ -314,7 +313,24 @@ class BusinessTransactionController extends Controller
                                 $line->account_code =  $lob_code['AcctCode'];
                                 $line->reference_code =  $lob_code['RefCode'];
                                 $line->save();
+
+
+                                $data = [
+                                    'application_business_permit_id' => $transaction->application_permit->id,
+                                    'line_of_business' => $lob_code['Class'],
+                                    'no_of_unit' =>  request('editables.no_of_units')[$line_key],
+                                    'capitalization' => $transaction->application_permit->type == "new" ? $request->amount [$line_key] : ($request->is_new [$line_key] ? request('editables.amount')[$line_key] : 0),
+                                    'gross_sales' => request('editables.amount')[$line_key],
+                                    'reference_code' => $lob_code ['RefCode'],
+                                    'b_class' => $lob_code ['BClass'],
+                                    's_class' => $lob_code ['SClass'],
+                                    'x_class' => $lob_code ['XClass'] ?? 0 ,
+                                    'account_code' => $lob_code ['AcctCode'] ,
+                                    'particulars' => strtoupper(request('editables.particulars')[$line_key])
+                                ];
+
                                 info('updated - ', ['key_line' => $line_key, 'data' => $line]);
+                                array_push($list_of_line_of_business_save_to_local, $data);
                             }else{
                                 if(!in_array($editable_lob, request('editables.business_line'))){
                                     info('deleted - ', ['data' => $key_business]);
@@ -325,17 +341,16 @@ class BusinessTransactionController extends Controller
                     }else{
                         // all existing business lines has been requested for deletion
                         foreach ($permit_business_lines as $permit_to_delete) {
-                            info('Deleted All LOB');
                             $permit_to_delete->delete();
                         }
+                        info('Deleted All LOB');
                     }
                 }
             }
 
             if(request('business_line')){
                 foreach (request('business_line') as $key_business => $lob_request) {
-                    $lob_code =$this->data['line_of_businesses_coded'][$lob_request];
-                    $list_of_line_of_business_save_to_local = array();
+                    $lob_code = $this->data['line_of_businesses_coded'][$lob_request];
                     /**
                      * 0 = line of business name
                      * 1 = reference code
@@ -361,17 +376,18 @@ class BusinessTransactionController extends Controller
                     BusinessActivity::insert($data);
                     array_push($list_of_line_of_business_save_to_local, $data);
 
-                    $request_body = [
-                        'business_id' => $transaction->business_info->business_id_no,
-                        'ebriu_application_no' =>   $transaction->application_permit->application_no,
-                        'year' => Carbon::now()->year,
-                        'line_of_business' => $list_of_line_of_business_save_to_local
-                    ];
-
-                    // $line_of_business_data = new UploadLineOfBusinessToLocal($request_body);
-                    // Event::dispatch('upload-line-of-business-to-local', $line_of_business_data);
                 }
             }
+
+            $request_body = [
+                'business_id' => $transaction->business_info->business_id_no,
+                'ebriu_application_no' =>   $transaction->application_permit->application_no,
+                'year' => Carbon::now()->year,
+                'line_of_business' => $list_of_line_of_business_save_to_local
+            ];
+
+            $line_of_business_data = new UploadLineOfBusinessToLocal($request_body);
+            Event::dispatch('upload-line-of-business-to-local', $line_of_business_data);
 
             DB::commit();
 
@@ -380,8 +396,9 @@ class BusinessTransactionController extends Controller
             return redirect(route('system.business_transaction.show', ['id' => $id]));
         }catch(\Throwable $e){
             DB::rollback();
+            Log::error('TRANSACTION_EDIT_FAILED', ['message' => $e->getMessage()]);
             session()->flash('notification-status', "failed");
-			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
         }
 
@@ -404,6 +421,8 @@ class BusinessTransactionController extends Controller
                     $this->data['lob'][] = $lob['Class'].$particulars;
                 }
             }
+        }else{
+            Log::error('API_GET_LOB_FAILED', ['response' => $response]);
         }
     }
 
@@ -586,7 +605,6 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Transaction has been successfully Processed.");
 			return redirect()->route('system.business_transaction.'.strtolower($type));
 		}catch(\Exception $e){
-            throw $e;
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");

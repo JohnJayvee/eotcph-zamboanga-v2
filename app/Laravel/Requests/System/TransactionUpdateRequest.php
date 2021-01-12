@@ -12,6 +12,8 @@ class TransactionUpdateRequest extends RequestManager{
 			'business_info.tradename' => "required",
 			'business_info.dti_sec_cda_registration_no' => "required",
 			'business_info.dominant_name' => "required",
+			'business_info.ctc_no' => "required",
+			'business_info.business_tin' => "required",
 			'business_info.email' => "required",
 			'business_info.business_type' => "required",
 			'business_info.business_scope' => "required",
