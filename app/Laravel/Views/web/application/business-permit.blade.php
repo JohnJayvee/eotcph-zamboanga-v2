@@ -608,10 +608,10 @@
                                                         <input type="hidden" class="form-control form-control-sm" name="is_new[]" value="0">
                                                     </td>
                                                     <td>
-                                                        <input type="number" class="form-control form-control-sm {{ $errors->has('no_of_units.*') ? 'is-invalid': NULL  }}" name="no_of_units[]" value="{{ old('no_of_units[]') }}" placeholder="{{ $errors->first('no_of_units.*') }}">
+                                                        <input type="text" class="form-control form-control-sm {{ $errors->has('no_of_units.*') ? 'is-invalid': NULL  }}" name="no_of_units[]" value="{{ old('no_of_units[]') }}" placeholder="{{ $errors->first('no_of_units.*') }}">
                                                     </td>
                                                     <td>
-                                                        <input type="number" class="form-control form-control-sm {{ $errors->has('amount.*') ? 'is-invalid': NULL  }}" name="amount[]" value="{{ old('amount[]', $item->gross_sales) }}" placeholder="{{ $errors->first('amount.*') }}">
+                                                        <input type="text" class="form-control form-control-sm {{ $errors->has('amount.*') ? 'is-invalid': NULL  }}" name="amount[]" value="{{ old('amount[]', $item->gross_sales) }}" placeholder="{{ $errors->first('amount.*') }}">
                                                     </td>
                                                     <td>
                                                         {{-- <button type="button" class="btn btn-danger bt-primary btn-remove">Remove</button> --}}
