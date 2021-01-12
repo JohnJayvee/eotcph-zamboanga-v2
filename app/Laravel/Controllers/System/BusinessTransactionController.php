@@ -775,7 +775,7 @@ class BusinessTransactionController extends Controller
 				'business_id' => $request->get('business_id'),
 				'ebriu_application_no' => $request->get('application_no'),
 				'year' => "2021",
-				'office_code' => $request->get('office_code'),
+				'office_code' => "99",
 			];
 
 
@@ -810,7 +810,7 @@ class BusinessTransactionController extends Controller
 				foreach ($regulatory_array as $key => $value) {
 					$total_amount += Helper::db_amount($value['Amount']);
 				}
-				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('office_code',$request->get('office_code'))->where('fee_type' , 0)->first();
+				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 0)->first();
 				if ($existing) {
 					$existing->collection_of_fees = json_encode($regulatory_array);
 					$existing->amount = Helper::db_amount($total_amount);
@@ -833,7 +833,7 @@ class BusinessTransactionController extends Controller
 				foreach ($business_array as $key => $value) {
 					$total_amount += Helper::db_amount($value['Amount']);
 				}
-				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('office_code',$request->get('office_code'))->where('fee_type' , 1)->first();
+				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 1)->first();
 				if ($existing) {
 					$existing->collection_of_fees = json_encode($business_array);
 					$existing->amount = Helper::db_amount($total_amount);
@@ -857,7 +857,7 @@ class BusinessTransactionController extends Controller
 				foreach ($garbage_array as $key => $value) {
 					$total_amount += Helper::db_amount($value['Amount']);
 				}
-				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('office_code',$request->get('office_code'))->where('fee_type' , 2)->first();
+				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 2)->first();
 				if ($existing) {
 					$existing->collection_of_fees = json_encode($garbage_array);
 					$existing->amount = Helper::db_amount($total_amount);
