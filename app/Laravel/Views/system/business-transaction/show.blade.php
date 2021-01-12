@@ -240,7 +240,7 @@
             <h5 class="text-title text-uppercase">Assessment Details</h5>
           </div>
           <div class="col-md-6">
-            @if(Auth::user()->type == "processor" , Auth::user()->department->code == "99")
+            @if(Auth::user()->type == "processor" and Auth::user()->department->code == "99")
               <a href="{{route('system.business_transaction.assessment',[$transaction->id])}}"  class="btn btn-primary border-5 text-white float-right">Get Assessment Details</a>
             @endif
           </div>
