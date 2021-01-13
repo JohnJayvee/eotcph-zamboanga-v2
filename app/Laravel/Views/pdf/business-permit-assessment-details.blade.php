@@ -127,7 +127,7 @@
                         @endphp
                         @foreach ($regulatory_fees as $rf)
                             <tr>
-                                <td colspan="3" class="bg-light p-1"><p class=" mb-0">{{ $rf->department->name }}</p></td>
+                                <td colspan="3" class="bg-light p-1"><p class=" mb-0">{{ $rf->name }}</p></td>
                             </tr>
                             @php
                                 $collection_of_fees = json_decode($rf->collection_of_fees)
@@ -153,8 +153,6 @@
                     </tbody>
                 </table>
             </div>
-            
-            <div class="page-break"></div>
             <div style="float:left;width: 100%; height:auto">
                 <table style="width: 100%; float:left;">
                     <tbody>
