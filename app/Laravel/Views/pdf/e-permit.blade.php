@@ -70,7 +70,7 @@
 			<tbody>
 				<tr>
 					<td>Owner</td>
-					<td>{{str::title($business->owner->name)}}</td>
+					<td>{{strtoupper($business->owner->name)}}</td>
 				</tr>
 				<tr>
 					<td>Date Issued</td>
