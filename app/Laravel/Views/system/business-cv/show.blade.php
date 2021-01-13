@@ -14,6 +14,11 @@
 <div class="col-md-8 grid-margin stretch-card">
     <div class="card">
         <div class="card-body" style="padding: 3em">
+            @if (in_array($auth->type, ['admin']))
+                <div class="container d-flex flex-row">
+                    <a data-removable="{{ $profile->for_removal ? 'true' : 'false' }}" data-url="{{ route('system.business_cv.destroy', [$profile->id]) }}" class="btn btn-danger btn-delete btn-danger text-white ml-auto mr-2 mt-2" >Delete Business CV</a>
+                </div>
+            @endif
             <h5 class="text-title text-uppercase mt-4">REGISTRANT DETAILS</h5>
             <div class="row underline mb-2">
                 <div class="col-md-4">
@@ -190,9 +195,41 @@
 
 @section('page-scripts')
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script type="text/javascript">
     $(document).ready(function(){
       $('#input_requirements_id').select2({placeholder: "Select Requirements"});
     });//document ready
+</script>
+<script>
+    $(function(){
+        $(".btn-delete").on('click', function(){
+            var url = $(this).data('url');
+            var is_removable = $(this).data('removable');
+            var btn = $(this)
+            console.log(is_removable);
+            if(is_removable === true){
+                Swal.fire({
+                    title: 'Are you sure you want to delete this Business CV? ',
+                    text: "You can't undo this action.",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Delete!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                        window.location.href = url;
+                        }
+                    })
+            }else{
+                Swal.fire(
+                    'Oops, sorry!',
+                    ' You are not allowed to delete this Business CV. There is an existing application connected to this.',
+                    'error'
+                );
+            }
+        });
+    });
 </script>
 @endsection

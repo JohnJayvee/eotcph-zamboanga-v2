@@ -71,6 +71,13 @@ class Business extends Model{
         return !empty($this->tax_incentive) ? ($this->tax_incentive != "no" ? "Yes, ". Str::title("{$this->tax_incentive}") : "No"  ) : "No";
     }
 
+    public function getForRemovalAttribute(){
+        if($this->permit()->get()->count() > 0){
+            return FALSE;
+        }
+        return TRUE;
+    }
+
     public function getBusinessFullAddressAttribute(){
         return Str::title("{$this->unit_no}, {$this->street_address}, {$this->brgy_name}, {$this->town_name}");
     }

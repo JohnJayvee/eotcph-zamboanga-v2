@@ -296,13 +296,18 @@
         padding: 15px;
         text-align: center;
     }
-    .custom-btn{
+    .custom-btn,.custom-btn-danger{
         padding: 5px 10px;
         border-radius: 10px;
         height: 37px;
     }
     .custom-btn:hover{
         background-color: #7093DC !important;
+        color: #fff !important;
+    }
+
+    .custom-btn-danger:hover{
+        background-color: #ff4053 !important;
         color: #fff !important;
     }
     #input_partial_label:focus{
