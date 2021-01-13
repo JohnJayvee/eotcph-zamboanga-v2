@@ -246,6 +246,7 @@
               @endif
             @endif
           </div>
+          
           <div class="table-responsive pt-2">
             <p class="text-title text-bold">Regulatory Fee <!-- <span class="badge  badge-{{Helper::status_badge(Helper::check_regulatory($transaction->id))}} p-2">{{Helper::check_regulatory($transaction->id)}}</span> --></p>
             <table class="table table-bordered table-wrap" style="table-layout: fixed;">
