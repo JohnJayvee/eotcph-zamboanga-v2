@@ -363,12 +363,7 @@ class BusinessController extends Controller
 
         $this->data['d1']  = new Carbon('12/31');
         $this->data['business_transaction'] = BusinessTransaction::where('business_id', $id)->where('digital_certificate_released',"1")->first();
-<<<<<<< HEAD
 
-
-=======
-        
->>>>>>> ee9445b9b75a3da84989f712e5e168d779197297
         if ($this->data['business_transaction']) {
 
             $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
@@ -388,12 +383,7 @@ class BusinessController extends Controller
 
         $this->data['d1']  = new Carbon('12/31');
         $this->data['business_transaction'] = BusinessTransaction::where('id', $id)->where('digital_certificate_released',"1")->first();
-<<<<<<< HEAD
 
-
-=======
-      
->>>>>>> ee9445b9b75a3da84989f712e5e168d779197297
         if ($this->data['business_transaction']) {
             $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
             $this->data['business_lines'] = BusinessActivity::where('application_business_permit_id', $this->data['business_transaction']->business_permit_id)->get();
