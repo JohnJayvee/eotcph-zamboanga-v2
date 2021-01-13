@@ -71,7 +71,8 @@ class Kernel extends HttpKernel
 
         'portal.auth' => \App\Laravel\Middlewares\Portal\Authenticate::class,
         'portal.guest' => \App\Laravel\Middlewares\Portal\RedirectIfAuthenticated::class,
-        
+        'portal.exist' => \App\Laravel\Middlewares\Portal\ExistRecord::class,
+
         'system.admin' => \App\Laravel\Middlewares\System\AdminOnly::class,
         'system.exist' => \App\Laravel\Middlewares\System\ExistRecord::class,
         'system.auth' => \App\Laravel\Middlewares\System\Authenticate::class,

@@ -16,24 +16,22 @@
             <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="">
                 <i class="fas fa-bell fa-lg">
                 </i>
-                <span class="badge badge-danger">{{ $new_notification_count }}</span>
+                <span class="badge badge-danger">{{ $notif_count }}</span>
               </a>
             @endif
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" style="overflow-y: auto; height: 260px;" aria-labelledby="profileDropdown">
+                <div class="text-center " style="bg-color: #999 !important;">
+                    <a href="{{ route('system.business_transaction.read_all_notifs') }}" class="btn btn-sm text-primary w-100">MARK ALL AS READ</a>
+                </div>
                 @if(in_array($auth->type,['super_user','admin']))
                         @forelse ($new_business_cv as $item)
                             @if ($item->owner)
                                 @if (get_class($item) == 'App\Laravel\Models\BusinessTransaction')
-                                    @if ($item->for_bplo_approval == '1')
                                     <a class="dropdown-item" href="{{route('system.business_transaction.show',[$item->id])}}">
-                                        BPLO Admin ,  {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}} is now ready for your approval.
+
+                                         <i class="fas fa-circle text-danger" style="font-size: 8px; {{ $item->isNew != 1 ? 'visibility: hidden;' : '' }}"></i>
+                                         {{ $item->for_bplo_approval == 1 ?  'BPLO Admin, ' : 'New Business Transaction Added ' }} {{  strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}} {{ $item->for_bplo_approval == 1 ?  'is now ready for your approval.' : '' }}
                                     </a>
-                                    @endif
-                                    @if($item->isNew == 1)
-                                    <a class="dropdown-item" href="{{route('system.business_transaction.show',[$item->id])}}">
-                                        New Business Transaction Added {{strtoupper($item->business_name)}} /<br>  {{strtoupper($item->owner->name)}}
-                                    </a>
-                                    @endif
                                 @endif
                                 @if (get_class($item) == 'App\Laravel\Models\Business')
                                     <a class="dropdown-item" href="{{ route('system.business_cv.show', ['id' => $item->id]) }}">
@@ -48,7 +46,7 @@
                     @endforelse
                 @endif
             </div>
-          </li>
+        </li>
         <li class="nav-item nav-profile dropdown navbar-nav-right ml-0" style="width: 250px;">
           <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="profileDropdown">
             <img src="{{strlen($auth->filename) > 0 ? "{$auth->directory}/resized/{$auth->filename}" : asset('placeholder/user.png')}}" alt="profile"/>

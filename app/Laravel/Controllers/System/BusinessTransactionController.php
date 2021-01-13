@@ -11,7 +11,7 @@ namespace App\Laravel\Controllers\System;
  */
 
 
-use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile,BusinessFee,RegulatoryPayment,User,BusinessTaxPayment,BusinessLine};
+use App\Laravel\Models\{BusinessTransaction,Department,RegionalOffice,Application, ApplicationBusinessPermit, ApplicationRequirements, BusinessActivity, TransactionRequirements,CollectionOfFees,ApplicationBusinessPermitFile, Business, BusinessFee,RegulatoryPayment,User,BusinessTaxPayment,BusinessLine};
 
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Events\NotifyDepartmentSMS;
@@ -485,7 +485,7 @@ class BusinessTransactionController extends Controller
 					session()->flash('notification-msg', "Cannot approved transaction with incomplete assessment");
 					return redirect()->route('system.business_transaction.show',[$id]);
 				}
-			   
+
 
 			    if ($regulatory_fee) {
 			    	$business_fee_id = [];
@@ -722,6 +722,7 @@ class BusinessTransactionController extends Controller
 
 			$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
             $transaction->is_validated = 1;
+            $transaction->isNew = 1;
             $department = User::whereIn('department_id', explode(",",$request->get('department_code')))->get();
             $insert = [];
             foreach ($department as $departments ) {
@@ -971,5 +972,27 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
 		}
-	}
+    }
+
+    public function read_all_notifs()
+    {
+        DB::beginTransaction();
+        try{
+            $businesses = Business::where('isNew' , 1)->get();
+            $business_transaction = BusinessTransaction::where('isNew' , 1)->get();
+            foreach($businesses as $b){
+                $b->isNew = 0;
+                $b->save();
+            }
+            foreach($business_transaction as $bs){
+                $bs->isNew = 0;
+                $bs->save();
+            }
+            DB::commit();
+            return redirect()->back();
+        }catch(\Throwable $e){
+            DB::rollback();
+            return redirect()->back();
+        }
+    }
 }

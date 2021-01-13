@@ -102,11 +102,11 @@ class BusinessCVController extends Controller
 	public function  destroy(PageRequest $request,$id = NULL){
 		DB::beginTransaction();
 		try{
-			Customer::find($id)->delete();
+            Business::find($id)->forceDelete();
 			DB::commit();
 			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Collection removed successfully.");
-			return redirect()->route('system.bplo.index');
+            session()->flash('notification-msg', "The Business CV was successfully deleted.");
+			return redirect()->route('system.business_cv.index');
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");

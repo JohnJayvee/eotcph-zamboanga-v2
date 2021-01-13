@@ -17,16 +17,17 @@
                 <div class="card">
                     <div class="card-body" style="padding: 3em">
                         <div class="row mb-4">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <h5 class="text-title text-uppercase mt-3">Business Information
                                     <a href="{{route('web.business.edit')}}" title=""><i class="fas fa-pencil-alt"></i></a>
                                 </h5>
                             </div>
-                            <div class="col-md-6">
-                                <a href="{{route('web.business.history',[$profile->id])}}" class="custom-btn badge-primary-2 text-white " style="float: right;">Application History</a>
+                            <div class="col-md-8 d-flex flex-row">
+                                <a data-removable="{{ $profile->for_removal ? 'true' : 'false' }}" data-url="{{route('web.business.delete',[$profile->id])}}" class="custom-btn-danger btn-delete btn-danger text-white ml-auto mr-2" >Delete Business CV</a>
+                                <a href="{{route('web.business.history',[$profile->id])}}" class="custom-btn badge-primary-2 text-white mr-2" >Application History</a>
                                 @if($business_transaction)
                                     @if($business_transaction->status == "APPROVED" )
-                                        <a href="{{route('web.business_payment.index',[$profile->id])}}" class="mr-2 custom-btn badge-primary-2 text-white " style="float: right;">Business Payment</a>
+                                        <a href="{{route('web.business_payment.index',[$profile->id])}}" class="mr-2 custom-btn badge-primary-2 text-white">Business Payment</a>
                                     @endif
                                 @endif
                             </div>
@@ -343,7 +344,38 @@
 </style>
 @endsection
 @section('page-scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
+<script>
+    $(function(){
+        $(".btn-delete").on('click', function(){
+            var url = $(this).data('url');
+            var is_removable = $(this).data('removable');
+            var btn = $(this)
+            console.log(is_removable);
+            if(is_removable === true){
+                Swal.fire({
+                    title: 'Are you sure you want to delete this Business CV?',
+                    text: "You can't undo this action.",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Delete!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                        window.location.href = url;
+                        }
+                    })
+            }else{
+                Swal.fire(
+                    'Oops, sorry!',
+                    ' You are not allowed to delete this Business CV. There is an existing application connected to this.',
+                    'error'
+                );
+            }
+        });
+    });
+</script>
 
 @endsection

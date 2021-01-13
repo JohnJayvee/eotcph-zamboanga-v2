@@ -69,7 +69,7 @@ class BusinessController extends Controller
                 session()->flash('notification-msg', "Business validated");
                 session()->forget('negativelist');
                 $this->data['business'] = $response->content['data'];
-                
+
                 foreach ($this->data['business']['LineOfBusiness'] as $key => $value) {
                     if(!empty($value['Class'])){
                         $particulars = !empty($value['Particulars']) ? " (".$value['Particulars'].")" : "";
@@ -213,7 +213,7 @@ class BusinessController extends Controller
             session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
             return redirect()->route('web.business.create')->withInput();
         }
-                
+
         /*$request_body = [
             'bnn' => $request->dti_sec_cda_registration_no,
             'business_name' => $request->business_name,
@@ -237,7 +237,7 @@ class BusinessController extends Controller
                 return redirect()->route('web.business.create')->with('bnn-error', 'BNN not found')->withInput(request()->all());
                 break;
             default:
-                
+
             break;
         }*/
 
@@ -359,10 +359,10 @@ class BusinessController extends Controller
     }
 
     public function e_permit(PageRequest $request , $id = NULL){
-       
+
         $this->data['d1']  = new Carbon('12/31');
         $this->data['business_transaction'] = BusinessTransaction::where('business_id', $id)->where('digital_certificate_released',"1")->first();
-        
+
 
         if ($this->data['business_transaction']) {
             $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
@@ -375,14 +375,14 @@ class BusinessController extends Controller
             return redirect()->route('web.main.index');
         }
 
-        
+
     }
 
      public function e_permit_view(PageRequest $request , $id = NULL){
-       
+
         $this->data['d1']  = new Carbon('12/31');
         $this->data['business_transaction'] = BusinessTransaction::where('id', $id)->where('digital_certificate_released',"1")->first();
-      
+
 
         if ($this->data['business_transaction']) {
             $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
@@ -395,7 +395,26 @@ class BusinessController extends Controller
             return redirect()->route('web.main.index');
         }
 
-        
+
+    }
+
+    public function delete(PageRequest $request, $id = null)
+    {
+        DB::beginTransaction();
+        try{
+            Business::find($id)->forceDelete();
+
+            DB::commit();
+            session()->flash('notification-status',"success");
+            session()->flash('notification-msg',"The Business CV was successfully deleted. Don't worry, you can still re-use your Business ID (BID) to create a new Business CV.");
+            return redirect()->route('web.business.index');
+        }catch(\Throwable $e){
+            DB::rollback();
+            session()->flash('notification-status',"failed");
+            session()->flash('notification-msg',"Server Error: Code #{$e->getMessage()}");
+            return redirect()->route('web.business.index');
+        }
+
     }
 
 }

@@ -75,6 +75,7 @@ Route::group(['as' => "web.",
 			Route::post('edit',['as' => "update",'uses' => "BusinessController@business_update"]);
 			Route::get('history/{id?}',['as' => "history",'uses' => "BusinessController@history"]);
             Route::get('application',['as' => "application",'uses' => "BusinessController@application"]);
+            Route::get('delete/{id?}',['as' => "delete",'uses' => "BusinessController@delete", 'middleware' => "portal.exist:business"]);
             Route::group(['prefix' => "application", 'as' => "application."], function () {
                 Route::get('create',['as' => "create",'uses' => "ApplicationController@create"]);
                 Route::post('create',['uses' => "ApplicationController@store"]);
@@ -85,7 +86,7 @@ Route::group(['as' => "web.",
                 });
 
             });
-            
+
         });
         Route::group(['prefix' => "business-payment", 'as' => "business_payment."], function () {
             Route::get('/{id?}',['as' => "index",'uses' => "BusinessPaymentController@index"]);
@@ -108,7 +109,7 @@ Route::group(['as' => "web.",
 	Route::get('e-permit/{id?}',['as' => "e_permit",'uses' => "BusinessController@e_permit"]);
 	Route::get('e-permit-view/{id?}',['as' => "e_permit_view",'uses' => "BusinessController@e_permit_view"]);
 
-	
+
 	Route::group(['prefix' => "digipep",'as' => "digipep."],function(){
 		Route::any('success/{code}',['as' => "success",'uses' => "DigipepController@success"]);
 		Route::any('cancel/{code}',['as' => "cancel",'uses' => "DigipepController@cancel"]);
