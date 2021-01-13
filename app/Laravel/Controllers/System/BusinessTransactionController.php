@@ -823,7 +823,7 @@ class BusinessTransactionController extends Controller
 					$new_business_fee->office_code = $request->get('office_code');
 					$new_business_fee->fee_type = 0;
 					$new_business_fee->save();
-				
+				}
 			}
 
 			if (count($business_array) > 0) {
