@@ -322,8 +322,8 @@
                     </div>
 
                 </div>
-                <a href="{{route('web.business.index')}}" class="btn badge-default-2 mt-2" style="float: right;">Return to Dashboard</a>
-                <a href="{{route('web.business.application.create')}}" class="btn badge-primary-2 mt-2">Submit For Renewal</a>
+                <a  href="{{route('web.business.index')}}" class="btn badge-default-2 mt-2" style="float: right;">Return to Dashboard</a>
+                <a data-ready="{{ $profile->renewal_ready['flag'] ? 'true' : 'false' }}" data-info="{{  $profile->renewal_ready['last_data'] }}" data-url="{{route('web.business.application.create')}}" href="#" class="btn btn-renew badge-primary-2 mt-2">Submit For Renewal</a>
 
             </div>
         </div>
@@ -352,7 +352,6 @@
             var url = $(this).data('url');
             var is_removable = $(this).data('removable');
             var btn = $(this)
-            console.log(is_removable);
             if(is_removable === true){
                 Swal.fire({
                     title: 'Are you sure you want to delete this Business CV?',
@@ -371,6 +370,36 @@
                 Swal.fire(
                     'Oops, sorry!',
                     ' You are not allowed to delete this Business CV. There is an existing application connected to this.',
+                    'error'
+                );
+            }
+        });
+
+        $(".btn-renew").on('click', function(){
+            var url = $(this).data('url');
+            var ready = $(this).data('ready');
+            var info = $(this).data('info');
+            var message = '';
+            var title = '';
+            switch (info) {
+                case "PENDING":
+                    message = 'Sorry, you still have a Pending application for approval. Please wait for BPLO Admin\'s Feedback.';
+                    title = 'Oops, sorry!';
+                    break;
+                case "APPROVED":
+                    message = 'You still have an active and approved business permit application. You can\'t apply multiple applications in one (1) Business ID. ';
+                    title = 'Oops, sorry!';
+                    break;
+                default:
+                    break;
+            }
+            var btn = $(this)
+            if(ready === true){
+                window.location.href = url;
+            }else{
+                Swal.fire(
+                    title,
+                    message,
                     'error'
                 );
             }

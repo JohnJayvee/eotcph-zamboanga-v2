@@ -78,6 +78,23 @@ class Business extends Model{
         return TRUE;
     }
 
+    public function getRenewalReadyAttribute()
+    {
+        // This is bound to break someday without permit expiry date not being final
+        // what to do? check the latest approved permit then add year(1) to the date, then do the query again
+        $permits = $this->permit()->where('created_at', 'LIKE', now()->format('Y') .'-%')->where('type', 'renew')->where(function($q){
+            $q->where('status', 'pending')
+              ->orWhere('status', 'approved');
+        })->get();
+        if($permits->count() >= 1){
+            return array(
+                'flag' => FALSE,
+                'last_data' => strtoupper($permits->first()->status),
+            );
+        }
+        return TRUE;
+    }
+
     public function getBusinessFullAddressAttribute(){
         return Str::title("{$this->unit_no}, {$this->street_address}, {$this->brgy_name}, {$this->town_name}");
     }

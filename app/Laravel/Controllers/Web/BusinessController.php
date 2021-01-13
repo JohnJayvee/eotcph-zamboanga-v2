@@ -204,7 +204,7 @@ class BusinessController extends Controller
             //Event::dispatch('send-new-business_cv', $notification_data);
 
             session()->flash('notification-status', "success");
-            session()->flash('notification-msg', "New Bureau/Office has been added.");
+            session()->flash('notification-msg', "New Business CV has been added.");
             session()->forget('status_code');
             session()->forget('negativelist');
             return redirect()->route('web.business.index');
