@@ -96,7 +96,10 @@ class Business extends Model{
                 'last_data' => strtoupper($transactions->first()->status),
             );
         }
-        return TRUE;
+        return array(
+            'flag' => TRUE,
+            'last_data' => '',
+        );
     }
 
     public function getBusinessFullAddressAttribute(){
