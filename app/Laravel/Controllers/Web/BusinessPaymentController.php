@@ -262,12 +262,7 @@ class BusinessPaymentController extends Controller
 		
 		BusinessFee::where("transaction_id",$this->data['transaction']->id)->where("fee_type", 0)->get();
 
-		$this->data['regulatory_fees'] = DB::table('business_fee')
-			->leftjoin('department', 'department.code', '=', 'business_fee.office_code')
-			->select('business_fee.*','department.*')
-			->where('business_fee.transaction_id', $this->data['transaction']->id)
-			->where('business_fee.fee_type', 0)
-			->get();
+		$this->data['regulatory_fees'] = BusinessFee::->where('transaction_id', $this->data['transaction']->id)->where('fee_type', 0)->get();
 
 		$business_tax = DB::table('business_fee')
 			->leftjoin('department', 'department.code', '=', 'business_fee.office_code')
