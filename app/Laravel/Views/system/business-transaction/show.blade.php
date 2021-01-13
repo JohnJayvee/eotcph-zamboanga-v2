@@ -242,7 +242,7 @@
           <div class="col-md-6">
             @if(Auth::user()->type == "processor" and $transaction->department_involved)
               @if(in_array(Auth::user()->department->code, json_decode($transaction->department_involved)))
-                <a href="{{route('system.business_transaction.assessment',[$transaction->id])}}"  class="btn btn-primary border-5 text-white float-right">Get Assessment Details</a>
+              <a href="{{route('system.business_transaction.assessment',[$transaction->id])}}"  class="btn btn-primary border-5 text-white float-right">Get Assessment Details</a>
               @endif
             @endif
           </div>
@@ -255,9 +255,10 @@
                   <th class="text-title" rowspan="2" style="vertical-align: middle;">Total Amount</th>
                   <th class="text-title" rowspan="2" style="vertical-align: middle;">Fee Type</th>
 
-                  <th class="text-title p-3" colspan="2">Breakdown</th>
+                  <th class="text-title p-3" colspan="3">Breakdown</th>
                 </tr>
                 <tr class="text-center">
+                  <th class="text-title p-3">Office Code</th>
                   <th class="text-title p-3">Account Name</th>
                   <th class="text-title p-3">Amount</th>
                 </tr>
@@ -272,6 +273,7 @@
                   </tr>
                   @foreach(json_decode($fee->collection_of_fees) as $collection)
                     <tr >
+                      <td style="font-size: 12px;" class="p-2">{{$collection->OfficeCode}}</td>
                       <td style="font-size: 12px;" class="p-2">{{$collection->BusinessID}}</td>
                       <td style="font-size: 12px;" class="p-2">PHP {{Helper::money_format($collection->Amount)}}</td>
                     </tr>
@@ -294,9 +296,10 @@
                   <th class="text-title" rowspan="2" style="vertical-align: middle;">Total Amount</th>
                   <th class="text-title" rowspan="2" style="vertical-align: middle;">Fee Type</th>
 
-                  <th class="text-title p-3" colspan="2">Breakdown</th>
+                  <th class="text-title p-3" colspan="3">Breakdown</th>
                 </tr>
                 <tr class="text-center">
+                  <th class="text-title p-3">Office Code</th>
                   <th class="text-title p-3">Account Name</th>
                   <th class="text-title p-3">Amount</th>
                 </tr>
@@ -311,6 +314,7 @@
                   </tr>
                   @foreach(json_decode($fee->collection_of_fees) as $collection)
                     <tr >
+                      <td style="font-size: 12px;" class="p-2">{{$collection->OfficeCode}}</td>
                       <td style="font-size: 12px;" class="p-2">{{$collection->BusinessID}}</td>
                       <td style="font-size: 12px;" class="p-2">PHP {{Helper::money_format($collection->Amount)}}</td>
                     </tr>
@@ -333,9 +337,10 @@
                   <th class="text-title" rowspan="2" style="vertical-align: middle;">Total Amount</th>
                   <th class="text-title" rowspan="2" style="vertical-align: middle;">Fee Type</th>
 
-                  <th class="text-title p-3" colspan="2">Breakdown</th>
+                  <th class="text-title p-3" colspan="3">Breakdown</th>
                 </tr>
                 <tr class="text-center">
+                  <th class="text-title p-3">Office Code</th>
                   <th class="text-title p-3">Account Name</th>
                   <th class="text-title p-3">Amount</th>
                 </tr>
@@ -343,13 +348,13 @@
               <tbody>
                 @forelse($garbage_fee as $fee)
                   <tr class="text-center">
-
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{$fee->department->name}} </td>
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">PHP {{Helper::money_format($fee->amount)}} </td>
                     <td rowspan="{{count(json_decode($fee->collection_of_fees)) + 1}}">{{ Helper::fee_type($fee->fee_type)}} </td>
                   </tr>
                   @foreach(json_decode($fee->collection_of_fees) as $collection)
                     <tr >
+                      <td style="font-size: 12px;" class="p-2">{{$collection->OfficeCode}}</td>
                       <td style="font-size: 12px;" class="p-2">{{$collection->BusinessID}}</td>
                       <td style="font-size: 12px;" class="p-2">PHP {{Helper::money_format($collection->Amount)}}</td>
                     </tr>

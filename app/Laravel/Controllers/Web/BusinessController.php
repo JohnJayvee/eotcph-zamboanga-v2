@@ -11,6 +11,7 @@ use App\Laravel\Models\BusinessLine;
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Events\SendNewBusinessCV;
 use App\Laravel\Models\BusinessTransaction;
+use App\Laravel\Models\BusinessActivity;
 use App\Laravel\Requests\Web\UploadRequest;
 use App\Laravel\Requests\Web\BusinessRequest;
 use App\Laravel\Events\SendNewBusinessCVEmail;
@@ -362,11 +363,16 @@ class BusinessController extends Controller
 
         $this->data['d1']  = new Carbon('12/31');
         $this->data['business_transaction'] = BusinessTransaction::where('business_id', $id)->where('digital_certificate_released',"1")->first();
+<<<<<<< HEAD
 
 
+=======
+        
+>>>>>>> ee9445b9b75a3da84989f712e5e168d779197297
         if ($this->data['business_transaction']) {
+
             $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
-            $this->data['business_lines'] = BusinessLine::where('business_id' , $this->data['business']->id)->get();
+            $this->data['business_lines'] = BusinessActivity::where('application_business_permit_id', $this->data['business_transaction']->business_permit_id)->get();
             $pdf = PDF::loadView('pdf.e-permit',$this->data)->setPaper('a4', 'landscape');
             return $pdf->stream("e-permit.pdf");
         }else{
@@ -382,11 +388,15 @@ class BusinessController extends Controller
 
         $this->data['d1']  = new Carbon('12/31');
         $this->data['business_transaction'] = BusinessTransaction::where('id', $id)->where('digital_certificate_released',"1")->first();
+<<<<<<< HEAD
 
 
+=======
+      
+>>>>>>> ee9445b9b75a3da84989f712e5e168d779197297
         if ($this->data['business_transaction']) {
             $this->data['business'] = Business::find($this->data['business_transaction']->business_id);
-            $this->data['business_lines'] = BusinessLine::where('business_id' , $this->data['business']->id)->get();
+            $this->data['business_lines'] = BusinessActivity::where('application_business_permit_id', $this->data['business_transaction']->business_permit_id)->get();
             $pdf = PDF::loadView('pdf.e-permit',$this->data)->setPaper('a4', 'landscape');
             return $pdf->stream("e-permit.pdf");
         }else{

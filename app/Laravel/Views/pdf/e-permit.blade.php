@@ -25,7 +25,7 @@
 		<tr>
 			<td width="10%" class="text-center"><img src="{{ public_path('web/img/zamboanga-official-seal.jpg') }}" width="70%"></td>
 			<td width="10%"></td>
-			<td width="60%" class="text-center">Republic of the Philipines<br>OFFICE OF THE MAYOR <br><b>PERMITS and LICENSES DIVISION</b> <br> Zamboanga City</td>
+			<td width="60%" class="text-center">Republic of the Philippines<br>OFFICE OF THE CITY MAYOR <br><b>PERMITS and LICENSES DIVISION</b> <br> Zamboanga City</td>
 			<td width="10%"><img src="{{ public_path('web/img/zbpic2.jpg') }}" width="55%" style="float: right;"></td>
 			<td width="10%" class="text-center"><img src="{{ public_path('web/img/zbpic1.jpg') }}" width="60%"></td>
 		</tr>
@@ -39,9 +39,9 @@
 	</tbody>
 </table>
 <p class="lh1 fs14">This certifies that <b class="text-uppercase">&nbsp;&nbsp; {{$business->owner->name}}</b></p>
-<p class="lh1 fs14">with registered tradae name as <b class="text-uppercase">&nbsp;&nbsp;  {{$business->business_name}}</b></p>
+<p class="lh1 fs14">with registered trade name as <b class="text-uppercase">&nbsp;&nbsp;  {{$business->business_name}}</b></p>
 <p class="lh1 fs14">located at <b class="text-uppercase">&nbsp;&nbsp;  {{$business->business_full_address}}</b></p>
-<p class="lh1 fs14">has granted the PERMIT TO OPERATE the following business/es pursuant to the Revenue Code and Ordinances of the City of Zamboanga</p>
+<p class="lh1 fs14">has granted the PERMIT TO OPERATE the following business/es pursuant to the Revenue Code and Ordinances of the City of Zamboanga.</p>
 
 <table width="100%" border="1" cellpadding="0" cellspacing="0">
 	<thead>
@@ -52,7 +52,7 @@
 	<tbody>
 		@forelse($business_lines as $business_line)
 			<tr>
-				<td class="text-center text-uppercase" style="border: none;padding: 5px;">{{$business_line->name}}</td>
+				<td class="text-center text-uppercase" style="border: none;padding: 5px;">{{$business_line->line_of_business}}</td>
 			</tr>
 		@empty
 		@endforelse
@@ -70,7 +70,7 @@
 			<tbody>
 				<tr>
 					<td>Owner</td>
-					<td>{{$business->owner->name}}</td>
+					<td>{{strtoupper($business->owner->name)}}</td>
 				</tr>
 				<tr>
 					<td>Date Issued</td>
@@ -89,7 +89,7 @@
 				</tr>
 				<tr>
 					<td>Type</td>
-					<td>{{str::title($business->permit->type)}}</td>
+					<td>{{$business->permit->type == "renew" ? "Renewal" : "New"}}</td>
 					<td>Printed By: CLD</td>
 				</tr>
 			</tbody>

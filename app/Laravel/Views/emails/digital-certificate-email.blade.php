@@ -71,7 +71,7 @@
 				<th colspan="2">
 					<p>Please refer to the attached file to download your Digital Certificate.</p>
 					<p><a href="{{$link}}" target="_blank">Click this link to download your Certificate</a></p>
-					<p>Thank you for choosing EOTC-PHP!</p>
+					<p>Thank you for choosing OBOSS!</p>
 				</th>
 			</tr>
 			<tr>
