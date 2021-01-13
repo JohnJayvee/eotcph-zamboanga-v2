@@ -813,17 +813,17 @@ class BusinessTransactionController extends Controller
 				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 0)->first();
 				if ($existing) {
 					$existing->delete();
-				}else{
-					$new_business_fee = new BusinessFee();
-					$new_business_fee->business_id = $this->data['transaction']->business_id;
-					$new_business_fee->transaction_id =$this->data['transaction']->id;
-					$new_business_fee->collection_of_fees = json_encode($regulatory_array);
-					$new_business_fee->amount = Helper::db_amount($total_amount);
-					$new_business_fee->status = "PENDING";
-					$new_business_fee->office_code = $request->get('office_code');
-					$new_business_fee->fee_type = 0;
-					$new_business_fee->save();
 				}
+				$new_business_fee = new BusinessFee();
+				$new_business_fee->business_id = $this->data['transaction']->business_id;
+				$new_business_fee->transaction_id =$this->data['transaction']->id;
+				$new_business_fee->collection_of_fees = json_encode($regulatory_array);
+				$new_business_fee->amount = Helper::db_amount($total_amount);
+				$new_business_fee->status = "PENDING";
+				$new_business_fee->office_code = $request->get('office_code');
+				$new_business_fee->fee_type = 0;
+				$new_business_fee->save();
+				
 			}
 
 			if (count($business_array) > 0) {
@@ -834,17 +834,17 @@ class BusinessTransactionController extends Controller
 				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 1)->first();
 				if ($existing) {
 					$existing->delete();
-				}else{
-					$new_business_fee = new BusinessFee();
-					$new_business_fee->business_id = $this->data['transaction']->business_id;
-					$new_business_fee->transaction_id =$this->data['transaction']->id;
-					$new_business_fee->collection_of_fees = json_encode($business_array);
-					$new_business_fee->amount = Helper::db_amount($total_amount);
-					$new_business_fee->status = "PENDING";
-					$new_business_fee->office_code = $request->get('office_code');
-					$new_business_fee->fee_type = 1;
-					$new_business_fee->save();
 				}
+				$new_business_fee = new BusinessFee();
+				$new_business_fee->business_id = $this->data['transaction']->business_id;
+				$new_business_fee->transaction_id =$this->data['transaction']->id;
+				$new_business_fee->collection_of_fees = json_encode($business_array);
+				$new_business_fee->amount = Helper::db_amount($total_amount);
+				$new_business_fee->status = "PENDING";
+				$new_business_fee->office_code = $request->get('office_code');
+				$new_business_fee->fee_type = 1;
+				$new_business_fee->save();
+				
 
 			}
 
@@ -856,17 +856,17 @@ class BusinessTransactionController extends Controller
 				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 2)->first();
 				if ($existing) {
 					$existing->delete();
-				}else{
-					$new_business_fee = new BusinessFee();
-					$new_business_fee->business_id = $this->data['transaction']->business_id;
-					$new_business_fee->transaction_id =$this->data['transaction']->id;
-					$new_business_fee->collection_of_fees = json_encode($garbage_array);
-					$new_business_fee->amount = Helper::db_amount($total_amount);
-					$new_business_fee->status = "PENDING";
-					$new_business_fee->office_code = $request->get('office_code');
-					$new_business_fee->fee_type = 2;
-					$new_business_fee->save();
 				}
+				$new_business_fee = new BusinessFee();
+				$new_business_fee->business_id = $this->data['transaction']->business_id;
+				$new_business_fee->transaction_id =$this->data['transaction']->id;
+				$new_business_fee->collection_of_fees = json_encode($garbage_array);
+				$new_business_fee->amount = Helper::db_amount($total_amount);
+				$new_business_fee->status = "PENDING";
+				$new_business_fee->office_code = $request->get('office_code');
+				$new_business_fee->fee_type = 2;
+				$new_business_fee->save();
+				
 
 			}
 
