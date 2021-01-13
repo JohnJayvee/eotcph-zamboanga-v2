@@ -323,7 +323,7 @@
 
                 </div>
                 <a  href="{{route('web.business.index')}}" class="btn badge-default-2 mt-2" style="float: right;">Return to Dashboard</a>
-                <a data-ready="{{ $profile->renewal_ready['flag'] ? 'true' : 'false' }}" data-info="{{  $profile->renewal_ready['last_data'] }}" data-url="{{route('web.business.application.create')}}" href="#" class="btn btn-renew badge-primary-2 mt-2">Submit For Renewal</a>
+                <a data-ready="{{ $profile->renewal_ready['flag'] ? 'true' : 'false' }}" data-info="{{  $profile->renewal_ready['last_data'] }}" data-url="{{route('web.business.application.create')}}"  class="btn btn-renew badge-primary-2 mt-2 text-white">Submit For Renewal</a>
 
             </div>
         </div>

@@ -82,14 +82,17 @@ class Business extends Model{
     {
         // This is bound to break someday without permit expiry date not being final
         // what to do? check the latest approved permit then add year(1) to the date, then do the query again
-        $permits = $this->permit()->where('created_at', 'LIKE', now()->format('Y') .'-%')->where('type', 'renew')->where(function($q){
-            $q->where('status', 'pending')
-              ->orWhere('status', 'approved');
+        $transactions = $this->business_transaction()->where('created_at', 'LIKE', now()->format('Y') .'-%')->where('application_name', 'Business Permit')->where(function($q){
+            $q->where('status', 'PENDING')
+              ->orWhere('status', 'APPROVED');
+        })->where(function($q){
+            $q->where('payment_status', 'PAID')
+            ->orWhere('payment_status', 'UNPAID');
         })->get();
-        if($permits->count() >= 1){
+        if($transactions->count() >= 1){
             return array(
                 'flag' => FALSE,
-                'last_data' => strtoupper($permits->first()->status),
+                'last_data' => strtoupper($transactions->first()->status),
             );
         }
         return TRUE;
@@ -105,6 +108,10 @@ class Business extends Model{
 
     public function permit(){
         return $this->BelongsTo("App\Laravel\Models\ApplicationBusinessPermit",'id','business_id');
+    }
+
+    public function business_transaction(){
+        return $this->BelongsTo("App\Laravel\Models\BusinessTransaction",'id','business_id');
     }
 
     public function scopeKeyword($query,$keyword = NULL){
