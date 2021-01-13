@@ -70,7 +70,7 @@
 			<tbody>
 				<tr>
 					<td>Owner</td>
-					<td>{{$business->owner->name}}</td>
+					<td>{{str::title($business->owner->name)}}</td>
 				</tr>
 				<tr>
 					<td>Date Issued</td>
@@ -89,7 +89,7 @@
 				</tr>
 				<tr>
 					<td>Type</td>
-					<td>{{str::title($business->permit->type)}}</td>
+					<td>{{$business->permit->type == "renew" ? "Renewal" : "New"}}</td>
 					<td>Printed By: CLD</td>
 				</tr>
 			</tbody>
