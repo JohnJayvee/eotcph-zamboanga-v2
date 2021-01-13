@@ -381,7 +381,6 @@
             var info = $(this).data('info');
             var message = '';
             var title = '';
-            console.log(info);
             switch (info) {
                 case "PENDING":
                     message = 'Sorry, you still have a Pending application for approval. Please wait for BPLO Admin\'s Feedback.';

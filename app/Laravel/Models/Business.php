@@ -89,6 +89,7 @@ class Business extends Model{
             $q->where('payment_status', 'PAID')
             ->orWhere('payment_status', 'UNPAID');
         })->get();
+        info('transaction permits' , ['data' => $transactions]);
         if($transactions->count() >= 1){
             return array(
                 'flag' => FALSE,
