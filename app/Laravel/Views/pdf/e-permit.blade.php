@@ -52,7 +52,7 @@
 	<tbody>
 		@forelse($business_lines as $business_line)
 			<tr>
-				<td class="text-center text-uppercase" style="border: none;padding: 5px;">{{$business_line->name}}</td>
+				<td class="text-center text-uppercase" style="border: none;padding: 5px;">{{$business_line->line_of_business}}</td>
 			</tr>
 		@empty
 		@endforelse
