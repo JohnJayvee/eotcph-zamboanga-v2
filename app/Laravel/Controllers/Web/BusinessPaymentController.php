@@ -268,6 +268,13 @@ class BusinessPaymentController extends Controller
 
 		$this->data['garbage_fee'] = BusinessFee::where('transaction_id', $this->data['transaction']->id)->where('fee_type', 2)->first();
 
+		 $this->data['business_activity'] = DB::table('business_activities as activity')
+                                        ->leftjoin('business_line', 'activity.application_business_permit_id', '=', 'business_line.business_id')
+                                        ->select('business_line.name as bLine', 'business_line.gross_sales as bGross' ,'activity.*')
+                                        ->where('activity.application_business_permit_id', $this->data['transaction']->business_id)
+                                        ->groupBy('application_business_permit_id')
+                                        ->get();
+
 		/*$business_tax = DB::table('business_fee')
 			->leftjoin('department', 'department.code', '=', 'business_fee.office_code')
 			->select('business_fee.*','department.*')
@@ -283,20 +290,11 @@ class BusinessPaymentController extends Controller
 			->where('business_fee.fee_type', 2)
 			->first();*/
 		
-        $this->data['business_activity'] = DB::table('business_activities as activity')
-                                        ->leftjoin('business_line', 'activity.application_business_permit_id', '=', 'business_line.business_id')
-                                        ->select('business_line.name as bLine', 'business_line.gross_sales as bGross' ,'activity.*')
-                                        ->where('activity.application_business_permit_id', $this->data['transaction']->business_id)
-                                        ->groupBy('application_business_permit_id')
-                                        ->get();
-
-        //$this->data['regulatory_fees'] = BusinessFee::where('transaction_id',8)->where('fee_type' , 0)->get();
-        //$this->data['business_tax'] = BusinessFee::where('transaction_id',8)->where('fee_type' , 1)->get();
-        //$this->data['total_regulatory'] = $this->data['regulatory_fees']->sum('amount');
+       
                                         
       	$pdf = PDF::loadView('pdf.business-permit-assessment-details',$this->data)->setPaper('a4', 'landscape');
 
-        return $pdf->stream("business-permit-assessment-details.pdf");
+        return $pdf->download("business-permit-assessment-details.pdf");
 
       
         //return view('pdf.business-permit-assessment-details', $this->data);
