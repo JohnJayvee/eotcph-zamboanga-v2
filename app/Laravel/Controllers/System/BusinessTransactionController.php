@@ -477,10 +477,10 @@ class BusinessTransactionController extends Controller
 
 			if ($type == "APPROVED") {
 				$regulatory_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 0)->get();
-			    $business_tax = BusinessFee::where('transaction_id', $id)->where('fee_type' , 1)->get();
+			    $business_tax = BusinessFee::where('transaction_id', $id)->where('fee_type' , 1)->first();
 			    $garbage_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 2)->get();
 
-				if ((count($regulatory_fee) == 0) || (count($business_tax) == 0) || count($garbage_fee) == 0 ) {
+				if (count($regulatory_fee) == 0 || !$business_tax || count($garbage_fee) == 0 ) {
 
 					session()->flash('notification-status', "failed");
 					session()->flash('notification-msg', "Cannot approved transaction with incomplete assessment");
