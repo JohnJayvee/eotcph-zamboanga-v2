@@ -72,7 +72,14 @@ class Business extends Model{
     }
 
     public function getForRemovalAttribute(){
-        if($this->permit()->get()->count() > 0){
+        $transactions = $this->business_transaction()->where(function($q){
+            $q->where('status', 'PENDING')
+              ->orWhere('status', 'APPROVED');
+        })->where(function($q){
+            $q->where('payment_status', 'PAID')
+            ->orWhere('payment_status', 'UNPAID');
+        })->get();
+        if($transactions->count() >= 1){
             return FALSE;
         }
         return TRUE;
@@ -89,7 +96,6 @@ class Business extends Model{
             $q->where('payment_status', 'PAID')
             ->orWhere('payment_status', 'UNPAID');
         })->get();
-        info('transaction permits' , ['data' => $transactions]);
         if($transactions->count() >= 1){
             return array(
                 'flag' => FALSE,
