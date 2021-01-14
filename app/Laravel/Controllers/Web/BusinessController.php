@@ -247,6 +247,11 @@ class BusinessController extends Controller
 
 		$this->data['page_title'] = "Create Business CV";
         $this->data['profile'] = Business::find($id);
+        if(!$this->data['profile']){
+            session()->flash('notification-status', "failed");
+            session()->flash('notification-msg', "Business CV has been deleted");
+            return redirect()->route('web.business.index');
+        }
         $this->data['business_transaction'] = BusinessTransaction::where('business_id', $id)->first();
         $this->data['business_line'] = BusinessLine::where('business_id', session()->get('selected_business_id'))->get();
         session()->put('selected_business_id', $id);
