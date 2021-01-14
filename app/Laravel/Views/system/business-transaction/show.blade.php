@@ -36,7 +36,9 @@
             @endif
             @if (!$transaction->business_info)
             <h6 class="text-danger mt-3">BUSINESS CV HAS BEEN DELETED</h6>
-            {{-- <span class="text-muted"> <small>Deleted by: {{ $transaction->admin_delete }}</small></span> --}}
+            {{-- @if (!empty($transaction->admin_delete))
+                <span class="text-muted"> <small>Deleted by: {{ $transaction->admin_delete }}</small></span>
+            @endif --}}
             @endif
           </div>
         </div>

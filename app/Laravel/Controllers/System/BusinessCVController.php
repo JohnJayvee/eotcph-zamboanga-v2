@@ -107,7 +107,7 @@ class BusinessCVController extends Controller
             $transaction->deleted_by = auth()->guard('user')->user()->id;
             $transaction->save();
 
-            // Business::find($id)->forceDelete();
+            Business::find($id)->forceDelete();
 			DB::commit();
 			session()->flash('notification-status', "success");
             session()->flash('notification-msg', "The Business CV was successfully deleted.");
