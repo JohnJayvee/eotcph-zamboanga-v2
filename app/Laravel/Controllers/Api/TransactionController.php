@@ -23,7 +23,7 @@ use App\Laravel\Transformers\{TransformerManager, TransactionTransformer,Busines
 /* App classes
  */
 use Illuminate\Support\Facades\Auth;
-use Carbon,DB,Str,FileUploader,URL,Helper,ImageUploader;
+use Carbon,DB,Str,FileUploader,URL,Helper,ImageUploader,Event;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -138,7 +138,7 @@ class TransactionController extends Controller{
         $business_transactions->payment_status = $request->get('status');
         $business_transactions->digital_certificate_released = "1";
         $business_transactions->save();
-        
+
         if ($business_transactions->payment_status == "PAID") {
             $insert[] = [
             'email' => $business_transactions->owner ? $business_transactions->owner->email : $business_transactions->email,
