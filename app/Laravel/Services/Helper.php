@@ -711,7 +711,6 @@ class Helper{
                 ->returnResponseObject()
                 ->post();
 			    $code = $response->status;
-
 			    return $code >= 200 AND $code <= 299 ? TRUE : FALSE;
 
     }

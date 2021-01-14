@@ -23,17 +23,21 @@
           <label>Application Type</label>
          {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <label>Payment Status</label>
           {!!Form::select("processing_fee_status", $status, $selected_processing_fee_status, ['id' => "input_processing_fee_status", 'class' => "custom-select"])!!}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <label>For BPLO Approval</label>
           {!!Form::select("bplo_approval", $approval, $selected_bplo_approval, ['id' => "input_bplo_approval", 'class' => "custom-select"])!!}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label>Validation</label>
             {!!Form::select("processor", $processor, $selected_processor, ['id' => "input_processor", 'class' => "custom-select"])!!}
+        </div>
+        <div class="col-md-3">
+            <label>Department</label>
+            {!!Form::select("department_id", $departments, $selected_department, ['id' => "input_processor", 'class' => "custom-select"])!!}
         </div>
       </div>
       <div class="row">

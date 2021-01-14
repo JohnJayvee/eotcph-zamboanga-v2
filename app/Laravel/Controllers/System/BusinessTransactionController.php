@@ -39,6 +39,7 @@ class BusinessTransactionController extends Controller
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
 
+		$this->data['departments'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();
         $this->data['business_scopes'] = ["" => "Choose Business Scope",'national' => "National",'regional' => "Regional",'municipality' => "City/Municipality",'barangay' => "Barangay"];
 		$this->data['business_types'] = ["" => "Choose Business Type",'sole_proprietorship' => "Sole Proprietorship",'cooperative' => "Cooperative",'corporation' => "Corporation",'partnership' => "Partnership"];
 		$this->data['regional_offices'] = ['' => "Choose Regional Offices"] + RegionalOffice::pluck('name', 'id')->toArray();
@@ -75,10 +76,12 @@ class BusinessTransactionController extends Controller
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_bplo_approval'] = $request->get('bplo_approval');
 		$this->data['selected_processor'] = $request->get('processor');
+		$this->data['selected_department'] = $request->get('department_id');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
         $this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
 
+        $this->data['department'] = Department::find($this->data['selected_department']);
 		$this->data['transactions'] = BusinessTransaction::with('application_permit')->with('owner')->where('status',"PENDING")->where('is_resent',0)->whereHas('application_permit',function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(business_name)  LIKE  '%{$this->data['keyword']}%'")
@@ -104,6 +107,11 @@ class BusinessTransactionController extends Controller
 				->where(function($query){
 					if(strlen($this->data['selected_processor']) > 0){
 						return $query->where('is_validated',$this->data['selected_processor']);
+					}
+                })
+                ->where(function($query){
+					if(strlen($this->data['selected_department']) > 0){
+						return $query->whereJsonContains('department_involved',$this->data['department']->code);
 					}
                 })
                 ->where(function($query) use($auth){
