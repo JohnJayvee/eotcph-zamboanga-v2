@@ -75,7 +75,7 @@ class BusinessPermitController extends Controller{
             $new_business_transaction->business_name = $business->business_name;
             $new_business_transaction->email = $auth->email;
             $new_business_transaction->contact_number = $auth->contact_number;
-            $new_business_transaction->application_id = $new_business_permit->id;
+            $new_business_transaction->application_id = session('application_id');
             $new_business_transaction->application_name = session('application_name');
             $new_business_transaction->application_date = Carbon::now();
             $new_business_transaction->business_permit_id = $new_business_permit->id;
