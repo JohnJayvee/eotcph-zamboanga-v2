@@ -30,12 +30,6 @@ class ApplicationController extends Controller{
     }
 
     public function create(){
-        $permits = ApplicationBusinessPermit::where('customer_id', Auth::guard('customer')->user()->id)->where('business_id', session('selected_business_id'))->where('created_at', 'LIKE', now()->format('Y') .'-%')->where('type', 'renew')->where('status', 'pending')->count();
-        if($permits >= 1){
-            session()->flash('notification-status',"warning");
-            session()->flash('notification-msg',"Sorry, you still have a Pending application for approval. Please wait for BPLO Admin's Feedback.");
-            return redirect()->back();
-        }
 
         $business_id = session()->get('selected_business_id');
         $this->data['page_title'] = "Choose Application";
@@ -50,7 +44,7 @@ class ApplicationController extends Controller{
 
     public function store(PageRequest $request){
         $business_id = session()->get('selected_business_id');
-      
+
 
     	$application = Application::find($request->get('application_type'));
         session()->put('application.transaction_type',$request->transaction_type);

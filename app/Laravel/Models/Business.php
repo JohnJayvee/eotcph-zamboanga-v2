@@ -78,6 +78,30 @@ class Business extends Model{
         return TRUE;
     }
 
+    public function getRenewalReadyAttribute()
+    {
+        // This is bound to break someday without permit expiry date not being final
+        // what to do? check the latest approved permit then add year(1) to the date, then do the query again
+        $transactions = $this->business_transaction()->where('created_at', 'LIKE', now()->format('Y') .'-%')->where('application_name', 'Business Permit')->where(function($q){
+            $q->where('status', 'PENDING')
+              ->orWhere('status', 'APPROVED');
+        })->where(function($q){
+            $q->where('payment_status', 'PAID')
+            ->orWhere('payment_status', 'UNPAID');
+        })->get();
+        info('transaction permits' , ['data' => $transactions]);
+        if($transactions->count() >= 1){
+            return array(
+                'flag' => FALSE,
+                'last_data' => strtoupper($transactions->first()->status),
+            );
+        }
+        return array(
+            'flag' => TRUE,
+            'last_data' => '',
+        );
+    }
+
     public function getBusinessFullAddressAttribute(){
         return Str::title("{$this->unit_no}, {$this->street_address}, {$this->brgy_name}, {$this->town_name}");
     }
@@ -88,6 +112,10 @@ class Business extends Model{
 
     public function permit(){
         return $this->BelongsTo("App\Laravel\Models\ApplicationBusinessPermit",'id','business_id');
+    }
+
+    public function business_transaction(){
+        return $this->BelongsTo("App\Laravel\Models\BusinessTransaction",'id','business_id');
     }
 
     public function scopeKeyword($query,$keyword = NULL){
