@@ -403,8 +403,10 @@ class BusinessController extends Controller
         DB::beginTransaction();
         try{
             $transaction = BusinessTransaction::where('business_id', $id)->first();
-            $transaction->deleted_by = "customer";
-            $transaction->save();
+            if($transaction){
+                $transaction->deleted_by = "customer";
+                $transaction->save();
+            }
 
             Business::find($id)->forceDelete();
 

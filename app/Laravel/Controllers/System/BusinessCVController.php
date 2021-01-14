@@ -104,16 +104,18 @@ class BusinessCVController extends Controller
 		DB::beginTransaction();
 		try{
             $transaction = BusinessTransaction::where('business_id', $id)->first();
-            $transaction->deleted_by = auth()->guard('user')->user()->id;
-            $transaction->save();
-
+            if($transaction){
+                $transaction->deleted_by = auth()->guard('user')->user()->id;
+                $transaction->save();
+            }
             Business::find($id)->forceDelete();
 			DB::commit();
 			session()->flash('notification-status', "success");
             session()->flash('notification-msg', "The Business CV was successfully deleted.");
 			return redirect()->route('system.business_cv.index');
 		}catch(\Exception $e){
-			DB::rollback();
+            DB::rollback();
+            throw $e;
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
 			return redirect()->back();

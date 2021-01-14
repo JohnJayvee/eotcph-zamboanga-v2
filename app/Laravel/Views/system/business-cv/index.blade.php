@@ -14,11 +14,6 @@
     </div>
   </div>
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-12">
-                @include('system._components.notifications')
-            </div>
-        </div>
         <form>
             <div class="row">
                 <div class="col-md-3">
