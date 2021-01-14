@@ -63,6 +63,17 @@ class BusinessTransaction extends Model{
     protected $casts = [
     ];
 
+
+
+    public function getAdminDeleteAttribute()
+    {
+        $admin = User::find($this->deleted_by);
+        if($admin){
+            return $admin == 'customer' ? 'customer' : ($admin->fname . ' ' .$admin->lname);
+        }
+        return '';
+    }
+
     public function owner(){
         return $this->BelongsTo("App\Laravel\Models\Customer",'owners_id','id');
     }

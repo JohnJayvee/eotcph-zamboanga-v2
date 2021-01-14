@@ -20,12 +20,12 @@
           <div class="col-md-1 text-center">
             <img src="{{asset('system/images/default.jpg')}}" class="rounded-circle" width="100%">
           </div>
-          <div class="col-md-9 d-flex">
+          <div class="col-md-8 d-flex">
             <p class="text-title fw-500 pt-3">Application by: <span class="text-black">{{Str::title($transaction->customer ? $transaction->customer->full_name : $transaction->customer_name)}}</span></p>
             <p class="text-title fw-500 pl-3" style="padding-top: 15px;">|</p>
             <p class="text-title fw-500 pt-3 pl-3">Application Sent: <span class="text-black">{{ Helper::date_format($transaction->created_at)}}</span></p>
           </div>
-          <div class="col-md-2 d-flex align-items-end flex-column">
+          <div class="col-md-3 d-flex align-items-end flex-column">
             <p class="pull-right badge badge-danger">Checked the I Agree Checkbox</p>
             <!-- <a href="{{ route('system.business_transaction.digital_cerficate', ['id' => $transaction->id]) }}" class="badge badge-info" target="_blank">Release Digital Certificate</a> -->
             @if($transaction->digital_certificate_released == "0" and $transaction->payment_status == "PAID")
@@ -33,6 +33,10 @@
             @endif
             @if($transaction->digital_certificate_released == "1" and $transaction->payment_status == "PAID")
               <a class="badge badge-info " href="{{route('web.e_permit_view',[$transaction->id])}}" target="_blank">View Digital Certificate</a>
+            @endif
+            @if (!$transaction->business_info)
+            <h6 class="text-danger mt-3">BUSINESS CV HAS BEEN DELETED</h6>
+            {{-- <span class="text-muted"> <small>Deleted by: {{ $transaction->admin_delete }}</small></span> --}}
             @endif
           </div>
         </div>
@@ -47,22 +51,24 @@
           <div class="col-md-6">
             <p class="text-title fw-500" style="font-size: 1.2rem;">Application Number: <span class="text-black">{{str::title($transaction->application_permit->application_no)}}</span></p>
             <p class="text-title fw-500">Business Name: <span class="text-black">{{str::title($transaction->business_name)}}</span></p>
-            <p class="text-title fw-500">Business ID Number: <span class="text-black">{{str::title($transaction->business_info->business_id_no)}}</span></p>
-            <p class="text-title fw-500">Dominant Name: <span class="text-black">{{str::title($transaction->business_info->dominant_name)}}</span></p>
-            <p class="text-title fw-500">Business Number: <span class="text-black">{{$transaction->business_info->dti_sec_cda_registration_no ?: "-"}}</span></p>
-            <p class="text-title fw-500">Cedula Number: <span class="text-black">{{str::title($transaction->business_info->ctc_no)}}</span></p>
-            <p class="text-title fw-500">Business Type: <span class="text-black">{{str::title($transaction->business_info->business_type)}}</span></p>
-            <p class="text-title fw-500">Business Scope: <span class="text-black">{{str::title($transaction->business_info->business_scope)}}</span></p>
-            <p class="text-title fw-500">Business Mobile No.: <span class="text-black"> +63{{$transaction->business_info->mobile_no}}</span></p>
-            <p class="text-title fw-500">Business Tel No.: <span class="text-black"> {{$transaction->business_info->telephone_no}}</span></p>
-            <p class="text-title fw-500">Business Email: <span class="text-black">{{$transaction->business_info->email}}</span></p>
-            <p class="text-title fw-500">Business TIN: <span class="text-black">{{$transaction->business_info->business_tin}}</span></p>
-            <p class="text-title fw-500">Is enjoying Tax Incentive from any Government? : <span class="text-black">{{$transaction->business_info->tax_incentive_display}}</span></p>
-            <p class="text-title fw-500 mt-3"> OTHER INFORMATION FORM (GOVERNMENT OWNED OR CONTROLLED CORPORATIONS):</p>
-            <p class="text-title fw-500">TIN No: <span class="text-black">{{$transaction->business_info->tin_no}}</span></p>
-            <p class="text-title fw-500">SSS No: <span class="text-black">{{$transaction->business_info->sss_no}}</span></p>
-            <p class="text-title fw-500">Philhealth No: <span class="text-black">{{$transaction->business_info->philhealth_no}}</span></p>
-            <p class="text-title fw-500">PAGIBIG No: <span class="text-black">{{$transaction->business_info->pagibig_no}}</span></p>
+            @if ($transaction->business_info)
+                <p class="text-title fw-500">Business ID Number: <span class="text-black">{{str::title($transaction->business_info->business_id_no)}}</span></p>
+                <p class="text-title fw-500">Dominant Name: <span class="text-black">{{str::title($transaction->business_info->dominant_name)}}</span></p>
+                <p class="text-title fw-500">Business Number: <span class="text-black">{{$transaction->business_info->dti_sec_cda_registration_no ?: "-"}}</span></p>
+                <p class="text-title fw-500">Cedula Number: <span class="text-black">{{str::title($transaction->business_info->ctc_no)}}</span></p>
+                <p class="text-title fw-500">Business Type: <span class="text-black">{{str::title($transaction->business_info->business_type)}}</span></p>
+                <p class="text-title fw-500">Business Scope: <span class="text-black">{{str::title($transaction->business_info->business_scope)}}</span></p>
+                <p class="text-title fw-500">Business Mobile No.: <span class="text-black"> +63{{$transaction->business_info->mobile_no}}</span></p>
+                <p class="text-title fw-500">Business Tel No.: <span class="text-black"> {{$transaction->business_info->telephone_no}}</span></p>
+                <p class="text-title fw-500">Business Email: <span class="text-black">{{$transaction->business_info->email}}</span></p>
+                <p class="text-title fw-500">Business TIN: <span class="text-black">{{$transaction->business_info->business_tin}}</span></p>
+                <p class="text-title fw-500">Is enjoying Tax Incentive from any Government? : <span class="text-black">{{$transaction->business_info->tax_incentive_display}}</span></p>
+                <p class="text-title fw-500 mt-3"> OTHER INFORMATION FORM (GOVERNMENT OWNED OR CONTROLLED CORPORATIONS):</p>
+                <p class="text-title fw-500">TIN No: <span class="text-black">{{$transaction->business_info->tin_no}}</span></p>
+                <p class="text-title fw-500">SSS No: <span class="text-black">{{$transaction->business_info->sss_no}}</span></p>
+                <p class="text-title fw-500">Philhealth No: <span class="text-black">{{$transaction->business_info->philhealth_no}}</span></p>
+                <p class="text-title fw-500">PAGIBIG No: <span class="text-black">{{$transaction->business_info->pagibig_no}}</span></p>
+            @endif
 
             <p class="text-title fw-500 mt-3">Line of Business :</p>
             <table class="table table-bordered">
@@ -82,21 +88,22 @@
             </table>
 
           </div>
-          <div class="col-md-6">
-            <p class="text-title fw-500">Trade Name / Franchise: <span class="text-black"> {{$transaction->business_info->tradename}}</span></p>
-            <p class="text-title fw-500">DTI/SEC/CDA Registration Date (MM/DD/YYYY): <span class="text-black">{{$transaction->business_info->dti_sec_cda_registration_date}}</span></p>
-            <p class="text-title fw-500">Business Capitalization: <span class="text-black">{{$transaction->business_info->capitalization}}</span></p>
-            <p class="text-title fw-500">No. of Male Employees: <span class="text-black"> {{$transaction->business_info->no_of_male_employee}}</span></p>
-            <p class="text-title fw-500">No. of Male Employees residing in city: <span class="text-black"> {{$transaction->business_info->male_residing_in_city}}</span></p>
-            <p class="text-title fw-500">No. of Female Employees: <span class="text-black"> {{$transaction->business_info->no_of_female_employee}}</span></p>
-            <p class="text-title fw-500">No. of Female Employees residing in city: <span class="text-black"> {{$transaction->business_info->female_residing_in_city}}</span></p>
-            <p class="text-title fw-500">Business Area (Sq. m): <span class="text-black"> {{$transaction->business_info->business_area}}</span></p>
-            <p class="text-title fw-500">Business Unit No / Street: <span class="text-black">{{$transaction->business_info->business_address}}</span></p>
-            <p class="text-title fw-500">Business Barangay: <span class="text-black"> {{$transaction->business_info->brgy_name}}</span></p>
-            <p class="text-title fw-500">Business Province/Town: <span class="text-black"> {{$transaction->business_info->town_name}}</span></p>
-            <p class="text-title fw-500">Business Region: <span class="text-black">{{str::title($transaction->business_info->region_name)}}</span></p>
-
-        </div>
+          @if ($transaction->business_info)
+            <div class="col-md-6">
+                <p class="text-title fw-500">Trade Name / Franchise: <span class="text-black"> {{$transaction->business_info->tradename}}</span></p>
+                <p class="text-title fw-500">DTI/SEC/CDA Registration Date (MM/DD/YYYY): <span class="text-black">{{$transaction->business_info->dti_sec_cda_registration_date}}</span></p>
+                <p class="text-title fw-500">Business Capitalization: <span class="text-black">{{$transaction->business_info->capitalization}}</span></p>
+                <p class="text-title fw-500">No. of Male Employees: <span class="text-black"> {{$transaction->business_info->no_of_male_employee}}</span></p>
+                <p class="text-title fw-500">No. of Male Employees residing in city: <span class="text-black"> {{$transaction->business_info->male_residing_in_city}}</span></p>
+                <p class="text-title fw-500">No. of Female Employees: <span class="text-black"> {{$transaction->business_info->no_of_female_employee}}</span></p>
+                <p class="text-title fw-500">No. of Female Employees residing in city: <span class="text-black"> {{$transaction->business_info->female_residing_in_city}}</span></p>
+                <p class="text-title fw-500">Business Area (Sq. m): <span class="text-black"> {{$transaction->business_info->business_area}}</span></p>
+                <p class="text-title fw-500">Business Unit No / Street: <span class="text-black">{{$transaction->business_info->business_address}}</span></p>
+                <p class="text-title fw-500">Business Barangay: <span class="text-black"> {{$transaction->business_info->brgy_name}}</span></p>
+                <p class="text-title fw-500">Business Province/Town: <span class="text-black"> {{$transaction->business_info->town_name}}</span></p>
+                <p class="text-title fw-500">Business Region: <span class="text-black">{{str::title($transaction->business_info->region_name)}}</span></p>
+            </div>
+          @endif
           <div class="col-md-6 mt-4">
             <p class="text-title fw-500">Transaction Details:</p>
             <p class="text-title fw-500">Application : <span class="text-black">{{str::title($transaction->application_name)}}</span></p>
@@ -111,13 +118,16 @@
             <p class="text-title fw-500">Owners Email: <span class="text-black">{{$transaction->owner->email}}</span></p>
             <p class="text-title fw-500">Owners Contact No.: <span class="text-black">{{$transaction->owner->contact_number}}</span></p>
           </div>
-          <div class="col-md-6 mt-4">
-            <p class="text-title fw-500">Authorize Representative:</p>
-            <p class="text-title fw-500">Representative Name: <span class="text-black">{{str::title($transaction->business_info->rep_firstname .' '. $transaction->business_info->rep_middlename .' '. $transaction->business_info->rep_lastname  )}}</span></p>
-            <p class="text-title fw-500">Representative Gender: <span class="text-black">{{$transaction->business_info->rep_gender}}</span></p>
-            <p class="text-title fw-500">Representative Position: <span class="text-black">{{$transaction->business_info->rep_position}}</span></p>
-          </div>
+          @if ($transaction->business_info)
+            <div class="col-md-6 mt-4">
+                <p class="text-title fw-500">Authorize Representative:</p>
+                <p class="text-title fw-500">Representative Name: <span class="text-black">{{str::title($transaction->business_info->rep_firstname .' '. $transaction->business_info->rep_middlename .' '. $transaction->business_info->rep_lastname  )}}</span></p>
+                <p class="text-title fw-500">Representative Gender: <span class="text-black">{{$transaction->business_info->rep_gender}}</span></p>
+                <p class="text-title fw-500">Representative Position: <span class="text-black">{{$transaction->business_info->rep_position}}</span></p>
+            </div>
+          @endif
         </div>
+        @if ($transaction->business_info)
         <div class="row">
             <div class="col-md-6 mt-4">
                 <p class="text-title fw-500">Lessor Details:</p>
@@ -146,6 +156,7 @@
                 <p class="text-title fw-500">Tel #: <span class="text-black">{{$transaction->business_info->emergency_contact_tel_no}}</span></p>
             </div>
         </div>
+        @endif
       </div>
     </div>
     <div class="card card-rounded shadow-sm mb-4">
@@ -246,7 +257,7 @@
               @endif
             @endif
           </div>
-          
+
           <div class="table-responsive pt-2">
             <p class="text-title text-bold">Regulatory Fee <!-- <span class="badge  badge-{{Helper::status_badge(Helper::check_regulatory($transaction->id))}} p-2">{{Helper::check_regulatory($transaction->id)}}</span> --></p>
             <table class="table table-bordered table-wrap" style="table-layout: fixed;">

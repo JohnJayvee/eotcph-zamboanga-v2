@@ -12,6 +12,7 @@ namespace App\Laravel\Controllers\System;
 
 use App\Laravel\Models\Business;
 use App\Laravel\Models\BusinessLine;
+use App\Laravel\Models\BusinessTransaction;
 use Carbon,Auth,DB,Str,Helper,Event;
 use App\Laravel\Requests\PageRequest;
 /* App Classes
@@ -102,7 +103,11 @@ class BusinessCVController extends Controller
 	public function  destroy(PageRequest $request,$id = NULL){
 		DB::beginTransaction();
 		try{
-            Business::find($id)->forceDelete();
+            $transaction = BusinessTransaction::where('business_id', $id)->first();
+            $transaction->deleted_by = auth()->guard('user')->user()->id;
+            $transaction->save();
+
+            // Business::find($id)->forceDelete();
 			DB::commit();
 			session()->flash('notification-status', "success");
             session()->flash('notification-msg', "The Business CV was successfully deleted.");
