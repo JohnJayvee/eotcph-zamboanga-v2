@@ -9,6 +9,7 @@ use GuzzleHttp\Client;
  */
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Requests\Api\TransactionRequest;
+use App\Laravel\Events\SendEmailDigitalCertificate;
 
 /* Models
  */
@@ -135,7 +136,21 @@ class TransactionController extends Controller{
         $business_cv->save();
         $business_transactions = BusinessTransaction::where('business_id',$business_cv->id)->first();
         $business_transactions->payment_status = $request->get('status');
+        $business_transactions->digital_certificate_released = "1";
         $business_transactions->save();
+        
+        if ($business_transactions->payment_status == "PAID") {
+            $insert[] = [
+            'email' => $business_transactions->owner ? $business_transactions->owner->email : $business_transactions->email,
+            'business_name' => $business_transactions->business_info ? $business_transactions->business_info->business_name : $business_transactions->business_name,
+            'business_id' => $business_transactions->business_id,
+            'link' => env("APP_URL")."e-permit/".$business_transactions->business_id,
+            ];
+
+            $notification_data_email = new SendEmailDigitalCertificate($insert);
+            Event::dispatch('send-digital-business-permit', $notification_data_email);
+        }
+        
         
         $this->response['status'] = TRUE;
         $this->response['status_code'] = "TRANSCTION_UPDATE";
