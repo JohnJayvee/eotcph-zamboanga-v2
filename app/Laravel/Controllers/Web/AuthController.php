@@ -115,8 +115,8 @@ class AuthController extends Controller{
         $new_customer_otp->save();
 
         // Send OTP Code via SMS
-        $notification_data = new SendCustomerOTP($insert);
-        Event::dispatch('send-customer-otp', $notification_data);
+        // $notification_data = new SendCustomerOTP($insert);
+        // Event::dispatch('send-customer-otp', $notification_data);
 
         // send OTP Code via Email
         $notification_data = new SendCustomerOTPEmail($insert);
@@ -189,7 +189,7 @@ class AuthController extends Controller{
             $new_customer->save();
 
             $customer_id = $new_customer->id;
-       
+
 
             if($request->hasFile('gov_id_1')) {
                 $image = $request->file('gov_id_1');
@@ -197,9 +197,9 @@ class AuthController extends Controller{
                 $original_name = $image->getClientOriginalName();
                 $file_type = 'gov_id_1';
                 $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . $new_customer->name) . "." . $ext;
-               
+
                 $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
-                
+
                 $new_file = new CustomerFile;
                 $new_file->path = $upload_image['path'];
                 $new_file->directory = $upload_image['directory'];
@@ -216,9 +216,9 @@ class AuthController extends Controller{
                 $original_name = $image->getClientOriginalName();
                 $file_type = 'gov_id_2';
                 $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . $new_customer->name) . "." . $ext;
-                
+
                 $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
-               
+
                 $new_file = new CustomerFile;
                 $new_file->path = $upload_image['path'];
                 $new_file->directory = $upload_image['directory'];
@@ -234,9 +234,9 @@ class AuthController extends Controller{
                 $original_name = $image->getClientOriginalName();
                 $file_type = 'business_permit';
                 $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . $new_customer->name) . "." . $ext;
-            
+
                 $upload_image = FileUploader::upload($image, 'uploads/'.$customer_id.'/file',$filename);
-                
+
                 $new_file = new CustomerFile;
                 $new_file->path = $upload_image['path'];
                 $new_file->directory = $upload_image['directory'];
