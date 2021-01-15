@@ -60,6 +60,7 @@
             <th class="text-title p-3" width="15%">Business Name/Owner</th>
             <th class="text-title p-3" width="30%">Application Type</th>
             <th class="text-title p-3" width="10%">Amount</th>
+            <th class="text-title p-3" width="10%">BPLO Validation</th>
             <th class="text-title p-3" width="10%">Processor/Status</th>
             <th class="text-title p-3" width="10%">Action</th>
           </tr>
@@ -75,6 +76,9 @@
               <div>{{Helper::money_format($transaction->total_amount) ?: 0 }}</div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::upper($transaction->payment_status)}}</span></small></div>
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->transaction_status)}} p-2 mt-1">{{Str::upper($transaction->transaction_status)}}</span></small></div>
+            </td>
+            <td> 
+            <span class="badge badge-pill badge-{{Helper::status_badge($transaction->is_validated == 2 ? "declined" : "approved")}} p-2">{{Str::upper($transaction->is_validated == 2 ? "declined" : 'validated')}}</span>
             </td>
             <td>
               <div>
