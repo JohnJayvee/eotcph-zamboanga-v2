@@ -699,9 +699,8 @@ class Helper{
         }
     }
 
-    public static function send_sms($contact_number, $msg_body ){
-			$request_body = [
-				'text' => $msg_body,
+    public static function send_sms($contact_number, $msg_body){
+			$request_body = ['text' => $msg_body,
                 'to' => $contact_number,
                 'api_key' => "1mgP6RMgSXDWRNaJXatDYwPVkjR",
                 'api_secret' => "sxXw2tBIi70RU1HoV4o9gmpMMvU5JPuDmQSroiyv"
@@ -711,7 +710,6 @@ class Helper{
                 ->withData($request_body)
                 ->returnResponseObject()
                 ->post();
-                dd($response);
 			    $code = $response->status;
 			    return $code >= 200 AND $code <= 299 ? TRUE : FALSE;
 
