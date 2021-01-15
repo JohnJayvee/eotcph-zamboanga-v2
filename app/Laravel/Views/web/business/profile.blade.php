@@ -108,6 +108,39 @@
                                 <p>Tax Incetive</p>
                             </div>
                         </div>
+                        <h5 class="text-title text-uppercase mt-4">Owner Details</h5>
+                        <div class="row underline mb-2">
+                            <div class="col-md-4">
+                                <label class="text-uppercase">{{$profile->owner_name}}</label>
+                                <p>Name</p>
+                            </div>
+                            {{-- <div class="col-md-4">
+                                <label class="text-uppercase">{{$profile->owner_gender}}</label>
+                                <p>Gender</p>
+                            </div> --}}
+                            <div class="col-md-4">
+                                <label class="text-uppercase">{{$profile->owner_email}}</label>
+                                <p>Email</p>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-uppercase">{{$profile->owner_tin}}</label>
+                                <p>TIN</p>
+                            </div>
+                        </div>
+                        <div class="row underline mb-2">
+                            <div class="col-md-4">
+                                <label class="text-uppercase">{{$profile->owner_brgy_name}}</label>
+                                <p>Barangay</p>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-uppercase">{{$profile->owner_street ?? "Morning Breeze"}}</label>
+                                <p>Street</p>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="text-uppercase">{{$profile->owner_unit_no}}</label>
+                                <p>House/Bldg No</p>
+                            </div>
+                        </div>
                         <h5 class="text-title text-uppercase mt-4">Authorize Representative</h5>
                         <div class="row underline mb-2">
                             <div class="col-md-3">
@@ -124,7 +157,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="text-uppercase">{{$profile->rep_tin}}</label>
-                                <p>Position</p>
+                                <p>TIN</p>
                             </div>
                         </div>
                         <div class="row underline mb-2">
@@ -277,7 +310,7 @@
                                 <p>Region</p>
                             </div>
                         </div>
-                        <h5 class="text-title text-uppercase mt-4">Business Address Information</h5>
+                        <h5 class="text-title text-uppercase mt-4">Other Information Form (Government Owned Or Controlled Corporations)</h5>
                          <div class="row underline mb-2">
                             <div class="col-md-6">
                                 <label class="text-uppercase">{{$profile->sss_no ?: "-"}}</label>

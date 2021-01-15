@@ -41,7 +41,7 @@ class BusinessTransactionController extends Controller
 
 		$this->data['departments'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();
         $this->data['business_scopes'] = ["" => "Choose Business Scope",'national' => "National",'regional' => "Regional",'municipality' => "City/Municipality",'barangay' => "Barangay"];
-		$this->data['business_types'] = ["" => "Choose Business Type",'sole_proprietorship' => "Sole Proprietorship",'cooperative' => "Cooperative",'corporation' => "Corporation",'partnership' => "Partnership"];
+		$this->data['business_types'] = ["" => "Choose Business Type",'sole_proprietorship' => "Sole Proprietorship",'cooperative' => "Cooperative",'corporation' => "Corporation",'partnership' => "Partnership" , 'association' => "Association"];
 		$this->data['regional_offices'] = ['' => "Choose Regional Offices"] + RegionalOffice::pluck('name', 'id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
@@ -833,7 +833,7 @@ class BusinessTransactionController extends Controller
 				$new_business_fee->office_code = $request->get('office_code');
 				$new_business_fee->fee_type = 0;
 				$new_business_fee->save();
-				
+
 			}
 
 			if (count($business_array) > 0) {
@@ -854,7 +854,7 @@ class BusinessTransactionController extends Controller
 				$new_business_fee->office_code = $request->get('office_code');
 				$new_business_fee->fee_type = 1;
 				$new_business_fee->save();
-				
+
 
 			}
 
@@ -876,7 +876,7 @@ class BusinessTransactionController extends Controller
 				$new_business_fee->office_code = $request->get('office_code');
 				$new_business_fee->fee_type = 2;
 				$new_business_fee->save();
-				
+
 
 			}
 

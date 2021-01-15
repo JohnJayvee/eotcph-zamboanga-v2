@@ -67,6 +67,10 @@ class Business extends Model{
         return Str::title("{$this->unit_no} {$this->street_address} ");
     }
 
+    public function getOwnerNameAttribute(){
+        return Str::title("{$this->owner_fname} {$this->owner_mname} {$this->owner_lname}");
+    }
+
     public function getTaxIncentiveDisplayAttribute(){
         return !empty($this->tax_incentive) ? ($this->tax_incentive != "no" ? "Yes, ". Str::title("{$this->tax_incentive}") : "No"  ) : "No";
     }

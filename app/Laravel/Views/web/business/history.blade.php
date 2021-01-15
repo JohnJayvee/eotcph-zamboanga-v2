@@ -18,10 +18,11 @@
                             <table class="table table-striped table-wrap" style="table-layout: fixed;">
                                 <thead>
                                     <tr class="text-center">
-                                        <th class="text-title fs-15 fs-500 p-3">Application Date</th>
-                                        <th class="text-title fs-15 fs-500 p-3">Application Type</th>
-                                        <th class="text-title fs-15 fs-500 p-3">Amount/Status</th>
-                                        <th class="text-title fs-15 fs-500 p-3">Processor/Status</th>
+                                        <th class="text-title fs-500 ">Application Date</th>
+                                        <th class="text-title  fs-500 ">Application Type</th>
+                                        <th class="text-title  fs-500 ">Application No.</th>
+                                        <th class="text-title  fs-500 ">Amount/Status</th>
+                                        <th class="text-title  fs-500 ">Processor/Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -29,6 +30,7 @@
                                         <tr class="text-center">
                                             <td>{{$history->created_at}}</td>
                                             <td>{{$history->application_name}} <br> {{$history->code}}</td>
+                                            <td>{{$history->application_permit->application_no}}</td>
                                             <td>{{$history->total_amount}}<br>
                                                 <div>
                                                     <span class="badge badge-pill badge-{{Helper::status_badge($history->payment_status)}} p-2">{{Str::upper($history->payment_status)}}</span>
@@ -53,7 +55,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 
 </section>

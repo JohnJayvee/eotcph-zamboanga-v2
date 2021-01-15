@@ -35,7 +35,7 @@ class BusinessController extends Controller
 		array_merge($this->data, parent::get_data());
 
 		$this->data['business_scopes'] = ["" => "Choose Business Scope",'national' => "National",'regional' => "Regional",'municipality' => "City/Municipality",'barangay' => "Barangay"];
-		$this->data['business_types'] = ["" => "Choose Business Type",'sole_proprietorship' => "Sole Proprietorship",'cooperative' => "Cooperative",'corporation' => "Corporation",'partnership' => "Partnership"];
+		$this->data['business_types'] = ["" => "Choose Business Type",'sole_proprietorship' => "Sole Proprietorship",'cooperative' => "Cooperative",'corporation' => "Corporation",'partnership' => "Partnership", 'association' => "Association"];
 		$this->data['transaction_types'] = ['new' => "New Business",'renewal' => "Renewal"];
 		if (Auth::guard('customer')->user()) {
 			$this->data['auth'] = Auth::guard('customer')->user();
@@ -70,6 +70,7 @@ class BusinessController extends Controller
                 session()->flash('notification-msg', "Business validated");
                 session()->forget('negativelist');
                 $this->data['business'] = $response->content['data'];
+                $this->data['business_type_f'] = $response->content['data'];
 
                 foreach ($this->data['business']['LineOfBusiness'] as $key => $value) {
                     if(!empty($value['Class'])){
@@ -77,6 +78,30 @@ class BusinessController extends Controller
                         $this->data['lob'][] = $value['Class'].$particulars;
                     }
                 }
+                switch ($this->data['business']['BusinessType']) {
+                    case '1':
+                        $this->data['business_type_f'] = 'sole_proprietorship';
+                        break;
+                    case '2':
+                        $this->data['business_type_f'] = 'partnership';
+                        break;
+                    case '3':
+                        $this->data['business_type_f'] = 'corporation';
+                        break;
+                    case '4':
+                        $this->data['business_type_f'] = 'cooperative';
+                        break;
+                    case '5':
+                        $this->data['business_type_f'] = 'association';
+                        break;
+                    case '0':
+                        $this->data['business_type_f'] = null;
+                        break;
+                    default:
+                        $this->data['business_type_f'] = null;
+                        break;
+                }
+
                 session()->put('line_of_business', $this->data['business']['LineOfBusiness']);
             } elseif ($response->status == "400") {
                 session()->put('negativelist', 1);
@@ -90,6 +115,7 @@ class BusinessController extends Controller
     }
 
 	public function store(BusinessRequest $request){
+
         $auth = Auth::guard('customer')->user();
         DB::beginTransaction();
         try{
@@ -110,6 +136,17 @@ class BusinessController extends Controller
             $new_business->ctc_no = $request->ctc_no;
             $new_business->business_tin = $request->business_tin;
             $new_business->tax_incentive = $request->tax_incentive;
+
+            $new_business->owner_fname = $request->owner_firstname;
+            $new_business->owner_mname = $request->owner_middlename;
+            $new_business->owner_lname = $request->owner_lastname;
+            $new_business->owner_email = $request->owner_email;
+            $new_business->owner_tin = $request->owner_tin;
+            $new_business->owner_mobile_no = $request->owner_mobile_no;
+            $new_business->owner_brgy = $request->owner_brgy;
+            $new_business->owner_brgy_name = $request->owner_brgy_name;
+            $new_business->owner_unit_no = $request->owner_unit_no;
+            $new_business->owner_street = $request->owner_street;
 
             $new_business->rep_lastname = $request->rep_lastname;
             $new_business->rep_firstname = $request->rep_firstname;
@@ -286,6 +323,18 @@ class BusinessController extends Controller
             $business->ctc_no = $request->ctc_no;
             $business->business_tin = $request->business_tin;
             $business->tax_incentive = $request->tax_incentive;
+
+
+            $business->owner_fname = $request->owner_firstname;
+            $business->owner_mname = $request->owner_middlename;
+            $business->owner_lname = $request->owner_lastname;
+            $business->owner_email = $request->owner_email;
+            $business->owner_tin = $request->owner_tin;
+            $business->owner_mobile_no = $request->owner_mobile_no;
+            $business->owner_brgy = $request->owner_brgy;
+            $business->owner_brgy_name = $request->owner_brgy_name;
+            $business->owner_unit_no = $request->owner_unit_no;
+            $business->owner_street = $request->owner_street;
 
             $business->rep_lastname = $request->rep_lastname;
             $business->rep_firstname = $request->rep_firstname;

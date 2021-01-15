@@ -11,8 +11,8 @@ class BusinessRequest extends RequestManager{
 		$file = $this->file('file') ? count($this->file('file')) : 0;
 
 		$rules = [
-            	"business_id_no" => "required|unique:business,business_id_no",
-            	"business_scope" => "required",
+                    "business_id_no" => "required|unique:business,business_id_no",
+                    "business_scope" => "required",
                   "business_type" => "required",
                   "dominant_name" => "required",
                   "business_name" => "required",
@@ -74,7 +74,7 @@ class BusinessRequest extends RequestManager{
 	public function messages(){
 		return [
             'required'	=> "Field is required.",
-            'business_id_no.unique' => "Business ID is already in use",
+            'business_id_no.unique' => "Business ID is already taken",
             'integer' => "Invalid Data.",
             'bnn' => "BNN not Found",
 		];

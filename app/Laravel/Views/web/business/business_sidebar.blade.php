@@ -17,7 +17,7 @@
             <li class="list-group-item text-left">
                 <span class="pull-left">
                     <div class="row" style="align-items: center;">
-                        <div class="col-md-9"><strong>{{Str::title($index->business_name)}}<br>{{$index->town_name}}</strong></div>
+                        <div class="col-md-9"><strong>{{Str::title($index->business_name)}} - {{$index->business_id_no}}</strong></div>
                         <div class="col-md-3">
                             <a href="{{route('web.business.profile',[$index->id])}}"><i class="fa fa-fw fa-eye ml-2 mt-1"></i></a>
                         </div>

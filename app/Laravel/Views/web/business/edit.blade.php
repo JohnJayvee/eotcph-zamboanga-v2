@@ -139,6 +139,103 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <h5 class="text-title text-uppercase">Owner Details</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('owner_firstname') ? 'is-invalid': NULL  }}"  name="owner_firstname" value="{{old('owner_firstname', $business->owner_fname) }}" autocomplete="none">
+                                        @if($errors->first('owner_firstname'))
+                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_firstname')}}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('owner_middlename') ? 'is-invalid': NULL  }}"  name="owner_middlename" value="{{old('owner_middlename', $business->owner_mname) }}" autocomplete="none">
+                                        @if($errors->first('owner_middlename'))
+                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_middlename')}}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('owner_lastname') ? 'is-invalid': NULL  }}"  name="owner_lastname" value="{{old('owner_lastname', $business->owner_lname) }}" autocomplete="none">
+                                        @if($errors->first('owner_lastname'))
+                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_lastname')}}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Owner TIN</label>
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('owner_tin') ? 'is-invalid': NULL  }}"  name="owner_tin" value="{{old('owner_tin' , $business->owner_tin) }}" autocomplete="none">
+                                        @if($errors->first('owner_tin'))
+                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_tin')}}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Email </label>
+                                        <input type="email" class="form-control form-control-sm {{ $errors->first('owner_email') ? 'is-invalid': NULL  }}"  name="owner_email" value="{{old('owner_email', $business->owner_email) }}" autocomplete="none">
+                                        @if($errors->first('owner_email'))
+                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_email')}}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="text-form pb-2">Mobile Number </label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text text-title fw-600">+63 <span class="pr-1 pl-2" style="padding-bottom: 2px"> |</span></span>
+                                            </div>
+                                            <input type="number" class="form-control {{ $errors->first('owner_mobile_no') ? 'is-invalid': NULL  }} br-left-white" name="owner_mobile_no" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" placeholder="Contact Number" value="{{old('owner_mobile_no', $business->owner_mobile_no)}}" autocomplete="none">
+                                        </div>
+                                        @if($errors->first('owner_mobile_no'))
+                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_mobile_no')}}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="text-form pb-2">Barangay </label>
+                                        {!!Form::select('owner_brgy',[],old('owner_brgy' , $business->owner_brgy),['id' => "input_owner_brgy",'class' => "form-control form-control-sm classic ".($errors->first('owner_brgy') ? 'border-red' : NULL)])!!}
+                                        @if($errors->first('owner_brgy'))
+                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_brgy')}}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                                <input type="hidden" class="form-control" name="owner_brgy_name" id="input_owner_brgy_name" value="{{old('owner_brgy_name')}}">
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Street Address </label>
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('owner_street') ? 'is-invalid': NULL  }}"  name="owner_street" value="{{old('owner_street', $business->owner_street ?? '') }}" autocomplete="none">
+                                        @if($errors->first('owner_street'))
+                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_street')}}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No. </label>
+                                        <input type="text" class="form-control form-control-sm {{ $errors->first('owner_unit_no') ? 'is-invalid': NULL  }}"  name="owner_unit_no" value="{{old('owner_unit_no', $business->owner_unit_no )}}" autocomplete="none">
+                                        @if($errors->first('owner_unit_no'))
+                                            <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_unit_no')}}</small>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                             <h5 class="text-title text-uppercase">Name of Authorized Representative</h5>
                             <div class="row">
                                 <div class="col-md-6">
@@ -827,6 +924,7 @@
         $(this).get_region("#input_lessor_region", "#input_lessor_province", "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_region', '090000000')}}")
         $(this).get_city("090000000", "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_town', '097332000')}}");
         $(this).get_brgy('097332000', "#input_lessor_brgy", "{{ $business->lessor_brgy }}");
+        $(this).get_brgy('097332000', "#input_owner_brgy", "{{ $business->owner_brgy }}");
         $("#input_lessor_region").on("change", function () {
             var _val = $(this).val();
             var _text = $("#input_lessor_region option:selected").text();
@@ -847,6 +945,7 @@
             var _val = "097332000";
             var _text = "ZAMBOANGA DEL SUR - CITY OF ZAMBOANGA";
             $(this).get_brgy(_val, "#input_lessor_brgy", "");
+            $(this).get_brgy(_val, "#input_owner_brgy", "");
             $('#input_lessor_zipcode').val('');
             $('#input_lessor_town_name').val(_text);
         }
@@ -864,7 +963,10 @@
             var _text = $("#input_lessor_brgy option:selected").text();
             $('#input_lessor_brgy_name').val(_text);
         });
-
+        $("#input_owner_brgy").on("change", function () {
+            var _text = $("#input_owner_brgy option:selected").text();
+            $('#input_owner_brgy_name').val(_text);
+        });
     })
 </script>
 @endsection
