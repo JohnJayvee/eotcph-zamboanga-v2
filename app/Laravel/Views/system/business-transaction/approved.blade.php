@@ -78,7 +78,7 @@
               <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->transaction_status)}} p-2 mt-1">{{Str::upper($transaction->transaction_status)}}</span></small></div>
             </td>
             <td> 
-            <span class="badge badge-pill badge-{{Helper::status_badge($transaction->is_validated == 2 ? "declined" : "approved")}} p-2">{{Str::upper($transaction->is_validated == 2 ? "declined" : 'validated')}}</span>
+            <span class="badge badge-pill badge-{{Helper::status_badge($transaction->is_validated == 1 ? "validated" : "pending")}} p-2">{{Str::upper($transaction->is_validated == 1 ? "validated" : 'pending')}}</span>
             </td>
             <td>
               <div>

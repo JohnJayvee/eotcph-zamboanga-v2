@@ -741,12 +741,12 @@ class BusinessTransactionController extends Controller
 			$type = $request->get('status_type') == 'validate' ? 'pending' : 'declined';
 			
 			$transaction = $request->get('business_transaction_data');
-			$transaction->is_validated = $status_type == 'validate' ? 1 : 2 ;
 			$transaction->isNew = 1;
 			$transaction->remarks = $status_type == "validate" ? NULL : $request->get('remarks');
 			$transaction->modified_at = Carbon::now();
 			
 			if ($status_type == 'validate'){
+				$transaction->is_validated = 1;
 				$dept_code_array = explode(",", $request->get('department_code'));
 
 				foreach ($dept_code_array as $data) {

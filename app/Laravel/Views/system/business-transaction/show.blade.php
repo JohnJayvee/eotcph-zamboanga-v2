@@ -430,8 +430,8 @@
     </div>
     @if(in_array(Auth::user()->type, ['admin', 'super_user']) and in_array($transaction->status, ['PENDING', 'ONGOING']))
       @if($transaction->is_validated == 0)
-        <a data-url="{{route('system.business_transaction.validate',[$transaction->id])}}?status_type=validate"  class="btn btn-primary mt-4 btn-validate border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Validate Transactions</a>
-        <a data-url="{{route('system.business_transaction.validate',[$transaction->id])}}?status_type=declined"  class="btn btn-danger mt-4 btn-decline-bplo border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-times-circle"></i> Decline Transactions</a>
+        <a data-url="{{route('system.business_transaction.validate',[$transaction->id])}}?status_type=validate&"  class="btn btn-primary mt-4 btn-validate border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Validate Transactions</a>
+        <a data-url="{{route('system.business_transaction.validate',[$transaction->id])}}?status_type=declined&"  class="btn btn-danger mt-4 btn-decline-bplo border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-times-circle"></i> Decline Transactions</a>
       @endif
       @if($transaction->for_bplo_approval == 1)
         <a data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=approved&collection_id={{$transaction->collection_id}}"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
@@ -593,7 +593,7 @@
           return false
         }
         if (result.value) {
-          window.location.href = url + "?department_code="+result.value;
+          window.location.href = url + "department_code="+result.value;
         }
       });
     });
