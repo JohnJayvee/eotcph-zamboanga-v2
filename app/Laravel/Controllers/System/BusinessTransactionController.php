@@ -65,9 +65,11 @@ class BusinessTransactionController extends Controller
 
 		foreach ($get_bt as $key => $value) {
 			$app_file_count = ApplicationBusinessPermitFile::where('application_business_permit_id' , $value->id)->count();
-			$update_business_transaction = BusinessTransaction::find($value->id);
-			$update_business_transaction->attachment_count = $app_file_count; 
-			$update_business_transaction->save();
+			$update_business_transaction = BusinessTransaction::where('id',$value->id)->where('attachment_count', NULL)->first();
+			if ($update_business_transaction) {
+				$update_business_transaction->attachment_count = $app_file_count; 
+				$update_business_transaction->save();
+			}
 
 		}
 		$this->data['page_title'] = "Pending Business Transactions";
