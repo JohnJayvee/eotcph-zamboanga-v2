@@ -140,7 +140,7 @@
                                 </div>
                             </div>
 
-                            <h5 class="text-title text-uppercase">Owner Details</h5>
+                            <h5 class="text-title text-uppercase">Owners Information</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">

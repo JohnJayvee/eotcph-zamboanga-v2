@@ -78,30 +78,26 @@ class BusinessController extends Controller
                         $this->data['lob'][] = $value['Class'].$particulars;
                     }
                 }
-                switch ($this->data['business']['BusinessType']) {
-                    case '1':
+                switch ($this->data['business']['Organization']) {
+                    case 'SINGLE PROPRIETORSHIP':
                         $this->data['business_type_f'] = 'sole_proprietorship';
                         break;
-                    case '2':
+                    case 'PARTNERSHIP':
                         $this->data['business_type_f'] = 'partnership';
                         break;
-                    case '3':
+                    case 'CORPORATION':
                         $this->data['business_type_f'] = 'corporation';
                         break;
-                    case '4':
+                    case 'COOPERATIVE':
                         $this->data['business_type_f'] = 'cooperative';
                         break;
-                    case '5':
+                    case 'ASSOCIATION':
                         $this->data['business_type_f'] = 'association';
-                        break;
-                    case '0':
-                        $this->data['business_type_f'] = null;
                         break;
                     default:
                         $this->data['business_type_f'] = null;
                         break;
                 }
-
                 session()->put('line_of_business', $this->data['business']['LineOfBusiness']);
             } elseif ($response->status == "400") {
                 session()->put('negativelist', 1);
