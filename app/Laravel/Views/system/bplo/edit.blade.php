@@ -23,7 +23,7 @@
                     <div class="col-md-6 col-lg-6">
                         <div class="form-group">
                             <label class="text-title">Account Status</label>
-                            {!!Form::select("status", $status_type, old('status'), ['id' => "input_status", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('status') ? 'is-invalid' : NULL), $customer->otp_verified ?:'disabled', $customer->status == 'pending' ?: 'disabled'])!!}
+                            {!!Form::select("status", $status_type, old('status'), ['id' => "input_status", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('status') ? 'is-invalid' : NULL), $customer->status == 'pending' ?: 'disabled'])!!}
                             <small class="text-danger">{{ $customer->otp_verified ? '' : 'The registrant is not OTP verified' }}</small>
                             @if($errors->first('status'))
                               <p class="mt-1 text-danger">{!!$errors->first('status')!!}</p>

@@ -111,6 +111,7 @@ class BPLOController extends Controller
             $update_customer = Customer::find($id);
             $update_customer->status = $request->get('status');
             $update_customer->remark = $request->get('remarks');
+            $update_customer->otp_verified = 1;
             $update_customer->save();
             DB::commit();
 
