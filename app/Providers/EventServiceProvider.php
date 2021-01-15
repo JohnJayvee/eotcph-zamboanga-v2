@@ -88,6 +88,9 @@ class EventServiceProvider extends ServiceProvider
         'send-email-business-declined' => [
             'App\Laravel\Listeners\SendEmailBusinessDeclineListener'
         ],
+        'send-email-application-declined' => [
+            'App\Laravel\Listeners\SendEmailApplicationDeclinedListener'
+        ],
         'send-email-reference' => [
             'App\Laravel\Listeners\SendEmailProcessorReferenceListener'
         ],

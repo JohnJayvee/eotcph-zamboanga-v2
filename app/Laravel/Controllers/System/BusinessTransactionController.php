@@ -24,6 +24,7 @@ use App\Laravel\Events\SendEmailDigitalCertificate;
 use App\Laravel\Events\SendEmailApprovedBusiness;
 use App\Laravel\Events\SendEmailDeclinedBusiness;
 use App\Laravel\Events\SendDeclinedEmailReference;
+use App\Laravel\Events\SendEmailDeclinedApplication;
 use App\Laravel\Events\UploadLineOfBusinessToLocal;
 use App\Laravel\Requests\System\TransactionCollectionRequest;
 use App\Laravel\Requests\System\TransactionUpdateRequest;
@@ -736,46 +737,78 @@ class BusinessTransactionController extends Controller
 
 		DB::beginTransaction();
 		try{
-			$dept_code_array = explode(",", $request->get('department_code'));
-
-			foreach ($dept_code_array as $data) {
-				$department = Department::where('code',$data)->first();
-				if (!$department) {
-					session()->flash('notification-status', "failed");
-					session()->flash('notification-msg', "No Department Found.");
-					return redirect()->route('system.business_transaction.show',[$id]);
-				}
-			}
-
+			$status_type = $request->get('status_type');
+			$type = $request->get('status_type') == 'validate' ? 'pending' : 'declined';
+			
 			$transaction = $request->get('business_transaction_data');
+			$transaction->is_validated = $status_type == 'validate' ? 1 : 2 ;
+			$transaction->isNew = 1;
+			$transaction->remarks = $status_type == "validate" ? NULL : $request->get('remarks');
+			$transaction->modified_at = Carbon::now();
+			
+			if ($status_type == 'validate'){
+				$dept_code_array = explode(",", $request->get('department_code'));
 
-			$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
-            $transaction->is_validated = 1;
-            $transaction->isNew = 1;
-            $department = User::whereIn('department_id', explode(",",$request->get('department_code')))->get();
-            $insert = [];
-            foreach ($department as $departments ) {
-                $insert[] = [
-                    'contact_number' => $departments->contact_number,
-                    'email' => $departments->email,
-                    'department_name' => $departments->department->name,
-                    'application_no' => $transaction->application_permit->application_no,
-                ];
-            }
-            // Send via SMS
-            //$notification_data = new NotifyDepartmentSMS($insert);
-            //Event::dispatch('notify-departments-sms', $notification_data);
+				foreach ($dept_code_array as $data) {
+					$department = Department::where('code',$data)->first();
+					if (!$department) {
+						session()->flash('notification-status', "failed");
+						session()->flash('notification-msg', "No Department Found.");
+						return redirect()->route('system.business_transaction.show',[$id]);
+					}
+				}
+				
+				$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
+				/*
+				0 = pending
+				1 = validated
+				2 = declined
+				*/
 
-            // send via Email
-            $notification_data = new NotifyDepartmentEmail($insert);
-            Event::dispatch('notify-departments-email', $notification_data);
+				
+				$department = User::whereIn('department_id', explode(",",$request->get('department_code')))->get();
+				$insert = [];
+				foreach ($department as $departments ) {
+					$insert[] = [
+						'contact_number' => $departments->contact_number,
+						'email' => $departments->email,
+						'department_name' => $departments->department->name,
+						'application_no' => $transaction->application_permit->application_no,
+					];
+				}
+				// Send via SMS
+				//$notification_data = new NotifyDepartmentSMS($insert);
+				//Event::dispatch('notify-departments-sms', $notification_data);
+
+				// send via Email
+				$notification_data = new NotifyDepartmentEmail($insert);
+				Event::dispatch('notify-departments-email', $notification_data);
+				
+				session()->flash('notification-status', "success");
+				session()->flash('notification-msg', "Office Code has been saved.");
+			} else {
+				$transaction->status = "DECLINED";
+				$data = [
+					'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,
+					'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
+					'ref_num' => $transaction->code,
+					'full_name' => $transaction->owner ? $transaction->owner->full_name : $transaction->business_name,
+					'application_name' => $transaction->application_name,
+					'modified_at' => Helper::date_only($transaction->modified_at),
+					'remarks' =>  $transaction->remarks,
+				];
+                
+				$notification_data_email = new SendEmailDeclinedApplication($data);
+				Event::dispatch('send-email-application-declined', $notification_data_email);
+				
+				session()->flash('notification-status', "success");
+				session()->flash('notification-msg', "Transaction has been successfully declined.");
+			}
+		
 			$transaction->save();
-
 			DB::commit();
-			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Office Code has been saved.");
-			return redirect()->route('system.business_transaction.pending');
 
+			return redirect()->route('system.business_transaction.'.strtolower($type));
 		}catch(\Exception $e){
 			DB::rollback();
 			session()->flash('notification-status', "failed");
