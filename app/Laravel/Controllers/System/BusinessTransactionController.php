@@ -1018,4 +1018,166 @@ class BusinessTransactionController extends Controller
             return redirect()->back();
         }
     }
+
+    public function bulk_assessment(PageRequest $request){
+    	DB::beginTransaction();
+    	try{
+	    	$business_id = [];
+	    	$transaction_id = [];
+
+	    	foreach (explode(",", $request->get('application_no')) as $key => $value) {
+	    		$app = ApplicationBusinessPermit::where('application_no', $value)->first();
+	    		array_push($business_id, $app->business_id);
+	    	}
+
+	    	foreach ($business_id as $key => $value) {
+				$transaction = BusinessTransaction::where('business_id', $value)->where('status',"PENDING")->first();
+	    		array_push($transaction_id, $transaction->id);
+			}
+
+			foreach ($transaction_id as $key => $value) {
+				$this->data['transaction'] = BusinessTransaction::find($value);
+				$this->data['business'] = Business::find($this->data['transaction']->business_id);
+				$request_body = [
+					'business_id' => $this->data['business']->business_id_no,
+					'ebriu_application_no' => $this->data['transaction']->application_permit->application_no,
+					'year' => "2021",
+					'office_code' => "99",
+				];
+
+				$response = Curl::to(env('ZAMBOANGA_URL'))
+				         ->withData($request_body)
+				         ->asJson( true )
+				         ->returnResponseObject()
+						 ->post();
+				/*if ($response->content['data'] == NULL) {
+					session()->flash('notification-status', "failed");
+					session()->flash('notification-msg', "No Assesment Found.");
+					return redirect()->route('system.business_transaction.pending');
+				}*/
+				
+				$regulatory_array = [];
+				$business_array = [];
+				$garbage_array = [];
+
+				foreach ($response->content['data'] as $key => $value) {
+					if ($value['FeeType'] == 0 ) {
+						array_push($regulatory_array, $value);
+					}
+					if ($value['FeeType'] == 1 ) {
+						array_push($business_array, $value);
+					}
+					if ($value['FeeType'] == 2) {
+						array_push($garbage_array, $value);
+					}
+				}
+				if (count($regulatory_array) > 0) {
+					$total_amount = 0 ;
+					foreach ($regulatory_array as $key => $value) {
+						$total_amount += Helper::db_amount($value['Amount']);
+					}
+					$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 0)->first();
+					if ($existing) {
+						$existing->delete();
+					}
+					$new_business_fee = new BusinessFee();
+					$new_business_fee->business_id = $this->data['transaction']->business_id;
+					$new_business_fee->transaction_id =$this->data['transaction']->id;
+					$new_business_fee->collection_of_fees = json_encode($regulatory_array);
+					$new_business_fee->amount = Helper::db_amount($total_amount);
+					$new_business_fee->status = "APPROVED";
+					$new_business_fee->office_code = "99";
+					$new_business_fee->fee_type = 0;
+					$new_business_fee->save();
+
+				}
+
+				if (count($business_array) > 0) {
+					$total_amount = 0 ;
+					foreach ($business_array as $key => $value) {
+						$total_amount += Helper::db_amount($value['Amount']);
+					}
+					$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 1)->first();
+					if ($existing) {
+						$existing->delete();
+					}
+					$new_business_fee = new BusinessFee();
+					$new_business_fee->business_id = $this->data['transaction']->business_id;
+					$new_business_fee->transaction_id =$this->data['transaction']->id;
+					$new_business_fee->collection_of_fees = json_encode($business_array);
+					$new_business_fee->amount = Helper::db_amount($total_amount);
+					$new_business_fee->status = "APPROVED";
+					$new_business_fee->office_code = "99";
+					$new_business_fee->fee_type = 1;
+					$new_business_fee->save();
+
+
+				}
+
+				if (count($garbage_array) > 0) {
+					$total_amount = 0 ;
+					foreach ($garbage_array as $key => $value) {
+						$total_amount += Helper::db_amount($value['Amount']);
+					}
+					$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 2)->first();
+					if ($existing) {
+						$existing->delete();
+					}
+					$new_business_fee = new BusinessFee();
+					$new_business_fee->business_id = $this->data['transaction']->business_id;
+					$new_business_fee->transaction_id =$this->data['transaction']->id;
+					$new_business_fee->collection_of_fees = json_encode($garbage_array);
+					$new_business_fee->amount = Helper::db_amount($total_amount);
+					$new_business_fee->status = "APPROVED";
+					$new_business_fee->office_code = "99";
+					$new_business_fee->fee_type = 2;
+					$new_business_fee->save();
+
+
+				}
+			}
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "successfully get assessment");
+			return redirect()->route('system.business_transaction.pending');
+
+		}catch(\Throwable $e){
+            DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+        }
+    }
+
+    public function bulk_decline(PageRequest $request){
+    	DB::beginTransaction();
+    	try{
+    		$business_id = [];
+	    	$transaction_id = [];
+
+	    	foreach (explode(",", $request->get('application_no')) as $key => $value) {
+	    		$app = ApplicationBusinessPermit::where('application_no', $value)->first();
+	    		array_push($business_id, $app->business_id);
+	    	}
+
+	    	foreach ($business_id as $key => $value) {
+				$transaction = BusinessTransaction::where('business_id', $value)->where('status',"PENDING")->first();
+	    		array_push($transaction_id, $transaction->id);
+			}
+
+			foreach ($transaction_id as $key => $value) {
+				$data = BusinessTransaction::where('id', $value)->where('status',"PENDING")->first();
+				$data->status = "DECLINED";
+				$data->remarks = $request->get('remarks');
+				$data->save();
+			}
+			DB::commit();
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "successfully declined transactions");
+			return redirect()->route('system.business_transaction.pending');
+		}catch(\Throwable $e){
+            DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+        }
+    }
 }

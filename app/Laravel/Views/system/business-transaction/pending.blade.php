@@ -65,6 +65,8 @@
     </form>
   </div>
   <div class="col-md-12">
+     <a data-url="{{route('system.business_transaction.bulk_assessment')}}"  class="btn btn-primary mb-2 mr-2 btn-assessment border-5 text-white float-right"> Bulk Assessment</a>
+     <a data-url="{{route('system.business_transaction.bulk_decline')}}"  class="btn btn-primary mb-2 mr-2 btn-declined border-5 text-white float-right"> Bulk Decline</a>
     <div class="shadow-sm fs-15">
       <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
         <thead>
@@ -140,6 +142,7 @@
 
 @section('page-styles')
 <link rel="stylesheet" href="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('system/vendors/select2/select2.min.css')}}"/>
 <style type="text/css" >
   .input-daterange input{ background: #fff!important; }
   .btn-sm{
@@ -150,8 +153,11 @@
 @stop
 
 @section('page-scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<!-- <script src="{{asset('system/vendors/sweet-alert2/sweetalert2.min.js')}}"></script> -->
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
-<script type="text/javascript">
+<script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script><script type="text/javascript">
+
   $.fn.get_application_type = function(department_id,input_purpose,selected){
         $(input_purpose).empty().prop('disabled',true)
         $(input_purpose).append($('<option>', {
@@ -199,6 +205,70 @@
       $('#input_department_name').val(_text);
     })
 
+    $(".btn-assessment").on('click', function(){
+      var url = $(this).data('url');
+      var self = $(this)
+      Swal.fire({
+        title: 'Input Application Number',
+        text: 'Use comma(,) as separator',
+        content: '<span>test</span>',
+        icon: 'warning',
+        input: 'text',
+        inputPlaceholder: "E.g. 21-00001-E , 21-00002-E",
+        showCancelButton: true,
+        confirmButtonText: 'Proceed',
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.value === "") {
+          alert("You need to write something")
+          return false
+        }
+        if (result.value) {
+          window.location.href = url + "?application_no="+result.value;
+        }
+      });
+    });
+    $(".btn-declined").on('click', function(){
+      var url = $(this).data('url');
+      var self = $(this)
+      Swal.fire({
+            title: 'Input Application Number and Remarks',
+            text: 'Use comma(,) as separator',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Proceed',
+            cancelButtonColor: '#d33',
+            html:
+                '<label class="text-title fs-15">Application Number</label><input id="swal-input1" class="swal2-input" placeholder="Application Number: E.g. 21-00001-E , 21-00002-E">' +
+                '<label class="text-title fs-15">Remarks</label><textarea id="swal-input2" class="swal2-textarea" row="5"></textarea>',
+            preConfirm: function () {
+                return new Promise(function (resolve) {
+                    // Validate input
+                    if ($('#swal-input1').val() == '' || $('#swal-input2').val() == '') {
+                        swal.showValidationMessage("Enter a value in both fields"); // Show error when validation fails.
+                        swal.enableButtons() // Enable the confirm button again.
+                    }else {
+                        swal.resetValidationMessage(); // Reset the validation message.
+                        resolve([
+                            $('#swal-input1').val(),
+                            $('#swal-input2').val()
+                        ]);
+                    }
+                })
+            },
+            onOpen: function () {
+                $('#swal-input1').focus()
+            }
+        }).then(function (result) {
+            // If validation fails, the value is undefined. Break out here.
+            if (typeof(result.value) == 'undefined') {
+                return false;
+            }
+            if (result.value) {
+              window.location.href = url + "?application_no="+result.value[0]+"&remarks="+result.value[1];
+            }
+        }).catch(swal.noop)
+    });
 
   })
 </script>

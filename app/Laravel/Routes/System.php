@@ -66,6 +66,9 @@ Route::group(['as' => "auth."], function(){
 			Route::get('update-department/{id?}',['as' => "update_department",'uses' => "BusinessTransactionController@update_department",'middleware' => "system.exist:business_transaction"]);
 			Route::get('release/{id?}',['as' => "release",'uses' => "BusinessTransactionController@release",'middleware' => "system.exist:business_transaction"]);
 			Route::get('read-all-notifs',['as' => "read_all_notifs",'uses' => "BusinessTransactionController@read_all_notifs"]);
+			Route::get('bulk-assessment',['as' => "bulk_assessment",'uses' => "BusinessTransactionController@bulk_assessment"]);
+			Route::get('bulk-decline',['as' => "bulk_decline",'uses' => "BusinessTransactionController@bulk_decline"]);
+
 		});
 
 

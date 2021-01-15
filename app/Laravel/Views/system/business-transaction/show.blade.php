@@ -513,7 +513,6 @@
       });
     });
     $(".btn-remarks").on('click', function(){
-
       var url = $(this).data('url');
       var self = $(this)
       Swal.fire({
