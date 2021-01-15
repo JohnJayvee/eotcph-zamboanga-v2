@@ -15,8 +15,8 @@ class BusinessPermitRequest extends RequestManager{
             // 'no_of_units' => 'required',
             //'no_of_units.*' => 'nullable',
             'amount.*' => 'required|numeric',
-            'file' => 'required',
-            'file.*' => 'mimes:png,jpg,jpeg,pdf',
+            'photo_establishment' => 'required|mimes:png,jpg,jpeg,pdf',
+            'bir_itr_form' => 'required|mimes:png,jpg,jpeg,pdf',
             'agree' => 'accepted',
 
         ];  

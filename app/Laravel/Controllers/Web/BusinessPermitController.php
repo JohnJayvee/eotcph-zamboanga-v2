@@ -116,21 +116,37 @@ class BusinessPermitController extends Controller{
             }
 
             $permit_id = $new_business_transaction->id;
-            if(count(request('file')) > 0){
-                foreach (request('file') as $key => $value) {
-                    $new_file = new ApplicationBusinessPermitFile;
-                    $file_type = $key;
-                    $ext = $value->getClientOriginalExtension();
-                    $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($key)). "_" . 'Business Permit') . "." . $ext;
-                    $file = FileUploader::upload($value, "uploads/{$permit_id}/file", $filename);
-                    $new_file->path = $file['path'];
-                    $new_file->directory = $file['directory'];
-                    $new_file->filename = $file['filename'];
-                    $new_file->application_business_permit_id = $permit_id;
-                    $new_file->type = $file_type;
-                    $new_file->original_name = $value->getClientOriginalName();
-                    $new_file->save();
-                }
+
+
+            if ($request->has('bir_itr_form')) {
+                $file_type = "bir_itr_form";
+                $image = request('bir_itr_form');
+                $ext = $image->getClientOriginalExtension();
+                $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . 'Business Permit') . "." . $ext;
+                $file = FileUploader::upload($image, "uploads/{$permit_id}/file", $filename);
+                $new_file = new ApplicationBusinessPermitFile;
+                $new_file->path = $file['path'];
+                $new_file->directory = $file['directory'];
+                $new_file->filename = $file['filename'];
+                $new_file->application_business_permit_id = $permit_id;
+                $new_file->type = $file_type;
+                $new_file->original_name = $image->getClientOriginalName();
+                $new_file->save();
+            }
+            if ($request->has('photo_establishment')) {
+                $new_file = new ApplicationBusinessPermitFile;
+                $file_type = "photo_establishment";
+                $image = request('photo_establishment');
+                $ext = $image->getClientOriginalExtension();
+                $filename = strtoupper(str_replace('-', ' ', Helper::resolve_file_name($file_type)). "_" . 'Business Permit') . "." . $ext;
+                $file = FileUploader::upload($image, "uploads/{$permit_id}/file", $filename);
+                $new_file->path = $file['path'];
+                $new_file->directory = $file['directory'];
+                $new_file->filename = $file['filename'];
+                $new_file->application_business_permit_id = $permit_id;
+                $new_file->type = $file_type;
+                $new_file->original_name = $image->getClientOriginalName();
+                $new_file->save();
             }
             DB::commit();
 
