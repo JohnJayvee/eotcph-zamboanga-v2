@@ -699,7 +699,7 @@ class Helper{
         }
     }
 
-    public static function send_sms($contact_number, $msg_body = "Hello!"){
+    public static function send_sms($contact_number, $msg_body){
 			$request_body = ['text' => $msg_body,
                 'to' => $contact_number,
                 'api_key' => "1mgP6RMgSXDWRNaJXatDYwPVkjR",

@@ -41,7 +41,8 @@ class BusinessTransactionController extends Controller
 
 		$this->data['departments'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();
         $this->data['business_scopes'] = ["" => "Choose Business Scope",'national' => "National",'regional' => "Regional",'municipality' => "City/Municipality",'barangay' => "Barangay"];
-		$this->data['business_types'] = ["" => "Choose Business Type",'sole_proprietorship' => "Sole Proprietorship",'cooperative' => "Cooperative",'corporation' => "Corporation",'partnership' => "Partnership" , 'association' => "Association"];
+        $this->data['attachment_counts'] = ["" => "Choose Attachment Types",'2' => "Complete",'1' => "Incomplete",'0' => "No Attachment"];
+		$this->data['business_types'] = ["" => "Choose Business Type",'sole_proprietorship' => "Sole Proprietorship",'cooperative' => "Cooperative",'corporation' => "Corporation",'partnership' => "Partnership", 'association' => "Association"];
 		$this->data['regional_offices'] = ['' => "Choose Regional Offices"] + RegionalOffice::pluck('name', 'id')->toArray();
 		$this->data['requirements'] =  ApplicationRequirements::pluck('name','id')->toArray();
 		$this->data['status'] = ['' => "Choose Payment Status",'PAID' => "Paid" , 'UNPAID' => "Unpaid"];
@@ -58,6 +59,19 @@ class BusinessTransactionController extends Controller
 	}
 
 	public function  pending(PageRequest $request){
+
+
+		$get_bt = BusinessTransaction::all();
+
+		foreach ($get_bt as $key => $value) {
+			$app_file_count = ApplicationBusinessPermitFile::where('application_business_permit_id' , $value->id)->count();
+			$update_business_transaction = BusinessTransaction::where('id',$value->id)->where('attachment_count', NULL)->first();
+			if ($update_business_transaction) {
+				$update_business_transaction->attachment_count = $app_file_count;
+				$update_business_transaction->save();
+			}
+
+		}
 		$this->data['page_title'] = "Pending Business Transactions";
 
 		$auth = Auth::user();
@@ -77,6 +91,7 @@ class BusinessTransactionController extends Controller
 		$this->data['selected_bplo_approval'] = $request->get('bplo_approval');
 		$this->data['selected_processor'] = $request->get('processor');
 		$this->data['selected_department'] = $request->get('department_id');
+		$this->data['selected_attachment_count'] = $request->get('attachment_count');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
         $this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
@@ -112,6 +127,11 @@ class BusinessTransactionController extends Controller
                 ->where(function($query){
 					if(strlen($this->data['selected_department']) > 0){
 						return $query->whereJsonContains('department_involved',$this->data['department']->code);
+					}
+                })
+                ->where(function($query){
+					if(strlen($this->data['selected_attachment_count']) > 0){
+						return $query->where('attachment_count',$this->data['selected_attachment_count']);
 					}
                 })
                 ->where(function($query) use($auth){

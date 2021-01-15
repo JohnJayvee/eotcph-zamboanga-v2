@@ -680,18 +680,18 @@
                                             <tr>
                                                 <td>Actual Photo of Establishment </td>
                                                 <td>
-                                                    <input type="file" name="file[]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg">
-                                                    @if($errors->first('file'))
-                                                    <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                                    <input type="file" name="photo_establishment" class="text-wrap" accept="image/x-png,image/gif,image/jpeg">
+                                                    @if($errors->first('photo_establishment'))
+                                                    <p class="help-block text-danger">{{$errors->first('photo_establishment')}}</p>
                                                     @endif
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>BIR ITR Form/Financial Statement / Previous year assessment details / Percentage tax/monthly/quarterly returns</td>
                                                 <td>
-                                                    <input type="file" name="file[]" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
-                                                    @if($errors->first('file'))
-                                                    <p class="help-block text-danger">{{$errors->first('file')}}</p>
+                                                    <input type="file" name="bir_itr_form" class="text-wrap" accept="image/x-png,image/gif,image/jpeg,application/pdf">
+                                                    @if($errors->first('bir_itr_form'))
+                                                    <p class="help-block text-danger">{{$errors->first('bir_itr_form')}}</p>
                                                     @endif
                                                 </td>
                                             </tr>
