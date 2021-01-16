@@ -509,7 +509,7 @@ class BusinessTransactionController extends Controller
 			    $business_tax = BusinessFee::where('transaction_id', $id)->where('fee_type' , 1)->first();
 			    $garbage_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 2)->get();
 
-				if (count($regulatory_fee) == 0 || !$business_tax || count($garbage_fee) == 0 ) {
+				if (count($regulatory_fee) == 0 || !$business_tax ) {
 
 					session()->flash('notification-status', "failed");
 					session()->flash('notification-msg', "Cannot approved transaction with incomplete assessment");
@@ -759,12 +759,6 @@ class BusinessTransactionController extends Controller
 				}
 				
 				$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
-				/*
-				0 = pending
-				1 = validated
-				2 = declined
-				*/
-
 				
 				$department = User::whereIn('department_id', explode(",",$request->get('department_code')))->get();
 				$insert = [];
@@ -788,6 +782,8 @@ class BusinessTransactionController extends Controller
 				session()->flash('notification-msg', "Office Code has been saved.");
 			} else {
 				$transaction->status = "DECLINED";
+				$transaction->application_permit->status =  "declined";
+				$transaction->application_permit->save();
 				$data = [
 					'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,
 					'email' => $transaction->owner ? $transaction->owner->email : $transaction->email,
@@ -1184,30 +1180,44 @@ class BusinessTransactionController extends Controller
     public function bulk_decline(PageRequest $request){
     	DB::beginTransaction();
     	try{
-    		$business_id = [];
-	    	$transaction_id = [];
+	    	$application_business_permit_id = [];
 
 	    	foreach (explode(",", $request->get('application_no')) as $key => $value) {
-	    		$app = ApplicationBusinessPermit::where('application_no', $value)->first();
-	    		array_push($business_id, $app->business_id);
-	    	}
-
-	    	foreach ($business_id as $key => $value) {
-				$transaction = BusinessTransaction::where('business_id', $value)->where('status',"PENDING")->first();
-	    		array_push($transaction_id, $transaction->id);
+	    		$app = ApplicationBusinessPermit::where('application_no', trim($value))->first();
+				if ($app) {
+					array_push($application_business_permit_id, $app->id);
+				}
 			}
-
-			foreach ($transaction_id as $key => $value) {
-				$data = BusinessTransaction::where('id', $value)->where('status',"PENDING")->first();
+			foreach ($application_business_permit_id as $key => $value) {
+				$data = BusinessTransaction::where('business_permit_id', $value)->where('status',"PENDING")->first();
 				$data->status = "DECLINED";
+				$data->modified_at = Carbon::now();
 				$data->remarks = $request->get('remarks');
-				$data->save();
+				$data->update();
+
+				$data->application_permit->status =  "declined";
+				$data->application_permit->update();
+
+				$transaction_data = [
+					'contact_number' => $data->owner ? $data->owner->contact_number : $data->contact_number,
+					'email' => $data->owner ? $data->owner->email : $data->email,
+					'ref_num' => $data->code,
+					'full_name' => $data->owner ? $data->owner->full_name : $data->business_name,
+					'application_name' => $data->application_name,
+					'modified_at' => Helper::date_only($data->modified_at),
+					'remarks' =>  $data->remarks,
+				];
+                
+				$notification_data_email = new SendEmailDeclinedApplication($transaction_data);
+				Event::dispatch('send-email-application-declined', $notification_data_email);
+
 			}
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "successfully declined transactions");
-			return redirect()->route('system.business_transaction.pending');
+			return redirect()->route('system.business_transaction.declined');
 		}catch(\Throwable $e){
+			dd($e);
             DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
