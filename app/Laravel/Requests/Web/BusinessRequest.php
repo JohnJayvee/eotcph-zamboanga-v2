@@ -8,11 +8,11 @@ class BusinessRequest extends RequestManager{
 	public function rules(){
 
 		$id = $this->route('id')?:0;
-		$file = $this->file('file') ? count($this->file('file')) : 0;
-
+            $file = $this->file('file') ? count($this->file('file')) : 0;
+            
 		$rules = [
-                    "business_id_no" => "required|unique:business,business_id_no",
-                    "business_scope" => "required",
+                  "business_id_no" => "required|unique:business,business_id_no",
+                  "business_scope" => "required",
                   "business_type" => "required",
                   "dominant_name" => "required",
                   "business_name" => "required",
@@ -74,7 +74,7 @@ class BusinessRequest extends RequestManager{
 	public function messages(){
 		return [
             'required'	=> "Field is required.",
-            'business_id_no.unique' => "Business ID is already taken",
+            'business_id_no.unique' => "Sorry, please re-check your BID. This BID is already taken. If you believe you did not register this BID, please contact the BPLO.",
             'integer' => "Invalid Data.",
             'bnn' => "BNN not Found",
 		];

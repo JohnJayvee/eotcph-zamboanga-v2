@@ -66,7 +66,9 @@
   </div>
   <div class="col-md-12">
      <a data-url="{{route('system.business_transaction.bulk_assessment')}}"  class="btn btn-primary mb-2 mr-2 btn-assessment border-5 text-white float-right"> Bulk Assessment</a>
-     <a data-url="{{route('system.business_transaction.bulk_decline')}}"  class="btn btn-primary mb-2 mr-2 btn-declined border-5 text-white float-right"> Bulk Decline</a>
+     @if(in_array(Auth::user()->type, ['admin', 'super_user']))
+      <a data-url="{{route('system.business_transaction.bulk_decline')}}"  class="btn btn-primary mb-2 mr-2 btn-declined border-5 text-white float-right"> Bulk Decline</a>
+     @endif
     <div class="shadow-sm fs-15">
       <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
         <thead>
