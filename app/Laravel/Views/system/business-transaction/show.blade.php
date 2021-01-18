@@ -31,8 +31,9 @@
             @if($transaction->digital_certificate_released == "0" and $transaction->payment_status == "PAID")
               <a class="badge badge-info " href="{{route('system.business_transaction.release',[$transaction->id])}}">Release Digital Certificate</a>
             @endif
-            
+            @if($transaction->digital_certificate_released == "1" and $transaction->payment_status == "PAID")
               <a class="badge badge-info " href="{{route('web.e_permit_view',[$transaction->id])}}" target="_blank">View Digital Certificate</a>
+            @endif
             @if (!$transaction->business_info)
             <h6 class="text-danger mt-3">BUSINESS CV HAS BEEN DELETED</h6>
             {{-- @if (!empty($transaction->admin_delete))
