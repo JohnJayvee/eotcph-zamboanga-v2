@@ -62,7 +62,7 @@ class BusinessTransactionController extends Controller
 	public function  pending(PageRequest $request){
 
 
-		$get_bt = BusinessTransaction::all();
+		/*$get_bt = BusinessTransaction::all();
 
 		foreach ($get_bt as $key => $value) {
 			$app_file_count = ApplicationBusinessPermitFile::where('application_business_permit_id' , $value->id)->count();
@@ -72,7 +72,7 @@ class BusinessTransactionController extends Controller
 				$update_business_transaction->save();
 			}
 
-		}
+		}*/
 		$this->data['page_title'] = "Pending Business Transactions";
 
 		$auth = Auth::user();
