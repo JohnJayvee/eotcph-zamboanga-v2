@@ -1190,27 +1190,28 @@ class BusinessTransactionController extends Controller
 			}
 			foreach ($application_business_permit_id as $key => $value) {
 				$data = BusinessTransaction::where('business_permit_id', $value)->where('status',"PENDING")->first();
-				$data->status = "DECLINED";
-				$data->modified_at = Carbon::now();
-				$data->remarks = $request->get('remarks');
-				$data->update();
+				if ($data) {
+					$data->status = "DECLINED";
+					$data->modified_at = Carbon::now();
+					$data->remarks = $request->get('remarks');
+					$data->update();
 
-				$data->application_permit->status =  "declined";
-				$data->application_permit->update();
+					$data->application_permit->status =  "declined";
+					$data->application_permit->update();
 
-				$transaction_data = [
-					'contact_number' => $data->owner ? $data->owner->contact_number : $data->contact_number,
-					'email' => $data->owner ? $data->owner->email : $data->email,
-					'ref_num' => $data->code,
-					'full_name' => $data->owner ? $data->owner->full_name : $data->business_name,
-					'application_name' => $data->application_name,
-					'modified_at' => Helper::date_only($data->modified_at),
-					'remarks' =>  $data->remarks,
-				];
-                
-				$notification_data_email = new SendEmailDeclinedApplication($transaction_data);
-				Event::dispatch('send-email-application-declined', $notification_data_email);
-
+					$transaction_data = [
+						'contact_number' => $data->owner ? $data->owner->contact_number : $data->contact_number,
+						'email' => $data->owner ? $data->owner->email : $data->email,
+						'ref_num' => $data->code,
+						'full_name' => $data->owner ? $data->owner->full_name : $data->business_name,
+						'application_name' => $data->application_name,
+						'modified_at' => Helper::date_only($data->modified_at),
+						'remarks' =>  $data->remarks,
+					];
+					
+					$notification_data_email = new SendEmailDeclinedApplication($transaction_data);
+					Event::dispatch('send-email-application-declined', $notification_data_email);
+				}
 			}
 			DB::commit();
 			session()->flash('notification-status', "success");
