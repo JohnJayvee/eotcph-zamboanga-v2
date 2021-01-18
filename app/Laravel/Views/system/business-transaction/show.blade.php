@@ -430,7 +430,8 @@
     </div>
     @if(in_array(Auth::user()->type, ['admin', 'super_user']) and in_array($transaction->status, ['PENDING', 'ONGOING']))
       @if($transaction->is_validated == 0)
-        <a data-url="{{route('system.business_transaction.validate',[$transaction->id])}}"  class="btn btn-primary mt-4 btn-validate border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Validate Transactions</a>
+        <a data-url="{{route('system.business_transaction.validate',[$transaction->id])}}?status_type=validate&"  class="btn btn-primary mt-4 btn-validate border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Validate Transactions</a>
+        <a data-url="{{route('system.business_transaction.validate',[$transaction->id])}}?status_type=declined&"  class="btn btn-danger mt-4 btn-decline-bplo border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-times-circle"></i> Decline Transactions</a>
       @endif
       @if($transaction->for_bplo_approval == 1)
         <a data-url="{{route('system.business_transaction.process',[$transaction->id])}}?status_type=approved&collection_id={{$transaction->collection_id}}"  class="btn btn-primary mt-4 btn-approved border-5 text-white {{$transaction->status == 'approved' ? "isDisabled" : ""}}"><i class="fa fa-check-circle"></i> Approve Transactions</a>
@@ -512,6 +513,28 @@
         }
       });
     });
+
+    $(".btn-decline-bplo").on('click', function(){
+      var url = $(this).data('url');
+      var self = $(this)
+      Swal.fire({
+        title: "Please put Remarks in the field below. Are you sure you want to disapprove this application? You can't undo this action.?",
+        icon: 'warning',
+        input: 'text',
+        inputPlaceholder: "Put remarks",
+        showCancelButton: true,
+        confirmButtonText: 'Decline',
+        cancelButtonColor: '#d33'
+      }).then((result) => {
+        if (result.value === "") {
+          alert("You need to write something")
+          return false
+        }
+        if (result.value) {
+          window.location.href = url + "&remarks="+result.value;
+        }
+      });
+    });
     $(".btn-remarks").on('click', function(){
       var url = $(this).data('url');
       var self = $(this)
@@ -570,7 +593,7 @@
           return false
         }
         if (result.value) {
-          window.location.href = url + "?department_code="+result.value;
+          window.location.href = url + "department_code="+result.value;
         }
       });
     });

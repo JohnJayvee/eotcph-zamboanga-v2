@@ -938,6 +938,10 @@
     }
 
     $(function () {
+        $('.create-form').on('submit', function() {
+            $('#input_business_type').prop('disabled', false);
+        });
+
         load_barangay();
         $(this).get_region("#input_region", "#input_province", "#input_town", "#input_brgy", "{{old('region', '090000000')}}")
         $(this).get_city("090000000", "#input_town", "#input_brgy", "{{old('town', '097332000')}}");
