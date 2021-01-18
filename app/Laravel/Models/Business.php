@@ -71,6 +71,10 @@ class Business extends Model{
         return Str::title("{$this->owner_fname} {$this->owner_mname} {$this->owner_lname}");
     }
 
+    public function getOwnerAddressAttribute(){
+        return Str::title((strlen($this->owner_unit_no) > 0 ? " ".$this->owner_unit_no : NULL)." {$this->owner_street} {$this->owner_brgy_name}");
+    }
+
     public function getTaxIncentiveDisplayAttribute(){
         return !empty($this->tax_incentive) ? ($this->tax_incentive != "no" ? "Yes, ". Str::title("{$this->tax_incentive}") : "No"  ) : "No";
     }
@@ -113,7 +117,7 @@ class Business extends Model{
     }
 
     public function getBusinessFullAddressAttribute(){
-        return Str::title("{$this->unit_no}, {$this->street_address}, {$this->brgy_name}, {$this->town_name}");
+        return Str::title((strlen($this->unit_no) > 0 ? " ".$this->unit_no : NULL)." {$this->street_address}, {$this->brgy_name}, {$this->town_name}");
     }
 
     public function owner(){

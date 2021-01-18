@@ -117,8 +117,10 @@ class BusinessPermitController extends Controller{
 
             $permit_id = $new_business_transaction->id;
 
+            $attachment_count = 0 ;
 
             if ($request->has('bir_itr_form')) {
+                $attachment_count++;
                 $file_type = "bir_itr_form";
                 $image = request('bir_itr_form');
                 $ext = $image->getClientOriginalExtension();
@@ -134,6 +136,7 @@ class BusinessPermitController extends Controller{
                 $new_file->save();
             }
             if ($request->has('photo_establishment')) {
+                $attachment_count++;
                 $new_file = new ApplicationBusinessPermitFile;
                 $file_type = "photo_establishment";
                 $image = request('photo_establishment');
@@ -149,6 +152,9 @@ class BusinessPermitController extends Controller{
                 $new_file->save();
             }
             DB::commit();
+            
+            $new_business_transaction->attachment_count = $attachment_count;
+            $new_business_transaction->save();
 
             $insert[] = [
                 'email' => $auth->email,
