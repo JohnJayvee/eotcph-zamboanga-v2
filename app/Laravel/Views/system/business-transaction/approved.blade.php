@@ -18,7 +18,6 @@
   <div class="col-12 ">
     <form>
       <div class="row pb-2">
-
         <div class="col-md-4">
           <label>Application Type</label>
          {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
@@ -28,16 +27,18 @@
           {!!Form::select("processing_fee_status", $status, $selected_processing_fee_status, ['id' => "input_processing_fee_status", 'class' => "custom-select"])!!}
         </div>
         <div class="col-md-4">
-          <label>Date Range</label>
+          <label>Department</label>
+          {!!Form::select("department_id", $departments, $selected_department, ['id' => "input_processor", 'class' => "custom-select"])!!}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 p-2">
           <div class="input-group input-daterange d-flex align-items-center">
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$start_date}}" readonly="readonly" name="start_date">
             <div class="input-group-addon mx-2">to</div>
             <input type="text" class="form-control mb-2 mr-sm-2" value="{{$end_date}}" readonly="readonly" name="end_date">
           </div>
         </div>
-      </div>
-      <div class="row">
-
         <div class="col-md-4 p-2">
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
@@ -52,16 +53,17 @@
     </form>
   </div>
   <div class="col-md-12">
-    <div class="shadow-sm fs-15">
-      <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
+    <div class="shadow-sm fs-15 table-responsive">
+      <table class="table table-striped table-wrap" style="table-layout: fixed;">
         <thead>
           <tr class="text-center ">
-            <th class="text-title p-3" width="15%">Transaction Date</th>
-            <th class="text-title p-3" width="15%">Business Name/Owner</th>
-            <th class="text-title p-3" width="30%">Application Type</th>
-            <th class="text-title p-3" width="10%">Amount</th>
-            <th class="text-title p-3" width="10%">Processor/Status</th>
-            <th class="text-title p-3" width="10%">Action</th>
+            <th class="text-title p-3">Transaction Date</th>
+            <th class="text-title p-3">Business Name/Owner</th>
+            <th class="text-title p-3">Application Number</th>
+            <th class="text-title p-3">Application Type</th>
+            <th class="text-title p-3">Amount</th>
+            <th class="text-title p-3">Processor/Status</th>
+            <th class="text-title p-3">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -70,6 +72,7 @@
           <tr class="text-center">
             <td>{{ Helper::date_format($transaction->created_at)}}</td>
             <td>{{str::title($transaction->business_name)}} /<br>  {{str::title($transaction->owner->full_name)}}</td>
+            <td>{{str::title($transaction->application_permit->application_no)}}</td>
             <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
             <td>
               <div>{{Helper::money_format($transaction->total_amount) ?: 0 }}</div>

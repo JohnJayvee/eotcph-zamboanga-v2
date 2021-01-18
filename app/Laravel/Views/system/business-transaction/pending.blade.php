@@ -32,12 +32,12 @@
           {!!Form::select("bplo_approval", $approval, $selected_bplo_approval, ['id' => "input_bplo_approval", 'class' => "custom-select"])!!}
         </div>
         <div class="col-md-2">
-            <label>Validation</label>
-            {!!Form::select("processor", $processor, $selected_processor, ['id' => "input_processor", 'class' => "custom-select"])!!}
+          <label>Validation</label>
+          {!!Form::select("processor", $processor, $selected_processor, ['id' => "input_processor", 'class' => "custom-select"])!!}
         </div>
         <div class="col-md-3">
-            <label>Department</label>
-            {!!Form::select("department_id", $departments, $selected_department, ['id' => "input_processor", 'class' => "custom-select"])!!}
+          <label>Department</label>
+          {!!Form::select("department_id", $departments, $selected_department, ['id' => "input_processor", 'class' => "custom-select"])!!}
         </div>
       </div>
       <div class="row">
@@ -158,35 +158,6 @@
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script><script type="text/javascript">
 
-  $.fn.get_application_type = function(department_id,input_purpose,selected){
-        $(input_purpose).empty().prop('disabled',true)
-        $(input_purpose).append($('<option>', {
-                  value: "",
-                  text: "Loading Content..."
-              }));
-        $.getJSON( "{{route('web.get_application_type')}}?department_id="+department_id, function( result ) {
-            $(input_purpose).empty().prop('disabled',true)
-            $.each(result.data,function(index,value){
-              // console.log(index+value)
-              $(input_purpose).append($('<option>', {
-                  value: index,
-                  text: value
-              }));
-            })
-
-            $(input_purpose).prop('disabled',false)
-            $(input_purpose).prepend($('<option>',{value : "",text : "--Choose Application Type--"}))
-
-            if(selected.length > 0){
-              $(input_purpose).val($(input_purpose+" option[value="+selected+"]").val());
-
-            }else{
-              $(input_purpose).val($(input_purpose+" option:first").val());
-              //$(this).get_extra(selected)
-            }
-        });
-        // return result;
-    };
 
   $(function(){
     $('.input-daterange').datepicker({
@@ -198,12 +169,6 @@
       $("#btn-confirm-delete").attr({"href" : btn.data('url')});
     });
 
-    $("#input_department_id").on("change",function(){
-      var department_id = $(this).val()
-      var _text = $("#input_department_id option:selected").text();
-      $(this).get_application_type(department_id,"#input_application_id","")
-      $('#input_department_name').val(_text);
-    })
 
     $(".btn-assessment").on('click', function(){
       var url = $(this).data('url');

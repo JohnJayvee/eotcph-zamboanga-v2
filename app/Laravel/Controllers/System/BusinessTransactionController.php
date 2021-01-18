@@ -158,33 +158,37 @@ class BusinessTransactionController extends Controller
 		if($first_record){
 			$start_date = $request->get('start_date',$first_record->created_at->format("Y-m-d"));
 		}
+
 		$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
 		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
-
-
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
+		$this->data['selected_department'] = $request->get('department_id');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 
+		$this->data['department'] = Department::find($this->data['selected_department']);
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
-
-		$this->data['transactions'] = BusinessTransaction::where('status',"APPROVED")->where(function($query){
+		$this->data['transactions'] = BusinessTransaction::with('application_permit')->with('owner')->where('status',"APPROVED")->whereHas('application_permit',function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(business_name)  LIKE  '%{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(code) LIKE  '%{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(application_no) LIKE  '%{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
 					if(strlen($this->data['selected_application_id']) > 0){
 						return $query->where('application_id',$this->data['selected_application_id']);
 					}
-
 				})
 				->where(function($query){
 					if(strlen($this->data['selected_processing_fee_status']) > 0){
 						return $query->where('payment_status',$this->data['selected_processing_fee_status']);
 					}
 				})
+				->where(function($query){
+					if(strlen($this->data['selected_department']) > 0){
+						return $query->whereJsonContains('department_involved',$this->data['department']->code);
+					}
+                })
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
 				->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])
 				->orderBy('created_at',"DESC")->paginate($this->per_page);
@@ -206,25 +210,30 @@ class BusinessTransactionController extends Controller
 		$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
 		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
 
-
 		$this->data['selected_application_id'] = $request->get('application_id');
 		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
+		$this->data['selected_department'] = $request->get('department_id');
 
+		$this->data['department'] = Department::find($this->data['selected_department']);
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
-
-		$this->data['transactions'] = BusinessTransaction::where('status',"DECLINED")->where(function($query){
+		
+		$this->data['transactions'] = BusinessTransaction::with('application_permit')->with('owner')->where('status',"DECLINED")->whereHas('application_permit',function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(business_name)  LIKE  '%{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(code) LIKE  '%{$this->data['keyword']}%'");
+							->orWhereRaw("LOWER(application_no) LIKE  '%{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
 					if(strlen($this->data['selected_application_id']) > 0){
 						return $query->where('application_id',$this->data['selected_application_id']);
 					}
-
 				})
+				->where(function($query){
+					if(strlen($this->data['selected_department']) > 0){
+						return $query->whereJsonContains('department_involved',$this->data['department']->code);
+					}
+                })
 				->where(function($query){
 					if(strlen($this->data['selected_processing_fee_status']) > 0){
 						return $query->where('payment_status',$this->data['selected_processing_fee_status']);
@@ -234,7 +243,7 @@ class BusinessTransactionController extends Controller
 				->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])
 				->orderBy('created_at',"DESC")->paginate($this->per_page);
 
-		return view('system.business-transaction.approved',$this->data);
+		return view('system.business-transaction.declined',$this->data);
 	}
 	public function show(PageRequest $request,$id=NULL){
 		$this->data['count_file'] = TransactionRequirements::where('transaction_id',$id)->count();
