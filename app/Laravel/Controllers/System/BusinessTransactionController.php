@@ -518,13 +518,13 @@ class BusinessTransactionController extends Controller
 			    $business_tax = BusinessFee::where('transaction_id', $id)->where('fee_type' , 1)->first();
 			    $garbage_fee = BusinessFee::where('transaction_id', $id)->where('fee_type' , 2)->get();
 
-				if (count($regulatory_fee) == 0 || !$business_tax ) {
+				/*if (count($regulatory_fee) == 0 || !$business_tax ) {
 
 					session()->flash('notification-status', "failed");
 					session()->flash('notification-msg', "Cannot approved transaction with incomplete assessment");
 					return redirect()->route('system.business_transaction.show',[$id]);
 				}
-
+*/
 
 			    if ($regulatory_fee) {
 			    	$business_fee_id = [];
@@ -1227,7 +1227,6 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "successfully declined transactions");
 			return redirect()->route('system.business_transaction.declined');
 		}catch(\Throwable $e){
-			dd($e);
             DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
