@@ -115,14 +115,6 @@
             <p class="fw-500" style="color: #DC3C3B;">Processing Fee: Php {{Helper::money_format($transaction->amount) ?: "0" }} [{{$transaction->processing_fee_code}}]</p>
             <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p> -->
           </div>
-          <div class="col-md-6 mt-4">
-           <!--  <p class="text-title fw-500">Owners Name: <span class="text-black">{{str::title($transaction->owner ? $transaction->owner->full_name : $transaction->customer_name)}}</span></p>
-            <p class="text-title fw-500">Owners Email: <span class="text-black">{{$transaction->owner->email}}</span></p>
-            <p class="text-title fw-500">Owners Contact No.: <span class="text-black">{{$transaction->owner->contact_number}}</span></p> -->
-            <p class="text-title fw-500">Owners Name: <span class="text-black">{{ strlen($transaction->business_info->owner_name) > 2 ? $transaction->business_info->owner_name : $transaction->business_info->rep_full_name }}</span></p>
-            <p class="text-title fw-500">Owners Email: <span class="text-black">{{$transaction->business_info->owner_email ?: $transaction->owner->email }}</span></p>
-            <p class="text-title fw-500">Owners Contact No.: <span class="text-black">{{$transaction->business_info->mobile_number ?: $transaction->owner->contact_number}}</span></p>
-          </div>
           @if ($transaction->business_info)
             <div class="col-md-6 mt-4">
                 <p class="text-title fw-500">Owner's Name: <span class="text-black">{{str::title($transaction->business_info->owner_name)}}</span></p>
