@@ -218,7 +218,7 @@ class BusinessTransactionController extends Controller
 
 		$this->data['department'] = Department::find($this->data['selected_department']);
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
-		
+
 		$this->data['transactions'] = BusinessTransaction::with('application_permit')->with('owner')->where('status',"DECLINED")->whereHas('application_permit',function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(business_name)  LIKE  '%{$this->data['keyword']}%'")
@@ -313,12 +313,11 @@ class BusinessTransactionController extends Controller
         DB::beginTransaction();
         try{
 
-            $owner_transaction_details = array('email' => request('owner.email'), 'contact_number' => request('owner.contact_number'));
+            $owner_transaction_details = array('email' => request('business_info.owner_email'), 'contact_number' => request('business_info.owner_mobile_no'));
             $business_info = array_merge(request('business_info'), request('transaction'));
 
             $transaction->fill(array_merge( request('transaction'),  $owner_transaction_details))->save();
             $transaction->business_info->fill($business_info)->save();
-            $transaction->owner->fill(request('owner'))->save();
 
             // retrieve all lines of business by transaction
             // if empty  disregard
@@ -748,12 +747,12 @@ class BusinessTransactionController extends Controller
 		try{
 			$status_type = $request->get('status_type');
 			$type = $request->get('status_type') == 'validate' ? 'pending' : 'declined';
-			
+
 			$transaction = $request->get('business_transaction_data');
 			$transaction->isNew = 1;
 			$transaction->remarks = $status_type == "validate" ? NULL : $request->get('remarks');
 			$transaction->modified_at = Carbon::now();
-			
+
 			if ($status_type == 'validate'){
 				$transaction->is_validated = 1;
 				$dept_code_array = explode(",", $request->get('department_code'));
@@ -766,9 +765,9 @@ class BusinessTransactionController extends Controller
 						return redirect()->route('system.business_transaction.show',[$id]);
 					}
 				}
-				
+
 				$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
-				
+
 				$department = User::whereIn('department_id', explode(",",$request->get('department_code')))->get();
 				$insert = [];
 				foreach ($department as $departments ) {
@@ -786,7 +785,7 @@ class BusinessTransactionController extends Controller
 				// send via Email
 				$notification_data = new NotifyDepartmentEmail($insert);
 				Event::dispatch('notify-departments-email', $notification_data);
-				
+
 				session()->flash('notification-status', "success");
 				session()->flash('notification-msg', "Office Code has been saved.");
 			} else {
@@ -802,14 +801,14 @@ class BusinessTransactionController extends Controller
 					'modified_at' => Helper::date_only($transaction->modified_at),
 					'remarks' =>  $transaction->remarks,
 				];
-                
+
 				$notification_data_email = new SendEmailDeclinedApplication($data);
 				Event::dispatch('send-email-application-declined', $notification_data_email);
-				
+
 				session()->flash('notification-status', "success");
 				session()->flash('notification-msg', "Transaction has been successfully declined.");
 			}
-		
+
 			$transaction->save();
 			DB::commit();
 
@@ -1093,7 +1092,7 @@ class BusinessTransactionController extends Controller
 					session()->flash('notification-msg', "No Assesment Found.");
 					return redirect()->route('system.business_transaction.pending');
 				}*/
-				
+
 				$regulatory_array = [];
 				$business_array = [];
 				$garbage_array = [];
@@ -1217,7 +1216,7 @@ class BusinessTransactionController extends Controller
 						'modified_at' => Helper::date_only($data->modified_at),
 						'remarks' =>  $data->remarks,
 					];
-					
+
 					$notification_data_email = new SendEmailDeclinedApplication($transaction_data);
 					Event::dispatch('send-email-application-declined', $notification_data_email);
 				}
