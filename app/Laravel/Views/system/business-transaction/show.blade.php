@@ -119,7 +119,7 @@
            <!--  <p class="text-title fw-500">Owners Name: <span class="text-black">{{str::title($transaction->owner ? $transaction->owner->full_name : $transaction->customer_name)}}</span></p>
             <p class="text-title fw-500">Owners Email: <span class="text-black">{{$transaction->owner->email}}</span></p>
             <p class="text-title fw-500">Owners Contact No.: <span class="text-black">{{$transaction->owner->contact_number}}</span></p> -->
-            <p class="text-title fw-500">Owners Name: <span class="text-black">{{str::title($transaction->business_info ? $transaction->business_info->owner_name : $transaction->owner->full_name)}}</span></p>
+            <p class="text-title fw-500">Owners Name: <span class="text-black">{{ strlen($transaction->business_info->owner_name) > 2 ? $transaction->business_info->owner_name : $transaction->business_info->rep_full_name }}</span></p>
             <p class="text-title fw-500">Owners Email: <span class="text-black">{{$transaction->business_info->owner_email ?: $transaction->owner->email }}</span></p>
             <p class="text-title fw-500">Owners Contact No.: <span class="text-black">{{$transaction->business_info->mobile_number ?: $transaction->owner->contact_number}}</span></p>
           </div>

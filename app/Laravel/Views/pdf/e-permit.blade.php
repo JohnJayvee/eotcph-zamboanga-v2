@@ -38,7 +38,7 @@
 		</tr>
 	</tbody>
 </table>
-<p class="lh1 fs14">This certifies that <b class="text-uppercase">&nbsp;&nbsp; {{$business->owner_name}}</b></p>
+<p class="lh1 fs14">This certifies that <b class="text-uppercase">&nbsp;&nbsp; {{strlen($business->owner_name) > 2 ? $business->owner_name : $business->rep_full_name }}</b></p>
 <p class="lh1 fs14">with registered trade name as <b class="text-uppercase">&nbsp;&nbsp;  {{$business->business_name}}</b></p>
 <p class="lh1 fs14">located at <b class="text-uppercase">&nbsp;&nbsp;  {{$business->business_full_address}}</b></p>
 <p class="lh1 fs14">has granted the PERMIT TO OPERATE the following business/es pursuant to the Revenue Code and Ordinances of the City of Zamboanga.</p>
