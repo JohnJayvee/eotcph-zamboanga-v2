@@ -75,7 +75,7 @@ class BusinessTransaction extends Model{
     }
 
     public function owner(){
-        return $this->BelongsTo("App\Laravel\Models\Business",'business_id','id');
+        return $this->BelongsTo("App\Laravel\Models\Customer",'owners_id','id');
     }
 
     public function business_info(){
