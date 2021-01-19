@@ -27,10 +27,6 @@ class TransactionUpdateRequest extends RequestManager{
 			'business_info.male_residing_in_city' => "required",
 			'business_info.business_area' => "required",
 			'business_info.capitalization' => "required",
-			'owner.fname' => "required",
-			'owner.lname' => "required",
-			'owner.email' => "required",
-			'owner.contact_number' => "required",
 		];
 
 		return $rules;

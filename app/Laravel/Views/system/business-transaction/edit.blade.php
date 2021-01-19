@@ -368,30 +368,46 @@
                     </div>
                     <div class="col-md-6 mt-4">
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owners First Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner.fname') ? 'is-invalid': NULL  }}"  name="owner[fname]" value="{{old('owner.fname', str::title($transaction->owner->fname) ?? '') }}" autocomplete="none">
-                          @include('system.business-transaction.error', ['error_field' => 'owner.fname'])
+                          <label for="exampleInputEmail1" class="text-form">Owner's First Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_fname') ? 'is-invalid': NULL  }}"  name="business_info[owner_fname]" value="{{old('business_info.owner_fname', str::title($transaction->business_info->owner_fname) ?? '') }}" autocomplete="none">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.owner_fname'])
                       </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owners Middle Name </label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner.mname') ? 'is-invalid': NULL  }}"  name="owner[mname]" value="{{old('owner.mname', str::title($transaction->owner->mname) ?? '') }}" autocomplete="none">
-                          @include('system.business-transaction.error', ['error_field' => 'owner.mname'])
+                          <label for="exampleInputEmail1" class="text-form">Owner's Middle Name </label>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_mname') ? 'is-invalid': NULL  }}"  name="business_info[owner_mname]" value="{{old('business_info.owner_mname', str::title($transaction->business_info->owner_mname) ?? '') }}" autocomplete="none">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.owner_mname'])
                       </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owners Last Name <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner.lname') ? 'is-invalid': NULL  }}"  name="owner[lname]" value="{{old('owner.lname', str::title($transaction->owner->lname) ?? '') }}" autocomplete="none">
-                          @include('system.business-transaction.error', ['error_field' => 'owner.lname'])
+                          <label for="exampleInputEmail1" class="text-form">Owner's Last Name <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_lname') ? 'is-invalid': NULL  }}"  name="business_info[owner_lname]" value="{{old('business_info.owner_lname', str::title($transaction->business_info->owner_lname) ?? '') }}" autocomplete="none">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.owner_lname'])
                         </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owners Email <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner.email') ? 'is-invalid': NULL  }}"  name="owner[email]" value="{{old('owner.email', str::title($transaction->owner->email) ?? '') }}" autocomplete="none">
-                          @include('system.business-transaction.error', ['error_field' => 'owner.email'])
+                          <label for="exampleInputEmail1" class="text-form">Owner's Email <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_email') ? 'is-invalid': NULL  }}"  name="business_info[owner_email]" value="{{old('business_info.owner_email', str::title($transaction->business_info->owner_email) ?? '') }}" autocomplete="none">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.owner_email'])
                         </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owners Contact No. <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-sm {{ $errors->first('owner.contact_number') ? 'is-invalid': NULL  }}"  name="owner[contact_number]" value="{{old('owner.contact_number', str::title($transaction->owner->contact_number) ?? '') }}" autocomplete="none">
-                          @include('system.business-transaction.error', ['error_field' => 'owner.contact_number'])
+                          <label for="exampleInputEmail1" class="text-form">Owner's Contact No. <span class="text-danger">*</span></label>
+                          <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_mobile_no') ? 'is-invalid': NULL  }}"  name="business_info[owner_mobile_no]" value="{{old('business_info.owner_mobile_no', str::title($transaction->business_info->owner_mobile_no) ?? '') }}" autocomplete="none">
+                          @include('system.business-transaction.error', ['error_field' => 'business_info.owner_mobile_no'])
                         </div>
+                    <div class="form-group my-0">
+                        <label for="exampleInputEmail1" class="text-form">Owner's Unit No </label>
+                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_unit_no') ? 'is-invalid': NULL  }}"  name="business_info[owner_unit_no]" value="{{old('business_info.owner_unit_no', $transaction->business_info->owner_unit_no ?? '') }}">
+                        @include('system.business-transaction.error', ['error_field' => 'business_info.owner_unit_no'])
+                    </div>
+                    <div class="form-group my-0">
+                        <label for="exampleInputEmail1" class="text-form">Owner's Street </label>
+                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_street') ? 'is-invalid': NULL  }}"  name="business_info[owner_street]" value="{{old('business_info.owner_street', $transaction->business_info->owner_street ?? '') }}">
+                        @include('system.business-transaction.error', ['error_field' => 'business_info.owner_street'])
+                    </div>
+                    <div class="form-group my-0">
+                        <label for="exampleInputEmail1" class="text-form">Owner's Barangay</label>
+                        {!!Form::select('business_info[owner_brgy]',[],old('business_info.owner_brgy' ,$transaction->business_info->owner_brgy),['id' => "input_owner_brgy",'class' => "form-control form-control classic ".($errors->first('business_info.owner_brgy') ? 'border-red' : NULL)])!!}
+                        @include('system.business-transaction.error', ['error_field' => 'business_info.owner_brgy'])
+                    </div>
+                    <input type="hidden" class="form-control" name="business_info[owner_brgy_name]" id="input_owner_brgy_name" value="{{old('business_info.owner_brgy' ,  $transaction->business_info->owner_brgy )}}">
                     </div>
                     <div class="col-md-6 mt-4">
                       <p class="text-title fw-500">Authorize Representative:</p>
@@ -888,6 +904,11 @@
                 value: "{!!  $transaction->business_info->lessor_brgy !!}",
                 text: "{!! $transaction->business_info->lessor_brgy_name !!}"
             }))
+            }else if(input_brgy == '#input_owner_brgy'){
+                $(input_brgy).prepend($('<option>', {
+                value: "{!!  $transaction->business_info->owner_brgy !!}",
+                text: "{!! $transaction->business_info->owner_brgy_name !!}"
+                }))
             }else{
                 $(input_brgy).prepend($('<option>', {
                 value: "{!!  $transaction->business_info->brgy !!}",
@@ -919,6 +940,7 @@
   $(function(){
     load_barangay();
     load_lessor_barangay();
+    load_owner_barangay();
 
     $('.input-daterange').datepicker({
       format : "yyyy-mm-dd"
@@ -1070,6 +1092,12 @@
         $('#input_lessor_town_name').val(_text);
     }
 
+    function load_owner_barangay() {
+        var _val = "097332000";
+        var _text = "ZAMBOANGA DEL SUR - CITY OF ZAMBOANGA";
+        $(this).get_brgy(_val, "#input_owner_brgy", "");
+    }
+
 
 
 
@@ -1083,6 +1111,12 @@
         $('#input_lessor_zipcode').val($(this).find(':selected').data('zip_code'))
         var _text = $("#input_lessor_brgy option:selected").text();
         $('#input_lessor_brgy_name').val(_text);
+    });
+
+    $("#input_owner_brgy").on("change", function () {
+        $('#input_lessor_zipcode').val($(this).find(':selected').data('zip_code'))
+        var _text = $("#input_owner_brgy option:selected").text();
+        $('#input_owner_brgy_name').val(_text);
     });
   });
 </script>

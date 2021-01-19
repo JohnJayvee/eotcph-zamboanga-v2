@@ -125,6 +125,13 @@
           </div>
           @if ($transaction->business_info)
             <div class="col-md-6 mt-4">
+                <p class="text-title fw-500">Owner's Name: <span class="text-black">{{str::title($transaction->business_info->owner_name)}}</span></p>
+                <p class="text-title fw-500">Owner's Email: <span class="text-black">{{$transaction->business_info->owner_email}}</span></p>
+                <p class="text-title fw-500">Owner's Contact No.: <span class="text-black">{{$transaction->business_info->owner_mobile_no}}</span></p>
+                <p class="text-title fw-500">Owner's TIN: <span class="text-black">{{$transaction->business_info->owner_tin}}</span></p>
+                <p class="text-title fw-500">Owner's Address: <span class="text-black">{{$transaction->business_info->owner_address}}</span></p>
+            </div>
+            <div class="col-md-6 mt-4">
                 <p class="text-title fw-500">Authorize Representative:</p>
                 <p class="text-title fw-500">Representative Name: <span class="text-black">{{str::title($transaction->business_info->rep_firstname .' '. $transaction->business_info->rep_middlename .' '. $transaction->business_info->rep_lastname  )}}</span></p>
                 <p class="text-title fw-500">Representative Gender: <span class="text-black">{{$transaction->business_info->rep_gender}}</span></p>
