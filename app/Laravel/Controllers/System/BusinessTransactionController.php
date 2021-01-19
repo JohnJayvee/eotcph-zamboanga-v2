@@ -142,7 +142,7 @@ class BusinessTransactionController extends Controller
 				})
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
 				->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])
-				->orderBy('created_at',"DESC")->paginate($this->per_page);
+				->orderBy('created_at',"ASC")->paginate($this->per_page);
 
 		return view('system.business-transaction.pending',$this->data);
 	}
@@ -192,7 +192,7 @@ class BusinessTransactionController extends Controller
                 })
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
 				->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])
-				->orderBy('created_at',"DESC")->paginate($this->per_page);
+				->orderBy('created_at',"ASC")->paginate($this->per_page);
 
 		return view('system.business-transaction.approved',$this->data);
 	}
@@ -242,7 +242,7 @@ class BusinessTransactionController extends Controller
 				})
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
 				->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])
-				->orderBy('created_at',"DESC")->paginate($this->per_page);
+				->orderBy('created_at',"ASC")->paginate($this->per_page);
 
 		return view('system.business-transaction.declined',$this->data);
 	}
