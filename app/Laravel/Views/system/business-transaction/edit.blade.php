@@ -368,7 +368,7 @@
                     </div>
                     <div class="col-md-6 mt-4">
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owner's First Name <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">Owner's First Name </label>
                           <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_fname') ? 'is-invalid': NULL  }}"  name="business_info[owner_fname]" value="{{old('business_info.owner_fname', str::title($transaction->business_info->owner_fname) ?? '') }}" autocomplete="none">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_fname'])
                       </div>
@@ -378,17 +378,17 @@
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_mname'])
                       </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owner's Last Name <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">Owner's Last Name  </label>
                           <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_lname') ? 'is-invalid': NULL  }}"  name="business_info[owner_lname]" value="{{old('business_info.owner_lname', str::title($transaction->business_info->owner_lname) ?? '') }}" autocomplete="none">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_lname'])
                         </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owner's Email <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">Owner's Email  </label>
                           <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_email') ? 'is-invalid': NULL  }}"  name="business_info[owner_email]" value="{{old('business_info.owner_email', str::title($transaction->business_info->owner_email) ?? '') }}" autocomplete="none">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_email'])
                         </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owner's Contact No. <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">Owner's Contact No.  </label>
                           <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_mobile_no') ? 'is-invalid': NULL  }}"  name="business_info[owner_mobile_no]" value="{{old('business_info.owner_mobile_no', str::title($transaction->business_info->owner_mobile_no) ?? '') }}" autocomplete="none">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_mobile_no'])
                         </div>
