@@ -435,6 +435,7 @@ class BusinessTransactionController extends Controller
         }catch(\Throwable $e){
             DB::rollback();
             Log::error('TRANSACTION_EDIT_FAILED', ['message' => $e->getMessage()]);
+
             throw $e;
             session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
