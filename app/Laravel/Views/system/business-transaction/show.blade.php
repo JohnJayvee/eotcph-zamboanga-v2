@@ -56,7 +56,7 @@
             @if ($transaction->business_info)
                 <p class="text-title fw-500">Business ID Number: <span class="text-black">{{str::title($transaction->business_info->business_id_no)}}</span></p>
                 <p class="text-title fw-500">Dominant Name: <span class="text-black">{{str::title($transaction->business_info->dominant_name)}}</span></p>
-                <p class="text-title fw-500">Business Number: <span class="text-black">{{$transaction->business_info->dti_sec_cda_registration_no ?: "-"}}</span></p>
+                <p class="text-title fw-500">DTI/SEC/CDA registration No.: <span class="text-black">{{$transaction->business_info->dti_sec_cda_registration_no ?: "-"}}</span></p>
                 <p class="text-title fw-500">Cedula Number: <span class="text-black">{{str::title($transaction->business_info->ctc_no)}}</span></p>
                 <p class="text-title fw-500">Business Type: <span class="text-black">{{str::title($transaction->business_info->business_type)}}</span></p>
                 <p class="text-title fw-500">Business Scope: <span class="text-black">{{str::title($transaction->business_info->business_scope)}}</span></p>
@@ -103,7 +103,7 @@
                 <p class="text-title fw-500">Business Unit No / Street: <span class="text-black">{{$transaction->business_info->business_address}}</span></p>
                 <p class="text-title fw-500">Business Barangay: <span class="text-black"> {{$transaction->business_info->brgy_name}}</span></p>
                 <p class="text-title fw-500">Business Province/Town: <span class="text-black"> {{$transaction->business_info->town_name}}</span></p>
-                <p class="text-title fw-500">Business Region: <span class="text-black">{{str::title($transaction->business_info->region_name)}}</span></p>
+                <p class="text-title fw-500">Business Region: <span class="text-black">{{strtoupper($transaction->business_info->region_name)}}</span></p>
             </div>
           @endif
           <div class="col-md-6 mt-4">

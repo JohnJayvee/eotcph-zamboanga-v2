@@ -25,14 +25,14 @@
             <p class="text-title fw-500 pl-3" style="padding-top: 15px;">|</p>
             <p class="text-title fw-500 pt-3 pl-3">Application Sent: <span class="text-black">{{ Helper::date_format($transaction->created_at)}}</span></p>
           </div>
-        </div> 
+        </div>
       </div>
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
         <div class="row">
           <div class="col-md-6">
             <p class="text-title fw-500">Business Name: <span class="text-black">{{str::title($transaction->business_name)}}</span></p>
             <p class="text-title fw-500">Dominant Name: <span class="text-black">{{str::title($transaction->business_info->dominant_name)}}</span></p>
-            <p class="text-title fw-500">Business Number: <span class="text-black">{{$transaction->business_info->bn_number ?: "-"}}</span></p>
+            <p class="text-title fw-500">DTI/SEC/CDA registration No.: <span class="text-black">{{$transaction->business_info->bn_number ?: "-"}}</span></p>
             <p class="text-title fw-500">Business Type: <span class="text-black">{{str::title($transaction->business_info->business_type)}}</span></p>
             <p class="text-title fw-500">Business Scope: <span class="text-black">{{str::title($transaction->business_info->business_scope)}}</span></p>
             <p class="text-title fw-500">Business Mobile No.: <span class="text-black"> +63{{$transaction->business_info->mobile_no}}</span></p>
@@ -51,7 +51,7 @@
             <p class="text-title fw-500">Status: <span class="badge  badge-{{Helper::status_badge($transaction->transaction_status)}} p-2">{{Str::title($transaction->transaction_status)}}</span></p>
             <p class="fw-500" style="color: #DC3C3B;">Processing Fee: Php {{Helper::money_format($transaction->processing_fee) ?: "0" }} [{{$transaction->processing_fee_code}}]</p>
             <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p>
-            <p class="text-title fw-500">Approved Department: 
+            <p class="text-title fw-500">Approved Department:
             <span class="text-black">
               @if($transaction->approved_department)
                 @foreach(explode(",", $transaction->approved_department) as $department)
@@ -65,7 +65,7 @@
             <p class="text-title fw-500">Owners Email: <span class="text-black">{{$transaction->owner->email}}</span></p>
             <p class="text-title fw-500">Owners Contact No.: <span class="text-black">{{$transaction->owner->contact_number}}</span></p>
           </div>
-        </div> 
+        </div>
       </div>
     </div>
     <div class="card card-rounded shadow-sm">
@@ -158,7 +158,7 @@
 <link rel="stylesheet" href="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('system/vendors/select2/select2.min.css')}}"/>
 <style type="text/css" >
-  .input-daterange input{ background: #fff!important; }  
+  .input-daterange input{ background: #fff!important; }
   .isDisabled{
     color: currentColor;
     display: inline-block;  /* For IE11/ MS Edge bug */
@@ -195,7 +195,7 @@
       var self = $(this)
       Swal.fire({
         title: "All the submitted requirements will be marked as declined. Are you sure you want to declined this application?",
-        
+
         icon: 'warning',
         input: 'text',
         inputPlaceholder: "Put remarks",
@@ -217,7 +217,7 @@
       var self = $(this)
       Swal.fire({
         title: "All the submitted requirements will be marked as approved. Are you sure you want to approve this application?",
-        
+
         icon: 'info',
         input: 'text',
         inputPlaceholder: "Put Amount",
@@ -235,7 +235,7 @@
       });
     });
 
-    
+
 
     $('#input_department_id').select2({placeholder: "Select Department"});
   })

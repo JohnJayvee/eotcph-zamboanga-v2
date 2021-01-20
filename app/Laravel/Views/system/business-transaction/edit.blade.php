@@ -15,7 +15,7 @@
   </div>
   <div class="col-12 pt-4">
     <div class="card card-rounded shadow-sm mb-4">
-      <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
+      <div class="card-body" style="border-bottom: 3px dashed  #E3E3E3;">
         <div class="row">
           <div class="col-md-1 text-center">
             <img src="{{asset('system/images/default.jpg')}}" class="rounded-circle" width="100%">
@@ -145,7 +145,7 @@
                           @include('system.business-transaction.error', ['error_field' => 'business_info.dominant_name'])
                       </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Business Number <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">DTI/SEC/CDA registration No. <span class="text-danger">*</span></label>
                           <input type="text" class="form-control {{ $errors->first('business_info.dti_sec_cda_registration_no') ? 'is-invalid': NULL  }}"  name="business_info[dti_sec_cda_registration_no]" value="{{old('business_info.dti_sec_cda_registration_no', $transaction->business_info->dti_sec_cda_registration_no ?? '') }}">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.dti_sec_cda_registration_no'])
                       </div>
