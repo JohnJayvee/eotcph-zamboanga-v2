@@ -15,7 +15,7 @@
   </div>
   <div class="col-12 pt-4">
     <div class="card card-rounded shadow-sm mb-4">
-      <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
+      <div class="card-body" style="border-bottom: 3px dashed  #E3E3E3;">
         <div class="row">
           <div class="col-md-1 text-center">
             <img src="{{asset('system/images/default.jpg')}}" class="rounded-circle" width="100%">
@@ -145,7 +145,7 @@
                           @include('system.business-transaction.error', ['error_field' => 'business_info.dominant_name'])
                       </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Business Number <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">DTI/SEC/CDA registration No. <span class="text-danger">*</span></label>
                           <input type="text" class="form-control {{ $errors->first('business_info.dti_sec_cda_registration_no') ? 'is-invalid': NULL  }}"  name="business_info[dti_sec_cda_registration_no]" value="{{old('business_info.dti_sec_cda_registration_no', $transaction->business_info->dti_sec_cda_registration_no ?? '') }}">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.dti_sec_cda_registration_no'])
                       </div>
@@ -368,7 +368,7 @@
                     </div>
                     <div class="col-md-6 mt-4">
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owner's First Name <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">Owner's First Name </label>
                           <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_fname') ? 'is-invalid': NULL  }}"  name="business_info[owner_fname]" value="{{old('business_info.owner_fname', str::title($transaction->business_info->owner_fname) ?? '') }}" autocomplete="none">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_fname'])
                       </div>
@@ -378,19 +378,24 @@
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_mname'])
                       </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owner's Last Name <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">Owner's Last Name  </label>
                           <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_lname') ? 'is-invalid': NULL  }}"  name="business_info[owner_lname]" value="{{old('business_info.owner_lname', str::title($transaction->business_info->owner_lname) ?? '') }}" autocomplete="none">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_lname'])
                         </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owner's Email <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">Owner's Email  </label>
                           <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_email') ? 'is-invalid': NULL  }}"  name="business_info[owner_email]" value="{{old('business_info.owner_email', str::title($transaction->business_info->owner_email) ?? '') }}" autocomplete="none">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_email'])
                         </div>
                       <div class="form-group my-0">
-                          <label for="exampleInputEmail1" class="text-form">Owner's Contact No. <span class="text-danger">*</span></label>
+                          <label for="exampleInputEmail1" class="text-form">Owner's Contact No.  </label>
                           <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_mobile_no') ? 'is-invalid': NULL  }}"  name="business_info[owner_mobile_no]" value="{{old('business_info.owner_mobile_no', str::title($transaction->business_info->owner_mobile_no) ?? '') }}" autocomplete="none">
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_mobile_no'])
+                        </div>
+                    <div class="form-group my-0">
+                        <label for="exampleInputEmail1" class="text-form">Owner's TIN  </label>
+                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_tin') ? 'is-invalid': NULL  }}"  name="business_info[owner_tin]" value="{{old('business_info.owner_tin', str::title($transaction->business_info->owner_tin) ?? '') }}" autocomplete="none">
+                        @include('system.business-transaction.error', ['error_field' => 'business_info.owner_tin'])
                         </div>
                     <div class="form-group my-0">
                         <label for="exampleInputEmail1" class="text-form">Owner's Unit No </label>
@@ -496,7 +501,7 @@
                           </div>
                           <div class="form-group my-0">
                               <label for="exampleInputEmail1" class="text-form">Lessor Region</label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_region_name') ? 'is-invalid': NULL  }}"  name="business_info[lessor_region_name]" value="{{old('business_info.lessor_region_name',str::title($transaction->business_info->lessor_region_name) ?? '') }}" disabled>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_region_name') ? 'is-invalid': NULL  }}"  name="business_info[lessor_region_name]" value="{{old('business_info.lessor_region_name',strtoupper($transaction->business_info->lessor_region_name) ?? '') }}" disabled>
                           </div>
                           <input type="hidden" class="form-control" name="business_info[lessor_brgy_name]" id="input_lessor_brgy_name" value="{{old('business_info.lessor_brgy_name' ,  $transaction->business_info->lessor_brgy_name )}}">
                         </div>
@@ -905,10 +910,13 @@
                 text: "{!! $transaction->business_info->lessor_brgy_name !!}"
             }))
             }else if(input_brgy == '#input_owner_brgy'){
-                $(input_brgy).prepend($('<option>', {
-                value: "{!!  $transaction->business_info->owner_brgy !!}",
-                text: "{!! $transaction->business_info->owner_brgy_name !!}"
+                var _old = "{!!  $transaction->business_info->owner_brgy !!}";
+                if(_old != null){
+                    $(input_brgy).prepend($('<option>', {
+                    value: "{!!  $transaction->business_info->owner_brgy !!}",
+                    text: "{!! $transaction->business_info->owner_brgy_name !!}"
                 }))
+                }
             }else{
                 $(input_brgy).prepend($('<option>', {
                 value: "{!!  $transaction->business_info->brgy !!}",
@@ -928,6 +936,14 @@
 
             } else {
                 $(input_brgy).val($(input_brgy + " option:first").val());
+
+                // only show select barangay if we it's for owner detail input
+                if(input_brgy == "#input_owner_brgy"){
+                    $(input_brgy).prepend($('<option>', {
+                    value: "",
+                    text: " --- SELECT BARANGAY --- "
+                    }))
+                }
             }
         });
     }
@@ -1116,7 +1132,12 @@
     $("#input_owner_brgy").on("change", function () {
         $('#input_lessor_zipcode').val($(this).find(':selected').data('zip_code'))
         var _text = $("#input_owner_brgy option:selected").text();
-        $('#input_owner_brgy_name').val(_text);
+        var _val =  $("#input_owner_brgy option:selected").val();
+        if(_val != ''){
+            $('#input_owner_brgy_name').val(_text);
+        }else{
+            $('#input_owner_brgy_name').val('')
+        }
     });
   });
 </script>

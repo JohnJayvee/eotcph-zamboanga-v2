@@ -209,79 +209,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <h5 class="text-title text-uppercase">Name of Tax Payer/Owner</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
-                                        <p class="form-data text-success text-uppercase">{{ $auth->lname }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
-                                        <p class="form-data text-success text-uppercase">{{ $auth->fname }}</p>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
-                                        <p class="form-data text-success text-uppercase">{{ $auth->mname }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
-                                        <p class="form-data text-success text-uppercase">{{ $auth->gender }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <h5 class="text-title text-uppercase">Name of Authorized Representative</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
-                                        <p class="form-data text-success text-uppercase">{{ $business->rep_lastname }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
-                                        <p class="form-data text-success text-uppercase">{{ $business->rep_firstname }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
-                                        <p class="form-data text-success text-uppercase">{{ $business->rep_middlename }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
-                                        <p class="form-data text-success text-uppercase">{{ $business->rep_gender }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">Position</label>
-                                        <p class="form-data text-success text-uppercase">{{ $business->rep_position }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1" class="text-form pb-2">TIN</label>
-                                        <p class="form-data text-success text-uppercase">{{ $business->rep_tin }}</p>
-                                    </div>
-                                </div>
-                            </div>
                             <h5 class="text-title text-uppercase">Business Address</h5>
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
@@ -390,46 +317,76 @@
                                     </div>
                                 </div>
                             </div>
-                            <h5 class="text-title text-uppercase">Owner's Address</h5>
+                            <h5 class="text-title text-uppercase">Name of Tax Payer/Owner</h5>
                             <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
+                                        <p class="form-data text-success text-uppercase">{{ $business->owner_lname }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
+                                        <p class="form-data text-success text-uppercase">{{ $business->owner_fname }}</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
+                                        <p class="form-data text-success text-uppercase">{{ $business->owner_mname }}</p>
+                                    </div>
+                                </div>
+                                {{-- <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
+                                        <p class="form-data text-success text-uppercase">{{ $auth->gender }}</p>
+                                    </div>
+                                </div> --}}
+                            </div>
+                            <h5 class="text-title text-uppercase">Owner's Address</h5>
+                            {{-- <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Region</label>
                                         <p class="form-data text-success text-uppercase">{{ $auth->region_name }}</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="row">
-                                <div class="col-sm-12 col-md-6 col-lg-6">
+                                {{-- <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label class="text-form pb-2">City Municipality</label>
                                         <p class="form-data text-success text-uppercase">{{ $auth->town_name }}</p>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-sm-12 col-md-4 col-lg-4">
                                     <div class="form-group">
                                         <label class="text-form pb-2">Barangay</label>
-                                        <p class="form-data text-success text-uppercase">{{ $auth->barangay_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->owner_brgy_name }}</p>
                                     </div>
                                 </div>
-                                <div class="col-sm-12 col-md-2 col-lg-2">
+                                {{-- <div class="col-sm-12 col-md-2 col-lg-2">
                                     <div class="form-group">
                                         <label for="input_zipcode" class="text-form pb-2">Zipcode</label>
                                         <p class="form-data text-success text-uppercase">{{ $auth->zipcode }}</p>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No.</label>
-                                        <p class="form-data text-success text-uppercase">{{ $auth->unit_number }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->owner_unit_no }}</p>
                                     </div>
                                 </div>
                                 <div class="col-sm-12 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Street Address</label>
-                                        <p class="form-data text-success text-uppercase">{{ $auth->street_name }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->owner_street }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -437,7 +394,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
-                                        <p class="form-data text-success text-uppercase">{{ $auth->email }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->owner_email }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -445,7 +402,7 @@
                                 <div class="col-sm-12 col-md-12 col-lg-6">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
-                                        <p class="form-data text-success text-uppercase">{{ $auth->contact_number }}</p>
+                                        <p class="form-data text-success text-uppercase">{{ $business->owner_mobile_no }}</p>
                                     </div>
                                 </div>
                                 {{-- <div class="col-sm-12 col-md-12 col-lg-6">
@@ -465,6 +422,49 @@
                                         @endif
                                     </div>
                                 </div> --}}
+                            </div>
+                            <h5 class="text-title text-uppercase">Name of Authorized Representative</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_lastname }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_firstname }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_middlename }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_gender }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">Position</label>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_position }}</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1" class="text-form pb-2">TIN</label>
+                                        <p class="form-data text-success text-uppercase">{{ $business->rep_tin }}</p>
+                                    </div>
+                                </div>
                             </div>
                             <h5 class="text-title text-uppercase">If place of Business is Rented (Lessor Detail)</h5>
                             <div class="row">

@@ -56,7 +56,7 @@
             @if ($transaction->business_info)
                 <p class="text-title fw-500">Business ID Number: <span class="text-black">{{str::title($transaction->business_info->business_id_no)}}</span></p>
                 <p class="text-title fw-500">Dominant Name: <span class="text-black">{{str::title($transaction->business_info->dominant_name)}}</span></p>
-                <p class="text-title fw-500">Business Number: <span class="text-black">{{$transaction->business_info->dti_sec_cda_registration_no ?: "-"}}</span></p>
+                <p class="text-title fw-500">DTI/SEC/CDA registration No.: <span class="text-black">{{$transaction->business_info->dti_sec_cda_registration_no ?: "-"}}</span></p>
                 <p class="text-title fw-500">Cedula Number: <span class="text-black">{{str::title($transaction->business_info->ctc_no)}}</span></p>
                 <p class="text-title fw-500">Business Type: <span class="text-black">{{str::title($transaction->business_info->business_type)}}</span></p>
                 <p class="text-title fw-500">Business Scope: <span class="text-black">{{str::title($transaction->business_info->business_scope)}}</span></p>
@@ -103,7 +103,7 @@
                 <p class="text-title fw-500">Business Unit No / Street: <span class="text-black">{{$transaction->business_info->business_address}}</span></p>
                 <p class="text-title fw-500">Business Barangay: <span class="text-black"> {{$transaction->business_info->brgy_name}}</span></p>
                 <p class="text-title fw-500">Business Province/Town: <span class="text-black"> {{$transaction->business_info->town_name}}</span></p>
-                <p class="text-title fw-500">Business Region: <span class="text-black">{{str::title($transaction->business_info->region_name)}}</span></p>
+                <p class="text-title fw-500">Business Region: <span class="text-black">{{strtoupper($transaction->business_info->region_name)}}</span></p>
             </div>
           @endif
           <div class="col-md-6 mt-4">
@@ -114,14 +114,6 @@
             <!-- <p class="text-title fw-500">Transacation Status: <span class="badge  badge-{{Helper::status_badge($transaction->transaction_status)}} p-2">{{Str::title($transaction->transaction_status)}}</span></p>
             <p class="fw-500" style="color: #DC3C3B;">Processing Fee: Php {{Helper::money_format($transaction->amount) ?: "0" }} [{{$transaction->processing_fee_code}}]</p>
             <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p> -->
-          </div>
-          <div class="col-md-6 mt-4">
-           <!--  <p class="text-title fw-500">Owners Name: <span class="text-black">{{str::title($transaction->owner ? $transaction->owner->full_name : $transaction->customer_name)}}</span></p>
-            <p class="text-title fw-500">Owners Email: <span class="text-black">{{$transaction->owner->email}}</span></p>
-            <p class="text-title fw-500">Owners Contact No.: <span class="text-black">{{$transaction->owner->contact_number}}</span></p> -->
-            <p class="text-title fw-500">Owners Name: <span class="text-black">{{ strlen($transaction->business_info->owner_name) > 2 ? $transaction->business_info->owner_name : $transaction->business_info->rep_full_name }}</span></p>
-            <p class="text-title fw-500">Owners Email: <span class="text-black">{{$transaction->business_info->owner_email ?: $transaction->owner->email }}</span></p>
-            <p class="text-title fw-500">Owners Contact No.: <span class="text-black">{{$transaction->business_info->mobile_number ?: $transaction->owner->contact_number}}</span></p>
           </div>
           @if ($transaction->business_info)
             <div class="col-md-6 mt-4">
@@ -156,7 +148,7 @@
                 <p class="text-title fw-500">Lessor Unit No / Street: <span class="text-black">{{$transaction->business_info->lessor_unit_no}}</span></p>
                 <p class="text-title fw-500">Lessor Barangay: <span class="text-black"> {{$transaction->business_info->lessor_brgy_name}}</span></p>
                 <p class="text-title fw-500">Lessor Province/Town: <span class="text-black"> {{$transaction->business_info->lessor_town_name}}</span></p>
-                <p class="text-title fw-500">Lessor Region: <span class="text-black">{{str::title($transaction->business_info->lessor_region_name)}}</span></p>
+                <p class="text-title fw-500">Lessor Region: <span class="text-black">{{strtoupper($transaction->business_info->lessor_region_name)}}</span></p>
               </div>
         </div>
         <div class="row">
