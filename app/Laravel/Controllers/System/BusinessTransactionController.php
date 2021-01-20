@@ -356,7 +356,8 @@ class BusinessTransactionController extends Controller
                                     'application_business_permit_id' => $transaction->application_permit->id,
                                     'line_of_business' => $lob_code['Class'],
                                     'no_of_unit' =>  request('editables.no_of_units')[$line_key],
-                                    'capitalization' => $transaction->application_permit->type == "new" ? $request->amount [$line_key] : ($request->is_new [$line_key] ? request('editables.amount')[$line_key] : 0),
+                                    // 'capitalization' => $transaction->application_permit->type == "new" ? $request->amount [$line_key] : ($request->is_new [$line_key] ? request('editables.amount')[$line_key] : 0),
+                                    'capitalization' => 0,
                                     'gross_sales' => request('editables.amount')[$line_key],
                                     'reference_code' => $lob_code ['RefCode'],
                                     'b_class' => $lob_code ['BClass'],
@@ -434,6 +435,7 @@ class BusinessTransactionController extends Controller
         }catch(\Throwable $e){
             DB::rollback();
             Log::error('TRANSACTION_EDIT_FAILED', ['message' => $e->getMessage()]);
+            throw $e;
             session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
