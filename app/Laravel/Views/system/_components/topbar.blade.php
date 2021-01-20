@@ -11,7 +11,7 @@
 
     </ul>
     <ul class="navbar-nav navbar-nav-right">
-        <li class="nav-item nav-profile dropdown navbar-nav-right float-right mr-0" style="width: 70px;">
+        {{-- <li class="nav-item nav-profile dropdown navbar-nav-right float-right mr-0" style="width: 70px;">
             @if(in_array($auth->type,['super_user','admin']))
             <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="">
                 <i class="fas fa-bell fa-lg">
@@ -46,7 +46,7 @@
                     @endforelse
                 @endif
             </div>
-        </li>
+        </li> --}}
         <li class="nav-item nav-profile dropdown navbar-nav-right ml-0" style="width: 250px;">
           <a class="nav-link text-title fw-500" href="#" data-toggle="dropdown" id="profileDropdown">
             <img src="{{strlen($auth->filename) > 0 ? "{$auth->directory}/resized/{$auth->filename}" : asset('placeholder/user.png')}}" alt="profile"/>
