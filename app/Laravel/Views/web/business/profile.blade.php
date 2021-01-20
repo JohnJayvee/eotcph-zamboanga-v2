@@ -377,7 +377,7 @@
 </style>
 @endsection
 @section('page-scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="{{asset('system/vendors/swal/sweetalert.min.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
     $(function(){

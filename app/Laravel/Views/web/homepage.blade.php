@@ -105,7 +105,7 @@
 </style>
 @endsection
 @section('page-scripts')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="{{asset('system/vendors/swal/sweetalert.min.js')}}"></script>
     <script src="{{asset('system/vendors/sweet-alert2/sweetalert2.min.js')}}"></script>
     <script type="text/javascript">
     $(".targeted-tutorial-video").on('hidden.bs.modal', function (e) {

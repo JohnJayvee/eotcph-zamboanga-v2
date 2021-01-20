@@ -98,7 +98,6 @@ class BusinessTransactionController extends Controller
         $this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
 
         $this->data['department'] = Department::find($this->data['selected_department']);
-        
 		$this->data['transactions'] = BusinessTransaction::with('application_permit')->with('owner')->where('status',"PENDING")->where('is_resent',0)->whereHas('application_permit',function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(business_name)  LIKE  '%{$this->data['keyword']}%'")
@@ -357,8 +356,7 @@ class BusinessTransactionController extends Controller
                                     'application_business_permit_id' => $transaction->application_permit->id,
                                     'line_of_business' => $lob_code['Class'],
                                     'no_of_unit' =>  request('editables.no_of_units')[$line_key],
-                                    // 'capitalization' => $transaction->application_permit->type == "new" ? $request->amount [$line_key] : ($request->is_new [$line_key] ? request('editables.amount')[$line_key] : 0),
-                                    'capitalization' => $line->capitalization ?? 0,
+                                    'capitalization' => $transaction->application_permit->type == "new" ? $request->amount [$line_key] : ($request->is_new [$line_key] ? request('editables.amount')[$line_key] : 0),
                                     'gross_sales' => request('editables.amount')[$line_key],
                                     'reference_code' => $lob_code ['RefCode'],
                                     'b_class' => $lob_code ['BClass'],
@@ -436,7 +434,6 @@ class BusinessTransactionController extends Controller
         }catch(\Throwable $e){
             DB::rollback();
             Log::error('TRANSACTION_EDIT_FAILED', ['message' => $e->getMessage()]);
-            throw $e;
             session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
@@ -578,7 +575,6 @@ class BusinessTransactionController extends Controller
 			    }
 			    if ($garbage_fee and $business_tax) {
 			    	$amount = $business_tax ? $business_tax->amount / 4 : 0 ;
-			    	dd($amount);
 			    	for ($i=0; $i < 4; $i++) {
 			    		switch ($i + 1) {
 			    			case '1':

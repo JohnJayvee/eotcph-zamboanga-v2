@@ -25,7 +25,7 @@ class UpdateBusinessTableAddIsNew extends Migration
      */
     public function down()
     {
-        Schema::table('department', function($table){
+        Schema::table('business', function($table){
             $table->dropColumn(['isNew']);
         });
     }

@@ -195,7 +195,7 @@
 
 @section('page-scripts')
 <script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="{{asset('system/vendors/swal/sweetalert.min.js')}}"></script>
 <script type="text/javascript">
     $(document).ready(function(){
       $('#input_requirements_id').select2({placeholder: "Select Requirements"});
