@@ -910,10 +910,13 @@
                 text: "{!! $transaction->business_info->lessor_brgy_name !!}"
             }))
             }else if(input_brgy == '#input_owner_brgy'){
-                $(input_brgy).prepend($('<option>', {
-                value: "{!!  $transaction->business_info->owner_brgy !!}",
-                text: "{!! $transaction->business_info->owner_brgy_name !!}"
+                var _old = "{!!  $transaction->business_info->owner_brgy !!}";
+                if(_old != null){
+                    $(input_brgy).prepend($('<option>', {
+                    value: "{!!  $transaction->business_info->owner_brgy !!}",
+                    text: "{!! $transaction->business_info->owner_brgy_name !!}"
                 }))
+                }
             }else{
                 $(input_brgy).prepend($('<option>', {
                 value: "{!!  $transaction->business_info->brgy !!}",
