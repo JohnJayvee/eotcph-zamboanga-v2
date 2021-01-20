@@ -393,6 +393,11 @@
                           @include('system.business-transaction.error', ['error_field' => 'business_info.owner_mobile_no'])
                         </div>
                     <div class="form-group my-0">
+                        <label for="exampleInputEmail1" class="text-form">Owner's TIN  </label>
+                        <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_tin') ? 'is-invalid': NULL  }}"  name="business_info[owner_tin]" value="{{old('business_info.owner_tin', str::title($transaction->business_info->owner_tin) ?? '') }}" autocomplete="none">
+                        @include('system.business-transaction.error', ['error_field' => 'business_info.owner_tin'])
+                        </div>
+                    <div class="form-group my-0">
                         <label for="exampleInputEmail1" class="text-form">Owner's Unit No </label>
                         <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.owner_unit_no') ? 'is-invalid': NULL  }}"  name="business_info[owner_unit_no]" value="{{old('business_info.owner_unit_no', $transaction->business_info->owner_unit_no ?? '') }}">
                         @include('system.business-transaction.error', ['error_field' => 'business_info.owner_unit_no'])
@@ -496,7 +501,7 @@
                           </div>
                           <div class="form-group my-0">
                               <label for="exampleInputEmail1" class="text-form">Lessor Region</label>
-                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_region_name') ? 'is-invalid': NULL  }}"  name="business_info[lessor_region_name]" value="{{old('business_info.lessor_region_name',str::title($transaction->business_info->lessor_region_name) ?? '') }}" disabled>
+                              <input type="text" class="form-control form-control-sm {{ $errors->first('business_info.lessor_region_name') ? 'is-invalid': NULL  }}"  name="business_info[lessor_region_name]" value="{{old('business_info.lessor_region_name',strtoupper($transaction->business_info->lessor_region_name) ?? '') }}" disabled>
                           </div>
                           <input type="hidden" class="form-control" name="business_info[lessor_brgy_name]" id="input_lessor_brgy_name" value="{{old('business_info.lessor_brgy_name' ,  $transaction->business_info->lessor_brgy_name )}}">
                         </div>
@@ -928,6 +933,14 @@
 
             } else {
                 $(input_brgy).val($(input_brgy + " option:first").val());
+
+                // only show select barangay if we it's for owner detail input
+                if(input_brgy == "#input_owner_brgy"){
+                    $(input_brgy).prepend($('<option>', {
+                    value: "",
+                    text: " --- SELECT BARANGAY --- "
+                    }))
+                }
             }
         });
     }
@@ -1116,7 +1129,12 @@
     $("#input_owner_brgy").on("change", function () {
         $('#input_lessor_zipcode').val($(this).find(':selected').data('zip_code'))
         var _text = $("#input_owner_brgy option:selected").text();
-        $('#input_owner_brgy_name').val(_text);
+        var _val =  $("#input_owner_brgy option:selected").val();
+        if(_val != ''){
+            $('#input_owner_brgy_name').val(_text);
+        }else{
+            $('#input_owner_brgy_name').val('')
+        }
     });
   });
 </script>

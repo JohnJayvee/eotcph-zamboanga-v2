@@ -148,7 +148,7 @@
                 <p class="text-title fw-500">Lessor Unit No / Street: <span class="text-black">{{$transaction->business_info->lessor_unit_no}}</span></p>
                 <p class="text-title fw-500">Lessor Barangay: <span class="text-black"> {{$transaction->business_info->lessor_brgy_name}}</span></p>
                 <p class="text-title fw-500">Lessor Province/Town: <span class="text-black"> {{$transaction->business_info->lessor_town_name}}</span></p>
-                <p class="text-title fw-500">Lessor Region: <span class="text-black">{{str::title($transaction->business_info->lessor_region_name)}}</span></p>
+                <p class="text-title fw-500">Lessor Region: <span class="text-black">{{strtoupper($transaction->business_info->lessor_region_name)}}</span></p>
               </div>
         </div>
         <div class="row">
