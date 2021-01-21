@@ -57,7 +57,7 @@
                 <div class="form-group mb-0">
                     <div class="row">
                         <div class="col-md-3" >Name of Permitee:</div>
-                        <div class="col-md-9" style="float: right">{{ strtoupper($transaction->business_info->owner_name) }}</div>
+                        <div class="col-md-9" style="float: right">{{ strtoupper(Helper::get_owner_name($transaction->business_id)) }}</div>
                     </div>
                 </div>
                 <div class="form-group mb-0">
