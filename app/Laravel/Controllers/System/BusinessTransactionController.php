@@ -271,8 +271,7 @@ class BusinessTransactionController extends Controller
 		return view('system.business-transaction.show',$this->data);
     }
 
-    public function edit(PageRequest $request,$id=NULL)
-    {
+    public function edit(PageRequest $request,$id=NULL){
         $this->retrieve_lobs();
         $this->data['count_file'] = TransactionRequirements::where('transaction_id',$id)->count();
 		$this->data['attachments'] = TransactionRequirements::where('transaction_id',$id)->get();
@@ -305,8 +304,7 @@ class BusinessTransactionController extends Controller
 		return view('system.business-transaction.edit',$this->data);
     }
 
-    public function update(TransactionUpdateRequest $request,$id=NULL)
-    {
+    public function update(TransactionUpdateRequest $request,$id=NULL){
         // dd(request()->all());
         $this->retrieve_lobs();
         $transaction = $request->get('business_transaction_data');
@@ -439,11 +437,9 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
         }
-
     }
 
-    public function retrieve_lobs()
-    {
+    public function retrieve_lobs(){
         $response = Curl::to(env('OBOSS_GET_LINE_OF_BUSINESS'))
         ->withData($this->data)
         ->asJson(true)
@@ -508,6 +504,7 @@ class BusinessTransactionController extends Controller
 			$transaction->processor_user_id = Auth::user()->id;
 			$transaction->status = $type;
 			$transaction->modified_at = Carbon::now();
+			$transaction->approved_at = $type == "APPROVED" ? Carbon::now() : NULL;
             $transaction->save();
 
             $transaction->application_permit->status =  strtolower($type);
@@ -756,6 +753,7 @@ class BusinessTransactionController extends Controller
 
 			if ($status_type == 'validate'){
 				$transaction->is_validated = 1;
+				$transaction->validated_at = Carbon::now();
 				$dept_code_array = explode(",", $request->get('department_code'));
 
 				foreach ($dept_code_array as $data) {
@@ -1035,8 +1033,7 @@ class BusinessTransactionController extends Controller
 		}
     }
 
-    public function read_all_notifs()
-    {
+    public function read_all_notifs(){
         DB::beginTransaction();
         try{
             $businesses = Business::where('isNew' , 1)->get();
@@ -1183,6 +1180,7 @@ class BusinessTransactionController extends Controller
             DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
         }
     }
 
@@ -1230,6 +1228,60 @@ class BusinessTransactionController extends Controller
             DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
+			return redirect()->back();
         }
+    }
+
+    public function bulk_update(PageRequest $request){
+	    	$business = Business::where('corporation_name',NULL)->where('owner_fname' , NULL)->take(100)->get();
+	    	foreach ($business as $key => $value) {
+	    		$request_body = [
+	                'business_id' => $value->business_id_no,
+	            ];
+	            $response = Curl::to(env('OBOSS_BUSINESS_PROFILE'))
+	                         ->withData($request_body)
+	                         ->asJson( true )
+	                         ->returnResponseObject()
+	                         ->post();
+	            if($response->status == "200"){
+	                $content = $response->content;
+	                $this->data['business'] = $response->content['data'];
+	                switch ($value->business_type) {
+	                    case 'sole_proprietorship':
+	                    	if ($value->owner_fname == NULL) {
+	                    		Business::where('id',$value->id)->update(['owner_fname' => $this->data['business']['FirstName'] ?: NULL ,'owner_lname' => $this->data['business']['LastName'] ?: NULL ,'owner_mname' => $this->data['business']['MiddleName'] ?: NULL]);
+	                    	}
+	                        break;
+	                    case 'partnership':
+	                    	if ($value->corporation_name == NULL) {
+	                    		Business::where('id',$value->id)->update(['corporation_name' => $this->data['business']['Owner'] ?: NULL ]);
+	                    	}
+	                    	break;
+	                    case 'corporation':
+	                    	if ($value->corporation_name == NULL) {
+	                    		Business::where('id',$value->id)->update(['corporation_name' => $this->data['business']['Owner']]);
+	                    	}
+	                    	break;
+	                    case 'cooperative':
+	                    	if ($value->corporation_name == NULL) {
+	                    		Business::where('id',$value->id)->update(['corporation_name' => $this->data['business']['Owner']]);
+	                    	}
+	                    	break;
+	                    case 'association':
+	                    	if ($value->corporation_name == NULL) {
+	                    		Business::where('id',$value->id)->update(['corporation_name' => $this->data['business']['Owner']]);
+	                    	}
+	                    	break;
+	                    default:
+	                        break;
+	                }
+	            }
+
+	    	}
+			session()->flash('notification-status', "success");
+			session()->flash('notification-msg', "successfully update transactions");
+			return redirect()->route('system.business_transaction.declined');
+
+
     }
 }
