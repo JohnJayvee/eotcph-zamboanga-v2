@@ -72,7 +72,7 @@
           @if ($transaction->owner)
           <tr class="text-center">
             <td>{{ Helper::date_format($transaction->created_at)}}</td>
-            <td>{{str::title($transaction->business_name)}} /<br>  {{str::title($transaction->owner->full_name)}}</td>
+            <td>{{str::title($transaction->business_name)}} /<br>  {{Helper::get_owner_name($transaction->business_id)}}</td>
             <td>{{str::title($transaction->application_permit->application_no)}}</td>
             <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
             <td>
@@ -91,7 +91,7 @@
               </div>
               @if($transaction->status == 'APPROVED')
                 <div class="mt-1"><p>{{ $transaction->admin ? $transaction->admin->full_name : '---' }}</p></div><br>
-                {{ $transaction->approved_at ? "/".Helper::date_format($transaction->approved_at) : " " }}
+                {{ $transaction->proccessed_at ? "/".Helper::date_format($transaction->proccessed_at) : " " }}
               @endif
             </td>
             <td >
