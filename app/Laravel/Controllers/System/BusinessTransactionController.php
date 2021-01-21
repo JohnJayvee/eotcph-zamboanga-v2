@@ -1280,7 +1280,7 @@ class BusinessTransactionController extends Controller
 	    	}
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "successfully update transactions");
-			return redirect()->route('system.business_transaction.declined');
+			return redirect()->route('system.business_transaction.pending');
 
 
     }
