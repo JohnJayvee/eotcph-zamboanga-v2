@@ -62,6 +62,7 @@
             <th class="text-title p-3">Application Number</th>
             <th class="text-title p-3">Application Type</th>
             <th class="text-title p-3">Amount</th>
+            <th class="text-title p-3">Validation</th>
             <th class="text-title p-3">Processor/Status</th>
             <th class="text-title p-3">Action</th>
           </tr>
@@ -89,7 +90,8 @@
                 <span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::upper($transaction->status)}}</span>
               </div>
               @if($transaction->status == 'APPROVED')
-                <div class="mt-1"><p>{{ $transaction->admin ? $transaction->admin->full_name : '---' }}</p></div>
+                <div class="mt-1"><p>{{ $transaction->admin ? $transaction->admin->full_name : '---' }}</p></div><br>
+                {{ $transaction->approved_at ? "/".Helper::date_format($transaction->approved_at) : " " }}
               @endif
             </td>
             <td >

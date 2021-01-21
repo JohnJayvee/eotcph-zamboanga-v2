@@ -8,6 +8,8 @@ use App\Laravel\Models\CollectionOfFees;
 use App\Laravel\Models\Department;
 use App\Laravel\Models\User;
 use App\Laravel\Models\RegulatoryPayment;
+use App\Laravel\Models\Business;
+
 
 
 
@@ -712,6 +714,21 @@ class Helper{
                 ->post();
 			    $code = $response->status;
 			    return $code >= 200 AND $code <= 299 ? TRUE : FALSE;
+
+    }
+
+    public static function get_owner_name($business_id){
+
+    	$business = Business::find($business_id);
+
+    	if ($business->owner_fname == NULL) {
+    		return str::title($business->corporation_name);
+    	}else if($business->corporation_name == NULL){
+    		return str::title($business->owner_name);
+    	}else{
+    		return NULL;
+    	}
+
 
     }
 }

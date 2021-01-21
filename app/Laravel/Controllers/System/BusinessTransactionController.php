@@ -504,7 +504,7 @@ class BusinessTransactionController extends Controller
 			$transaction->processor_user_id = Auth::user()->id;
 			$transaction->status = $type;
 			$transaction->modified_at = Carbon::now();
-			$transaction->approved_at = $type == "APPROVED" ? Carbon::now() : NULL;
+			$transaction->processed_at = Carbon::now();
             $transaction->save();
 
             $transaction->application_permit->status =  strtolower($type);

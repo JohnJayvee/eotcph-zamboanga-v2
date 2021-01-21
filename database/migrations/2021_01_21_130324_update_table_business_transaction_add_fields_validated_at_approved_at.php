@@ -15,7 +15,7 @@ class UpdateTableBusinessTransactionAddFieldsValidatedAtApprovedAt extends Migra
     {
         Schema::table('business_transaction', function (Blueprint $table) {
             $table->string('validated_at')->nullable();
-            $table->string('approved_at')->nullable();
+            $table->string('processed_at')->nullable();
 
         });
     }
@@ -28,7 +28,7 @@ class UpdateTableBusinessTransactionAddFieldsValidatedAtApprovedAt extends Migra
     public function down()
     {
         Schema::table('business_transaction', function (Blueprint $table) {
-            $table->dropColumn(['validated_at','approved_at']);
+            $table->dropColumn(['validated_at','processed_at']);
         });
     }
 }

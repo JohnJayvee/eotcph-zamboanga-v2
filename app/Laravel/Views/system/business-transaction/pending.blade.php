@@ -89,7 +89,7 @@
           @if ($transaction->owner)
             <tr class="text-center">
                 <td>{{ Helper::date_format($transaction->created_at)}}</td>
-                <td>{{str::title($transaction->business_name)}} /<br>  {{str::title($transaction->owner->full_name)}}</td>
+                <td>{{str::title($transaction->business_name)}} /<br>  {{Helper::get_owner_name($transaction->business_id)}}</td>
                 <td>{{str::title($transaction->application_permit->application_no)}}</td>
                 <td>{{ $transaction->type ? Strtoupper($transaction->type->name) : "N/A"}}<br> {{$transaction->code}}</td>
                 <td>
@@ -99,13 +99,16 @@
                 </td>
                 <td>
                 <div>
-                    <span class="badge badge-pill badge-{{Helper::status_badge($transaction->is_validated == 1 ? "approved" : "pending")}} p-2">{{Str::upper($transaction->is_validated == 1 ? "validated" : 'pending')}}</span>
+                    <span class="badge badge-pill badge-{{Helper::status_badge($transaction->is_validated == 1 ? "approved" : "pending")}} p-2">{{Str::upper($transaction->is_validated == 1 ? "validated" : 'pending')}} </span>
+                    <br>  
+                    {{ $transaction->validated_at ? "/".Helper::date_format($transaction->validated_at) : " " }}
                 </div>
                 </td>
                 <td>{{ $transaction->for_bplo_approval == 1 ? "Yes" : "No" }}</td>
                 <td>
                 <div>
                     <span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::upper($transaction->status)}}</span>
+                    
                 </div>
                 @if($transaction->status == 'APPROVED')
                     <div class="mt-1"><p>{{ $transaction->admin ? $transaction->admin->full_name : '---' }}</p></div>
