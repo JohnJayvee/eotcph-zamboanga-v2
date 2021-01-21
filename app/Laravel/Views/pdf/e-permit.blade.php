@@ -90,7 +90,6 @@
 				<tr>
 					<td>Type</td>
 					<td>{{$business->permit->type == "renew" ? "Renewal" : "New"}}</td>
-					<td>Printed By: CLD</td>
 				</tr>
 			</tbody>
 		</table>
