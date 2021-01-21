@@ -720,14 +720,18 @@ class Helper{
     public static function get_owner_name($business_id){
 
     	$business = Business::find($business_id);
-
-    	if ($business->owner_fname == NULL) {
-    		return str::title($business->corporation_name);
-    	}else if($business->corporation_name == NULL){
-    		return str::title($business->owner_name);
+    	if ($business) {
+    		if ($business->owner_fname == NULL) {
+    			return str::title($business->corporation_name);
+	    	}else if($business->corporation_name == NULL){
+	    		return str::title($business->owner_name);
+	    	}else{
+	    		return NULL;
+	    	}
     	}else{
-    		return NULL;
+    		return " ";
     	}
+    	
 
 
     }
