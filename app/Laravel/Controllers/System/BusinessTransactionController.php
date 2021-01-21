@@ -1259,17 +1259,17 @@ class BusinessTransactionController extends Controller
 	                    	break;
 	                    case 'corporation':
 	                    	if ($value->corporation_name == NULL) {
-	                    		Business::where('id',$value->id)->update(['corporation_name' => $this->data['business']['Owner']]);
+	                    		Business::where('id',$value->id)->update(['corporation_name' => $this->data['business']['Owner'] ?: NULL ]);
 	                    	}
 	                    	break;
 	                    case 'cooperative':
 	                    	if ($value->corporation_name == NULL) {
-	                    		Business::where('id',$value->id)->update(['corporation_name' => $this->data['business']['Owner']]);
+	                    		Business::where('id',$value->id)->update(['corporation_name' => $this->data['business']['Owner'] ?: NULL ]);
 	                    	}
 	                    	break;
 	                    case 'association':
 	                    	if ($value->corporation_name == NULL) {
-	                    		Business::where('id',$value->id)->update(['corporation_name' => $this->data['business']['Owner']]);
+	                    		Business::where('id',$value->id)->update(['corporation_name' => $this->data['business']['Owner'] ?: NULL ]);
 	                    	}
 	                    	break;
 	                    default:
