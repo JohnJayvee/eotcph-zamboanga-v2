@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="text-uppercase">{{$profile->dti_sec_cda_registration_no}}</label>
-                                <p>BN Number</p>
+                                <p>DTI/SEC/CDA registration No</p>
                             </div>
                             <div class="col-md-2">
                                 <label class="text-uppercase">{{$profile->business_id_no}}</label>
