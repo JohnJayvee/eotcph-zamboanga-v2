@@ -104,7 +104,7 @@
                     {{ $transaction->validated_at ? "/".Helper::date_format($transaction->validated_at) : " " }}
                 </div>
                 </td>
-                <td>{{ $transaction->for_bplo_approval == 1 ? "Yes" : "No" }}</td>
+                <td>{{ $transaction->for_bplo_approval == 1 ? "Yes" : "No" }} <br>  {{ $transaction->bplo_approved_at ? "/".Helper::date_format($transaction->bplo_approved_at) : " " }}</td>
                 <td>
                 <div>
                     <span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2">{{Helper::business_transaction_status($transaction->is_validated , $transaction->for_bplo_approval)}}</span>
