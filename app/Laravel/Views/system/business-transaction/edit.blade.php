@@ -128,6 +128,11 @@
                 @csrf
                 {{-- <input type="hidden" name="_method" value="PATCH"> --}}
                 <div class="row">
+                    <div class="col-md-12">
+                        <h4>Application No.: <b>{{str::title($transaction->application_permit->application_no)}}</b></h4>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                       <div class="form-group my-0">
                           <label for="exampleInputEmail1" class="text-form">Business Name <span class="text-danger">*</span></label>
