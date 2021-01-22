@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-md-4">
                     <label class="text-uppercase">{{$profile->dti_sec_cda_registration_no}}</label>
-                    <p>BN Number</p>
+                    <p>DTI/SEC/CDA registration No</p>
                 </div>
                 <div class="col-md-4">
                     <label class="text-uppercase">{{$profile->capitalization}}</label>
