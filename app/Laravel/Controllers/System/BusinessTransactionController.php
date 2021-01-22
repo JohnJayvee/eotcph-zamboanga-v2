@@ -730,6 +730,7 @@ class BusinessTransactionController extends Controller
 
 		    if(empty($result_array)){
 		    	$transaction->for_bplo_approval = 1;
+		    	$transaction->bplo_approved_at = Carbon::now();
 		    	$transaction->save();
 		    }
 
