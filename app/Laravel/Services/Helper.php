@@ -25,7 +25,13 @@ class Helper{
 	    $minutes = ($time % 60);
 	    return sprintf($format, $hours, $minutes);
 	}
-
+	public static function business_transaction_status ($validated , $bplo_approval){
+		if ($validated == 0 and $bplo_approval == 0 ) {
+			return strtoupper("new entry");
+		}elseif ($validated == 1 and ($bplo_approval == 0 or $bplo_approval == 1)) {
+			return strtoupper("pending");
+		}
+	}
 	public static function attendance_status($type = NULL){
 		$result = "";
 		switch($type){

@@ -107,8 +107,7 @@
                 <td>{{ $transaction->for_bplo_approval == 1 ? "Yes" : "No" }}</td>
                 <td>
                 <div>
-                    <span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::upper($transaction->status)}}</span>
-                    
+                    <span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2">{{Helper::business_transaction_status($transaction->is_validated , $transaction->for_bplo_approval)}}</span>
                 </div>
                 @if($transaction->status == 'APPROVED')
                     <div class="mt-1"><p>{{ $transaction->admin ? $transaction->admin->full_name : '---' }}</p></div>
