@@ -121,6 +121,7 @@ class TransactionController extends Controller{
 
     public function update(Request $request,$format = NULL){
         $business_cv = Business::where('business_id_no',$request->get('id'))->first();
+
         $application = ApplicationBusinessPermit::where('application_no', $request->get('application_no'))->first();
         
         if (!$application || !$business_cv) {
@@ -134,7 +135,8 @@ class TransactionController extends Controller{
         $business_cv->business_plate_no = $request->get('business_plate_no');
         $business_cv->permit_no = $request->get('permit_number');
         $business_cv->save();
-        $business_transactions = BusinessTransaction::where('business_id',$business_cv->id)->first();
+
+        $business_transactions = BusinessTransaction::where('business_permit_id',$application->id)->first();
         $business_transactions->payment_status = $request->get('status');
         $business_transactions->digital_certificate_released = "1";
         $business_transactions->save();
