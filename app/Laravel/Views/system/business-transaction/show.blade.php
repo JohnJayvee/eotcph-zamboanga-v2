@@ -32,6 +32,7 @@
               <a class="badge badge-info " href="{{route('system.business_transaction.release',[$transaction->id])}}">Release Digital Certificate</a>
             @endif
             @if($transaction->digital_certificate_released == "1" and $transaction->payment_status == "PAID")
+              <a class="badge badge-info mb-1" href="{{route('system.business_transaction.release',[$transaction->id])}}">Resend Certificate</a>
               <a class="badge badge-info " href="{{route('web.e_permit_view',[$transaction->id])}}" target="_blank">View Digital Certificate</a>
             @endif
             @if (!$transaction->business_info)
