@@ -70,7 +70,7 @@
 			<tbody>
 				<tr>
 					<td>Owner</td>
-					<td>{{ Helper::get_owner_name($business->id) }}</td>
+					<td class="text-uppercase">{{ Helper::get_owner_name($business->id) }}</td>
 				</tr>
 				<tr>
 					<td>Date Issued</td>
