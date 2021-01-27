@@ -136,7 +136,7 @@ class TransactionController extends Controller{
         $business_cv->permit_no = $request->get('permit_number');
         $business_cv->save();
 
-        $business_transactions = BusinessTransaction::where('business_permit_id',$application->id)->first();
+        $business_transactions = BusinessTransaction::where('business_permit_id',$application->id)->where('status' , "APPROVED")->first();
         $business_transactions->payment_status = $request->get('status');
         $business_transactions->digital_certificate_released = "1";
         $business_transactions->save();
