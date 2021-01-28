@@ -121,8 +121,8 @@ class TransactionController extends Controller{
 
     public function update(Request $request,$format = NULL){
         $business_cv = Business::where('business_id_no',$request->get('id'))->first();
-
-        $application = ApplicationBusinessPermit::where('application_no', $request->get('application_no'))->first();
+        $code = strtolower($request->get('application_no'));
+        $application = ApplicationBusinessPermit::whereRaw("LOWER(application_no)  LIKE  '%{$code}%'")->first();
         
         if (!$application || !$business_cv) {
             $this->response['status'] = FALSE;
