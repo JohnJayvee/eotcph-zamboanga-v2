@@ -84,7 +84,7 @@
               <div>
                 <span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::upper($transaction->status)}}</span>
               </div>
-              @if($transaction->status == 'APPROVED')
+              @if($transaction->status == 'DECLINED')
                 <div class="mt-1"><p>{{ $transaction->admin ? $transaction->admin->full_name : '---' }}</p></div>
                 <br>
                 {{ $transaction->proccessed_at ? "/".Helper::date_format($transaction->proccessed_at) : " " }}
