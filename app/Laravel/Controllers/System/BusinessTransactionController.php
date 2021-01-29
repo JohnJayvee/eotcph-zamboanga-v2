@@ -219,7 +219,7 @@ class BusinessTransactionController extends Controller
 		$this->data['department'] = Department::find($this->data['selected_department']);
 		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
 
-		$this->data['transactions'] = BusinessTransaction::with('application_permit')->with('owner')->where('status',"DECLINED")->whereHas('application_permit',function($query){
+		$this->data['transactions'] = BusinessTransaction::where('status',"DECLINED")->with('application_permit')->with('owner')->where(function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(business_name)  LIKE  '%{$this->data['keyword']}%'")
 							->orWhereRaw("LOWER(application_no) LIKE  '%{$this->data['keyword']}%'");
