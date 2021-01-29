@@ -877,9 +877,11 @@ class BusinessTransactionController extends Controller
 				foreach ($regulatory_array as $key => $value) {
 					$total_amount += Helper::db_amount($value['Amount']);
 				}
-				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 0)->first();
+				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 0)->where('deleted_at' , NULL)->get();
 				if ($existing) {
-					$existing->delete();
+					foreach ($existing as $key => $value) {
+						$value->delete();
+					}
 				}
 				$new_business_fee = new BusinessFee();
 				$new_business_fee->business_id = $this->data['transaction']->business_id;
@@ -898,9 +900,12 @@ class BusinessTransactionController extends Controller
 				foreach ($business_array as $key => $value) {
 					$total_amount += Helper::db_amount($value['Amount']);
 				}
-				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 1)->first();
+				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 1)->where('deleted_at' , NULL)->get();
 				if ($existing) {
-					$existing->delete();
+					foreach ($existing as $key => $value) {
+						$value->delete();
+					}
+					
 				}
 				$new_business_fee = new BusinessFee();
 				$new_business_fee->business_id = $this->data['transaction']->business_id;
@@ -920,9 +925,11 @@ class BusinessTransactionController extends Controller
 				foreach ($garbage_array as $key => $value) {
 					$total_amount += Helper::db_amount($value['Amount']);
 				}
-				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 2)->first();
+				$existing = BusinessFee::where('transaction_id' ,$this->data['transaction']->id)->where('fee_type' , 2)->where('deleted_at' , NULL)->get();
 				if ($existing) {
-					$existing->delete();
+					foreach ($existing as $key => $value) {
+						$value->delete();
+					}
 				}
 				$new_business_fee = new BusinessFee();
 				$new_business_fee->business_id = $this->data['transaction']->business_id;
