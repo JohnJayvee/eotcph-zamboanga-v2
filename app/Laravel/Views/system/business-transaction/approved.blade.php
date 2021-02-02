@@ -83,7 +83,9 @@
             <td>
               <div>
                 <span class="badge badge-pill badge-{{Helper::status_badge($transaction->is_validated == 1 ? "approved" : "pending")}} p-2">{{Str::upper($transaction->is_validated == 1 ? "validated" : 'pending')}}</span>
-            </div>
+                <br>  
+                {{ $transaction->validated_at ? "/".Helper::date_format($transaction->validated_at) : " " }}
+              </div>
             </td>
             <td>
               <div>
