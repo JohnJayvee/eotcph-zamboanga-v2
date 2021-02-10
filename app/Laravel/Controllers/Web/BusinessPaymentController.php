@@ -40,7 +40,7 @@ class BusinessPaymentController extends Controller
         $this->data['payment_type'] = $request->get('type') ?:"0";
 
         $this->data['profile'] = Business::find($id);
-        $this->data['transaction'] = BusinessTransaction::where('business_id',$id)->first();
+        $this->data['transaction'] = BusinessTransaction::where('business_id',$id)->where('status' , "APPROVED")->first();
 
         if (!$this->data['transaction']) {
         	session()->flash('notification-status',"failed");
