@@ -147,6 +147,12 @@
             <span class="menu-title">Accounts</span>
           </a>
         </li>
+        <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.audit_trail.index')) ? 'active' : ''}}">
+          <a class="nav-link" href="{{route('system.audit_trail.index')}}">
+            <i class="fa fa-calendar-alt menu-icon"></i>
+            <span class="menu-title">Audit Trail</span>
+          </a>
+        </li>
       @endif
     @endif
   @endif

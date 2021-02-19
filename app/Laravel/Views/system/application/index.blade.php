@@ -9,7 +9,7 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Applications</p>
+        <p class="text-dim  float-right">Zamboanga OBOSS / Applications</p>
       </div>
     </div>
   
@@ -62,7 +62,7 @@
           @forelse($applications as $application)
           <tr class="text-center">
             <td >{{ $application->name}}</td>
-            <td >{{ str::title( $application->type ?: "-")}}</td>
+            <td >{{ str::title(str_replace("_"," " , $application->type) ?: "-")}}</td>
             <td >PHP {{ Helper::money_format($application->processing_fee)}}</td>
             <td >{{ $application->department ? Str::title($application->department->name) : "-"}}</td>
             <td >{{ Helper::date_format($application->created_at)}}</th>

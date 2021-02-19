@@ -18,9 +18,9 @@ use App\Laravel\Requests\System\AdminRequest;
 use App\Laravel\Requests\System\ActivationRequest;
 use App\Laravel\Requests\System\SetupPasswordRequest;
 
+use App\Laravel\Events\AuditTrailActivity;
 
-
-use Carbon,Auth,DB,Str,Socialize;
+use Carbon,Auth,DB,Str,Socialize,AuditRequest,Event;
 
 class AuthController extends Controller{
 
@@ -37,6 +37,9 @@ class AuthController extends Controller{
 	}
 
 	public function authenticate(PageRequest $request,$uri = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		$password = $request->get('password');
 		$username = Str::lower($request->get('username'));
 		$remember_me = $request->get('remember_me',0);
@@ -61,10 +64,16 @@ class AuthController extends Controller{
 
 			session()->put('auth_id',$account->id);
 			if($uri AND session()->has($uri)){
+				$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "LOGIN", 'remarks' => Auth::user()->full_name." has successfully login.",'ip' => $ip]);
+				Event::dispatch('log-activity', $log_data);
+
 				session()->flash('notification-status','success');
 				session()->flash('notification-msg',"Welcome {$account->full_name}!");
 				return redirect( session()->get($uri) );
 			}
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "LOGIN", 'remarks' => Auth::user()->full_name." has successfully login.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
 
 			session()->flash('notification-status','success');
 			session()->flash('notification-msg',"Welcome {$account->full_name}!");
@@ -85,10 +94,18 @@ class AuthController extends Controller{
 			}
 			session()->put('auth_id',$account->id);
 			if($uri AND session()->has($uri)){
+
+				$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "LOGIN", 'remarks' => Auth::user()->full_name." has successfully login.",'ip' => $ip]);
+				Event::dispatch('log-activity', $log_data);
+
 				session()->flash('notification-status','success');
 				session()->flash('notification-msg',"Welcome {$account->name}!");
 				return redirect( session()->get($uri) );
 			}
+
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "LOGIN", 'remarks' => Auth::user()->full_name." has successfully login.",'ip' => $ip,'franchisee_id' => NULL]);
+			Event::dispatch('log-activity', $log_data);
 
 			session()->flash('notification-status','success');
 			session()->flash('notification-msg',"Welcome {$account->name}!");

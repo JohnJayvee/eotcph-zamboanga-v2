@@ -9,16 +9,14 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Transactions</p>
+        <p class="text-dim  float-right">Zamboanga OBOSS / Transactions</p>
       </div>
     </div>
-
   </div>
 
-  <div class="col-12 ">
+  <div class="col-12">
     <form>
       <div class="row pb-2">
-
         <div class="col-md-3">
           <label>Application Type</label>
          {!!Form::select("application_id",$applications, $selected_application_id, ['id' => "input_application_id", 'class' => "custom-select"])!!}
@@ -64,24 +62,25 @@
       </div>
     </form>
   </div>
+
   <div class="col-md-12">
      <a data-url="{{route('system.business_transaction.bulk_assessment')}}"  class="btn btn-primary mb-2 mr-2 btn-assessment border-5 text-white float-right"> Bulk Assessment</a>
      @if(in_array(Auth::user()->type, ['admin', 'super_user']))
       <a data-url="{{route('system.business_transaction.bulk_decline')}}"  class="btn btn-primary mb-2 mr-2 btn-declined border-5 text-white float-right"> Bulk Decline</a>
      @endif
-    <div class="shadow-sm fs-15">
-      <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
+    <div class="shadow-sm fs-15 table-responsive">
+      <table class="table table-striped table-wrap" style="table-layout: fixed;" id="data-table">
         <thead>
           <tr class="text-center ">
-            <th class="text-title p-3" width="15%">Transaction Date</th>
-            <th class="text-title p-3" width="15%">Business Name/Owner</th>
-            <th class="text-title p-3" width="15%">Application Number</th>
-            <th class="text-title p-3" width="30%">Application Type</th>
-            <th class="text-title p-3" width="10%">Amount</th>
-            <th class="text-title p-3" width="10%">Validation</th>
-            <th class="text-title p-3" width="10%">For BPLO Approval</th>
-            <th class="text-title p-3" width="10%">Processor/Status</th>
-            <th class="text-title p-3" width="10%">Action</th>
+            <th class="text-title" style="padding: 1em">Transaction Date</th>
+            <th class="text-title p-3 no-sort">Business Name/Owner</th>
+            <th class="text-title p-3 no-sort">Application Number</th>
+            <th class="text-title p-3 no-sort">Application Type</th>
+            <th class="text-title p-3 no-sort">Amount</th>
+            <th class="text-title p-3 no-sort">Validation</th>
+            <th class="text-title p-3 no-sort">For BPLO Approval</th>
+            <th class="text-title p-3 no-sort">Processor/Status</th>
+            <th class="text-title p-3 no-sort">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -101,10 +100,10 @@
                 <div>
                     <span class="badge badge-pill badge-{{Helper::status_badge($transaction->is_validated == 1 ? "approved" : "pending")}} p-2">{{Str::upper($transaction->is_validated == 1 ? "validated" : 'pending')}} </span>
                     <br>  
-                    {{ $transaction->validated_at ? "/".Helper::date_format($transaction->validated_at) : " " }}
+                    {{ $transaction->validated_at ? Helper::date_format($transaction->validated_at) : " " }}
                 </div>
                 </td>
-                <td>{{ $transaction->for_bplo_approval == 1 ? "Yes" : "No" }} <br>  {{ $transaction->bplo_approved_at ? "/".Helper::date_format($transaction->bplo_approved_at) : " " }}</td>
+                <td>{{ $transaction->for_bplo_approval == 1 ? "Yes" : "No" }} <br>  {{ $transaction->bplo_approved_at ? Helper::date_format($transaction->bplo_approved_at) : " " }}</td>
                 <td>
                 <div>
                     <span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2">{{Helper::business_transaction_status($transaction->is_validated , $transaction->for_bplo_approval)}}</span>
@@ -127,16 +126,13 @@
            <td colspan="8" class="text-center"><i>No Transaction Records Available.</i></td>
           </tr>
           @endforelse
-
-
         </tbody>
       </table>
     </div>
     @if($transactions->total() > 0)
       <nav class="mt-2">
-        <!-- <p>Showing <strong>{{$transactions->firstItem()}}</strong> to <strong>{{$transactions->lastItem()}}</strong> of <strong>{{$transactions->total()}}</strong> entries</p> -->
+        <p>Showing <strong>{{$transactions->firstItem()}}</strong> to <strong>{{$transactions->lastItem()}}</strong> of <strong>{{$transactions->total()}}</strong> entries</p> 
         {!!$transactions->appends(request()->query())->render()!!}
-        </ul>
       </nav>
     @endif
   </div>
@@ -157,11 +153,11 @@
 @stop
 
 @section('page-scripts')
-<script src="{{asset('system/vendors/swal/sweetalert.min.js')}}"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
 <!-- <script src="{{asset('system/vendors/sweet-alert2/sweetalert2.min.js')}}"></script> -->
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
-<script src="{{asset('system/vendors/select2/select2.min.js')}}" type="text/javascript"></script><script type="text/javascript">
-
+<script type="text/javascript">
 
   $(function(){
     $('.input-daterange').datepicker({
@@ -173,6 +169,16 @@
       $("#btn-confirm-delete").attr({"href" : btn.data('url')});
     });
 
+    $('#data-table').DataTable({
+      "searching": false,
+      "paging":false,
+      "info":false,
+      "order": [],
+      "columnDefs": [ {
+        "targets"  : 'no-sort',
+        "orderable": false,
+      }]
+    });
 
     $(".btn-assessment").on('click', function(){
       var url = $(this).data('url');

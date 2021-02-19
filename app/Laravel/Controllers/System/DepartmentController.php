@@ -14,10 +14,11 @@ use App\Laravel\Requests\System\UploadRequest;
 use App\Laravel\Models\Department;
 /* App Classes
  */
+use App\Laravel\Events\AuditTrailActivity;
 use App\Laravel\Models\Imports\DepartmentImport;
 
 
-use Carbon,Auth,DB,Str,Helper,Excel;
+use Carbon,Auth,DB,Str,Helper,Excel,AuditRequest,Event;
 
 class DepartmentController extends Controller
 {
@@ -47,12 +48,19 @@ class DepartmentController extends Controller
 		return view('system.department.create',$this->data);
 	}
 	public function store(DepartmentRequest $request){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
 		try{
 			$new_department = new Department;
 			$new_department->name = $request->get('name');
 			$new_department->code = $request->get('code');
 			$new_department->save();
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "CREATE DEPARTMENT", 'remarks' => Auth::user()->full_name." has created ".$new_department->name." department successfully.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
+
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "New Department has been added.");
@@ -73,12 +81,18 @@ class DepartmentController extends Controller
 	}
 
 	public function  update(DepartmentRequest $request,$id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
 		try{
 
 			$department = $request->get('department_data');
 			$department->name = $request->get('name');
 			$department->save();
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "EDIT DEPARTMENT", 'remarks' => Auth::user()->full_name." has modified ".$department->name." department successfully.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
 
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -93,10 +107,17 @@ class DepartmentController extends Controller
 	}
 
 	public function  destroy(PageRequest $request,$id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		$department = $request->get('department_data');
 		DB::beginTransaction();
 		try{
 			$department->delete();
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "REMOVED DEPARTMENT", 'remarks' => Auth::user()->full_name." has deleted ".$department->name." department successfully.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
+
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Department removed successfully.");

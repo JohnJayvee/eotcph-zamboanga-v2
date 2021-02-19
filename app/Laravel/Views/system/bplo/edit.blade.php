@@ -14,16 +14,33 @@
 <div class="col-md-10 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
+            <div class="mb-3">
+                @if($customer->is_block == 0)
+                <a href="{{route('system.bplo.block',[$customer->id])}}?type=1" class="btn btn-primary"><i class="fa fa-lock mr-2"></i>Block</a>
+                @else
+                <a href="{{route('system.bplo.block',[$customer->id])}}?type=0" class="btn btn-primary"><i class="fa fa-lock-open mr-2"></i>Unblock</a>
+                @endif
+            </div>
             <form class="create-form" method="POST" enctype="multipart/form-data">
                 @include('system._components.notifications')
                 {!!csrf_field()!!}
 
                 <h5 class="text-title text-uppercase ">Account Details</h5>
+                @if($customer->is_block == 1)
+                <div class="row">
+                    <div class="col-md-6 col-lg-6" >
+                        <div class="form-group">
+                          <label for="input_text">Block By</label>
+                           <input type="text" class="form-control" id="input_text" value="{{ $customer->block->full_name ?: '-' }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                @endif
                 <div class="row">
                     <div class="col-md-6 col-lg-6">
                         <div class="form-group">
                             <label class="text-title">Account Status</label>
-                            {!!Form::select("status", $status_type, old('status'), ['id' => "input_status", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('status') ? 'is-invalid' : NULL), $customer->status == 'pending' ?: 'disabled'])!!}
+                            {!!Form::select("status", $status_type, old('status',$customer->status), ['id' => "input_status", 'class' => "custom-select mb-2 mr-sm-2 ".($errors->first('status') ? 'is-invalid' : NULL), $customer->status == 'pending' ?: 'disabled'])!!}
                             <small class="text-danger">{{ $customer->otp_verified ? '' : 'The registrant is not OTP verified' }}</small>
                             @if($errors->first('status'))
                               <p class="mt-1 text-danger">{!!$errors->first('status')!!}</p>

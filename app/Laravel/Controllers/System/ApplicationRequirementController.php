@@ -14,10 +14,10 @@ use App\Laravel\Requests\System\UploadRequest;
 use App\Laravel\Models\ApplicationRequirements;
 /* App Classes
  */
-
+use App\Laravel\Events\AuditTrailActivity;
 use App\Laravel\Models\Imports\ApplicationRequirementsImport;
 
-use Carbon,Auth,DB,Str,Excel;
+use Carbon,Auth,DB,Str,Excel,AuditRequest,Event;
 
 class ApplicationRequirementController extends Controller
 {
@@ -52,12 +52,19 @@ class ApplicationRequirementController extends Controller
 		return view('system.application-requirements.create',$this->data);
 	}
 	public function store(ApplicationRequirementsRequest $request){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
 		try{
 			$new_application_requirements = new ApplicationRequirements;
 			$new_application_requirements->name = $request->get('name');
 			$new_application_requirements->is_required = $request->get('is_required');
 			$new_application_requirements->save();
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "CREATE REQUIREMENT", 'remarks' => Auth::user()->full_name." has created ".$new_application_requirements->name." application requirement successfully.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
+
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "New Application Requirement has been added.");
@@ -77,13 +84,19 @@ class ApplicationRequirementController extends Controller
 	}
 
 	public function  update(ApplicationRequirementsRequest $request,$id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
 		try{
 
-			$department = $request->get('requirement_data');
-			$department->name = $request->get('name');
-			$department->is_required = $request->get('is_required');
-			$department->save();
+			$requirement = $request->get('requirement_data');
+			$requirement->name = $request->get('name');
+			$requirement->is_required = $request->get('is_required');
+			$requirement->save();
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "EDIT REQUIREMENT", 'remarks' => Auth::user()->full_name." has modified ".$requirement->name." application requirement successfully.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
 
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -98,10 +111,18 @@ class ApplicationRequirementController extends Controller
 	}
 
 	public function  destroy(PageRequest $request,$id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		$department = $request->get('department_data');
 		DB::beginTransaction();
 		try{
 			$department->delete();
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "REMOVED REQUIREMENT", 'remarks' => Auth::user()->full_name." has deleted ".$requirement->name." application requirement successfully.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
+
+			Event::dispatch('log-activity', $log_data);
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Department removed successfully.");
@@ -118,10 +139,15 @@ class ApplicationRequirementController extends Controller
 		return view('system.application-requirements.upload',$this->data);
 	}
 
-	public function upload_department(UploadRequest $request) 
-	{	
+	public function upload_department(UploadRequest $request) {	
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		try {
 		    Excel::import(new ApplicationRequirementsImport, request()->file('file'));
+
+		    $log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "UPLOAD REQUIREMENT", 'remarks' => Auth::user()->full_name." has upload application requirements successfully.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
 
 		    session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Importing data was successful. [Note: if your data does not reflect , The Application Requirement name is already exist]");
@@ -135,7 +161,6 @@ class ApplicationRequirementController extends Controller
 		         $failure->errors(); // Actual error messages from Laravel validator
 		         $failure->values(); // The values of the row that has failed.
 		     }
-		    dd($failures);
 		    session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Something went wrong.");
 			return redirect()->route('system.application_requirements.index');

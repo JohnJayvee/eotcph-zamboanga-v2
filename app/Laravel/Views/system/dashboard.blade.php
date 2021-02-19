@@ -8,59 +8,132 @@
 </div>
 <div class="container p-4">
 	<h5 class="text-title text-uppercase">Dashboard</h5>
-	<p class="text-sub-title fw-500 pt-2">Today's Daily Summary</p>
+	<p class="text-sub-title fw-500 pt-2">Registrants</p>
 	<div class="row">
+	    <div class="col-md-3">
+	      <div class="card-counter primary">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$registrants_total}}</span>
+	        <span class="count-name">Total Registrants</span>
+	      </div>
+	    </div>
+	     <div class="col-md-3">
+	      <div class="card-counter info">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$registrants_pending}}</span>
+	        <span class="count-name">Pending <br> Registrants</span>
+	      </div>
+	    </div> <div class="col-md-3">
+	      <div class="card-counter success">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$registrants_approved}}</span>
+	        <span class="count-name">Approved <br> Registrants</span>
+	      </div>
+	    </div> <div class="col-md-3">
+	      <div class="card-counter danger">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$registrants_declined}}</span>
+	        <span class="count-name">Declined <br> Registrant</span>
+	      </div>
+	    </div>
+	</div>
+	<p class="text-sub-title fw-500 pt-2">Business CV</p>
+	<div class="row">
+	    <div class="col-md-3">
+	      <div class="card-counter primary">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$business_cv}}</span>
+	        <span class="count-name">Total <br> Business CV</span>
+	      </div>
+	    </div>
+	</div>
+	<p class="text-sub-title fw-500 pt-2">For BPLO Validation</p>
+	<div class="row">
+	    <div class="col-md-3">
+	      <div class="card-counter primary">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$total_validated}}</span>
+	        <span class="count-name">Total Validated </span>
+	      </div>
+	    </div>
 	    <div class="col-md-3">
 	      <div class="card-counter info">
 	        <i class="fa fa-hourglass-half"></i>
-	        <span class="count-numbers">{{$pending}}</span>
-	        <span class="count-name">Pending Transactions</span>
+	        <span class="count-numbers">{{$total_for_validation}}</span>
+	        <span class="count-name">For Validation </span>
+	      </div>
+	    </div>
+	</div>
+	<p class="text-sub-title fw-500 pt-2">For CTO Assessment/Approval</p>
+	<div class="row">
+	    <div class="col-md-3">
+	      <div class="card-counter primary">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$total_for_cto}}</span>
+	        <span class="count-name">Total </span>
+	      </div>
+	    </div>
+	    <div class="col-md-3">
+	      <div class="card-counter info">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$pending_assessment}}</span>
+	        <span class="count-name">Pending</span>
 	      </div>
 	    </div>
 	    <div class="col-md-3">
 	      <div class="card-counter success">
-	        <i class="fa  fa-check-circle"></i>
-	        <span class="count-numbers">{{$approved}}</span>
-	        <span class="count-name">Approved Transactions</span>
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$actioned}}</span>
+	        <span class="count-name">Actioned</span>
 	      </div>
 	    </div>
+	</div>
+	<p class="text-sub-title fw-500 pt-2">Business Transactons</p>
+	<div class="row">
 	    <div class="col-md-3">
 	      <div class="card-counter primary">
-	        <i class="fa fa-file"></i>
-	        <span class="count-numbers">{{$applications->count()}}</span>
-	        <span class="count-name">Total Business Transactions</span>
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$total_transactions}}</span>
+	        <span class="count-name">Total <br>Transactions</span>
+	      </div>
+	    </div>
+	     <div class="col-md-3">
+	      <div class="card-counter info">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$pending_transactons}}</span>
+	        <span class="count-name">Pending Transactions</span>
+	      </div>
+	    </div> <div class="col-md-3">
+	      <div class="card-counter success">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$approved_transactons}}</span>
+	        <span class="count-name">Approved Transactions</span>
+	      </div>
+	    </div> <div class="col-md-3">
+	      <div class="card-counter danger">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$declined_transactons}}</span>
+	        <span class="count-name">Declined Transactions</span>
+	      </div>
+	    </div>
+	</div>
+	<p class="text-sub-title fw-500 pt-2">Payment Transactons</p>
+	<div class="row">
+	    <div class="col-md-3">
+	      <div class="card-counter success">
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$paid_transactons}}</span>
+	        <span class="count-name">Paid <br>Transactions</span>
 	      </div>
 	    </div>
 	    <div class="col-md-3">
 	      <div class="card-counter danger">
-	        <i class="fa fa-times-circle"></i>
-	        <span class="count-numbers">{{$declined}}</span>
-	        <span class="count-name">Disapproved Transactions</span>
+	        <i class="fa fa-hourglass-half"></i>
+	        <span class="count-numbers">{{$unpaid_transactons}}</span>
+	        <span class="count-name">Unpaid <br> Transactions</span>
 	      </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card-counter success">
-              <i class="fa  fas fa-check-double"></i>
-              <span class="count-numbers">{{$validated}}</span>
-              <span class="count-name">Validated Transactions</span>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card-counter primary">
-              <i class="fa  fas fa-user-check"></i>
-              <span class="count-numbers">{{$for_bplo}}</span>
-              <span class="count-name">For BPLO Approval</span>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card-counter info">
-            <i class="fa fas fa-id-card"></i>
-              <span class="count-numbers">{{$business_cv}}</span>
-              <span class="count-name">Total Business CV</span>
-            </div>
-        </div>
+	    </div> 
 	</div>
-
 	<div class="row pt-2">
 		<div class="col-md-6 p-2">
 			<div class="card h-100" style="border: none;border-radius: 10px;">

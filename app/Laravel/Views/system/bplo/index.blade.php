@@ -9,7 +9,7 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Registrants</p>
+        <p class="text-dim  float-right">Zamboanga OBOSS / Registrants</p>
       </div>
     </div>
   </div>
@@ -66,7 +66,12 @@
           <tr>
             <td>{{ Helper::date_format($customers->created_at)}}</td>
             <td>{{ $customers->name}}</td>
-            <td><span class="badge badge-{{ Helper::status_badge($customers->status)}}">{{ ucfirst($customers->status)}}</span></th>
+            <td>
+              <span class="badge badge-{{ Helper::status_badge($customers->status)}} mb-1">{{ ucfirst($customers->status)}}</span><br>
+              @if($customers->is_block == 1)
+              <span class="badge badge-danger">{{ $customers->is_block == 1 ? "Blocked" :" "}}</span>
+              @endif
+            </td>
             <td >
               <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
@@ -83,10 +88,10 @@
         </tbody>
       </table>
     </div>
-      <nav class="mt-2">
-        {!!$customer->appends(['status' => $selected_status , 'otp_verified' => $selected_otp_verified , 'keyword' => $keyword , 'start_date' => $start_date , 'end_date' => $end_date])->render()!!}
-        </ul>
-      </nav>
+    <nav class="mt-2">
+      <p>Showing <strong>{{$customer->firstItem()}}</strong> to <strong>{{$customer->lastItem()}}</strong> of <strong>{{$customer->total()}}</strong> entries</p> 
+      {!!$customer->appends(['status' => $selected_status , 'otp_verified' => $selected_otp_verified , 'keyword' => $keyword , 'start_date' => $start_date , 'end_date' => $end_date])->render()!!}
+    </nav>
   </div>
 </div>
 @stop
@@ -98,17 +103,13 @@
       <div class="modal-header">
         <h5 class="modal-title">Confirm your action</h5>
       </div>
-
       <div class="modal-body">
         <h6 class="text-semibold">Deleting Record...</h6>
         <p>You are about to delete a record, this action can no longer be undone, are you sure you want to proceed?</p>
-
         <hr>
-
         <h6 class="text-semibold">What is this message?</h6>
         <p>This dialog appears everytime when the chosen action could hardly affect the system. Usually, it occurs when the system is issued a delete command.</p>
       </div>
-
       <div class="modal-footer">
         <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
         <a href="#" class="btn btn-sm btn-danger" id="btn-confirm-delete">Delete</a>

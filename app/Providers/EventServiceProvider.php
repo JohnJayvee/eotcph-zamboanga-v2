@@ -121,6 +121,9 @@ class EventServiceProvider extends ServiceProvider
         'send-digital-business-permit' => [
             'App\Laravel\Listeners\SendEmailDigitalCertificateListener'
         ],
+        'log-activity' => [
+            'App\Laravel\Listeners\AuditTrailActivityListener'
+        ],
 
     ];
 

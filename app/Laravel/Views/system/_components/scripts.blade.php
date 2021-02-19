@@ -4,6 +4,7 @@
 <script src="{{asset('system/js/template.js')}}"></script>
 {{-- <script src="{{asset('system/js/settings.js')}}"></script> --}}
 <script src="{{asset('system/js/todolist.js')}}"></script>
+
 <script type="text/javascript">
 
 	$(function () {

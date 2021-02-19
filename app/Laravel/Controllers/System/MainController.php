@@ -12,7 +12,7 @@ use App\Laravel\Requests\PageRequest;
 /*
  * Models
  */
-use App\Laravel\Models\{Transaction,Department,Application, Business, BusinessTransaction};
+use App\Laravel\Models\{Transaction,Department,Application, Business, BusinessTransaction,Customer};
 
 /* App Classes
  */
@@ -32,14 +32,37 @@ class MainController extends Controller{
 		$this->data['page_title'] .= "Dashboard";
 
 		if (in_array($auth->type, ["admin", "super_user"])) {
-			$this->data['applications'] = BusinessTransaction::orderBy('created_at',"DESC")->get();
-            $this->data['pending'] = BusinessTransaction::where('status',"PENDING")->count();
-            $this->data['validated'] = BusinessTransaction::where('is_validated',"1")->count();
-            $this->data['for_bplo'] = BusinessTransaction::where('for_bplo_approval',"1")->count();
-			$this->data['approved'] = BusinessTransaction::where('status',"APPROVED")->count();
-			$this->data['declined'] = BusinessTransaction::where('status',"DECLINED")->count();
+
+			$this->data['registrants_total'] = Customer::count();
+			$this->data['registrants_pending'] = Customer::where('status','pending')->count();
+			$this->data['registrants_approved'] = Customer::where('status','approved')->count();
+			$this->data['registrants_declined'] = Customer::where('status','declined')->count();
+
 			$this->data['business_cv'] = Business::count();
+
+			$this->data['total_validated'] = BusinessTransaction::where('is_validated', 1)->count();
+			$this->data['total_for_validation'] = BusinessTransaction::where('is_validated', 0)->count();
+
+			$this->data['total_transactions'] = BusinessTransaction::count();
+            $this->data['pending_transactons'] = BusinessTransaction::where('status',"PENDING")->count();
+			$this->data['approved_transactons'] = BusinessTransaction::where('status',"APPROVED")->count();
+			$this->data['declined_transactons'] = BusinessTransaction::where('status',"DECLINED")->count();
+
+			$this->data['total_for_cto'] = BusinessTransaction::where('is_validated', 1)->count();
+			$this->data['actioned'] = BusinessTransaction::Wherehas('with_fee')->count();
+			$this->data['pending_assessment'] = BusinessTransaction::where('is_validated', 1)->doesnthave('with_fee')->count();
+
+
+			$this->data['paid_transactons'] = BusinessTransaction::where('payment_status',"PAID")->count();
+			$this->data['unpaid_transactons'] = BusinessTransaction::where('payment_status',"UNPAID")->count();
+
+
+			//$this->data['validated'] = BusinessTransaction::where('is_validated',"1")->count();
+            //$this->data['for_bplo'] = BusinessTransaction::where('for_bplo_approval',"1")->count();
+
 			$this->data['application_today'] = BusinessTransaction::whereDate('created_at', Carbon::now())->count();
+
+			$this->data['applications'] = BusinessTransaction::orderBy('created_at',"DESC")->get();
 			$this->data['labels'] = Department::pluck('name')->toArray();
 			$this->data['transaction_per_department'] = Department::withCount('assignTransaction')->pluck('assign_transaction_count')->toArray();
             $departments = BusinessTransaction::orderBy('created_at',"ASC")->first();
@@ -75,17 +98,30 @@ class MainController extends Controller{
 
 		}elseif ($auth->type == "office_head") {
 
-			$this->data['applications'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->orderBy('created_at',"DESC")->get();
-			$this->data['pending'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('status',"PENDING")->count();
-			$this->data['approved'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('status',"APPROVED")->count();
-			$this->data['declined'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('status',"DECLINED")->count();
-			$this->data['application_today'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->whereDate('created_at', Carbon::now())->count();
-            $this->data['validated'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('is_validated',"1")->count();
-            $this->data['for_bplo'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('for_bplo_approval',"1")->count();
+			$this->data['registrants_total'] = Customer::count();
+			$this->data['registrants_pending'] = Customer::where('status','pending')->count();
+			$this->data['registrants_approved'] = Customer::where('status','approved')->count();
+			$this->data['registrants_declined'] = Customer::where('status','declined')->count();
+
 			$this->data['business_cv'] = Business::count();
 
-			$this->data['labels'] = Application::where('department_id',explode(",", $auth->department_id))->pluck('name')->toArray();
+			$this->data['total_validated'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('is_validated', 1)->count();
+			$this->data['total_for_validation'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('is_validated', 0)->count();
 
+			$this->data['total_transactions'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->count();
+            $this->data['pending_transactons'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('status',"PENDING")->count();
+			$this->data['approved_transactons'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('status',"APPROVED")->count();
+			$this->data['declined_transactons'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('status',"DECLINED")->count();
+
+			$this->data['total_for_cto'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('is_validated', 1)->count();
+			$this->data['actioned'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->Wherehas('with_fee')->count();
+			$this->data['pending_assessment'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('is_validated', 1)->doesnthave('with_fee')->count();
+
+
+			$this->data['paid_transactons'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('payment_status',"PAID")->count();
+			$this->data['unpaid_transactons'] = BusinessTransaction::where('department_id',explode(",", $auth->department_id))->where('payment_status',"UNPAID")->count();
+
+			$this->data['labels'] = Application::where('department_id',explode(",", $auth->department_id))->pluck('name')->toArray();
 			$this->data['transaction_per_application'] = Application::where('department_id',explode(",", $auth->department_id))->withCount('assignAppTransaction')->pluck('assign_app_transaction_count')->toArray();
 
 			// $transaction_query = Transaction::groupBy('application_id')->select("application_id", DB::raw('SUM(processing_fee + amount) AS amount_sum'));
@@ -119,14 +155,29 @@ class MainController extends Controller{
 
 		}elseif ($auth->type == "processor") {
 
-			$this->data['applications'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->orderBy('created_at',"DESC")->get();
-			$this->data['pending'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('status',"PENDING")->count();
-			$this->data['approved'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('status',"APPROVED")->count();
-			$this->data['declined'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('status',"DECLINED")->count();
-			$this->data['application_today'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->whereDate('created_at', Carbon::now())->count();
-            $this->data['validated'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('is_validated',"1")->count();
-            $this->data['for_bplo'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('for_bplo_approval',"1")->count();
+			$this->data['registrants_total'] = Customer::count();
+			$this->data['registrants_pending'] = Customer::where('status','pending')->count();
+			$this->data['registrants_approved'] = Customer::where('status','approved')->count();
+			$this->data['registrants_declined'] = Customer::where('status','declined')->count();
+
 			$this->data['business_cv'] = Business::count();
+
+			$this->data['total_validated'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('is_validated', 1)->count();
+			$this->data['total_for_validation'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('is_validated', 0)->count();
+
+			$this->data['total_transactions'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->count();
+            $this->data['pending_transactons'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('status',"PENDING")->count();
+			$this->data['approved_transactons'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('status',"APPROVED")->count();
+			$this->data['declined_transactons'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('status',"DECLINED")->count();
+
+			$this->data['total_for_cto'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('is_validated', 1)->count();
+			$this->data['actioned'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->Wherehas('with_fee')->count();
+			$this->data['pending_assessment'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('is_validated', 1)->doesnthave('with_fee')->count();
+
+
+			$this->data['paid_transactons'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('payment_status',"PAID")->count();
+			$this->data['unpaid_transactons'] = BusinessTransaction::whereIn('application_id',explode(",", $auth->application_id))->where('payment_status',"UNPAID")->count();
+
 
 			$this->data['labels'] = Application::where('department_id',$auth->department_id)->pluck('name')->toArray();
 

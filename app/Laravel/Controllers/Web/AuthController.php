@@ -48,7 +48,7 @@ class AuthController extends Controller{
 
 			if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password])){
 
-				if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'approved'])){
+				if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'status' => 'approved' , 'is_block' => 0])){
                     $user = Auth::guard('customer')->user();
                     session()->put('auth_id', Auth::guard('customer')->user()->id);
                     session()->flash('notification-status','success');
@@ -76,6 +76,11 @@ class AuthController extends Controller{
                     Auth::guard('customer')->logout();
                     session()->flash('notification-status','error');
                     session()->flash('notification-msg','Your Account has been Declined.');
+                    return redirect()->back();
+                }else  if(Auth::guard('customer')->attempt(['email' => $email,'password' => $password, 'is_block' => 1])){
+                    Auth::guard('customer')->logout();
+                    session()->flash('notification-status','error');
+                    session()->flash('notification-msg','Your Account has been Blocked.');
                     return redirect()->back();
                 }
 			}

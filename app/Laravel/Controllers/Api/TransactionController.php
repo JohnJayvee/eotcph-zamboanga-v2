@@ -139,6 +139,8 @@ class TransactionController extends Controller{
         $business_transactions = BusinessTransaction::where('business_permit_id',$application->id)->where('status' , "APPROVED")->first();
         $business_transactions->payment_status = $request->get('status');
         $business_transactions->digital_certificate_released = "1";
+        $business_transactions->or_no = $request->get('or_no');
+        $business_transactions->or_date = $request->get('or_date');
         $business_transactions->save();
 
         if ($business_transactions->payment_status == "PAID") {

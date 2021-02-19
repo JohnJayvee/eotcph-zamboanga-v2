@@ -9,7 +9,7 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Business CV</p>
+        <p class="text-dim  float-right">Zamboanga OBOSS / Business CV</p>
       </div>
     </div>
   </div>
@@ -70,6 +70,7 @@
       </table>
     </div>
       <nav class="mt-2">
+        <p>Showing <strong>{{$business->firstItem()}}</strong> to <strong>{{$business->lastItem()}}</strong> of <strong>{{$business->total()}}</strong> entries</p> 
         {!!$business->render()!!}
         </ul>
       </nav>

@@ -3,28 +3,30 @@
 namespace App\Laravel\Controllers\System;
 
 /*
- * Request Validator
+ * Models
  */
 use App\Laravel\Models\Customer;
 use App\Laravel\Models\Department;
-/*
- * Models
- */
 use App\Laravel\Models\Application;
 use App\Laravel\Models\CustomerFile;
-use Carbon,Auth,DB,Str,Helper,Event;
-use App\Laravel\Requests\PageRequest;
 use App\Laravel\Models\CollectionOfFees;
-/* App Classes
- */
 use App\Laravel\Models\ApplicationRequirements;
+/*
+ * Request Validator
+ */
+use App\Laravel\Requests\PageRequest;
 use App\Laravel\Requests\System\BPLOUpdateRequest;
 use App\Laravel\Requests\System\ApplicationRequest;
 use App\Laravel\Requests\System\CollectionFeeRequest;
+/* App Classes
+ */
 use App\Laravel\Events\SendCustomerRegistractionActive;
 use App\Laravel\Events\SendCustomerRegistractionDecline;
 use App\Laravel\Events\SendCustomerRegistractionActiveEmail;
 use App\Laravel\Events\SendCustomerRegistractionDeclinedEmail;
+use App\Laravel\Events\AuditTrailActivity;
+
+use Carbon,Auth,DB,Str,Helper,Event,AuditRequest;
 
 class BPLOController extends Controller
 {
@@ -106,6 +108,9 @@ class BPLOController extends Controller
 	}
 
 	public function update(BPLOUpdateRequest $request,$id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
 		try{
             $update_customer = Customer::find($id);
@@ -130,6 +135,9 @@ class BPLOController extends Controller
             // via Email
             $notification_data = new SendCustomerRegistractionActiveEmail($insert);
             Event::dispatch('send-customer-registration-active-email', $notification_data);
+
+            $log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "APPROVED REGISTRANT", 'remarks' => Auth::user()->full_name." has successfully approved ".$update_customer->full_name." Account.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
         } else {
 
             //  via SMS
@@ -139,6 +147,9 @@ class BPLOController extends Controller
             // via Email
             $notification_data = new SendCustomerRegistractionDeclinedEmail($insert);
             Event::dispatch('send-customer-registration-declined-email', $notification_data);
+
+            $log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "DECLINED REGISTRANT", 'remarks' => Auth::user()->full_name." has successfully declined ".$update_customer->full_name." Account.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
         }
 
         session()->flash('notification-status', "success");
@@ -152,8 +163,6 @@ class BPLOController extends Controller
         return redirect()->back();
 		}
 	}
-
-
 
 	public function  destroy(PageRequest $request,$id = NULL){
 		DB::beginTransaction();
@@ -169,5 +178,47 @@ class BPLOController extends Controller
 			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
 			return redirect()->back();
 		}
+	}
+
+	public function block(PageRequest $request, $id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+		$type = $request->get('type');
+
+		DB::beginTransaction();
+		try{
+
+			$customer = Customer::find($id);
+			switch ($type) {
+			case '1':
+				$customer->is_block = 1;
+				$customer->block_by = Auth::user()->id;
+				session()->flash('notification-status', "success");
+				session()->flash('notification-msg', "Customer Blocked successfully.");
+				$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "BLOCKED", 'remarks' => Auth::user()->full_name." has successfully blocked ".$customer->full_name.".",'ip' => $ip]);
+				Event::dispatch('log-activity', $log_data);
+
+				break;
+			case '0':
+				$customer->is_block = 0;
+				$customer->block_by = Auth::user()->id;
+				session()->flash('notification-status', "success");
+				session()->flash('notification-msg', "Customer Unblocked successfully.");
+				$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "UNBLOCKED", 'remarks' => Auth::user()->full_name." has successfully unblocked ".$customer->full_name.".",'ip' => $ip]);
+				Event::dispatch('log-activity', $log_data);
+				break;
+			default:
+				break;
+			}
+			$customer->save();
+			DB::commit();
+			return redirect()->route('system.bplo.edit',[$id]);
+		}catch(\Exception $e){
+			DB::rollback();
+			session()->flash('notification-status', "failed");
+			session()->flash('notification-msg', "Server Error: Code #{$e->getMessage()}");
+			return redirect()->back();
+		}
+		
 	}
 }

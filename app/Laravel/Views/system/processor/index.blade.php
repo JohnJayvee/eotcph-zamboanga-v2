@@ -18,7 +18,7 @@
   <div class="col-12 ">
     <form>
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
           <label>Department</label>
           @if(Auth::user()->type == "super_user" || Auth::user()->type == "admin")
             {!!Form::select("department_id", $department, $selected_department_id, ['id' => "input_department_id", 'class' => "custom-select"])!!}
@@ -27,9 +27,13 @@
             <input type="hidden" name="selected_department_id" value="{{$selected_department_id}}">
           @endif
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
           <label>Account Type</label>
           {!!Form::select("type", $user_type, $selected_type, ['id' => "input_type", 'class' => "custom-select"])!!}
+        </div>
+        <div class="col-md-2">
+          <label>Account Status</label>
+          {!!Form::select("status", $status_type, $selected_status, ['id' => "input_status", 'class' => "custom-select"])!!}
         </div>
         <div class="col-md-3">
           <label>Keywords</label>
@@ -51,18 +55,18 @@
         <a href="{{route('system.processor.create')}}" class="btn btn-sm btn-primary">Add New</a>
       </span>
     </h4>
-    <div class="shadow fs-15">
-      <table class="table table-responsive table-striped table-wrap" style="table-layout: fixed;">
+    <div class="table-responsive hadow fs-15">
+      <table class="table table-striped table-wrap">
         <thead>
           <tr>
-            <th width="25%" class="text-title p-3">Reference #</th>
-            <th width="25%" class="text-title p-3">Last Name</th>
-            <th width="25%" class="text-title p-3">First Name</th>
-            <th width="10%" class="text-title p-3">Department</th>
-            <th width="10%" class="text-title p-3">Status</th>
-            <th width="10%" class="text-title p-3">Type</th>
-            <th width="10%" class="text-title p-3">Date Created</th>
-            <th width="10%" class="text-title p-3">Action</th>
+            <th class="text-title p-3">Reference #</th>
+            <th class="text-title p-3">Last Name</th>
+            <th class="text-title p-3">First Name</th>
+            <th class="text-title p-3">Department</th>
+            <th class="text-title p-3">Status</th>
+            <th class="text-title p-3">Type</th>
+            <th class="text-title p-3">Date Created</th>
+            <th class="text-title p-3">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -95,7 +99,7 @@
     </div>
      @if($processors->total() > 0)
       <nav class="mt-2">
-       <!--  <p>Showing <strong>{{$processors->firstItem()}}</strong> to <strong>{{$processors->lastItem()}}</strong> of <strong>{{$processors->total()}}</strong> entries</p> -->
+        <p>Showing <strong>{{$processors->firstItem()}}</strong> to <strong>{{$processors->lastItem()}}</strong> of <strong>{{$processors->total()}}</strong> entries</p>
         {!!$processors->appends(request()->query())->render()!!}
         </ul>
       </nav>

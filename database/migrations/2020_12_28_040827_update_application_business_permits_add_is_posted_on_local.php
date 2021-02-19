@@ -24,9 +24,10 @@ class UpdateApplicationBusinessPermitsAddIsPostedOnLocal extends Migration
      * @return void
      */
     public function down()
-    {
-        Schema::table('application_business_permits', function (Blueprint $table) {
-            //
+    {   
+        Schema::table('application_business_permits', function($table){
+            $table->dropColumn(['is_posted_on_local']);
         });
+        
     }
 }

@@ -63,4 +63,8 @@ class Customer extends Authenticatable{
     public function getOwnerFullAddressAttribute(){
         return Str::title("{$this->unit_number}, {$this->street_name}, {$this->barangay_name}, {$this->town_name}");
     }
+
+    public function block(){
+        return $this->hasOne("App\Laravel\Models\User",'id','block_by');
+    }
 }

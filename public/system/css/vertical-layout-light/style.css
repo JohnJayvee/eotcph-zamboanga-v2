@@ -27068,6 +27068,9 @@ body.avgrund-active {
   border-bottom-width: 0;
   color: inherit;
 }
+.dataTables_wrapper .dataTable thead th:focus {
+   outline:none;
+}
 
 .dataTables_wrapper .dataTable thead .sorting:before, .dataTables_wrapper .dataTable thead .sorting:after,
 .dataTables_wrapper .dataTable thead .sorting_asc:before,

@@ -61,6 +61,7 @@ class ProcessorController extends Controller
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 		$this->data['selected_department_id'] = $auth->type == "office_head" ? $auth->department_id : $request->get('department_id');
 		$this->data['selected_type'] = $request->get('type');
+		$this->data['selected_status'] = $request->get('status');
 
 		$this->data['processors'] = User::where('type','<>','super_user')->where(function($query){
 		if(strlen($this->data['keyword']) > 0){
@@ -75,6 +76,11 @@ class ProcessorController extends Controller
 				if(strlen($this->data['selected_department_id']) > 0){
 					return $query->where('department_id',$this->data['selected_department_id']);
 				}
+			}
+		})
+		->where(function($query){
+			if(strlen($this->data['selected_status']) > 0){
+				return $query->where('status',$this->data['selected_status']);
 			}
 		})
 		->where(function($query){

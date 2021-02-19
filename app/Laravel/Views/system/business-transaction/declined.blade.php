@@ -9,7 +9,7 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Transactions</p>
+        <p class="text-dim  float-right">Zamboanga OBOSS / Transactions</p>
       </div>
     </div>
 
@@ -55,16 +55,16 @@
   </div>
   <div class="col-md-12">
     <div class="shadow-sm fs-15 table-responsive">
-      <table class="table  table-striped table-wrap" style="table-layout: fixed;">
+      <table class="table table-striped table-wrap" style="table-layout: fixed;" id="data-table">
         <thead>
           <tr class="text-center ">
             <th class="text-title p-3">Transaction Date</th>
-            <th class="text-title p-3">Business Name/Owner</th>
-            <th class="text-title p-3">Application Number</th>
-            <th class="text-title p-3">Application Type</th>
-            <th class="text-title p-3">Amount</th>
-            <th class="text-title p-3">Processor/Status</th>
-            <th class="text-title p-3">Action</th>
+            <th class="text-title p-3 no-sort">Business Name/Owner</th>
+            <th class="text-title p-3 no-sort">Application Number</th>
+            <th class="text-title p-3 no-sort">Application Type</th>
+            <th class="text-title p-3 no-sort">Amount</th>
+            <th class="text-title p-3 no-sort">Processor/Status</th>
+            <th class="text-title p-3 no-sort">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -132,6 +132,8 @@
 
 @section('page-scripts')
 <script src="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
   $.fn.get_application_type = function(department_id,input_purpose,selected){
         $(input_purpose).empty().prop('disabled',true)
@@ -179,7 +181,17 @@
       $(this).get_application_type(department_id,"#input_application_id","")
       $('#input_department_name').val(_text);
     })
-
+    
+    $('#data-table').DataTable({
+      "searching": false,
+      "paging":false,
+      "info":false,
+      "order": [],
+      "columnDefs": [ {
+        "targets"  : 'no-sort',
+        "orderable": false,
+      }]
+    });
 
   })
 </script>

@@ -24,9 +24,10 @@ class UpdateTableApplicationBusinessPermitsAddFieldPermitNo extends Migration
      * @return void
      */
     public function down()
-    {
+    {   
         Schema::table('application_business_permits', function (Blueprint $table) {
-            //
+            $table->dropColumn(['permit_no']);
         });
+        
     }
 }

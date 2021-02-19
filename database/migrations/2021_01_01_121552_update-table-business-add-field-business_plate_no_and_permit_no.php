@@ -27,7 +27,7 @@ class UpdateTableBusinessAddFieldBusinessPlateNoAndPermitNo extends Migration
     public function down()
     {
         Schema::table('business', function (Blueprint $table) {
-            //
+            $table->dropColumn(['business_plate_no','permit_no']);
         });
     }
 }

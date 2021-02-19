@@ -16,7 +16,9 @@ use App\Laravel\Models\ApplicationRequirements;
 use App\Laravel\Models\CollectionOfFees;
 /* App Classes
  */
-use Carbon,Auth,DB,Str,Helper;
+use App\Laravel\Events\AuditTrailActivity;
+
+use Carbon,Auth,DB,Str,Helper, AuditRequest,Event;
 
 class ApplicationController extends Controller
 {
@@ -65,6 +67,9 @@ class ApplicationController extends Controller
 		return view('system.application.create',$this->data);
 	}
 	public function store(ApplicationRequest $request){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
 		try{
 			$new_application = new Application;
@@ -76,9 +81,13 @@ class ApplicationController extends Controller
 			$new_application->processing_fee = Helper::db_amount($request->get('processing_fee'));
 			$new_application->partial_amount = Helper::db_amount($request->get('partial_amount'));
 			// $new_application->processing_days = $request->get('processing_days');
-            // $new_application->requirements_id = implode(",", $request->get('requirements_id'));
+            $new_application->requirements_id = implode(",", $request->get('requirements_id'));
 			//$new_application->collection_id = $request->get('define_collection_fee');
 			$new_application->save();
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "CREATE APPLICATION", 'remarks' => Auth::user()->full_name." has created ".$new_application->name." application successfully.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
+
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "New Application has been added.");
@@ -98,10 +107,17 @@ class ApplicationController extends Controller
 	}
 
 	public function  update(ApplicationRequest $request,$id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
 		try{
 
 			$application = $request->get('application_data');
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "EDIT APPLICATION", 'remarks' => Auth::user()->full_name." has updated ".$application->name." application successfully.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
+
+
 			$application->department_id = $request->get('department_id');
 			$application->name = $request->get('name');
 			$application->type = $request->get('type');
@@ -113,6 +129,7 @@ class ApplicationController extends Controller
 			//$application->collection_id = $request->get('collection_id');
 			$application->save();
 
+			
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Application had been modified.");
@@ -128,10 +145,16 @@ class ApplicationController extends Controller
 
 
 	public function  destroy(PageRequest $request,$id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		$application = $request->get('application_data');
 		DB::beginTransaction();
 		try{
 			$application->delete();
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "REMOVE APPLICATION", 'remarks' => Auth::user()->full_name." has deleted ".$application->name." application successfully.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
+
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Application removed successfully.");

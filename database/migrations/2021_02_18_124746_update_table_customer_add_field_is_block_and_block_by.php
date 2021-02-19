@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateBusinessActivitiesAddParticulars extends Migration
+class UpdateTableCustomerAddFieldIsBlockAndBlockBy extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class UpdateBusinessActivitiesAddParticulars extends Migration
      */
     public function up()
     {
-        Schema::table('business_activities', function (Blueprint $table) {
-            $table->longText('particulars')->nullable();
+        Schema::table('customer', function (Blueprint $table) {
+            $table->string('is_block')->default(0)->nullable();
+            $table->string('block_by')->nullable();
         });
     }
 
@@ -24,10 +25,9 @@ class UpdateBusinessActivitiesAddParticulars extends Migration
      * @return void
      */
     public function down()
-    {   
-        Schema::table('business_activities', function($table){
-            $table->dropColumn(['particulars']);
+    {
+         Schema::table('customer', function($table){
+            $table->dropColumn(['is_block','block_by']);
         });
-        
     }
 }

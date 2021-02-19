@@ -72,6 +72,9 @@ Route::group(['as' => "auth."], function(){
 
 		});
 
+		Route::group(['as' => "audit_trail.",'prefix' => "audit-trail"], function(){
+			Route::get('/',['as' => "index",'uses' => "AuditTrailController@index"]);
+		});
 
 		Route::group(['as' => "profile.",'prefix' => "profile"], function(){
 			Route::get('/',['as' => "index",'uses' => "ProfileController@index"]);
@@ -169,6 +172,8 @@ Route::group(['as' => "auth."], function(){
             Route::get('edit/{id?}',['as' => "edit",'uses' => "BPLOController@edit"]);
 			Route::post('edit/{id?}',['uses' => "BPLOController@update"]);
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "BPLOController@destroy"]);
+			Route::any('block/{id?}',['as' => "block",'uses' => "BPLOController@block"]);
+
 		});
 
 		Route::group(['as' => "holiday.",'prefix' => "holiday"], function(){

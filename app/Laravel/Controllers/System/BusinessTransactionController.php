@@ -19,6 +19,9 @@ use App\Laravel\Events\NotifyBPLOAdminEmail;
 /* App Classes
  */
 use App\Laravel\Requests\System\BPLORequest;
+use App\Laravel\Requests\System\TransactionCollectionRequest;
+use App\Laravel\Requests\System\TransactionUpdateRequest;
+
 use App\Laravel\Events\NotifyDepartmentEmail;
 use App\Laravel\Events\SendEmailDigitalCertificate;
 use App\Laravel\Events\SendEmailApprovedBusiness;
@@ -26,9 +29,10 @@ use App\Laravel\Events\SendEmailDeclinedBusiness;
 use App\Laravel\Events\SendDeclinedEmailReference;
 use App\Laravel\Events\SendEmailDeclinedApplication;
 use App\Laravel\Events\UploadLineOfBusinessToLocal;
-use App\Laravel\Requests\System\TransactionCollectionRequest;
-use App\Laravel\Requests\System\TransactionUpdateRequest;
-use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF;
+use App\Laravel\Events\AuditTrailActivity;
+
+
+use Carbon,Auth,DB,Str,ImageUploader,Helper,Event,FileUploader,Curl,PDF,AuditRequest;
 use Illuminate\Support\Facades\Log;
 
 class BusinessTransactionController extends Controller
@@ -148,6 +152,7 @@ class BusinessTransactionController extends Controller
 	}
 
 	public function  approved(PageRequest $request){
+
 		$this->data['page_title'] = "Approved Business Transactions";
 
 		$auth = Auth::user();
@@ -159,26 +164,31 @@ class BusinessTransactionController extends Controller
 		if($first_record){
 			$start_date = $request->get('start_date',$first_record->created_at->format("Y-m-d"));
 		}
-
 		$this->data['start_date'] = Carbon::parse($start_date)->format("Y-m-d");
 		$this->data['end_date'] = Carbon::parse($request->get('end_date',Carbon::now()))->format("Y-m-d");
-		$this->data['selected_application_id'] = $request->get('application_id');
-		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
-		$this->data['selected_department'] = $request->get('department_id');
-		$this->data['keyword'] = Str::lower($request->get('keyword'));
 
-		$this->data['department'] = Department::find($this->data['selected_department']);
-		$this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
-		$this->data['transactions'] = BusinessTransaction::with('application_permit')->with('owner')->where('status',"APPROVED")->whereHas('application_permit',function($query){
+
+		$this->data['selected_application_id'] = $request->get('application_id');
+		$this->data['selected_bplo_approval'] = $request->get('bplo_approval');
+		$this->data['selected_processor'] = $request->get('processor');
+		$this->data['selected_department'] = $request->get('department_id');
+		$this->data['selected_attachment_count'] = $request->get('attachment_count');
+		$this->data['selected_processing_fee_status'] = $request->get('processing_fee_status');
+		$this->data['keyword'] = Str::lower($request->get('keyword'));
+        $this->data['applications'] = ['' => "Choose Applications"] + Application::where('department_id',$request->get('department_id'))->where('type',"business")->pluck('name', 'id')->toArray();
+
+        $this->data['department'] = Department::find($this->data['selected_department']);
+		$this->data['transactions'] = BusinessTransaction::with('application_permit')->with('owner')->where('status',"APPROVED")->where('is_resent',0)->whereHas('application_permit',function($query){
 				if(strlen($this->data['keyword']) > 0){
 					return $query->WhereRaw("LOWER(business_name)  LIKE  '%{$this->data['keyword']}%'")
-							->orWhereRaw("LOWER(application_no) LIKE  '%{$this->data['keyword']}%'");
+								->orWhereRaw("LOWER(application_no) LIKE  '%{$this->data['keyword']}%'");
 					}
 				})
 				->where(function($query){
 					if(strlen($this->data['selected_application_id']) > 0){
 						return $query->where('application_id',$this->data['selected_application_id']);
 					}
+
 				})
 				->where(function($query){
 					if(strlen($this->data['selected_processing_fee_status']) > 0){
@@ -186,10 +196,30 @@ class BusinessTransactionController extends Controller
 					}
 				})
 				->where(function($query){
+					if(strlen($this->data['selected_bplo_approval']) > 0){
+						return $query->where('for_bplo_approval',$this->data['selected_bplo_approval']);
+					}
+				})
+				->where(function($query){
+					if(strlen($this->data['selected_processor']) > 0){
+						return $query->where('is_validated',$this->data['selected_processor']);
+					}
+                })
+                ->where(function($query){
 					if(strlen($this->data['selected_department']) > 0){
 						return $query->whereJsonContains('department_involved',$this->data['department']->code);
 					}
                 })
+                ->where(function($query){
+					if(strlen($this->data['selected_attachment_count']) > 0){
+						return $query->where('attachment_count',$this->data['selected_attachment_count']);
+					}
+                })
+                ->where(function($query) use($auth){
+					if(strlen($auth->department_id) > 0 && !in_array($auth->type, ['admin', 'super_user'])){
+						return $query->where('is_validated', '1');
+					}
+				})
 				->where(DB::raw("DATE(created_at)"),'>=',$this->data['start_date'])
 				->where(DB::raw("DATE(created_at)"),'<=',$this->data['end_date'])
 				->orderBy('created_at',"ASC")->paginate($this->per_page);
@@ -305,7 +335,9 @@ class BusinessTransactionController extends Controller
     }
 
     public function update(TransactionUpdateRequest $request,$id=NULL){
-        // dd(request()->all());
+       	$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
         $this->retrieve_lobs();
         $transaction = $request->get('business_transaction_data');
         DB::beginTransaction();
@@ -424,6 +456,9 @@ class BusinessTransactionController extends Controller
             $line_of_business_data = new UploadLineOfBusinessToLocal($request_body);
             Event::dispatch('upload-line-of-business-to-local', $line_of_business_data);
 
+            $log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "MODIFY TRANSACTION", 'remarks' => Auth::user()->full_name." has successfully modified ".$transaction->application_permit->application_no." transaction.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
+
             DB::commit();
 
             session()->flash('notification-status', "success");
@@ -460,8 +495,7 @@ class BusinessTransactionController extends Controller
         }
     }
 
-    public function update_status($id = null)
-    {
+    public function update_status($id = null){
         $business_transaction = BusinessTransaction::find($id);
         $business_transaction->isNew = null;
         $business_transaction->save();
@@ -490,6 +524,9 @@ class BusinessTransactionController extends Controller
 	}*/
 
 	public function process($id = NULL,PageRequest $request){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		$d1 = new Carbon('01/20');
 		$d2 = new Carbon('04/20');
 		$d3 = new Carbon('07/20');
@@ -617,6 +654,8 @@ class BusinessTransactionController extends Controller
 			    $notification_data_email = new SendEmailApprovedBusiness($insert);
 			    Event::dispatch('send-email-business-approved', $notification_data_email);
 
+			    $log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "PROCESS TRANSACTION", 'remarks' => Auth::user()->full_name." has successfully approved ".$transaction->application_permit->application_no." transaction.",'ip' => $ip]);
+				Event::dispatch('log-activity', $log_data);
 			} else {
                 $insert = [];
                 foreach(json_decode($transaction->department_remarks) as $value) {
@@ -635,6 +674,9 @@ class BusinessTransactionController extends Controller
 
                 $notification_data_email = new SendEmailDeclinedBusiness($insert);
                 Event::dispatch('send-email-business-declined', $notification_data_email);
+
+                $log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "PROCESS TRANSACTION", 'remarks' => Auth::user()->full_name." has successfully declined ".$transaction->application_permit->application_no." transaction.",'ip' => $ip]);
+				Event::dispatch('log-activity', $log_data);
             }
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -684,63 +726,71 @@ class BusinessTransactionController extends Controller
 	}
 
 	public function remarks($id = NULL,PageRequest $request){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
-			$transaction = $request->get('business_transaction_data');
-			$auth = Auth::user();
-			$array_remarks = [];
-			$dept_id = [];
-	 		$value = $request->get('value');
+		$transaction = $request->get('business_transaction_data');
+		$auth = Auth::user();
+		$array_remarks = [];
+		$dept_id = [];
+ 		$value = $request->get('value');
 
 
-	 		if ($transaction->department_remarks) {
-	 			array_push($array_remarks, ['processor_id' => $auth->id ,'id' => $auth->department->code , 'remarks' => $value]);
-	 			$existing = json_decode($transaction->department_remarks);
-	 			$existing_id = json_decode($transaction->department_id);
+ 		if ($transaction->department_remarks) {
+ 			array_push($array_remarks, ['processor_id' => $auth->id ,'id' => $auth->department->code , 'remarks' => $value]);
+ 			$existing = json_decode($transaction->department_remarks);
+ 			$existing_id = json_decode($transaction->department_id);
 
-	 			if ($transaction->department_id) {
-	 				$a = array_search($auth->department->code, $existing_id);
-	 				if ($a !== false) {
-	 					$dept_id_final = $existing_id;
-		 			}else{
-		 				array_push($dept_id, $auth->department->code);
-		 				$dept_id_final = array_merge($existing_id , $dept_id);
-		 			}
+ 			if ($transaction->department_id) {
+ 				$a = array_search($auth->department->code, $existing_id);
+ 				if ($a !== false) {
+ 					$dept_id_final = $existing_id;
 	 			}else{
 	 				array_push($dept_id, $auth->department->code);
-	 				$dept_id_final = $dept_id;
+	 				$dept_id_final = array_merge($existing_id , $dept_id);
 	 			}
+ 			}else{
+ 				array_push($dept_id, $auth->department->code);
+ 				$dept_id_final = $dept_id;
+ 			}
 
 
-	 			$final_value = array_merge($existing , $array_remarks);
-	 		}else{
-	 			 array_push($array_remarks, ['processor_id' => $auth->id,'id' => $auth->department->code , 'remarks' => $value]);
+ 			$final_value = array_merge($existing , $array_remarks);
+ 		}else{
+ 			 array_push($array_remarks, ['processor_id' => $auth->id,'id' => $auth->department->code , 'remarks' => $value]);
 
-	 			 array_push($dept_id, $auth->department->code);
+ 			 array_push($dept_id, $auth->department->code);
 
-	 			 $dept_id_final = $dept_id;
-	 			 $final_value = $array_remarks;
-	 		}
-	 		$transaction->department_id = json_encode($dept_id_final);
-			$transaction->department_remarks = json_encode($final_value);
-			$transaction->save();
+ 			 $dept_id_final = $dept_id;
+ 			 $final_value = $array_remarks;
+ 		}
+ 		$transaction->department_id = json_encode($dept_id_final);
+		$transaction->department_remarks = json_encode($final_value);
+		$transaction->save();
 
-			$it_1 = json_decode($transaction->department_involved, TRUE);
-		    $it_2 = json_decode($transaction->department_id, TRUE);
-		    $result_array = array_diff($it_1,$it_2);
+		$it_1 = json_decode($transaction->department_involved, TRUE);
+	    $it_2 = json_decode($transaction->department_id, TRUE);
+	    $result_array = array_diff($it_1,$it_2);
 
-		    if(empty($result_array)){
-		    	$transaction->for_bplo_approval = 1;
-		    	$transaction->bplo_approved_at = Carbon::now();
-		    	$transaction->save();
-		    }
+	    if(empty($result_array)){
+	    	$transaction->for_bplo_approval = 1;
+	    	$transaction->bplo_approved_at = Carbon::now();
+	    	$transaction->save();
+	    }
 
-			DB::commit();
-			session()->flash('notification-status', "success");
-			session()->flash('notification-msg', "Application Remarks has been saved.");
-			return redirect()->route('system.business_transaction.show',[$transaction->id]);
+	    $log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "ADD REMARKS", 'remarks' => Auth::user()->full_name." has successfully add remarks for this ".$transaction->application_permit->application_no." application.",'ip' => $ip]);
+		Event::dispatch('log-activity', $log_data);
+
+		DB::commit();
+		session()->flash('notification-status', "success");
+		session()->flash('notification-msg', "Application Remarks has been saved.");
+		return redirect()->route('system.business_transaction.show',[$transaction->id]);
 	}
 
 	public function bplo_validate($id = NULL , PageRequest $request){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
 
 		DB::beginTransaction();
 		try{
@@ -786,11 +836,15 @@ class BusinessTransactionController extends Controller
 				$notification_data = new NotifyDepartmentEmail($insert);
 				Event::dispatch('notify-departments-email', $notification_data);
 
+				$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "VALIDATE TRANSACTION", 'remarks' => Auth::user()->full_name." has successfully validated ".$transaction->application_permit->application_no." transaction.",'ip' => $ip]);
+				Event::dispatch('log-activity', $log_data);
+
 				session()->flash('notification-status', "success");
 				session()->flash('notification-msg', "Office Code has been saved.");
 			} else {
 				$transaction->status = "DECLINED";
 				$transaction->application_permit->status =  "declined";
+				$transaction->validated_at = Carbon::now();
 				$transaction->application_permit->save();
 				$data = [
 					'contact_number' => $transaction->owner ? $transaction->owner->contact_number : $transaction->contact_number,
@@ -804,6 +858,10 @@ class BusinessTransactionController extends Controller
 
 				$notification_data_email = new SendEmailDeclinedApplication($data);
 				Event::dispatch('send-email-application-declined', $notification_data_email);
+
+				$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "VALIDATE TRANSACTION", 'remarks' => Auth::user()->full_name." has successfully declined ".$transaction->application_permit->application_no." transaction.",'ip' => $ip]);
+				Event::dispatch('log-activity', $log_data);
+
 
 				session()->flash('notification-status', "success");
 				session()->flash('notification-msg', "Transaction has been successfully declined.");
@@ -832,6 +890,9 @@ class BusinessTransactionController extends Controller
 	}
 
 	public function get_assessment(PageRequest $request , $id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
 		try{
 
@@ -892,7 +953,6 @@ class BusinessTransactionController extends Controller
 				$new_business_fee->office_code = $request->get('office_code');
 				$new_business_fee->fee_type = 0;
 				$new_business_fee->save();
-
 			}
 
 			if (count($business_array) > 0) {
@@ -916,8 +976,6 @@ class BusinessTransactionController extends Controller
 				$new_business_fee->office_code = $request->get('office_code');
 				$new_business_fee->fee_type = 1;
 				$new_business_fee->save();
-
-
 			}
 
 			if (count($garbage_array) > 0) {
@@ -940,9 +998,10 @@ class BusinessTransactionController extends Controller
 				$new_business_fee->office_code = $request->get('office_code');
 				$new_business_fee->fee_type = 2;
 				$new_business_fee->save();
-
-
 			}
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "GET ASSESSMENT", 'remarks' => Auth::user()->full_name." has successfully get assessment for this ".$this->data['transaction']->application_permit->application_no." application.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
 
 			DB::commit();
 			session()->flash('notification-status', "success");
@@ -954,14 +1013,17 @@ class BusinessTransactionController extends Controller
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
 			return redirect()->back();
 		}
-
 	}
 
 	public function approved_assessment(PageRequest $request , $id = NULL){
 		DB::beginTransaction();
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		try{
 			$auth = Auth::user();
 			$regulatory_fee = BusinessFee::find($id);
+			$transaction = BusinessTransaction::find($regulatory_fee->transaction_id);
 			if (!$regulatory_fee->amount) {
 				session()->flash('notification-status', "failed");
 				session()->flash('notification-msg', "No Amount Found");
@@ -969,6 +1031,10 @@ class BusinessTransactionController extends Controller
 			}
 			$regulatory_fee->status = "APPROVED";
 			$regulatory_fee->save();
+
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "APPROVED ASSESSMENT", 'remarks' => Auth::user()->full_name." has successfully approved assessment for this ".$transaction->application_permit->application_no." application.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
+
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Assesment has been successfully approved.");
@@ -982,6 +1048,9 @@ class BusinessTransactionController extends Controller
 	}
 
 	public function update_department(PageRequest $request , $id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
 		try{
 			$dept_code_array = explode(",", $request->get('department_code'));
@@ -999,6 +1068,9 @@ class BusinessTransactionController extends Controller
 			$transaction->department_involved = json_encode(explode(",",$request->get('department_code')));
 			$transaction->save();
 
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "MODIFY TRANSACTION", 'remarks' => Auth::user()->full_name." has modify involved department ".$transaction->application_permit->application_no." transaction.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
+
 			DB::commit();
 			session()->flash('notification-status', "success");
 			session()->flash('notification-msg', "Office Code has been updated.");
@@ -1013,6 +1085,9 @@ class BusinessTransactionController extends Controller
 	}
 
 	public function release(PageRequest $request , $id = NULL){
+		$ip = AuditRequest::header('X-Forwarded-For');
+		if(!$ip) $ip = AuditRequest::getClientIp();
+
 		DB::beginTransaction();
 		try{
 			$transaction = $request->get('business_transaction_data');
@@ -1028,6 +1103,9 @@ class BusinessTransactionController extends Controller
 
 		    $notification_data_email = new SendEmailDigitalCertificate($insert);
 		    Event::dispatch('send-digital-business-permit', $notification_data_email);
+
+		    $log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "RELEASED CERTIFICATE", 'remarks' => Auth::user()->full_name." has successfully released Digital Certificate of ".$transaction->application_permit->application_no." transaction.",'ip' => $ip]);
+			Event::dispatch('log-activity', $log_data);
 
 		    DB::commit();
 			session()->flash('notification-status', "success");

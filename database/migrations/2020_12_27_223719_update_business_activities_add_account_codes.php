@@ -28,9 +28,9 @@ class UpdateBusinessActivitiesAddAccountCodes extends Migration
      * @return void
      */
     public function down()
-    {
-        Schema::table('business_activities', function (Blueprint $table) {
-            //
+    {   
+        Schema::table('business_activities', function($table){
+            $table->dropColumn(['account_code', 'b_class', 's_class','x_class','reference_code']);
         });
     }
 }

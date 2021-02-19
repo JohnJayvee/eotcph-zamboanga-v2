@@ -258,6 +258,7 @@ return [
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Nexmo' => Nexmo\Laravel\Facade\Nexmo::class,
+        'AuditRequest' => Illuminate\Support\Facades\Request::class,
     ],
 
 ];

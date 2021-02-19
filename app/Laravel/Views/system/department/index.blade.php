@@ -9,7 +9,7 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Department</p>
+        <p class="text-dim  float-right">Zamboanga OBOSS / Department</p>
       </div>
     </div>
   
@@ -76,7 +76,6 @@
     <nav class="mt-2">
      <!--  <p>Showing <strong>{{$departments->firstItem()}}</strong> to <strong>{{$departments->lastItem()}}</strong> of <strong>{{$departments->total()}}</strong> entries</p> -->
       {!!$departments->appends(request()->query())->render()!!}
-      </ul>
     </nav>
     @endif
   </div>

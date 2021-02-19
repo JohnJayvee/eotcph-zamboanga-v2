@@ -9,7 +9,7 @@
         <h5 class="text-title text-uppercase">{{$page_title}}</h5>
       </div>
       <div class="col-md-6 ">
-        <p class="text-dim  float-right">EOR-PHP Processor Portal / Transactions / Transaction Details</p>
+        <p class="text-dim  float-right">Zamboanga OBOSS / Transactions / Transaction Details</p>
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@
             <img src="{{asset('system/images/default.jpg')}}" class="rounded-circle" width="100%">
           </div>
           <div class="col-md-8 d-flex">
-            <p class="text-title fw-500 pt-3">Application by: <span class="text-black">{{Str::title($transaction->customer ? $transaction->customer->full_name : $transaction->customer_name)}}</span></p>
+            <p class="text-title fw-500 pt-3">Application by: <span class="text-black">{{Str::title($transaction->owner ? $transaction->owner->full_name : $transaction->customer_name)}}</span></p>
             <p class="text-title fw-500 pl-3" style="padding-top: 15px;">|</p>
             <p class="text-title fw-500 pt-3 pl-3">Application Sent: <span class="text-black">{{ Helper::date_format($transaction->created_at)}}</span></p>
           </div>
@@ -111,7 +111,15 @@
             <p class="text-title fw-500">Transaction Details:</p>
             <p class="text-title fw-500">Application : <span class="text-black">{{str::title($transaction->application_name)}}</span></p>
             <p class="text-title fw-500">Application Status: <span class="badge  badge-{{Helper::status_badge($transaction->status)}} p-2">{{Str::title($transaction->status)}}</span></p>
-            <p class="text-title fw-500">Validated By BPLO: <span>{{$transaction->is_validated == 1 ? "Yes" : "No"}}</span></p>
+            <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p>
+            <p class="text-title fw-500">Validated By BPLO: <span>{{$transaction->is_validated == 1 ? "Yes" : "No"}}  </span></p>
+            @if($transaction->is_validated == 1)
+              <p class="text-title fw-500">Validated At: <span class="text-black">{{Helper::date_format($transaction->validated_at)}}</span></p>
+            @endif
+            @if($transaction->payment_status)
+              <p class="text-title fw-500">OR Number: <span class="text-black">{{$transaction->or_no ?: " "}}</span></p>
+              <p class="text-title fw-500">OR Date: <span class="text-black">{{ Helper::date_format($transaction->or_date) ?: " " }}</span></p>
+            @endif
             <!-- <p class="text-title fw-500">Transacation Status: <span class="badge  badge-{{Helper::status_badge($transaction->transaction_status)}} p-2">{{Str::title($transaction->transaction_status)}}</span></p>
             <p class="fw-500" style="color: #DC3C3B;">Processing Fee: Php {{Helper::money_format($transaction->amount) ?: "0" }} [{{$transaction->processing_fee_code}}]</p>
             <p class="text-title fw-500">Payment Status: <span class="badge  badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::title($transaction->payment_status)}}</span></p> -->

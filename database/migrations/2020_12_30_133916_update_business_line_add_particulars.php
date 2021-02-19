@@ -24,9 +24,10 @@ class UpdateBusinessLineAddParticulars extends Migration
      * @return void
      */
     public function down()
-    {
-        Schema::table('business_line', function (Blueprint $table) {
-            //
+    {   
+        Schema::table('business_line', function($table){
+            $table->dropColumn(['particulars']);
         });
+
     }
 }
