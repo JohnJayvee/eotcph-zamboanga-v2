@@ -37,7 +37,7 @@ class AdminOnly {
 
     	$auth = Auth::user();
     	
-		if(in_array($auth->type,['user','finance','marketing'])){
+		if(in_array($auth->type,['super_user','admin','processor','office_head'])){
 			abort(401);
 		}
     	

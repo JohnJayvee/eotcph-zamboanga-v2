@@ -10,6 +10,7 @@ use App\Laravel\Models\BusinessLine;
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Services\FileUploader;
 use App\Laravel\Models\BusinessActivity;
+use App\Laravel\Models\BlockList;
 use App\Laravel\Events\NotifyBPLOAdminSMS;
 use App\Laravel\Events\NotifyDepartmentSMS;
 use App\Laravel\Models\BusinessTransaction;
@@ -49,12 +50,22 @@ class BusinessPermitController extends Controller{
         $this->data['business'] = $business;
 
         
-         $permits = ApplicationBusinessPermit::where('customer_id', Auth::guard('customer')->user()->id)->where('business_id', $business->id)->where('created_at', 'LIKE', now()->format('Y') .'-%')->where('type', 'renew')->where('status', 'pending')->count();
-         if($permits >= 1){
+        $permits = ApplicationBusinessPermit::where('customer_id', Auth::guard('customer')->user()->id)->where('business_id', $business->id)->where('created_at', 'LIKE', now()->format('Y') .'-%')->where('type', 'renew')->where('status', 'pending')->count();
+        $is_blocked = BlockList::where('business_id',$business->business_id_no)->where('unblock' , 0)->first();
+
+        if ($is_blocked) {
+            session()->flash('notification-status',"warning");
+            session()->flash('notification-msg',"Cannot proceed with Registration or Renewal. Reason: With pending cases. Please contact City Legal office.");
+            return redirect()->back();
+        }
+
+        if($permits >= 1){
             session()->flash('notification-status',"warning");
             session()->flash('notification-msg',"Sorry, you still have a Pending application for approval. Please wait for BPLO Admin's Feedback.");
             return redirect()->back();
         }
+
+
 		DB::beginTransaction();
 		try{
 			$new_business_permit = new ApplicationBusinessPermit();

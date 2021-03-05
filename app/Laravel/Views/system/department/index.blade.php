@@ -74,7 +74,7 @@
     </div>
     @if($departments->total() > 0)
     <nav class="mt-2">
-     <!--  <p>Showing <strong>{{$departments->firstItem()}}</strong> to <strong>{{$departments->lastItem()}}</strong> of <strong>{{$departments->total()}}</strong> entries</p> -->
+      <p>Showing <strong>{{$departments->firstItem()}}</strong> to <strong>{{$departments->lastItem()}}</strong> of <strong>{{$departments->total()}}</strong> entries</p>
       {!!$departments->appends(request()->query())->render()!!}
     </nav>
     @endif

@@ -115,6 +115,14 @@ class BusinessController extends Controller
         $auth = Auth::guard('customer')->user();
         DB::beginTransaction();
         try{
+            $is_blocked = BlockList::where('business_id',$request->get('business_id_no'))->where('unblock' , 0)->first();
+
+            if ($is_blocked) {
+                session()->flash('notification-status',"warning");
+                session()->flash('notification-msg',"Cannot proceed with Registration or Renewal. Reason: With pending cases. Please contact City Legal office.");
+                return redirect()->back();
+            }
+            
             $new_business = new Business;
             $new_business->customer_id = $auth->id;
             $new_business->isNew = 1;

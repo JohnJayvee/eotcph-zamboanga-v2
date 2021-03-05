@@ -16,7 +16,7 @@ class AdminAccountSeeder extends Seeder
             'fname' => "Master Account", 
             'lname' => "",
             'status' => 'active',
-            'email' => "admin@highlysucceed.com", 
+            'email' => "admin@ziaplex.biz", 
             'username' => "master_admin",
             'type' => "super_user",
         ]);
@@ -24,6 +24,17 @@ class AdminAccountSeeder extends Seeder
         $user->password = bcrypt("admin");
         $user->save();
 
+         $user = User::firstOrNew([
+            'fname' => "Master Account", 
+            'lname' => "",
+            'status' => 'active',
+            'email' => "admin@ziaplex.biz", 
+            'username' => "blacklist_admin",
+            'type' => "block_admin",
+        ]);
+
+        $user->password = bcrypt("admin");
+        $user->save();
         echo "Successfully seeded Master Admin Account.";
 
     }

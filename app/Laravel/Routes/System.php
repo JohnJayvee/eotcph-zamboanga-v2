@@ -155,6 +155,16 @@ Route::group(['as' => "auth."], function(){
 			Route::any('delete/{id?}',['as' => "destroy",'uses' => "ApplicationController@destroy",'middleware' => "system.exist:application"]);
         });
 
+		Route::group(['middleware' => "system.admin"],function(){
+	        Route::group(['as' => "block_list.",'prefix' => "block-list"], function(){
+				Route::get('/',['as' => "index",'uses' => "BlockListController@index"]);
+				Route::get('create',['as' => "create",'uses' => "BlockListController@create"]);
+				Route::post('create',['uses' => "BlockListController@store"]);
+				Route::any('unblock/{id?}',['as' => "unblock",'uses' => "CollectionOfFeesController@unblock"]);
+				
+	        });
+        });
+
         Route::group(['as' => "collection_fees.",'prefix' => "collection-of-fees"], function(){
 			Route::get('/',['as' => "index",'uses' => "CollectionOfFeesController@index"]);
             Route::get('create',['as' => "create",'uses' => "CollectionOfFeesController@create"]);

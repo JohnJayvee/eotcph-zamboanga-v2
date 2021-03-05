@@ -44,7 +44,7 @@
             <th class="text-title p-3">#</th>
             <th class="text-title p-3">IP</th>
             <th class="text-title p-3">Description</th>
-              <th class="text-title p-3">Process</th>
+            <th class="text-title p-3">Process</th>
             <th class="text-title p-3">Created At</th>
           </tr>
         </thead>

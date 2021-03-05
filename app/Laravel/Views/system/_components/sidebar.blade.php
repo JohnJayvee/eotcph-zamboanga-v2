@@ -8,7 +8,7 @@
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
-    @if(in_array($auth->type,['super_user','admin','processor','office_head']))
+    @if(in_array($auth->type,['super_user','admin','processor','office_head','block_admin']))
       <!-- @if(in_array($auth->type,['super_user','admin','office_head']))
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.processor.list','system.processor.show' )) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.processor.list')}}">
@@ -82,8 +82,8 @@
         <span class="menu-title">Local Record</span>
       </a>
     </li>
-    @if(in_array($auth->type,['super_user','admin','office_head']))
-      @if(in_array($auth->type,['super_user','admin']))
+    @if(in_array($auth->type,['super_user','admin','office_head','block_admin']))
+      @if(in_array($auth->type,['super_user','admin','block_admin']))
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.business_cv.index', 'system.business_cv.create', 'system.business_cv.show')) ? 'active' : ''}}">
             <a class="nav-link" href="{{route('system.business_cv.index')}}">
             <i class="fa fa-check-circle menu-icon"></i>
@@ -121,6 +121,7 @@
             <span class="menu-title">Application Requirements</span>
           </a>
         </li>
+
       @endif
         <!-- <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.regional_office.index','system.regional_office.create','system.regional_office.edit')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.regional_office.index')}}">
@@ -128,7 +129,7 @@
             <span class="menu-title">Regional Offices</span>
           </a>
         </li> -->
-      @if(in_array($auth->type,['super_user','admin','office_head']))
+      @if(in_array($auth->type,['super_user','admin','office_head','block_admin']))
         {{-- <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.report.index')) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.report.index')}}">
             <i class="fa fa-chart-line menu-icon"></i>
@@ -153,6 +154,14 @@
             <span class="menu-title">Audit Trail</span>
           </a>
         </li>
+         @if(in_array($auth->type,['block_admin']))
+          <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.block_list.index')) ? 'active' : ''}}">
+            <a class="nav-link" href="{{route('system.block_list.index')}}">
+              <i class="fa fa-times-circle menu-icon"></i>
+              <span class="menu-title">Block Listed</span>
+            </a>
+          </li>
+        @endif
       @endif
     @endif
   @endif
