@@ -59,13 +59,11 @@ class BlockListController extends Controller
 
 			$business_exist = Business::where('business_id_no',$business_id)->first();
 
-			
 			if ($business_exist) {
 				ApplicationBusinessPermit::where('business_id',$business_exist->id)->update(['status' => "declined"]);
 				BusinessTransaction::where('business_id',$business_exist->id)->update(['status' => "DECLINED" , 'remarks' => "Cannot proceed with Registration or Renewal. Reason: With pending cases. Please contact City Legal office.", "processed_at" => Carbon::now()]);
-
 			}
-			
+
 			$new_blocked = new BlockList;
 			$new_blocked->business_id = $request->get('business_id');
 			$new_blocked->code = $request->get('code');
@@ -82,7 +80,7 @@ class BlockListController extends Controller
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
-			return response()->json(['success'=>'errorList','message'=> $e->errors()]);
+			return redirect()->back();
 
 		}
 	}
@@ -108,7 +106,7 @@ class BlockListController extends Controller
 			DB::rollback();
 			session()->flash('notification-status', "failed");
 			session()->flash('notification-msg', "Server Error: Code #{$e->getLine()}");
-			return response()->json(['success'=>'errorList','message'=> $e->errors()]);
+			return redirect()->back();
 
 		}
 	}
