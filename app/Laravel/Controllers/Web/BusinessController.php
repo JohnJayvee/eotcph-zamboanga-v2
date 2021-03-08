@@ -8,6 +8,8 @@ namespace App\Laravel\Controllers\Web;
 use App\Laravel\Models\User;
 use App\Laravel\Models\Business;
 use App\Laravel\Models\BusinessLine;
+use App\Laravel\Models\BlockList;
+
 use App\Laravel\Requests\PageRequest;
 use App\Laravel\Events\SendNewBusinessCV;
 use App\Laravel\Models\BusinessTransaction;
