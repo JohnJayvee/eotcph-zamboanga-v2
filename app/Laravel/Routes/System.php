@@ -160,7 +160,7 @@ Route::group(['as' => "auth."], function(){
 				Route::get('/',['as' => "index",'uses' => "BlockListController@index"]);
 				Route::get('create',['as' => "create",'uses' => "BlockListController@create"]);
 				Route::post('create',['uses' => "BlockListController@store"]);
-				Route::any('unblock/{id?}',['as' => "unblock",'uses' => "CollectionOfFeesController@unblock"]);
+				Route::any('unblock/{id?}',['as' => "unblock",'uses' => "BlockListController@unblock"]);
 				
 	        });
         });

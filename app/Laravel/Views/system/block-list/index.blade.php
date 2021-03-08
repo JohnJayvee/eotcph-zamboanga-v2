@@ -53,6 +53,12 @@
             <td>{{ $block_list->business_id}}</td>
             <td>{{ Helper::date_format($block_list->blocked_at)}}</td>
             <td>{{ $block_list->blocked_by ? $block_list->admin->full_name : "---"}}</td>
+            <td >
+              <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
+                <a class="dropdown-item action-delete"  data-url="{{route('system.block_list.unblock',[$block_list->id])}}" data-toggle="modal" data-target="#confirm-delete">Unblock</a>
+              </div>
+            </td>
           </tr>
           @empty
           <tr>
@@ -72,7 +78,32 @@
   </div>
 </div>
 @stop
+@section('page-modals')
+<div id="confirm-delete" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm your action</h5>
+      </div>
 
+      <div class="modal-body">
+        <h6 class="text-semibold">Unblocking Record...</h6>
+        <p>You are about to unblock a record, this action can no longer be undone, are you sure you want to proceed?</p>
+
+        <hr>
+
+        <h6 class="text-semibold">What is this message?</h6>
+        <p>This dialog appears everytime when the chosen action could hardly affect the system. Usually, it occurs when the system is issued a delete command.</p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+        <a href="#" class="btn btn-sm btn-danger" id="btn-confirm-delete">Unblock</a>
+      </div>
+    </div>
+  </div>
+</div>
+@stop
 
 @section('page-styles')
 <link rel="stylesheet" href="{{asset('system/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">

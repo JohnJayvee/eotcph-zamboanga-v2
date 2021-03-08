@@ -36,7 +36,7 @@ class BlockListController extends Controller
 		$this->data['page_title'] = "Block List";
 		$this->data['keyword'] = Str::lower($request->get('keyword'));
 
-		$this->data['block_lists'] = BlockList::where(function($query){
+		$this->data['block_lists'] = BlockList::where('unblock' , 0)->where(function($query){
 		if(strlen($this->data['keyword']) > 0){
 			return $query->WhereRaw("LOWER(business_id)  LIKE  '%{$this->data['keyword']}%'");
 			}
@@ -66,7 +66,8 @@ class BlockListController extends Controller
 
 			$new_blocked = new BlockList;
 			$new_blocked->business_id = $request->get('business_id');
-			$new_blocked->code = $request->get('code');
+			$new_blocked->blocked_by = Auth::user()->id;
+			$new_blocked->blocked_at = Carbon::now();
 			$new_blocked->save();
 
 			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "BLOCKED BUSINESS", 'remarks' => Auth::user()->full_name." has blocked ".$new_blocked->business_id." Business successfully.",'ip' => $ip]);
@@ -91,7 +92,7 @@ class BlockListController extends Controller
 
 		try{
 			$list = BlockList::find($id);
-			$list->unblock = 0;
+			$list->unblock = 1;
 			$list->save();
 
 			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "UNBLOCKED BUSINESS", 'remarks' => Auth::user()->full_name." has unblocked ".$list->business_id." Business successfully.",'ip' => $ip]);
