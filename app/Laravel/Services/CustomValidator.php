@@ -14,7 +14,7 @@ use Auth, Hash,Str,Carbon,Helper,Request;
 class CustomValidator extends Validator {
 
     public function validateBlockList($attribute,$value,$parameters){
-        return  BlockList::where('business_id',$value)
+        return  BlockList::where('business_id',$value)->where('unblock' , 0)
                         ->count() ? FALSE : TRUE;
     }
 
