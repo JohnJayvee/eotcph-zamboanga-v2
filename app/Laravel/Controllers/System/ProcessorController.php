@@ -32,7 +32,7 @@ class ProcessorController extends Controller
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
 		if (Auth::user()) {
-			if (Auth::user()->type == "super_user" || Auth::user()->type == "admin") {
+			if (Auth::user()->type == "super_user" || Auth::user()->type == "admin" || Auth::user()->type == "block_admin") {
 				$this->data['department'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();
 			}elseif (Auth::user()->type == "office_head" || Auth::user()->type == "processor") {
 				$this->data['department'] = ['' => "Choose Department"] + Department::where('id',Auth::user()->department_id)->pluck('name', 'id')->toArray();
@@ -188,7 +188,6 @@ class ProcessorController extends Controller
 		$this->data['processor'] = $request->get('processor_data');
 
 		if(old('application_id') != NULL || $this->data['processor']->department_id != NULL){
-		
 		    $this->data['applications'] = Application::where('department_id',old('department_id',$this->data['processor']->department_id))->pluck('name', 'id')->toArray();
 		}else{
 			$this->data['applications'] = Application::pluck('name', 'id')->toArray();
