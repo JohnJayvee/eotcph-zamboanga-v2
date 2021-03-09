@@ -974,8 +974,8 @@
         $(this).get_city("{{old('region')}}", "#input_town", "#input_brgy", "{{old('town')}}");
         @endif
 
-        @if(strlen(old('town')) > 0)
-        $(this).get_brgy("{{old('town')}}", "#input_brgy", "{{old('brgy')}}");
+        @if(strlen(old('brgy')) > 0)
+        $(this).get_brgy("{{old('town','097332000')}}", "#input_brgy", "{{old('brgy')}}");
         @endif
 
         $("#input_brgy").on("change", function () {
@@ -1025,14 +1025,14 @@
             $('#input_lessor_town_name').val(_text);
         }
 
-        @if(strlen(old('lessor_region')) > 0)
+       @if(strlen(old('lessor_region')) > 0)
         $(this).get_city("{{old('lessor_region')}}", "#input_lessor_town", "#input_lessor_brgy", "{{old('lessor_town')}}");
         @endif
 
-        @if(strlen(old('lessor_town')) > 0)
-        $(this).get_brgy("{{old('lessor_town')}}", "#input_lessor_brgy", "{{old('lessor_brgy')}}");
+        @if(strlen(old('lessor_brgy')) > 0)
+        $(this).get_brgy("{{old('lessor_town','097332000')}}", "#input_lessor_brgy", "{{old('lessor_brgy')}}");
         @endif
-
+        
         $("#input_lessor_brgy").on("change", function () {
             $('#input_lessor_zipcode').val($(this).find(':selected').data('zip_code'))
             var _text = $("#input_lessor_brgy option:selected").text();
