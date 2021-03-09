@@ -57,7 +57,7 @@ class BlockListController extends Controller
 
 			$business_id = $request->get('business_id');
 
-			$business_exist = Business::where('business_id_no',$business_id)->first();
+			$business_exist = BlockList::where('business_id',$business_id)->first();
 
 			if ($business_exist) {
 				ApplicationBusinessPermit::where('business_id',$business_exist->id)->update(['status' => "declined"]);
@@ -76,7 +76,7 @@ class BlockListController extends Controller
 
 			}
 			
-			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "BLOCKED BUSINESS", 'remarks' => Auth::user()->full_name." has blocked ".$new_blocked->business_id." Business successfully.",'ip' => $ip]);
+			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "BLOCKED BUSINESS", 'remarks' => Auth::user()->full_name." has blocked ".$business_id." Business successfully.",'ip' => $ip]);
 			Event::dispatch('log-activity', $log_data);
 
 			DB::commit();
