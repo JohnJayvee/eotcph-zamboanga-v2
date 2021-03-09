@@ -63,7 +63,7 @@ class ProcessorController extends Controller
 		$this->data['selected_type'] = $request->get('type');
 		$this->data['selected_status'] = $request->get('status');
 
-		$this->data['processors'] = User::where('type','<>','super_user')->where(function($query){
+		$this->data['processors'] = User::where('type','<>','super_user')->where('type','<>','block_admin')->where(function($query){
 		if(strlen($this->data['keyword']) > 0){
 			return $query->WhereRaw("LOWER(concat(fname,' ',lname))  LIKE  '%{$this->data['keyword']}%'")
 					->orWhereRaw("LOWER(reference_id) LIKE  '%{$this->data['keyword']}%'");

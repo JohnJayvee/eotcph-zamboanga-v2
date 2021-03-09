@@ -10,10 +10,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                {{-- {{ dd(session()->all()) }} --}}
                     @include('system._components.notifications')
                     @if($errors->first('valid_business'))
-                        <small class="form-text pl-1" style="color:red;">{{$errors->first('valid_business')}}</small>
+                        <small class="form-text pl-1" style="color:red;">{{$errors->first('valid_business')}}asdsadsads</small>
                     @endif
                     <div class="card">
                         <div class="card-body">

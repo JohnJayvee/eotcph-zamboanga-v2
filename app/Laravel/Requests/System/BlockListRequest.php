@@ -7,7 +7,7 @@ class BlockListRequest extends RequestManager{
 
 	public function rules(){
 		$rules = [
-			'business_id' => "required|unique:block_list,business_id",
+			'business_id' => "required",
 		];
 		return $rules;
 	}

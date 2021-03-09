@@ -11,7 +11,7 @@ class BusinessRequest extends RequestManager{
             $file = $this->file('file') ? count($this->file('file')) : 0;
             
 		$rules = [
-                  "business_id_no" => "required|unique:business,business_id_no",
+                  "business_id_no" => "required|unique:business,business_id_no|block_list:business_id_no",
                   "business_scope" => "required",
                   "business_type" => "required",
                   "dominant_name" => "required",
@@ -77,6 +77,7 @@ class BusinessRequest extends RequestManager{
             'business_id_no.unique' => "Sorry, please re-check your BID. This BID is already taken. If you believe you did not register this BID, please contact the BPLO.",
             'integer' => "Invalid Data.",
             'bnn' => "BNN not Found",
+            'business_id_no.block_list' => "Cannot proceed with Registration or Renewal. Reason: With pending cases. Please contact City Legal office."
 		];
 
 	}

@@ -69,7 +69,7 @@ class BusinessController extends Controller
             if($response->status == "200"){
                 $content = $response->content;
                 session()->flash('notification-status', "success");
-                session()->flash('notification-msg', "Business validated");
+                session()->flash('notification-msg', "Business Validated");
                 session()->forget('negativelist');
                 $this->data['business'] = $response->content['data'];
                 $this->data['business_type_f'] = $response->content['data'];
@@ -122,7 +122,7 @@ class BusinessController extends Controller
             if ($is_blocked) {
                 session()->flash('notification-status',"warning");
                 session()->flash('notification-msg',"Cannot proceed with Registration or Renewal. Reason: With pending cases. Please contact City Legal office.");
-                return redirect()->back();
+                return redirect()->route('web.business.create');
             }
             
             $new_business = new Business;

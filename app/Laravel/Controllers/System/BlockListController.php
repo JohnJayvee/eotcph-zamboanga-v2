@@ -62,14 +62,20 @@ class BlockListController extends Controller
 			if ($business_exist) {
 				ApplicationBusinessPermit::where('business_id',$business_exist->id)->update(['status' => "declined"]);
 				BusinessTransaction::where('business_id',$business_exist->id)->update(['status' => "DECLINED" , 'remarks' => "Cannot proceed with Registration or Renewal. Reason: With pending cases. Please contact City Legal office.", "processed_at" => Carbon::now()]);
+				$business_exist->blocked_by = Auth::user()->id;
+				$business_exist->blocked_at = Carbon::now();
+				$business_exist->unblock = 0;
+				$business_exist->save();
+
+			}else{
+				$new_blocked = new BlockList;
+				$new_blocked->business_id = $request->get('business_id');
+				$new_blocked->blocked_by = Auth::user()->id;
+				$new_blocked->blocked_at = Carbon::now();
+				$new_blocked->save();
+
 			}
-
-			$new_blocked = new BlockList;
-			$new_blocked->business_id = $request->get('business_id');
-			$new_blocked->blocked_by = Auth::user()->id;
-			$new_blocked->blocked_at = Carbon::now();
-			$new_blocked->save();
-
+			
 			$log_data = new AuditTrailActivity(['user_id' => Auth::user()->id,'process' => "BLOCKED BUSINESS", 'remarks' => Auth::user()->full_name." has blocked ".$new_blocked->business_id." Business successfully.",'ip' => $ip]);
 			Event::dispatch('log-activity', $log_data);
 

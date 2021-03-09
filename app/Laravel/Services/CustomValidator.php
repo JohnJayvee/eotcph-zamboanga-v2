@@ -4,7 +4,7 @@ namespace App\Laravel\Services;
 
 use Illuminate\Validation\Validator;
 // use App\Laravel\Models\{IPAddress,Employee,AttendanceOvertime,EmployeeLeaveCredit,AttendanceLeave};
-use App\Laravel\Models\{User,Citizen,Barangay};
+use App\Laravel\Models\{User,Citizen,Barangay,BlockList};
 use App\Laravel\Models\{AccountCode};
 use App\Laravel\Models\{Application,ApplicationRequirements};
 
@@ -12,6 +12,11 @@ use App\Laravel\Models\{Application,ApplicationRequirements};
 use Auth, Hash,Str,Carbon,Helper,Request;
 
 class CustomValidator extends Validator {
+
+    public function validateBlockList($attribute,$value,$parameters){
+        return  BlockList::where('business_id',$value)
+                        ->count() ? FALSE : TRUE;
+    }
 
     public function validateWithCount($attribute,$value,$parameters){
 
