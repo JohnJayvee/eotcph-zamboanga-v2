@@ -18,7 +18,7 @@
       <div class="card-body" style="border-bottom: 3px dashed #E3E3E3;">
         <div class="row">
           <div class="col-md-11 d-flex">
-            <p class="text-title fw-600 pt-3">Application By: <span class="text-black">{{Str::title($transaction->customer->full_name)}}</span></p>
+            <p class="text-title fw-600 pt-3">Applied By: <span class="text-black">{{Str::title($transaction->customer->full_name)}}</span></p>
             <p class="text-title fw-500 pl-3" style="padding-top: 15px;">|</p>
             <p class="text-title fw-600 pt-3 pl-3">Application Sent: <span class="text-black">{{ Helper::date_format($transaction->created_at)}}</span></p>
           </div>

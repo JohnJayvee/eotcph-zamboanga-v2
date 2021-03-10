@@ -62,9 +62,10 @@ class BlockListController extends Controller
 			if ($business_exist) {
 
 				$business = Business::where('business_id_no' , $business_id)->first();
-
-				ApplicationBusinessPermit::where('business_id',$business->id)->update(['status' => "declined"]);
-				BusinessTransaction::where('business_id',$business->id)->update(['status' => "DECLINED" , 'remarks' => "Cannot proceed with Registration or Renewal. Reason: With pending cases. Please contact City Legal office.", "processed_at" => Carbon::now()]);
+				if ($business) {
+					ApplicationBusinessPermit::where('business_id',$business->id)->update(['status' => "declined"]);
+					BusinessTransaction::where('business_id',$business->id)->update(['status' => "DECLINED" , 'remarks' => "Cannot proceed with Registration or Renewal. Reason: With pending cases. Please contact City Legal office.", "processed_at" => Carbon::now()]);
+				}
 
 				$business_exist->blocked_by = Auth::user()->id;
 				$business_exist->blocked_at = Carbon::now();

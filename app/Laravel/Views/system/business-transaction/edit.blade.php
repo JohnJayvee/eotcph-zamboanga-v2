@@ -21,7 +21,7 @@
             <img src="{{asset('system/images/default.jpg')}}" class="rounded-circle" width="100%">
           </div>
           <div class="col-md-9 d-flex">
-            <p class="text-title fw-500 pt-3">Application by: <span class="text-black">{{Str::title($transaction->customer ? $transaction->customer->full_name : $transaction->customer_name)}}</span></p>
+            <p class="text-title fw-500 pt-3">Applied By: <span class="text-black">{{Str::title($transaction->customer ? $transaction->customer->full_name : $transaction->customer_name)}}</span></p>
             <p class="text-title fw-500 pl-3" style="padding-top: 15px;">|</p>
             <p class="text-title fw-500 pt-3 pl-3">Application Sent: <span class="text-black">{{ Helper::date_format($transaction->created_at)}}</span></p>
           </div>
