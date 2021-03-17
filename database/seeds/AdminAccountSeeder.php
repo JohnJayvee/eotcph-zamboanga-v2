@@ -29,7 +29,7 @@ class AdminAccountSeeder extends Seeder
             'lname' => "",
             'status' => 'active',
             'email' => "admin@ziaplex.biz", 
-            'username' => "blacklist_admin",
+            'username' => "blocklist_admin",
             'type' => "block_admin",
         ]);
 
