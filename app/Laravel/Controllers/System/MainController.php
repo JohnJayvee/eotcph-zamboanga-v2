@@ -48,9 +48,9 @@ class MainController extends Controller{
 			$this->data['approved_transactons'] = BusinessTransaction::where('status',"APPROVED")->count();
 			$this->data['declined_transactons'] = BusinessTransaction::where('status',"DECLINED")->count();
 
-			$this->data['total_for_cto'] = BusinessTransaction::where('is_validated', 1)->count();
-			$this->data['actioned'] = BusinessTransaction::Wherehas('with_fee')->count();
-			$this->data['pending_assessment'] = BusinessTransaction::where('is_validated', 1)->doesnthave('with_fee')->count();
+			$this->data['total_for_cto'] = BusinessTransaction::where('is_validated', 1)->where('status',"<>","DECLINED")->count();
+			$this->data['actioned'] = BusinessTransaction::where('is_validated', 1)->where('status',"<>","DECLINED")->Wherehas('with_fee')->count();
+			$this->data['pending_assessment'] = BusinessTransaction::where('is_validated', 1)->where('status',"<>","DECLINED")->doesnthave('with_fee')->count();
 
 
 			$this->data['paid_transactons'] = BusinessTransaction::where('payment_status',"PAID")->count();

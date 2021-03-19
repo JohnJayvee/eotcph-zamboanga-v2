@@ -48,6 +48,8 @@
             <th width="25%" class="text-title p-3">Business Name</th>
             <th width="25%" class="text-title p-3">Business Owner</th>
             <th width="25%" class="text-title p-3">Created At</th>
+            <th width="25%" class="text-title p-3">Action</th>
+
           </tr>
         </thead>
         <tbody>
@@ -59,7 +61,14 @@
                 <td><a href="{{ route('system.business_cv.show', ['id' => $business_cv->id]) }}">{{ $business_cv->business_name }}</a></td>
               @endif
             <td>{{ $business_cv->owner->name }}</td>
-            <td>{{ Helper::date_format($business_cv->created_at)}}</th>
+            <td>{{ Helper::date_format($business_cv->created_at)}}</td>
+            <td >
+              <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
+                <a class="dropdown-item" href="{{route('system.business_cv.edit',[$business_cv->id])}}">Edit Business CV</a>
+                
+              </div>
+            </td>
           </tr>
           @empty
           <tr>

@@ -15,6 +15,8 @@ use App\Laravel\Models\BusinessLine;
 use App\Laravel\Models\BusinessTransaction;
 use Carbon,Auth,DB,Str,Helper,Event;
 use App\Laravel\Requests\PageRequest;
+use App\Laravel\Requests\System\BusinessUpdaterequest;
+
 /* App Classes
  */
 
@@ -90,13 +92,96 @@ class BusinessCVController extends Controller
 
 	public function  edit(PageRequest $request,$id = NULL){
         $this->data['page_title'] .= "Edit Business CV";
-		$this->data['auth'] = Auth::guard('customer')->user();
-        $this->data['business'] = Business::find(session()->get('selected_business_id'));
+        $this->data['business'] = Business::find($id);
 
 		return view('system.business-cv.edit',$this->data);
 	}
 
-	public function update(BPLOUpdateRequest $request,$id = NULL){
+	public function update(BusinessUpdaterequest $request,$id = NULL){
+
+        $business = Business::find($id);
+        $business->tradename = $request->trade_name;
+        $business->business_id_no = $request->get('business_id_no');
+        $business->permit_no = $request->get('permit_no');
+        $business->business_plate_no = $request->get('business_plate_no');
+
+        $business->dti_sec_cda_registration_no = $request->dti_sec_cda_registration_no;
+        $business->dti_sec_cda_registration_date = $request->dti_sec_cda_registration_date;
+        $business->ctc_no = $request->ctc_no;
+        $business->business_tin = $request->business_tin;
+        $business->tax_incentive = $request->tax_incentive;
+
+        $business->owner_fname = $request->owner_firstname;
+        $business->owner_mname = $request->owner_middlename;
+        $business->owner_lname = $request->owner_lastname;
+        $business->owner_email = $request->owner_email;
+        $business->owner_tin = $request->owner_tin;
+        $business->owner_mobile_no = $request->owner_mobile_no;
+        $business->owner_brgy = $request->owner_brgy;
+        $business->owner_brgy_name = $request->owner_brgy_name;
+        $business->owner_unit_no = $request->owner_unit_no;
+        $business->owner_street = $request->owner_street;
+
+        $business->rep_lastname = $request->rep_lastname;
+        $business->rep_firstname = $request->rep_firstname;
+        $business->rep_middlename = $request->rep_middlename;
+        $business->rep_gender = $request->rep_gender;
+        $business->rep_position = $request->rep_position;
+        $business->rep_tin = $request->rep_tin;
+
+        $business->website_url = $request->website_url;
+        $business->business_area = $request->business_area;
+
+        $business->lessor_fullname = $request->lessor_fullname;
+        $business->lessor_gender = $request->lessor_gender;
+        $business->lessor_monthly_rental = $request->lessor_monthly_rental;
+        $business->lessor_rental_date = $request->lessor_rental_date;
+        $business->lessor_mobile_no = $request->lessor_mobile_no;
+        $business->lessor_tel_no = $request->lessor_tel_no;
+        $business->lessor_email = $request->lessor_email;
+        $business->lessor_unit_no = $request->lessor_unit_no;
+        $business->lessor_street_address = $request->lessor_street_address;
+        $business->lessor_brgy = $request->lessor_brgy;
+        $business->lessor_brgy_name = $request->lessor_brgy_name;
+        $business->lessor_region = $request->lessor_region;
+        $business->lessor_region_name = $request->lessor_region_name;
+        $business->lessor_town = $request->lessor_town;
+        $business->lessor_town_name = $request->lessor_town_name;
+        $business->lessor_zipcode = $request->lessor_zipcode;
+
+        $business->emergency_contact_fullname = $request->emergency_contact_fullname;
+        $business->emergency_contact_mobile_no = $request->emergency_contact_mobile_no;
+        $business->emergency_contact_tel_no = $request->emergency_contact_tel_no;
+        $business->emergency_contact_email = $request->emergency_contact_email;
+
+        $business->no_of_male_employee = $request->get('no_male_employee');
+        $business->no_of_female_employee = $request->get('no_female_employee');
+        $business->male_residing_in_city = $request->get('male_residing_in_city');
+        $business->female_residing_in_city = $request->get('female_residing_in_city');
+
+        $business->capitalization = $request->get('capitalization');
+        $business->region_name = $request->get('region_name');
+        $business->town_name = $request->get('town_name');
+        $business->region = $request->get('region');
+        $business->town = $request->get('town');
+        $business->brgy_name = $request->get('brgy_name');
+        $business->brgy = $request->get('brgy');
+        $business->zipcode = $request->get('zipcode');
+        $business->unit_no = $request->get('unit_no');
+        $business->street_address = $request->get('street_address');
+        $business->email = $request->get('email');
+        $business->mobile_no = $request->get('mobile_no');
+        $business->telephone_no = $request->get('telephone_no');
+        $business->tin_no = $request->get('tin_no');
+        $business->sss_no = $request->get('sss_no');
+        $business->philhealth_no = $request->get('philhealth_no');
+        $business->pagibig_no = $request->get('pagibig_no');
+
+        $business->save();
+
+        session()->flash('notification-status', "success");
+        session()->flash('notification-msg', "The Business CV was successfully updated.");
+        return redirect()->route('system.business_cv.index');
 
 	}
 
