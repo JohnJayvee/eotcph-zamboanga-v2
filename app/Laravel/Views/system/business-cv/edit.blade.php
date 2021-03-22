@@ -358,27 +358,8 @@
                             </div>
                         </div>
                     </div>
+                   
                     <div class="row">
-                        <div class="col-sm-6 col-md-6 col-lg-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
-                                <input type="text" class="form-control {{ $errors->first('owner_email') ? 'is-invalid': NULL  }}"  name="owner_email" value="{{old('owner_email', $business->owner_email) }}">
-                                @if($errors->first('owner_email'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_email')}}</small>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-sm-6 col-md-6 col-lg-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
-                                <input type="text" class="form-control {{ $errors->first('owner_mobile_no') ? 'is-invalid': NULL  }}"  name="owner_mobile_no" value="{{old('owner_mobile_no', $business->owner_mobile_no) }}">
-                                @if($errors->first('owner_mobile_no'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_mobile_no')}}</small>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">Barangay </label>
