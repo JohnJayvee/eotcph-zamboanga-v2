@@ -28,6 +28,8 @@ class BusinessCVController extends Controller
 	public function __construct(){
 		parent::__construct();
 		array_merge($this->data, parent::get_data());
+        $this->data['gender'] = ['' => "Choose Gender",'male' => "Male" , 'female' => "Female"];
+
 		$this->per_page = env("DEFAULT_PER_PAGE",10);
 	}
 

@@ -425,10 +425,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
-                                <select name="rep_gender" id="" class="form-control">
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
+                                {!!Form::select('rep_gender',$gender,old('rep_gender',$business->rep_gender),['id' => "input_rep_gender",'class' => "form-control ".($errors->first('rep_gender') ? 'border-red' : NULL)])!!}
                             </div>
                         </div>
                     </div>
@@ -491,10 +488,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
-                                <select name="lessor_gender" id="" class="form-control">
-                                    <option value="{{ old('lessor_gender'), $business->lessor_gender }}">Male</option>
-                                    <option value="{{ old('lessor_gender'), $business->lessor_gender }}">Female</option>
-                                </select>
+                                {!!Form::select('lessor_gender',$gender,old('lessor_gender',$business->lessor_gender),['id' => "input_lessor_gender",'class' => "form-control ".($errors->first('lessor_gender') ? 'border-red' : NULL)])!!}
+                               
                             </div>
                         </div>
                     </div>
