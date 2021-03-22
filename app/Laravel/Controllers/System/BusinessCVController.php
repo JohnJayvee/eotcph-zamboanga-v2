@@ -101,9 +101,6 @@ class BusinessCVController extends Controller
 
         $business = Business::find($id);
         $business->tradename = $request->trade_name;
-        $business->business_id_no = $request->get('business_id_no');
-        $business->permit_no = $request->get('permit_no');
-        $business->business_plate_no = $request->get('business_plate_no');
 
         $business->dti_sec_cda_registration_no = $request->dti_sec_cda_registration_no;
         $business->dti_sec_cda_registration_date = $request->dti_sec_cda_registration_date;
