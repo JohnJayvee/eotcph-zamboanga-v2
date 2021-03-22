@@ -111,9 +111,9 @@ class BusinessCVController extends Controller
         $business->business_tin = $request->business_tin;
         $business->tax_incentive = $request->tax_incentive;
 
-        $business->owner_fname = $request->owner_firstname;
-        $business->owner_mname = $request->owner_middlename;
-        $business->owner_lname = $request->owner_lastname;
+        $business->owner_fname = $request->owner_fname;
+        $business->owner_mname = $request->owner_mname;
+        $business->owner_lname = $request->owner_lname;
         $business->owner_email = $request->owner_email;
         $business->owner_tin = $request->owner_tin;
         $business->owner_mobile_no = $request->owner_mobile_no;

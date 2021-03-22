@@ -106,7 +106,6 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-
                             <div class="form-group">
                                 <label for="" class="text-form pb-2 col-md-6">Are you enjoying tax incentive from any Goverment Entity?</label>
                                 <div class="form-check form-check-inline">
@@ -123,67 +122,6 @@
                             <div class="form-group" style="display:none;" id="checkYes">
                                 <label class="text-form pb-2 text-title">Please Specify entity:</label>
                                 <input type="text" class="form-control form-control-sm" name="tax_incentive" value="{{ $business->tax_incentive }}">
-                            </div>
-                        </div>
-                    </div>
-                    <h5 class="text-title text-uppercase">Name of Authorized Representative</h5>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
-                                <input type="text" class="form-control {{ $errors->first('rep_lastname') ? 'is-invalid': NULL  }}"  name="rep_lastname" value="{{old('rep_lastname', $business->rep_lastname) }}">
-                                @if($errors->first('rep_lastname'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_lastname')}}</small>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
-                                <input type="text" class="form-control {{ $errors->first('rep_firstname') ? 'is-invalid': NULL  }}"  name="rep_firstname" value="{{old('rep_firstname', $business->rep_lastname) }}">
-                                @if($errors->first('rep_firstname'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_firstname')}}</small>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
-                                <input type="text" class="form-control {{ $errors->first('rep_middlename') ? 'is-invalid': NULL  }}"  name="rep_middlename" value="{{old('rep_middlename', $business->rep_middlename) }}">
-                                @if($errors->first('rep_middlename'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_middlename')}}</small>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
-                                <select name="rep_gender" id="" class="form-control">
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Position</label>
-                                <input type="text" class="form-control {{ $errors->first('rep_position') ? 'is-invalid': NULL  }}"  name="rep_position" value="{{old('rep_position', $business->rep_position) }}">
-                                @if($errors->first('rep_position'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_position')}}</small>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">TIN</label>
-                                <input type="number" class="form-control {{ $errors->first('rep_tin') ? 'is-invalid': NULL  }}"  name="rep_tin" value="{{old('rep_tin', $business->rep_tin) }}">
-                                @if($errors->first('rep_tin'))
-                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_tin')}}</small>
-                                @endif
                             </div>
                         </div>
                     </div>
@@ -217,7 +155,6 @@
                                 @endif
                             </div>
                         </div>
-
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -258,7 +195,7 @@
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                             <label for="exampleInputEmail1" class="text-form pb-2">Region</label>
-                               {!!Form::select('region',[],old('region', $business->region),['id' => "input_region",'class' => "form-control classic ".($errors->first('region') ? 'border-red' : NULL)])!!}
+                               {!!Form::select('region',[],old('region', $business->region),['id' => "input_region",'class' => "form-control ".($errors->first('region') ? 'border-red' : NULL)])!!}
                                 @if($errors->first('region'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('region')}}</small>
                                 @endif
@@ -269,7 +206,7 @@
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">City Municipality</label>
-                                {!!Form::select('town',[],old('town', $business->town),['id' => "input_town",'class' => "form-control classic ".($errors->first('town') ? 'border-red' : NULL)])!!}
+                                {!!Form::select('town',[],old('town', $business->town),['id' => "input_town",'class' => "form-control ".($errors->first('town') ? 'border-red' : NULL)])!!}
                                 @if($errors->first('town'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('town')}}</small>
                                 @endif
@@ -278,7 +215,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4">
                             <div class="form-group">
                                 <label class="text-form pb-2">Barangay</label>
-                                {!!Form::select('brgy',[],old('brgy', $business->brgy),['id' => "input_brgy",'class' => "form-control classic ".($errors->first('brgy') ? 'border-red' : NULL)])!!}
+                                {!!Form::select('brgy',[],old('brgy', $business->brgy),['id' => "input_brgy",'class' => "form-control ".($errors->first('brgy') ? 'border-red' : NULL)])!!}
                                 @if($errors->first('brgy'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('brgy')}}</small>
                                 @endif
@@ -360,6 +297,182 @@
                             </div>
                         </div>
                     </div>
+                    <h5 class="text-title text-uppercase">Owner's Information</h5>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
+                                <input type="text" class="form-control {{ $errors->first('owner_fname') ? 'is-invalid': NULL  }}"  name="owner_fname" value="{{old('owner_fname', $business->owner_fname) }}">
+                                @if($errors->first('owner_fname'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_fname')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
+                                <input type="text" class="form-control {{ $errors->first('owner_mname') ? 'is-invalid': NULL  }}"  name="owner_mname" value="{{old('owner_mname', $business->owner_mname) }}">
+                                @if($errors->first('owner_mname'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_mname')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
+                                <input type="text" class="form-control {{ $errors->first('owner_lname') ? 'is-invalid': NULL  }}"  name="owner_lname" value="{{old('owner_lname', $business->owner_lname) }}">
+                                @if($errors->first('owner_lname'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_lname')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Owner TIn</label>
+                                <input type="text" class="form-control {{ $errors->first('owner_tin') ? 'is-invalid': NULL  }}"  name="owner_tin" value="{{old('owner_tin', $business->owner_tin) }}">
+                                @if($errors->first('owner_tin'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_tin')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
+                                <input type="text" class="form-control {{ $errors->first('owner_email') ? 'is-invalid': NULL  }}"  name="owner_email" value="{{old('owner_email', $business->owner_email) }}">
+                                @if($errors->first('owner_email'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_email')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
+                                <input type="text" class="form-control {{ $errors->first('owner_mobile_no') ? 'is-invalid': NULL  }}"  name="owner_mobile_no" value="{{old('owner_mobile_no', $business->owner_mobile_no) }}">
+                                @if($errors->first('owner_mobile_no'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_mobile_no')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
+                                <input type="text" class="form-control {{ $errors->first('owner_email') ? 'is-invalid': NULL  }}"  name="owner_email" value="{{old('owner_email', $business->owner_email) }}">
+                                @if($errors->first('owner_email'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_email')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Mobile Number</label>
+                                <input type="text" class="form-control {{ $errors->first('owner_mobile_no') ? 'is-invalid': NULL  }}"  name="owner_mobile_no" value="{{old('owner_mobile_no', $business->owner_mobile_no) }}">
+                                @if($errors->first('owner_mobile_no'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_mobile_no')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="text-form pb-2">Barangay </label>
+                                {!!Form::select('owner_brgy',[],old('owner_brgy'),['id' => "input_owner_brgy",'class' => "form-control ".($errors->first('owner_brgy') ? 'border-red' : NULL)])!!}
+                                @if($errors->first('owner_brgy'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_brgy')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <input type="hidden" class="form-control" name="owner_brgy_name" id="input_owner_brgy_name" value="{{old('owner_brgy_name')}}">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Street Address </label>
+                                <input type="text" class="form-control {{ $errors->first('owner_street') ? 'is-invalid': NULL  }}"  name="owner_street" value="{{old('owner_street', $business->owner_street) }}" autocomplete="none">
+                                @if($errors->first('owner_street'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_street')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">House/Bldg No. </label>
+                                <input type="text" class="form-control {{ $errors->first('owner_unit_no') ? 'is-invalid': NULL  }}"  name="owner_unit_no" value="{{old('owner_unit_no',$business->unit_no)}}" autocomplete="none">
+                                @if($errors->first('owner_unit_no'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('owner_unit_no')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="text-title text-uppercase">Name of Authorized Representative</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Last Name</label>
+                                <input type="text" class="form-control {{ $errors->first('rep_lastname') ? 'is-invalid': NULL  }}"  name="rep_lastname" value="{{old('rep_lastname', $business->rep_lastname) }}">
+                                @if($errors->first('rep_lastname'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_lastname')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">First Name</label>
+                                <input type="text" class="form-control {{ $errors->first('rep_firstname') ? 'is-invalid': NULL  }}"  name="rep_firstname" value="{{old('rep_firstname', $business->rep_lastname) }}">
+                                @if($errors->first('rep_firstname'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_firstname')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Middle Name</label>
+                                <input type="text" class="form-control {{ $errors->first('rep_middlename') ? 'is-invalid': NULL  }}"  name="rep_middlename" value="{{old('rep_middlename', $business->rep_middlename) }}">
+                                @if($errors->first('rep_middlename'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_middlename')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Gender</label>
+                                <select name="rep_gender" id="" class="form-control">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">Position</label>
+                                <input type="text" class="form-control {{ $errors->first('rep_position') ? 'is-invalid': NULL  }}"  name="rep_position" value="{{old('rep_position', $business->rep_position) }}">
+                                @if($errors->first('rep_position'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_position')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1" class="text-form pb-2">TIN</label>
+                                <input type="number" class="form-control {{ $errors->first('rep_tin') ? 'is-invalid': NULL  }}"  name="rep_tin" value="{{old('rep_tin', $business->rep_tin) }}">
+                                @if($errors->first('rep_tin'))
+                                    <small class="form-text pl-1" style="color:red;">{{$errors->first('rep_tin')}}</small>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    
+
                     <input type="hidden" class="form-control" name="lessor_region_name" id="input_lessor_region_name" value="{{old('lessor_region_name', 'REGION IX (ZAMBOANGA PENINSULA)')}}">
                     <input type="hidden" class="form-control" name="lessor_town_name" id="input_lessor_town_name" value="{{old('lessor_town_name', 'ZAMBOANGA DEL SUR - CITY OF ZAMBOANGA')}}">
                     <input type="hidden" class="form-control" name="lessor_brgy_name" id="input_lessor_brgy_name" value="{{old('lessor_brgy_name', $business->lessor_brgy_name)}}">
@@ -408,7 +521,7 @@
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                             <label for="exampleInputEmail1" class="text-form pb-2">Region</label>
-                                {!!Form::select('lessor_region',[],old('lessor_region'),['id' => "input_lessor_region",'class' => "form-control classic ".($errors->first('lessor_region') ? 'border-red' : NULL)])!!}
+                                {!!Form::select('lessor_region',[],old('lessor_region'),['id' => "input_lessor_region",'class' => "form-control ".($errors->first('lessor_region') ? 'border-red' : NULL)])!!}
                                 @if($errors->first('lessor_region'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_region')}}</small>
                                 @endif
@@ -419,7 +532,7 @@
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
                                 <label class="text-form pb-2">City Municipality</label>
-                                {!!Form::select('lessor_town',[],old('lessor_town', $business->lessor_town),['id' => "input_lessor_town",'class' => "form-control classic ".($errors->first('lessor_town') ? 'border-red' : NULL)])!!}
+                                {!!Form::select('lessor_town',[],old('lessor_town', $business->lessor_town),['id' => "input_lessor_town",'class' => "form-control ".($errors->first('lessor_town') ? 'border-red' : NULL)])!!}
                                 @if($errors->first('lessor_town'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_town')}}</small>
                                 @endif
@@ -428,7 +541,7 @@
                         <div class="col-sm-12 col-md-4 col-lg-4">
                             <div class="form-group">
                                 <label class="text-form pb-2">Barangay</label>
-                                {!!Form::select('lessor_brgy',[],old('lessor_brgy', $business->lessor_brgy),['id' => "input_lessor_brgy",'class' => "form-control classic ".($errors->first('lessor_brgy') ? 'border-red' : NULL)])!!}
+                                {!!Form::select('lessor_brgy',[],old('lessor_brgy', $business->lessor_brgy),['id' => "input_lessor_brgy",'class' => "form-control ".($errors->first('lessor_brgy') ? 'border-red' : NULL)])!!}
                                 @if($errors->first('lessor_brgy'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('lessor_brgy')}}</small>
                                 @endif
@@ -682,7 +795,7 @@
                 }));
             })
 
-            $(input_region).prop('disabled', false)
+            $(input_region).prop('disabled', true)
             $(input_region).prepend($('<option>', {
                 value: "",
                 text: "--Select Region--"
@@ -789,6 +902,7 @@
             var _val = "097332000";
             var _text = "ZAMBOANGA DEL SUR - CITY OF ZAMBOANGA";
             $(this).get_brgy(_val, "#input_brgy", "");
+             $(this).get_brgy(_val, "#input_owner_brgy", "{{old('owner_brgy', $business->owner_brgy)}}");
             $('#input_zipcode').val('');
             $('#input_town_name').val(_text);
         }
@@ -833,6 +947,11 @@
             $(this).get_brgy(_val, "#input_lessor_brgy", "");
             $('#input_lessor_zipcode').val('');
             $('#input_lessor_town_name').val(_text);
+        });
+
+        $("#input_owner_brgy").on("change", function () {
+            var _text = $("#input_owner_brgy option:selected").text();
+            $('#input_owner_brgy_name').val(_text);
         });
 
         function load_lessor_barangay() {
