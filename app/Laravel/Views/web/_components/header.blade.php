@@ -33,7 +33,7 @@
                             <li><a  href="http://staging.eor.ziapay.ph/validate" target="_blank"><i ></i> EOR Authenticity</a></li>
                             <li><a href="{{route('web.coming_soon')}}">New Registration</a></li>
                             <li><a href="{{route('web.business.index')}}">Renewal</a></li>
-                            <li><a href="{{route('web.coming_soon')}}">Taxes , Fees and Dues</a></li>
+                            <li><a href="{{route('web.transaction.create')}}">Taxes , Fees and Dues</a></li>
                         </ul>
                     </li>
                     <li><a  href="{{route('web.logout')}}"><i class="fa fa-sign-out-alt"></i> Sign Out</span></a></li>
@@ -71,7 +71,7 @@
                         <ul class="sub-menu">
                             <li><a href="{{route('web.coming_soon')}}">New Registration</a></li>
                             <li><a href="{{route('web.business.index')}}">Renewal</a></li>
-                            <li><a href="{{route('web.coming_soon')}}">Taxes , Fees and Dues</a></li>
+                            <li><a href="{{route('web.transaction.create')}}">Taxes , Fees and Dues</a></li>
                         </ul>
                     </li>
                     <li><a  href="#" data-toggle="modal" data-target=".targeted-tutorial-video"><i class="fa fa-list-alt"></i> Tutorial</a></li>
