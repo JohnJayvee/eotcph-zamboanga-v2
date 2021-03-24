@@ -124,6 +124,12 @@ class EventServiceProvider extends ServiceProvider
         'log-activity' => [
             'App\Laravel\Listeners\AuditTrailActivityListener'
         ],
+        'send-email-tax' => [
+            'App\Laravel\Listeners\SendEmailTaxListener'
+        ],
+        'send-email-violation' => [
+            'App\Laravel\Listeners\SendEmailViolationListener'
+        ],
 
     ];
 

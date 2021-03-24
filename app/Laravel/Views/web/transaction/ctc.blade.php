@@ -43,8 +43,8 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="form-group">
-                                <label for="exampleInputEmail1" class="text-form pb-2">Email</label>
-                                <input type="text" class="form-control form-control-sm {{ $errors->first('email') ? 'is-invalid': NULL  }}"  placeholder="Tin Number" name="email" value="{{$other_customer ? $other_customer->email : Auth::guard('customer')->user()->email }}">
+                                <label for="input_email" class="text-form pb-2">Email</label>
+                                <input type="text" class="form-control form-control-sm {{ $errors->first('email') ? 'is-invalid': NULL  }}"  placeholder="email" name="email" value="{{$other_customer ? $other_customer->email : Auth::guard('customer')->user()->email }}">
                                 @if($errors->first('email'))
                                     <small class="form-text pl-1" style="color:red;">{{$errors->first('email')}}</small>
                                 @endif
@@ -268,9 +268,7 @@
     border-color: black !important;
 }
 
-.card-body input{
-    text-transform: capitalize;
-}
+
 .custom-btn{
     padding: 5px 10px;
     border-radius: 10px;

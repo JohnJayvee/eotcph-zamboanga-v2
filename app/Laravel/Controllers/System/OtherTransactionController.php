@@ -19,6 +19,8 @@ use App\Laravel\Models\TaxCertificate;
 use App\Laravel\Events\SendReference;
 use App\Laravel\Events\SendTaxReference;
 use App\Laravel\Events\SendViolationReference;
+use App\Laravel\Events\SendEmailViolationReference;
+
 use App\Laravel\Events\SendApplication;
 
 /* App Classes
@@ -99,15 +101,18 @@ class OtherTransactionController extends Controller
 					$new_violators->violation_name = $request->get('violation_name');
 					$new_violators->save();
 
-					/*$insert[] = [
-		                'contact_number' => $new_other_transaction->contact_number,
+					$insert[] = [
+		                'email' => $new_other_transaction->email,
 		                'ref_num' => $new_other_transaction->processing_fee_code,
 		                'amount' => $new_other_transaction->amount,
                 		'full_name' => $new_other_transaction->customer->full_name,
-                		'violation_name' => $new_violators->violation_name
+                		'violation_name' => $new_violators->violation_name,
+                		'violation_place' => $new_violators->place_of_violation,
+                		'violation_date' => $new_violators->date_time,
+                		'ticket_no' => $new_violators->ticket_no
 		            ];	
-					$notification_data = new SendViolationReference($insert);
-				    Event::dispatch('send-sms-violation', $notification_data);*/
+					$notification_data = new SendEmailViolationReference($insert);
+				    Event::dispatch('send-email-violation', $notification_data);
 
 					DB::commit();
 					session()->flash('notification-status', "success");

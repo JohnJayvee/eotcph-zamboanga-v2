@@ -18,6 +18,8 @@ use App\Laravel\Models\{Transaction,Department,RegionalOffice,ApplicationRequire
 /* App Classes
  */
 use App\Laravel\Events\SendReference;
+use App\Laravel\Events\SendEmailTaxReference;
+
 use App\Laravel\Events\SendApplication;
 use App\Laravel\Events\SendEorUrl;
 
@@ -219,13 +221,14 @@ class CustomerTransactionController extends Controller
 
 			$new_other_transaction->save();
 
-				$new_tax_certificate = new TaxCertificate;
-				$new_tax_certificate->transaction_id = $new_other_transaction->id;
-				$new_tax_certificate->other_customer_id = $other_customer ? $other_customer->id : $new_other_customer->id;
-				$new_tax_certificate->tax_type = $request->get('ctc_type');
-				$new_tax_certificate->additional_tax = $request->get('additional_tax');
-				$new_tax_certificate->subtotal = $request->get('subtotal');
-				$new_tax_certificate->total_amount = $request->get('total_amount');
+			$new_tax_certificate = new TaxCertificate;
+			$new_tax_certificate->transaction_id = $new_other_transaction->id;
+			$new_tax_certificate->other_customer_id = $other_customer ? $other_customer->id : $new_other_customer->id;
+			$new_tax_certificate->tax_type = $request->get('ctc_type');
+			$new_tax_certificate->basic_community_tax = $request->get('basic_community');
+			$new_tax_certificate->additional_tax = $request->get('additional_tax');
+			$new_tax_certificate->subtotal = $request->get('subtotal');
+			$new_tax_certificate->total_amount = $request->get('total_amount');
 
 			switch ($request->get('ctc_type')) {
 				case 'salary':
@@ -241,6 +244,24 @@ class CustomerTransactionController extends Controller
 				break;
 			}
 			$new_tax_certificate->save();
+
+			$insert[] = [
+                'contact_number' => $new_other_transaction->contact_number,
+                'email' => strtolower($new_other_transaction->email),
+                'ref_num' => $new_other_transaction->processing_fee_code,
+                'amount' => $new_other_transaction->amount,
+        		'full_name' => $new_other_transaction->customer->full_name,
+        		'tin_no' => $new_other_transaction->customer->tin_no,
+        		'tax_type' => $new_tax_certificate->tax_type,
+        		'basic_community'=> $new_tax_certificate->basic_community_tax,
+        		'additional_tax' => $new_tax_certificate->additional_tax,
+        		'subtotal' => $new_tax_certificate->subtotal,
+        		'total_amount' => $new_tax_certificate->total_amount,
+            ];
+
+
+            $notification_data = new SendEmailTaxReference($insert);
+			Event::dispatch('send-email-tax', $notification_data);
 
 			DB::commit();
 			if($new_other_transaction->amount > 0){
