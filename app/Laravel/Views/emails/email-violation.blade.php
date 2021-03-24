@@ -96,8 +96,12 @@
 			
 			<tr>
 				<th colspan="2">
-					<p style="float: left;text-align: justify;">Please visit the <a href="{{env('APP_URL')}}">{{env("APP_URL")}}</a> and input the payment reference number to the E-Payment section to pay. This payment reference number will expire at 11:59 PM. You can pay via online(Debit/Credit card, e-wallet, etc.) or over-the-counter (7Eleven, Bayad Center, Cebuana Lhuillier, and to other affiliated partners)</p><br>
-					<p>Thank you for choosing EOTC-PHP!</p>
+					<p style="float: left;text-align: justify;">Please visit the City Treasurer's Office to pay for the amount indicated.</p>
+				</th>
+			</tr>
+			<tr>
+				<th colspan="2">
+					<p style="float: left;text-align: justify;">Note: After payment, please present the Online Receipt or Official Receipt to the City Admin for the release of your License.</p>
 				</th>
 			</tr>
 
