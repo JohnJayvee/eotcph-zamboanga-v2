@@ -18,6 +18,7 @@ use App\Laravel\Models\OtherCustomer;
 use App\Laravel\Models\TaxCertificate;
 use App\Laravel\Events\SendReference;
 use App\Laravel\Events\SendTaxReference;
+use App\Laravel\Events\SendEmailTaxReference;
 use App\Laravel\Events\SendViolationReference;
 use App\Laravel\Events\SendEmailViolationReference;
 
@@ -148,6 +149,7 @@ class OtherTransactionController extends Controller
 					$new_tax_certificate->other_customer_id = $request->get('customer_id');
 					$new_tax_certificate->tax_type = $request->get('ctc_type');
 					$new_tax_certificate->additional_tax = $request->get('additional_tax');
+					$new_tax_certificate->basic_community_tax = $request->get('basic_community');
 					$new_tax_certificate->subtotal = $request->get('subtotal');
 					$new_tax_certificate->interest = $request->get('interest');
 					$new_tax_certificate->total_amount = $request->get('total_amount');
@@ -166,14 +168,24 @@ class OtherTransactionController extends Controller
 					}
 					$new_tax_certificate->save();
 
+					
 					$insert[] = [
 		                'contact_number' => $new_other_transaction->contact_number,
+		                'email' => strtolower($new_other_transaction->email),
 		                'ref_num' => $new_other_transaction->processing_fee_code,
 		                'amount' => $new_other_transaction->amount,
-                		'full_name' => $new_other_transaction->customer->full_name
-		            ];	
-					//$notification_data = new SendTaxReference($insert);
-				    //Event::dispatch('send-sms-tax', $notification_data);
+		        		'full_name' => $new_other_transaction->customer->full_name,
+		        		'tin_no' => $new_other_transaction->customer->tin_no,
+		        		'tax_type' => $new_tax_certificate->tax_type,
+		        		'basic_community'=> $new_tax_certificate->basic_community_tax,
+		        		'additional_tax' => $new_tax_certificate->additional_tax,
+		        		'subtotal' => $new_tax_certificate->subtotal,
+		        		'total_amount' => $new_tax_certificate->total_amount,
+		            ];
+
+
+		            $notification_data = new SendEmailTaxReference($insert);
+					Event::dispatch('send-email-tax', $notification_data);
 					
 					session()->flash('notification-status', "success");
 					session()->flash('notification-msg', "Transaction has been added.");
