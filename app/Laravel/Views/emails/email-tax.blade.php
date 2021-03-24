@@ -69,7 +69,7 @@
 			</tr>
 
 			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Cedule #:</th>
+				<th style="text-align: left;padding: 10px;">Cedula #:</th>
 				<th style="text-align: right;">{{$tin_no}}</th>
 			</tr>
 			<tr class="text-blue">

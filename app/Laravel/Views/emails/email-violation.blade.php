@@ -64,7 +64,7 @@
 			</tr>
 			<tr>
 				<th colspan="2"><p style="float: left;text-align: justify;">Hello Customer {{Str::title($full_name)}}, <p>
-					<p style="float: left;text-align: justify;">We have your successfully encoded your violation. Below are the details:</p>
+					<p style="float: left;text-align: justify;">We have successfully encoded your violation. Below are the details:</p>
 				</th>
 			</tr>
 
