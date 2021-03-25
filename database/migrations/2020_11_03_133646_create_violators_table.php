@@ -27,7 +27,7 @@ class CreateViolatorsTable extends Migration
             $table->string('violation')->nullable();
             $table->string('violation_name')->nullable();
             $table->string('no_offense')->nullable();
-            $table->string('remarks')->nullable();
+            $table->longText('remarks')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

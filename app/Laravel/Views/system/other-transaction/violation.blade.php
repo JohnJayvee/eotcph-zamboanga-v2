@@ -26,7 +26,7 @@
         	<div class="col-md-4">
        			<div class="form-group">
        				<label for="input_title">Ticket No.</label>
-    					<label>sdasadsads</label>
+    					<label>The ticket number will be generated once the Violation has been saved.</label>
 		        </div>
      		  </div>
         </div>
@@ -48,7 +48,7 @@
             </div>
           </div>
         </div>
-       	<label for="input_title">Owner's Individual's Name</label>
+       	<label for="input_title">Owner's Full Name</label>
        	<div class="row">
        		<div class="col-md-4">
        			<div class="form-group">

@@ -115,51 +115,53 @@
           <a href="{{route('system.other_transaction.create',[$other_customer->id])}}?type=ctc" class="btn btn-sm btn-primary">Add CTC</a>
           @endif
         </span>
-        <table class="table table-striped table-responsive">
-          <thead>
-            <th>Date</th>
-            <th>Processing Fee Code</th>
-            <th>Transaction Type</th>
-            <!-- <th>Created By(Processor)</th> -->
-            <th>Transaction Status</th>
-            <th>Application Status</th>
-            <th>No. Of Offense</th>
-            <th>Remarks</th>
-            <th>Action</th>
-          </thead>
-          <tbody>
-            @forelse($transactions as $transaction)
-              <tr>
-                <td>{{Helper::date_format($transaction->created_at)}}</td>
-                <td>{{$transaction->processing_fee_code}}</td>
-                <td>{{$transaction->transac_type->name}}</td>
-                <!-- <td>{{$transaction->admin ? $transaction->admin->full_name: "--"}}</td> -->
-                <th class="text-center">
-                  <div>{{$transaction->amount ?: 0 }}</div>
-                  <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::upper($transaction->payment_status)}}</span></small></div>
-                  <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->transaction_status)}} p-2 mt-1">{{Str::upper($transaction->transaction_status)}}</span></small></div>
-                </th>
-                <th class="text-center">
-                  <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2 mt-1">{{Str::upper($transaction->status)}}</span></small></div>
-                </th>
-                <td>{{$transaction->type == 1 ? Helper::str_ordinal($transaction->violators->no_offense) : "----"}}</td>
-                <td>{{$transaction->type == 1 ? Str::title($transaction->violators->remarks) : "----"}}</td>
-                <td>
-                  <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
-                    <a class="dropdown-item" href="{{route('system.other_transaction.show',[$transaction->id])}}">View transaction</a>
-                    @if($transaction->type == 2)
-                    <a class="dropdown-item" href="{{route('system.other_transaction.edit',[$transaction->id])}}?type={{$transaction->type}}">Edit transaction</a>
-                    @endif
-                   <!--  <a class="dropdown-item action-delete"  data-url="#" data-toggle="modal" data-target="#confirm-delete">Remove Record</a> -->
-                  </div>
-                </td>
-              </tr>
-            @empty
+        <div class="table-responsive">
+           <table class="table table-striped table-wrap">
+            <thead>
+              <th>Date</th>
+              <th>Processing Fee Code</th>
+              <th>Transaction Type</th>
+              <!-- <th>Created By(Processor)</th> -->
+              <th>Transaction Status</th>
+              <th>Application Status</th>
+              <th>No. Of Offense</th>
+              <th>Remarks</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              @forelse($transactions as $transaction)
+                <tr>
+                  <td>{{Helper::date_format($transaction->created_at)}}</td>
+                  <td>{{$transaction->processing_fee_code}}</td>
+                  <td>{{$transaction->transac_type->name}}</td>
+                  <!-- <td>{{$transaction->admin ? $transaction->admin->full_name: "--"}}</td> -->
+                  <th class="text-center">
+                    <div>{{$transaction->amount ?: 0 }}</div>
+                    <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->payment_status)}} p-2">{{Str::upper($transaction->payment_status)}}</span></small></div>
+                    <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->transaction_status)}} p-2 mt-1">{{Str::upper($transaction->transaction_status)}}</span></small></div>
+                  </th>
+                  <th class="text-center">
+                    <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2 mt-1">{{Str::upper($transaction->status)}}</span></small></div>
+                  </th>
+                  <td>{{$transaction->type == 1 ? Helper::str_ordinal($transaction->violators->no_offense) : "----"}}</td>
+                  <td>{{$transaction->type == 1 ? Str::title($transaction->violators->remarks) : "----"}}</td>
+                  <td>
+                    <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
+                      <a class="dropdown-item" href="{{route('system.other_transaction.show',[$transaction->id])}}">View transaction</a>
+                      @if($transaction->type == 2)
+                      <a class="dropdown-item" href="{{route('system.other_transaction.edit',[$transaction->id])}}?type={{$transaction->type}}">Edit transaction</a>
+                      @endif
+                     <!--  <a class="dropdown-item action-delete"  data-url="#" data-toggle="modal" data-target="#confirm-delete">Remove Record</a> -->
+                    </div>
+                  </td>
+                </tr>
+              @empty
 
-            @endforelse
-          </tbody>
-        </table>
+              @endforelse
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

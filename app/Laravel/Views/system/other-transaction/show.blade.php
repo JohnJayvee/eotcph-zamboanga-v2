@@ -109,8 +109,9 @@
               <p class="text-title fw-500">Place of Violation: <span class="text-black">{{ $violator->place_of_violation}}</span></p>
             </div>
             <div class="col-md-6">
-              <p class="text-title fw-500">Private Individual Name: <span class="text-black">{{ $violator->private_full_name}}</span></p>
-              <p class="text-title fw-500">Date and Time: <span class="text-black">{{ Helper::date_format($violator->date_time)}}</span></p>
+              <p class="text-title fw-500">Owner's Full Name: <span class="text-black">{{ $violator->private_full_name}}</span></p>
+              <p class="text-title fw-500">Date: <span class="text-black">{{ Helper::date_only($violator->violation_date)}}</span></p>
+              <p class="text-title fw-500">Time: <span class="text-black">{{ Helper::time_only($violator->violation_time)}}</span></p>
               <p class="text-title fw-500">Number of Offense: <span class="text-black">{{ Helper::number_of_offense($violator->customer_id,$violator->transaction_id)}}</span></p>
               <p class="text-title fw-500">Ticket No: <span class="text-black">{{ $violator->ticket_no}}</span></p>
             </div>
