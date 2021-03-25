@@ -15,15 +15,18 @@
   
   </div>
 
-  <div class="col-12 ">
+  <div class="col-12">
     <form>
       <div class="row">
-        
         <div class="col-md-3 p-2">
           <div class="form-group has-search">
             <span class="fa fa-search form-control-feedback"></span>
-            <input type="text" class="form-control form-control-lg" placeholder="Search">
+            <input type="text" class="form-control mb-2 mr-sm-2" id="input_keyword" name="keyword" value="{{$keyword}}" placeholder="Keyword">
           </div>
+        </div>
+        <div class="col-md-3 p-2">
+          <button class="btn btn-primary btn-sm p-2" type="submit">Filter</button>
+          <a href="{{route('system.other_customer.index')}}" class="btn btn-primary btn-sm p-2">Clear</a>
         </div>
       </div>
     </form>
@@ -56,7 +59,9 @@
               <th>{{Helper::date_format($other_customer->created_at)}}</th>
             </tr>
           @empty
-
+            <tr >
+              <th colspan="6" class="text-center"><i>Driver not found. <a href="{{route('system.other_customer.create')}}"> Create a record</a> </i></th>
+            </tr>
           @endforelse
         </tbody>
       </table>

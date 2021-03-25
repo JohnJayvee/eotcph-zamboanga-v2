@@ -103,6 +103,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col-md-6">
+              <p class="text-title fw-500">Apprehending Officer: <span class="text-black">{{ $transaction->admin->full_name}}</span></p>
               <p class="text-title fw-500">Driver's Name: <span class="text-black">{{ $violator->customer->full_name}}</span></p>
               <p class="text-title fw-500">Violations: <span class="text-black">{{ $violator->violation_name}}</span></p>
               <p class="text-title fw-500">Place of Violation: <span class="text-black">{{ $violator->place_of_violation}}</span></p>
@@ -111,6 +112,7 @@
               <p class="text-title fw-500">Private Individual Name: <span class="text-black">{{ $violator->private_full_name}}</span></p>
               <p class="text-title fw-500">Date and Time: <span class="text-black">{{ Helper::date_format($violator->date_time)}}</span></p>
               <p class="text-title fw-500">Number of Offense: <span class="text-black">{{ Helper::number_of_offense($violator->customer_id,$violator->transaction_id)}}</span></p>
+              <p class="text-title fw-500">Ticket No: <span class="text-black">{{ $violator->ticket_no}}</span></p>
             </div>
            
           </div> 

@@ -11,7 +11,7 @@
 @stop
 @section('content')
 <div class="row">
-  <div class="col-md-5 grid-margin stretch-card">
+  <div class="col-md-4 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Customer Details</h4>
@@ -105,13 +105,15 @@
       </div>
     </div>
   </div>
-  <div class="col-md-7 grid-margin">
+  <div class="col-md-8 grid-margin">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">List of Transaction</h4>
         <span class="float-right mb-2">
           <a href="{{route('system.other_transaction.create',[$other_customer->id])}}?type=violation" class="btn btn-sm btn-primary">Add Violation</a>
+          @if(Auth::user()->type != "violation_officer")
           <a href="{{route('system.other_transaction.create',[$other_customer->id])}}?type=ctc" class="btn btn-sm btn-primary">Add CTC</a>
+          @endif
         </span>
         <table class="table table-striped table-responsive">
           <thead>
@@ -121,6 +123,8 @@
             <!-- <th>Created By(Processor)</th> -->
             <th>Transaction Status</th>
             <th>Application Status</th>
+            <th>No. Of Offense</th>
+            <th>Remarks</th>
             <th>Action</th>
           </thead>
           <tbody>
@@ -138,7 +142,9 @@
                 <th class="text-center">
                   <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2 mt-1">{{Str::upper($transaction->status)}}</span></small></div>
                 </th>
-                <td >
+                <td>{{$transaction->type == 1 ? Helper::str_ordinal($transaction->violators->no_offense) : "----"}}</td>
+                <td>{{$transaction->type == 1 ? Str::title($transaction->violators->remarks) : "----"}}</td>
+                <td>
                   <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
                     <a class="dropdown-item" href="{{route('system.other_transaction.show',[$transaction->id])}}">View transaction</a>

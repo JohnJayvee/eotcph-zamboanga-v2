@@ -75,4 +75,8 @@ class OtherTransaction extends Model{
     public function customer(){
         return $this->BelongsTo("App\Laravel\Models\OtherCustomer",'customer_id','id');
     }
+
+    public function violators(){
+        return $this->BelongsTo("App\Laravel\Models\Violators",'id','transaction_id');
+    }
 }

@@ -11,7 +11,6 @@ class OtherTransactionRequest extends RequestManager{
 		switch ($type) {
 			case 'violation':
 				$rules = [
-					'ticket_no' => "required",
 					'd_firstname' => "required",
 					'd_lastname' => "required",
 					'p_firstname' => "required",
@@ -19,8 +18,10 @@ class OtherTransactionRequest extends RequestManager{
 					'address' => "required",
 					'violation' => "required",
 					'place_of_violation' => "required",
-					'date_time' => "required",
+					'violation_date' => "required",
+					'violation_time' => "required",
 					'email' => "required",
+					'remarks' => "required",
 					'contact_number' => "required|max:10|phone:PH",
 				];
 				break;

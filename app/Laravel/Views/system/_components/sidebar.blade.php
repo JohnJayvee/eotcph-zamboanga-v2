@@ -2,13 +2,8 @@
   <h6 class="pl-3 pt-4">Menu</h6>
   <ul class="nav">
 
-    <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.dashboard')) ? 'active' : ''}}">
-      <a class="nav-link" href="{{route('system.dashboard')}}">
-        <i class="fa fa-home menu-icon"></i>
-        <span class="menu-title">Dashboard</span>
-      </a>
-    </li>
-    @if(in_array($auth->type,['super_user','admin','processor','office_head','block_admin']))
+   
+    @if(in_array($auth->type,['super_user','admin','processor','office_head','block_admin','violation_officer']))
       <!-- @if(in_array($auth->type,['super_user','admin','office_head']))
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.processor.list','system.processor.show' )) ? 'active' : ''}}">
           <a class="nav-link" href="{{route('system.processor.list')}}">
@@ -48,6 +43,13 @@
         @endif
       </div>
     </li> -->
+    @if(in_array($auth->type,['super_user','admin','processor','office_head']))
+    <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.dashboard')) ? 'active' : ''}}">
+      <a class="nav-link" href="{{route('system.dashboard')}}">
+        <i class="fa fa-home menu-icon"></i>
+        <span class="menu-title">Dashboard</span>
+      </a>
+    </li>
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.business_transaction.show','system.business_transaction.pending','system.business_transaction.approved','system.business_transaction.declined')) ? 'active' : ''}}">
       <a class="nav-link" data-toggle="collapse" href="#business_transaction" aria-expanded="false" aria-controls="business_transaction">
         <i class="fa fa-file menu-icon"></i>
@@ -76,12 +78,15 @@
 
       </div>
     </li>
+    @endif
+    @if(in_array($auth->type,['super_user','admin','violation_officer']))
     <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.other_customer.index','system.other_customer.create','system.other_transaction.index','system.other_transaction.show','system.other_customer.show','system.other_transaction.create')) ? 'active' : ''}}">
       <a class="nav-link" href="{{route('system.other_customer.index')}}">
         <i class="fa fa-file menu-icon"></i>
         <span class="menu-title">Local Record</span>
       </a>
     </li>
+    @endif
     @if(in_array($auth->type,['super_user','admin','office_head','block_admin']))
       @if(in_array($auth->type,['super_user','admin','block_admin']))
         <li class="p-3 nav-item {{ in_array(Route::currentRouteName(), array('system.business_cv.index', 'system.business_cv.create', 'system.business_cv.show')) ? 'active' : ''}}">

@@ -40,7 +40,7 @@ class ProcessorController extends Controller
 			if (Auth::user()->type == "admin" || Auth::user()->type == "office_head") {
 				$this->data['user_type'] = ['' => "Choose Type",'office_head' => "Department Head",'processor' => "Processor"];
 			}else {
-				$this->data['user_type'] = ['' => "Choose Type",'admin' => "Admin",'office_head' => "Department Head",'processor' => "Processor"];
+				$this->data['user_type'] = ['' => "Choose Type",'admin' => "Admin",'office_head' => "Department Head",'processor' => "Processor","violation_officer" => "Traffic Violation Officer"];
 			}
 		}else{
 			$this->data['department'] = ['' => "Choose Department"] + Department::pluck('name', 'id')->toArray();

@@ -33,7 +33,16 @@ class OtherCustomerController extends Controller
 	}
 	public function  index(PageRequest $request){
 		$this->data['page_title'] = "Local Customer";
-		$this->data['other_customers'] = OtherCustomer::orderBy('created_at',"DESC")->get(); 
+
+		$this->data['keyword'] = Str::lower($request->get('keyword'));
+
+		$this->data['other_customers'] = OtherCustomer::where(function($query){
+		if(strlen($this->data['keyword']) > 0){
+			return $query->WhereRaw("LOWER(email)  LIKE  '%{$this->data['keyword']}%'")
+						->orWhereRaw("CONCAT(firstname,' ', middlename,' ', lastname)  LIKE  '%{$this->data['keyword']}%'");;
+			}
+		})->orderBy('created_at',"ASC")->paginate($this->per_page);
+
 		return view('system.other-customer.index',$this->data);
 	}
 

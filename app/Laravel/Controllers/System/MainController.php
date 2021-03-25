@@ -31,7 +31,7 @@ class MainController extends Controller{
 		$auth = $request->user();
 		$this->data['page_title'] .= "Dashboard";
 
-		if (in_array($auth->type, ["admin", "super_user","block_admin"])) {
+		if (in_array($auth->type, ["admin", "super_user","block_admin","violation_officer"])) {
 
 			$this->data['registrants_total'] = Customer::count();
 			$this->data['registrants_pending'] = Customer::where('status','pending')->count();

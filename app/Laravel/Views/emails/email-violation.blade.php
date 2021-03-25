@@ -63,8 +63,8 @@
 				<th colspan="2" class="text-gray" style="padding: 10px;">Date: {{Helper::date_only(Carbon::now())}} | {{Helper::time_only(Carbon::now())}}</th>
 			</tr>
 			<tr>
-				<th colspan="2"><p style="float: left;text-align: justify;">Hello Customer {{Str::title($full_name)}}, <p>
-					<p style="float: left;text-align: justify;">We have successfully encoded your violation. Below are the details:</p>
+				<th colspan="2"><p style="float: left;text-align: justify;">Hello {{Str::title($full_name)}}, <p>
+					<p style="float: left;text-align: justify;">Good day, Below are the details of your Traffic Violation:</p>
 				</th>
 			</tr>
 
@@ -73,11 +73,11 @@
 				<th style="text-align: right;">{{$ticket_no}}</th>
 			</tr>
 			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Violator's Full Name:</th>
+				<th style="text-align: left;padding: 10px;">Driver's Full Name:</th>
 				<th style="text-align: right;">{{Str::title($full_name)}}</th>
 			</tr>
 			<tr class="text-blue">
-				<th style="text-align: left;padding: 10px;">Violation Committed:</th>
+				<th style="text-align: left;padding: 10px;">Violation:</th>
 				<th style="text-align: right;">{{Str::title($violation_name)}}</th>
 			</tr>
 
@@ -90,8 +90,27 @@
 				<th style="text-align: right;">{{Helper::date_only($violation_date)}}</th>
 			</tr>
 			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Time of Violation:</th>
+				<th style="text-align: right;">{{Helper::time_only($violation_time)}}</th>
+			</tr>
+			<tr class="text-blue">
 				<th style="text-align: left;padding: 10px;">Amount:</th>
 				<th style="text-align: right;">{{Helper::money_format($amount)}}</th>
+			</tr>
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Remarks:</th>
+				<th style="text-align: right;">{{Str::title($remarks)}}</th>
+			</tr>
+			<tr class="text-blue">
+				<th style="text-align: left;padding: 10px;">Apprehending Officer:</th>
+				<th style="text-align: right;">{{Str::title($officer)}}</th>
+			</tr>
+
+			<tr>
+				<th colspan="2">
+					<p style="float: left;text-align: justify;">This serves as the driver’s temporary operator’s permit for 72 hours (three (3) days) from the apprehension, and also as an Official document to inform the concerned private individual found violating the above-stated charges.
+            		Furthermore, the undersigned hereby promised to appear at CMO/ZCPO/CTO before the expiration of this TOP/Citation Ticket within seventy-two (72) hours to answer the above-cited offenses, otherwise, it will cause the filing of appropriate criminal charges in the court of law.</p>
+				</th>
 			</tr>
 			
 			<tr>

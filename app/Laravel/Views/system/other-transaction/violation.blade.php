@@ -26,10 +26,7 @@
         	<div class="col-md-4">
        			<div class="form-group">
        				<label for="input_title">Ticket No.</label>
-    					<input type="text" class="form-control {{$errors->first('ticket_no') ? 'is-invalid' : NULL}}" id="input_ticket_no" name="ticket_no" placeholder="Ticket Number" value="{{old('ticket_no')}}">
-    					@if($errors->first('ticket_no'))
-    					 <p class="mt-1 text-danger">{!!$errors->first('ticket_no')!!}</p>
-  					  @endif
+    					<label>sdasadsads</label>
 		        </div>
      		  </div>
         </div>
@@ -51,7 +48,7 @@
             </div>
           </div>
         </div>
-       	<label for="input_title">Private Individual's Name</label>
+       	<label for="input_title">Owner's Individual's Name</label>
        	<div class="row">
        		<div class="col-md-4">
        			<div class="form-group">
@@ -135,14 +132,43 @@
        	<div class="row">
           <div class='col-sm-12'>
             <div class="form-group">
-          	  <label for="input_title">Date And time</label>
-              <input type="text" class="form-control datetimepicker {{$errors->first('date_time') ? 'is-invalid' : NULL}}" id="input_date_time" name="date_time" placeholder="" value="{{old('date_time')}}">
-              @if($errors->first('date_time'))
-  		          <p class="mt-1 text-danger">{!!$errors->first('date_time')!!}</p>
+          	  <label for="input_title">Date</label>
+              <input type="date" class="form-control {{$errors->first('violation_date') ? 'is-invalid' : NULL}}" id="input_violation_date" name="violation_date" placeholder="" value="{{old('violation_date')}}">
+              @if($errors->first('violation_date'))
+  		          <p class="mt-1 text-danger">{!!$errors->first('violation_date')!!}</p>
   		        @endif
             </div>
           </div>
       	</div>
+        <div class="row">
+          <div class='col-sm-12'>
+            <div class="form-group">
+              <label for="input_title">Time</label>
+              <input type="time" class="form-control {{$errors->first('violation_time') ? 'is-invalid' : NULL}}" id="input_violation_time" name="violation_time" placeholder="" value="{{old('violation_time')}}">
+              @if($errors->first('violation_time'))
+                <p class="mt-1 text-danger">{!!$errors->first('violation_time')!!}</p>
+              @endif
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="input_title">Remarks</label>
+              <textarea class="form-control {{$errors->first('remarks') ? 'is-invalid' : NULL}}" id="exampleFormControlTextarea1" rows="5" name="remarks">{{old('remarks')}}</textarea>
+              @if($errors->first('remarks'))
+              <p class="mt-1 text-danger">{!!$errors->first('remarks')!!}</p>
+              @endif
+              </div>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-12">
+            <label>This serves as the driver’s temporary operator’s permit for 72 hours (three (3) days) from the apprehension, and also as an Official document to inform the concerned private individual found violating the above-stated charges.
+            Furthermore, the undersigned hereby promised to appear at CMO/ZCPO/CTO before the expiration of this TOP/Citation Ticket within seventy-two (72) hours to answer the above-cited offenses, otherwise, it will cause the filing of appropriate criminal charges in the court of law.
+            </label>
+          </div>
+        </div>
         <button type="submit" class="btn btn-primary mr-2">Proceed</button>
         <a href="{{route('system.other_customer.show',[$customer->id])}}" class="btn btn-light">Return to Customer Records</a>
       </form>
@@ -157,7 +183,7 @@
 	.datetimepicker.dropdown-menu{
 		width: 40%;
 	} 
-	.datetimepicker.dropdown-menu table{ width: 100%; } 
+	.datetimepicker.dropdown-menu table{ width: 50%; } 
 	.datetimepicker table tr td.active:active, .datetimepicker table tr td.active:hover:active, .datetimepicker table tr td.active.disabled:active, .datetimepicker table tr td.active.disabled:hover:active, .datetimepicker table tr td.active.active, .datetimepicker table tr td.active:hover.active, .datetimepicker table tr td.active.disabled.active, .datetimepicker table tr td.active.disabled:hover.active,
 	.datetimepicker table tr td span.active:active, .datetimepicker table tr td span.active:hover:active, .datetimepicker table tr td span.active.disabled:active, .datetimepicker table tr td span.active.disabled:hover:active, .datetimepicker table tr td span.active.active, .datetimepicker table tr td span.active:hover.active, .datetimepicker table tr td span.active.disabled.active, .datetimepicker table tr td span.active.disabled:hover.active { background: #3bb001; }
 </style>
@@ -172,19 +198,17 @@
     $(".editor").each(function(){
         CKEDITOR.replace(this);
     });
-    $('.datepicker').datepicker({
-      startDate : "-1m",
-      daysOfWeekDisabled: [0,6],
-      format : "yyyy-mm-dd"
-    });
-
+   
     $(".datetimepicker").datetimepicker({
-      format : "yyyy-mm-dd hh:ii",
-      autoclose: true,
-      todayBtn: true,
+      pickDate: false,
       minuteStep: 15,
-    })
-
+      pickerPosition: 'bottom-right',
+      format: 'HH:ii p',
+      autoclose: true,
+      showMeridian: true,
+      startView: 1,
+      maxView: 1,
+    });
 
     $("#input_violation").on("change",function(){
         var _val = $(this).val();

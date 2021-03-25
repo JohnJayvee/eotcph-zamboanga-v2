@@ -53,6 +53,7 @@ class OtherTransactionController extends Controller
 		$this->data['customer'] = OtherCustomer::find($id);
 		$this->data['customer_id'] =  $id;
 		$this->data['violation_count'] = Violators::where('customer_id' , $id)->count();
+
 		$this->data['page_title'] .= " - Add new record";
 		return view('system.other-transaction.'.$request->get('type'),$this->data);
 	}
@@ -88,8 +89,8 @@ class OtherTransactionController extends Controller
 					$new_other_transaction->save();
 
 					$new_violators = new Violators;
+					$count_offense = $request->get('violation_count') + 1;
 					$new_violators->transaction_id = $new_other_transaction->id;
-					$new_violators->ticket_no = $request->get('ticket_no');
 					$new_violators->customer_id = $request->get('customer_id');
 
 					$new_violators->p_firstname = $request->get('p_firstname');
@@ -97,9 +98,15 @@ class OtherTransactionController extends Controller
 					$new_violators->p_lastname = $request->get('p_lastname');
 					
 					$new_violators->place_of_violation = $request->get('place_of_violation');
-					$new_violators->date_time = $request->get('date_time');
+					$new_violators->violation_date = $request->get('violation_date');
+					$new_violators->violation_time = $request->get('violation_time');
 					$new_violators->violation = $request->get('violation');
 					$new_violators->violation_name = $request->get('violation_name');
+					$new_violators->no_offense = $count_offense;
+					$new_violators->remarks = $request->get('remarks');
+
+					$new_violators->save();
+					$new_violators->ticket_no = str_pad($new_violators->id, 5, "0", STR_PAD_LEFT);
 					$new_violators->save();
 
 					$insert[] = [
@@ -109,8 +116,11 @@ class OtherTransactionController extends Controller
                 		'full_name' => $new_other_transaction->customer->full_name,
                 		'violation_name' => $new_violators->violation_name,
                 		'violation_place' => $new_violators->place_of_violation,
-                		'violation_date' => $new_violators->date_time,
-                		'ticket_no' => $new_violators->ticket_no
+                		'violation_date' => $new_violators->violation_date,
+                		'violation_time' => $new_violators->violation_time,
+                		'ticket_no' => $new_violators->ticket_no,
+                		'officer' => $new_other_transaction->admin->full_name,
+                		'remarks' => $new_violators->remarks,
 		            ];	
 					$notification_data = new SendEmailViolationReference($insert);
 				    Event::dispatch('send-email-violation', $notification_data);

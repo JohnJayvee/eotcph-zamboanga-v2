@@ -21,14 +21,14 @@ class ViolationSeeder extends Seeder
         Violations::create(['description' => '6 c Art. IV - Cargo Trucks on curfew hours']);
         Violations::create(['description' => '1 a Art. IV - Disregarding Traffic signals/gestures']);
         Violations::create(['description' => '1 c Art. VII - Overtaking at road intersections']);
-        Violations::create(['description' => '1e - Unlincensed driver']);
+        Violations::create(['description' => '1e - Unlicensed Driver']);
         Violations::create(['description' => '2c - Unregistered MV/Colorum']);
         Violations::create(['description' => 'Art. III Sec 3 - Illegal Side parking Area']);
         Violations::create(['description' => '2 a Art. IV - Entering one-way street']);
-        Violations::create(['description' => '3 b Art. IV - Loding/Unloading on thru Sts.']);
+        Violations::create(['description' => '3 b Art. IV - Loading/Unloading on thru Sts.']);
         Violations::create(['description' => '8 a Art. IV - Entering prohibited zones by MTC, PUJ & PUB']);
         Violations::create(['description' => 'Art. IV Sec. 3 - Failure to pass pedestrian lanes']);
-        Violations::create(['description' => '5 a Art. VII - Driving Under the influce']);
+        Violations::create(['description' => '5 a Art. VII - Driving Under the Influence']);
         Violations::create(['description' => '2 a Art. VII - Out of lane']);
         Violations::create(['description' => 'Other violations under C.O No. 185']);
     }

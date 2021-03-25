@@ -77,7 +77,11 @@ class AuthController extends Controller{
 
 			session()->flash('notification-status','success');
 			session()->flash('notification-msg',"Welcome {$account->full_name}!");
+			if ($account->type == "violation_officer") {
+				return redirect()->route('system.other_customer.index');
+			}
 			return redirect()->route('system.dashboard');
+
 		}elseif (Auth::attempt(['reference_id' => $username,'password' => $password])) {
 			$account = Auth::user();
 			if(Str::lower($account->status) != "active"){
@@ -109,6 +113,9 @@ class AuthController extends Controller{
 
 			session()->flash('notification-status','success');
 			session()->flash('notification-msg',"Welcome {$account->name}!");
+			if ($account->type == "violation_officer") {
+				return redirect()->route('system.other_customer.index');
+			}
 			return redirect()->route('system.dashboard');
 		}
 

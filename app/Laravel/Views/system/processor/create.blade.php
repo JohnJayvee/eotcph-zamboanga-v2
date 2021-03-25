@@ -162,7 +162,7 @@
     if (type == "office_head") {
       $("#application_container").hide();
       $("#office_container").show();
-    }else if(type == "admin"){
+    }else if(type == "admin" || type == "violation_officer"){
       $("#office_container").hide();
       $("#application_container").hide();
     }
