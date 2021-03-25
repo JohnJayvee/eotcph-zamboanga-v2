@@ -115,22 +115,24 @@
           <a href="{{route('system.other_transaction.create',[$other_customer->id])}}?type=ctc" class="btn btn-sm btn-primary">Add CTC</a>
           @endif
         </span>
-        <div class="table-responsive">
-           <table class="table table-striped table-wrap">
+        <div class="table-responsive shadow-sm fs-15">
+          <table class="table table-striped table-wrap">
             <thead>
-              <th>Date</th>
-              <th>Processing Fee Code</th>
-              <th>Transaction Type</th>
-              <!-- <th>Created By(Processor)</th> -->
-              <th>Transaction Status</th>
-              <th>Application Status</th>
-              <th>No. Of Offense</th>
-              <th>Remarks</th>
-              <th>Action</th>
+              <tr class="text-center">
+                <th width="28%">Date</th>
+                <th width="10%">Processing Fee Code</th>
+                <th width="10%">Transaction Type</th>
+                <!-- <th>Created By(Processor)</th> -->
+                <th width="10%">Transaction Status</th>
+                <th width="10%">Application Status</th>
+                <th width="2%">No. Of Offense</th>
+                <th width="25%">Remarks</th>
+                <th width="5%">Action</th>
+              </tr>
             </thead>
             <tbody>
               @forelse($transactions as $transaction)
-                <tr>
+                <tr class="text-center">
                   <td>{{Helper::date_format($transaction->created_at)}}</td>
                   <td>{{$transaction->processing_fee_code}}</td>
                   <td>{{$transaction->transac_type->name}}</td>
@@ -144,7 +146,7 @@
                     <div><small><span class="badge badge-pill badge-{{Helper::status_badge($transaction->status)}} p-2 mt-1">{{Str::upper($transaction->status)}}</span></small></div>
                   </th>
                   <td>{{$transaction->type == 1 ? Helper::str_ordinal($transaction->violators->no_offense) : "----"}}</td>
-                  <td>{{$transaction->type == 1 ? Str::title($transaction->violators->remarks) : "----"}}</td>
+                  <td><div style="white-space: break-spaces">{{$transaction->type == 1 ? Str::title($transaction->violators->remarks) : "----"}}</div></td>
                   <td>
                     <button type="button" class="btn btn-sm p-0" data-toggle="dropdown" style="background-color: transparent;"> <i class="mdi mdi-dots-horizontal" style="font-size: 30px"></i></button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuSplitButton2">
