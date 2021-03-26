@@ -23,7 +23,7 @@
         <input type="hidden" name="violation_count" value="{{$violation_count}}">
         <input type="hidden" name="violation_name" value="{{old('violation_name')}}" id="input_violation_name">
         <div class="row">
-        	<div class="col-md-4">
+        	<div class="col-md-12">
        			<div class="form-group">
        				<label for="input_title">Ticket No.</label>
     					<label>The ticket number will be generated once the Violation has been saved.</label>

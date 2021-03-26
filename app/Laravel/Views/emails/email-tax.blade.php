@@ -63,8 +63,13 @@
 				<th colspan="2" class="text-gray" style="padding: 10px;">Date: {{Helper::date_only(Carbon::now())}} | {{Helper::time_only(Carbon::now())}}</th>
 			</tr>
 			<tr>
-				<th colspan="2"><p style="float: left;text-align: justify;">Hello {{Str::title($full_name)}}, <p>
-					<p style="float: left;text-align: justify;">Good day, your application for Community Tax Certificate is now ready for payment.</p>
+				<th colspan="2">
+					<p style="float: left;text-align: justify;">Hello {{Str::title($full_name)}}, <p>
+				</th>
+			</tr>
+			<tr>
+				<th colspan="2">
+					<p style="float: left;">Good day, your application for Community Tax Certificate is now ready for payment.</p>
 				</th>
 			</tr>
 
