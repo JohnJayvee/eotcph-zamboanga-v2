@@ -85,14 +85,23 @@ class OtherCustomerController extends Controller
 	}
 
 	public function  show(PageRequest $request,$id = NULL){
-		$this->data['page_title'] .= " - Show record";
+		$this->data['page_title'] = " - Show record";
+		$this->data['auth'] = Auth::user();
 
 		$this->data['other_customer'] = $request->get('other_customer_data');
 		
 		if ($this->data['other_customer']->customer_id) {
-			$this->data['transactions'] = OtherTransaction::where('customer_id',$id)->where('is_local',"no")->orderBy('created_at',"DESC")->get();
+			$this->data['transactions'] = OtherTransaction::where('customer_id',$id)->where('is_local',"no")->where(function($query){
+				if ($this->data['auth']->type == "violation_officer") {
+					return $query->where('type',1);
+				}
+			})->orderBy('created_at',"DESC")->get();
 		}else{
-			$this->data['transactions'] = OtherTransaction::where('customer_id',$id)->where('is_local',"yes")->orderBy('created_at',"DESC")->get();
+			$this->data['transactions'] = OtherTransaction::where('customer_id',$id)->where('is_local',"yes")->where(function($query){
+				if ($this->data['auth']->type == "violation_officer") {
+					return $query->where('type',1);
+				}
+			})->orderBy('created_at',"DESC")->get();
 		}
 		
 		

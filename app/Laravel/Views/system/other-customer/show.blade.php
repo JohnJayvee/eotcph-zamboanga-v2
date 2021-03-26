@@ -159,7 +159,9 @@
                   </td>
                 </tr>
               @empty
-
+                <tr>
+                  <td colspan="8" class="text-center">No Records Available</td>
+                </tr>
               @endforelse
             </tbody>
           </table>

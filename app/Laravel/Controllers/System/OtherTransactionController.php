@@ -43,7 +43,14 @@ class OtherTransactionController extends Controller
 
 	public function  index(PageRequest $request){
 		$this->data['page_title'] = "Other Transaction";
-		$this->data['other_transactions'] = OtherTransaction::orderBy('created_at',"DESC")->get(); 
+		$this->data['auth'] = Auth::user();
+
+		$this->data['other_transactions'] = OtherTransaction::where(function($query){
+				if ($this->data['auth']->type == "violation_officer") {
+					return $query->where('type',1);
+				}
+			})->orderBy('created_at',"DESC")->get();
+
 		return view('system.other-transaction.index',$this->data);
 	}
 
