@@ -120,7 +120,7 @@
             <thead>
               <tr class="text-center">
                 <th width="28%">Date</th>
-                <th width="10%">Processing Fee Code</th>
+                <!-- <th width="10%">Processing Fee Code</th> -->
                 <th width="10%">Transaction Type</th>
                 <!-- <th>Created By(Processor)</th> -->
                 <th width="10%">Transaction Status</th>
@@ -134,7 +134,7 @@
               @forelse($transactions as $transaction)
                 <tr class="text-center">
                   <td>{{Helper::date_format($transaction->created_at)}}</td>
-                  <td>{{$transaction->processing_fee_code}}</td>
+                  <!-- <td>{{$transaction->processing_fee_code}}</td> -->
                   <td>{{$transaction->transac_type->name}}</td>
                   <!-- <td>{{$transaction->admin ? $transaction->admin->full_name: "--"}}</td> -->
                   <th class="text-center">
@@ -160,7 +160,7 @@
                 </tr>
               @empty
                 <tr>
-                  <td colspan="8" class="text-center">No Records Available</td>
+                  <td colspan="7" class="text-center">No Records Available</td>
                 </tr>
               @endforelse
             </tbody>
